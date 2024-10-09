@@ -1,32 +1,53 @@
-use deadpool_postgres::{Config, Pool, Runtime};
+use deadpool_postgres::{Manager, ManagerConfig, Pool, RecyclingMethod};
 use tokio_postgres::NoTls;
 use tokio_postgres_migration::Migration;
 
 use crate::config::EnvConfig;
 
-const SCRIPTS_UP: [(&str, &str); 1] = [(
-    "0001_create-users",
-    include_str!("../migrations/0001_create-users_up.sql"),
-)];
+const SCRIPTS_UP: [(&str, &str); 2] = [
+    (
+        "0001_create-users",
+        include_str!("../migrations/0001_create-users_up.sql"),
+    ),
+    (
+        "0002_insert-users",
+        include_str!("../migrations/0002_insert-users_up.sql"),
+    ),
+];
 
-const SCRIPTS_DOWN: [(&str, &str); 1] = [(
-    "0001_create-users",
-    include_str!("../migrations/0001_create-users_down.sql"),
-)];
+const SCRIPTS_DOWN: [(&str, &str); 2] = [
+    (
+        "0002_insert-users",
+        include_str!("../migrations/0002_insert-users_down.sql"),
+    ),
+    (
+        "0001_create-users",
+        include_str!("../migrations/0001_create-users_down.sql"),
+    ),
+];
 
-fn create_config(config: &EnvConfig) -> Config {
-    let mut cfg = Config::new();
-    cfg.host = Some(config.pg_host.clone());
-    cfg.dbname = Some(config.pg_dbname.clone());
-    cfg.user = Some(config.pg_user.clone());
-    cfg.password = Some(config.pg_password.clone());
+fn create_config(config: &EnvConfig) -> tokio_postgres::Config {
+    let mut cfg = tokio_postgres::Config::new();
+    cfg.host(&config.pg_host);
+    cfg.dbname(&config.pg_dbname);
+    cfg.user(&config.pg_user);
+    cfg.password(&config.pg_password);
     cfg
 }
 
 pub fn create_pool(config: &EnvConfig) -> Pool {
-    create_config(config)
-        .create_pool(Some(Runtime::Tokio1), NoTls)
-        .expect("Couldn't create postgres pool")
+    let pg_config = create_config(config);
+
+    let manager_config = ManagerConfig {
+        recycling_method: RecyclingMethod::Fast,
+    };
+
+    let manager = Manager::from_config(pg_config, NoTls, manager_config);
+
+    Pool::builder(manager)
+        .max_size(16)
+        .build()
+        .expect("Failed to create pool")
 }
 
 pub async fn migrate_up(pool: &Pool) {
