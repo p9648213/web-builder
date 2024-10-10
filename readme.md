@@ -1,1 +1,1 @@
-https://github.com/docker/docker-rust-postgres/blob/main/src/user.rs
+html-minifier --output-dir /home/p9648213/code/web-builder/templates --collapse-whitespace --collapse-inline-tag-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-tag-whitespace --remove-empty-attributes --remove-empty-elements --trim-custom-fragments --use-short-doctype --file-ext stpl --minify-css true --minify-js --input-dir /home/p9648213/code/web-builder/templates

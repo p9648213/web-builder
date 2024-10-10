@@ -43,7 +43,7 @@ impl User {
     }
 
     pub async fn get_all_users(pool: &Pool) -> Result<Vec<Row>, AppError> {
-        let result = query_db("SELECT id FROM users", &[], pool).await?;
+        let result = query_db("SELECT * FROM users", &[], pool).await?;
         Ok(result)
     }
 }

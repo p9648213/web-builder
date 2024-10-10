@@ -1,16 +1,11 @@
 use axum::response::{Html, IntoResponse};
-use sailfish::Template;
+use sailfish::TemplateOnce;
 
-#[derive(Template)]
+#[derive(TemplateOnce)]
 #[template(path = "login.stpl")]
-#[template(rm_whitespace = true)]
-struct AuthTemplate {
-    user: Vec<String>,
-}
+pub struct LoginTemplate {}
 
-pub async fn auth() -> impl IntoResponse {
-    let ctx = AuthTemplate {
-        user: vec!["user".to_string(), "user2".to_string()],
-    };
-    Html(ctx.render().unwrap())
+pub async fn login() -> impl IntoResponse {
+    let ctx = LoginTemplate {};
+    Html(ctx.render_once().unwrap())
 }
