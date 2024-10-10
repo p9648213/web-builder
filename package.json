@@ -1,12 +1,16 @@
 {
   "scripts": {
-    "dev": "npx tailwindcss -i ./main.css -o ./assets/css/main.css --watch",
-    "prod": "npx tailwindcss -i ./main.css -o ./assets/css/main.css --minify"
+    "tw": "npx tailwindcss -i ./styles.css -o ./assets/css/styles.css --watch",
+    "minify:css": "npx tailwindcss -i ./assets/css/styles.css -o ./assets/css/styles.css --minify",
+    "minify:html": "html-minifier --output-dir $INIT_CWD/templates --collapse-whitespace --collapse-inline-tag-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-tag-whitespace --remove-empty-attributes --remove-empty-elements --trim-custom-fragments --use-short-doctype --file-ext stpl --minify-css true --minify-js --input-dir $INIT_CWD/templates",
+    "minify:js": "node minify.js"
   },
-  "dependencies": {
+  "devDependencies": {
     "@tailwindcss/forms": "^0.5.9",
     "autoprefixer": "^10.4.20",
+    "html-minifier": "^4.0.0",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.13"
+    "tailwindcss": "^3.4.13",
+    "uglify-js": "^3.19.3"
   }
 }
