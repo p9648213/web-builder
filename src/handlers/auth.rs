@@ -4,7 +4,10 @@ use crate::{
         error::AppError,
         user::{User, UserDTO},
     },
-    utilities::{hash::hash_password, jwt::create_token},
+    utilities::{
+        hash::{compare_password, hash_password},
+        jwt::create_token,
+    },
 };
 use axum::{
     extract::State,
@@ -62,7 +65,7 @@ pub async fn login(
             )
         })?;
 
-        if user.password == login_form.password {
+        if compare_password(&login_form.password, &user.password)? {
             let token = create_token(&config.jwt_secret, &user.email, &user.role, user.id, 60)?;
 
             let token_cookie: Cookie = Cookie::build(("token", token))
