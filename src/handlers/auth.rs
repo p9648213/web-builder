@@ -69,7 +69,7 @@ pub async fn login(
             let token = create_token(&config.jwt_secret, &user.email, &user.role, user.id, 60)?;
 
             let token_cookie: Cookie = Cookie::build(("token", token))
-                .same_site(cookie::SameSite::Strict)
+                .same_site(cookie::SameSite::Lax)
                 .http_only(true)
                 .path("/")
                 .max_age(cookie::time::Duration::minutes(60))
