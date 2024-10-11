@@ -1,25 +1,22 @@
+use crate::models::error::AppError;
 use axum::http::StatusCode;
 use chrono::Duration;
-use jsonwebtoken::{
-    decode, encode, DecodingKey, EncodingKey, Header, Validation,
-};
+use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
-use crate::models::error::AppError;
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Claims {
     pub exp: usize,
     pub email: String,
     pub role: String,
-    pub id: i64,
+    pub id: i32,
 }
 
 pub fn create_token(
     secret: &str,
     email: &str,
     role: &str,
-    id: i64,
+    id: i32,
     expires_minutes: i64,
 ) -> Result<String, AppError> {
     let now = chrono::Utc::now();
@@ -30,7 +27,7 @@ pub fn create_token(
         exp,
         email: email.to_string(),
         role: role.to_string(),
-        id
+        id,
     };
     let token_header = Header::default();
     let key = EncodingKey::from_secret(secret.as_bytes());

@@ -19,11 +19,13 @@ async fn main() {
 
     postgres::migrate_up(&pg_pool).await;
 
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", &config.port))
+        .await
+        .unwrap();
+
     let app = create_router(pg_pool, config);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-
-    tracing::info!("Listening on http://0.0.0.0:3000");
+    tracing::info!("Listening on {}", listener.local_addr().unwrap());
 
     axum::serve(listener, app).await.unwrap();
 }

@@ -6,17 +6,11 @@ use axum::{
 };
 use axum_extra::extract::CookieJar;
 use cookie::Cookie;
-use deadpool_postgres::Pool;
 
-use crate::{
-    config::EnvConfig,
-    models::{error::AppError, user::User},
-    utilities::jwt::validate_token,
-};
+use crate::{config::EnvConfig, models::error::AppError, utilities::jwt::validate_token};
 
 pub async fn auth_user(
     State(config): State<EnvConfig>,
-    State(pool): State<Pool>,
     request: Request,
     next: Next,
 ) -> Result<impl IntoResponse, AppError> {
@@ -34,10 +28,12 @@ pub async fn auth_user(
             let token_value = &token_extract[6..token_extract.chars().count()];
 
             let claims = validate_token(&config.jwt_secret, token_value);
-    
-            if let Some(claims) = claims {
-                User::get_user_by_id(claims.id, &pool).await?;
-                Ok(next.run(request).await.into_response())
+
+            if let Some(_) = claims {
+                match request.uri().path() {
+                    "/auth/login" | "/auth/register" => Ok(redirect_307("/")),
+                    _ => Ok(next.run(request).await.into_response()),
+                }
             } else {
                 let token_cookie: Cookie = Cookie::build(("token", ""))
                     .same_site(cookie::SameSite::Strict)
@@ -48,7 +44,7 @@ pub async fn auth_user(
                 let cookies = CookieJar::new().add(token_cookie);
                 Ok((cookies, redirect_307("/auth/login")).into_response())
             }
-        }else {
+        } else {
             match request.uri().path() {
                 "/auth/login" | "/auth/register" => Ok(next.run(request).await.into_response()),
                 _ => Ok(redirect_307("/auth/login")),

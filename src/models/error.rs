@@ -12,3 +12,19 @@ impl IntoResponse for AppError {
         (self.0, self.1).into_response()
     }
 }
+
+pub struct DtoError {
+    pub message: String,
+}
+
+impl DtoError {
+    pub fn new(message: String) -> Self {
+        Self { message }
+    }
+}
+
+impl std::fmt::Debug for DtoError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "Error: {}", self.message)
+    }
+}

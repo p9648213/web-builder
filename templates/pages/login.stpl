@@ -18,7 +18,7 @@
           id="login-form"
           hx-post="/auth/login"
           hx-swap="none"
-          hx-on::after-request="if(event.detail.successful) this.reset()"
+          <%# hx-on::after-request="if(event.detail.successful) this.reset()" %>
           hx-disabled-elt="find button"
         >
           <input

@@ -46,37 +46,44 @@ pub async fn login(
 ) -> impl IntoResponse {
     let row = User::get_user_by_email(login_form.email, &pool).await?;
 
-    let user: UserDTO = User::from_row(row).map_err(|error| {
-        tracing::error!("Couldn't convert row to UserDTO: {:?}", error);
-        AppError::new(
-            StatusCode::INTERNAL_SERVER_ERROR,
-            "Server error".to_string(),
-        )
-    })?;
+    if let Some(row) = row {
+        let user: UserDTO = User::from_row(row).map_err(|error| {
+            tracing::error!("Couldn't convert row to UserDTO: {:?}", error);
+            AppError::new(
+                StatusCode::INTERNAL_SERVER_ERROR,
+                "Server error".to_string(),
+            )
+        })?;
 
-    if user.password == login_form.password {
-        let token = create_token(&config.jwt_secret, &user.email, &user.role, user.id, 60)?;
+        if user.password == login_form.password {
+            let token = create_token(&config.jwt_secret, &user.email, &user.role, user.id, 60)?;
 
-        let token_cookie: Cookie = Cookie::build(("token", token))
-            .same_site(cookie::SameSite::Lax)
-            .http_only(true)
-            .path("/")
-            .max_age(cookie::time::Duration::minutes(60))
-            .into();
+            let token_cookie: Cookie = Cookie::build(("token", token))
+                .same_site(cookie::SameSite::Strict)
+                .http_only(true)
+                .path("/")
+                .max_age(cookie::time::Duration::minutes(60))
+                .into();
 
-        let cookies = CookieJar::new().add(token_cookie);
+            let cookies = CookieJar::new().add(token_cookie);
 
-        let response = Response::builder()
-            .status(StatusCode::OK)
-            .header("HX-Location", "/")
-            .body(axum::body::Body::empty())
-            .unwrap();
+            let response = Response::builder()
+                .status(StatusCode::OK)
+                .header("HX-Location", "/")
+                .body(axum::body::Body::empty())
+                .unwrap();
 
-        Ok((cookies, response))
+            Ok((cookies, response))
+        } else {
+            return Err(AppError::new(
+                StatusCode::UNAUTHORIZED,
+                "Invalid username or password".to_string(),
+            ));
+        }
     } else {
         return Err(AppError::new(
             StatusCode::UNAUTHORIZED,
-            "Invalid password".to_string(),
+            "Invalid username or password".to_string(),
         ));
     }
 }

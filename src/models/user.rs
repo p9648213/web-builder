@@ -1,11 +1,11 @@
+use super::error::{AppError, DtoError};
+use crate::utilities::db::query_optional;
 use deadpool_postgres::Pool;
 use tokio_postgres::Row;
-use crate::utilities::db::query_one;
-use super::error::AppError;
 
 #[derive(Debug)]
 pub struct User {
-    pub id: Option<i64>,
+    pub id: Option<i32>,
     pub username: Option<String>,
     pub password: Option<String>,
     pub email: Option<String>,
@@ -14,7 +14,7 @@ pub struct User {
 
 impl User {
     pub fn new(
-        id: Option<i64>,
+        id: Option<i32>,
         username: Option<String>,
         password: Option<String>,
         email: Option<String>,
@@ -24,19 +24,19 @@ impl User {
             username,
             password,
             email,
-            role: None
+            role: None,
         }
     }
 
-    pub async fn get_user_by_id(id: i64, pool: &Pool) -> Result<Row, AppError> {
-        query_one("SELECT * FROM users WHERE id = $1", &[&id], pool, Some("Id".to_string())).await
+    pub async fn get_user_by_id(id: i32, pool: &Pool) -> Result<Option<Row>, AppError> {
+        query_optional("SELECT * FROM users WHERE id = $1", &[&id], pool).await
     }
 
-    pub async fn get_user_by_email(email: String, pool: &Pool) -> Result<Row, AppError> {
-        query_one("SELECT * FROM users WHERE email = $1", &[&email], pool, Some("Email".to_string())).await
+    pub async fn get_user_by_email(email: String, pool: &Pool) -> Result<Option<Row>, AppError> {
+        query_optional("SELECT * FROM users WHERE email = $1", &[&email], pool).await
     }
 
-    pub fn from_row<T: FromUser>(row: Row) -> Result<T, String> {
+    pub fn from_row<T: FromUser>(row: Row) -> Result<T, DtoError> {
         let user = User::try_from(row);
         T::from_user(user)
     }
@@ -44,7 +44,7 @@ impl User {
 
 impl User {
     fn try_from(row: Row) -> Self {
-        let id: Option<i64> = row.try_get("id").unwrap_or(None);
+        let id: Option<i32> = row.try_get("id").unwrap_or(None);
         let username: Option<String> = row.try_get("username").unwrap_or(None);
         let password: Option<String> = row.try_get("password").unwrap_or(None);
         let email: Option<String> = row.try_get("email").unwrap_or(None);
@@ -61,11 +61,11 @@ impl User {
 }
 
 pub trait FromUser: Sized {
-    fn from_user(user: User) -> Result<Self, String>;
+    fn from_user(user: User) -> Result<Self, DtoError>;
 }
 
 pub struct UserDTO {
-    pub id: i64,
+    pub id: i32,
     pub username: String,
     pub password: String,
     pub email: String,
@@ -73,13 +73,23 @@ pub struct UserDTO {
 }
 
 impl FromUser for UserDTO {
-    fn from_user(user: User) -> Result<Self, String> {
+    fn from_user(user: User) -> Result<Self, DtoError> {
         Ok(UserDTO {
-            id: user.id.ok_or("UserDTO convert error: Id not found".to_string())?,
-            password: user.password.ok_or("UserDTO convert error: Password not found".to_string())?,
-            username: user.username.ok_or("UserDTO convert error: Username not found".to_string())?,
-            email: user.email.ok_or("UserDTO convert error: Email not found".to_string())?,
-            role: user.role.ok_or("UserDTO convert error: Role not found".to_string())?,
+            id: user.id.ok_or(DtoError::new(
+                "UserDTO convert error: Id not found".to_string(),
+            ))?,
+            password: user.password.ok_or(DtoError::new(
+                "UserDTO convert error: Password not found".to_string(),
+            ))?,
+            username: user.username.ok_or(DtoError::new(
+                "UserDTO convert error: Username not found".to_string(),
+            ))?,
+            email: user.email.ok_or(DtoError::new(
+                "UserDTO convert error: Email not found".to_string(),
+            ))?,
+            role: user.role.ok_or(DtoError::new(
+                "UserDTO convert error: Role not found".to_string(),
+            ))?,
         })
     }
 }

@@ -2,7 +2,7 @@ use axum::response::{Html, IntoResponse};
 use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce)]
-#[template(path = "pages/login.stpl")]
+#[template(path = "pages/home.stpl")]
 struct HomePageTemplate {}
 
 pub async fn home_page() -> impl IntoResponse {

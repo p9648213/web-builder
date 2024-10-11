@@ -4,6 +4,8 @@
     <% include!("../headers/main_header.stpl"); %>
     <title>Home</title>
   </head>
-  <h2>Home Page</h2>
-  <div id="toast"></div>
+  <body hx-boost="true" hx-history="false">
+    <h2>Home Page</h2>
+    <div id="toast"></div>
+  </body>
 </html>
