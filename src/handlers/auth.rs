@@ -4,7 +4,7 @@ use crate::{
         error::AppError,
         user::{User, UserDTO},
     },
-    utilities::jwt::create_token,
+    utilities::{hash::hash_password, jwt::create_token},
 };
 use axum::{
     extract::State,
@@ -39,12 +39,19 @@ pub struct LoginForm {
     pub password: String,
 }
 
+#[derive(Deserialize, Debug)]
+pub struct RegisterForm {
+    pub username: String,
+    pub email: String,
+    pub password: String,
+}
+
 pub async fn login(
     State(pool): State<Pool>,
     State(config): State<EnvConfig>,
     Form(login_form): Form<LoginForm>,
 ) -> impl IntoResponse {
-    let row = User::get_user_by_email(login_form.email, &pool).await?;
+    let row = User::get_user_by_email(&login_form.email, &pool).await?;
 
     if let Some(row) = row {
         let user: UserDTO = User::from_row(row).map_err(|error| {
@@ -86,4 +93,34 @@ pub async fn login(
             "Invalid username or password".to_string(),
         ));
     }
+}
+
+pub async fn register(
+    State(pool): State<Pool>,
+    Form(register_form): Form<RegisterForm>,
+) -> impl IntoResponse {
+    let row = User::get_user_by_email(&register_form.email, &pool).await?;
+
+    if let Some(_) = row {
+        return Err(AppError::new(
+            StatusCode::UNAUTHORIZED,
+            "Email already exists".to_string(),
+        ));
+    }
+
+    let password_hash = hash_password(&register_form.password)?;
+
+    let insert_user = User::new(
+        None,
+        Some(register_form.username),
+        Some(password_hash),
+        Some(register_form.email),
+    );
+
+    User::insert_user(insert_user, &pool).await?;
+
+    Ok([(
+        "HX-Trigger",
+        r#"{"toastmessage":{"type":"success","message":"User create successfully"}}"#,
+    )])
 }

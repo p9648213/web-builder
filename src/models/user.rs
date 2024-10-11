@@ -1,5 +1,5 @@
 use super::error::{AppError, DtoError};
-use crate::utilities::db::query_optional;
+use crate::utilities::db::{excute, query_optional};
 use deadpool_postgres::Pool;
 use tokio_postgres::Row;
 
@@ -32,8 +32,17 @@ impl User {
         query_optional("SELECT * FROM users WHERE id = $1", &[&id], pool).await
     }
 
-    pub async fn get_user_by_email(email: String, pool: &Pool) -> Result<Option<Row>, AppError> {
+    pub async fn get_user_by_email(email: &String, pool: &Pool) -> Result<Option<Row>, AppError> {
         query_optional("SELECT * FROM users WHERE email = $1", &[&email], pool).await
+    }
+
+    pub async fn insert_user(user: User, pool: &Pool) -> Result<u64, AppError> {
+        excute(
+            "INSERT INTO users (username, password, email) VALUES ($1, $2, $3)",
+            &[&user.username, &user.password, &user.email],
+            pool,
+        )
+        .await
     }
 
     pub fn from_row<T: FromUser>(row: Row) -> Result<T, DtoError> {

@@ -1,15 +1,22 @@
-use crate::{config::EnvConfig, handlers::auth::login, middlewares::auth::auth_user, models::state::AppState, views::pages::{auth::login_page, home::home_page}};
+use crate::{
+    config::EnvConfig,
+    handlers::auth::{login, register},
+    middlewares::auth::auth_user,
+    models::state::AppState,
+    views::pages::{
+        auth::{login_page, register_page},
+        home::home_page,
+    },
+};
 use axum::{
     http::{header::CACHE_CONTROL, HeaderValue},
     routing::{get, post},
     Router,
 };
-use deadpool_postgres::Pool;
-use tower_http::{
-    compression::CompressionLayer, set_header::SetResponseHeaderLayer,
-};
-use rust_embed::Embed;
 use axum_embed::ServeEmbed;
+use deadpool_postgres::Pool;
+use rust_embed::Embed;
+use tower_http::{compression::CompressionLayer, set_header::SetResponseHeaderLayer};
 
 #[derive(Embed, Clone)]
 #[folder = "assets"]
@@ -32,6 +39,8 @@ pub fn create_router(pool: Pool, config: EnvConfig) -> Router {
     Router::new()
         .route("/auth/login", get(login_page))
         .route("/auth/login", post(login))
+        .route("/auth/register", get(register_page))
+        .route("/auth/register", post(register))
         .route("/", get(home_page))
         .with_state(app_state.clone())
         .layer(cache_control_layer)
