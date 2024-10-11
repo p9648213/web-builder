@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include!("../headers/main_header.stpl"); %>
+    <title>Login</title>
+  </head>
+  <body hx-boost="true" hx-history="false">
+    <main class="flex justify-center items-center h-screen">
+      <div>
+        <h2>Login Page</h2>
+        <ul>
+          <li>
+            <a class="hover:text-blue-700" href="/auth/register">Register</a>
+            <a class="hover:text-blue-700" id="login-link" href="/auth/login">Login</a>
+          </li>
+        </ul>
+        <form
+          id="login-form"
+          hx-post="/auth/login"
+          hx-swap="none"
+          hx-on::after-request="if(event.detail.successful) this.reset()"
+          hx-disabled-elt="find button"
+        >
+          <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            autocomplete="on"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            autocomplete="on"
+          />
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </main>
+    <div id="toast"></div>
+  </body>
+</html>

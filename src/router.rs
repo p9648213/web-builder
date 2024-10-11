@@ -1,7 +1,7 @@
-use crate::{config::EnvConfig, models::state::AppState, views::auth::login};
+use crate::{config::EnvConfig, handlers::auth::login, middlewares::auth::auth_user, models::state::AppState, views::pages::{auth::login_page, home::home_page}};
 use axum::{
     http::{header::CACHE_CONTROL, HeaderValue},
-    routing::get,
+    routing::{get, post},
     Router,
 };
 use deadpool_postgres::Pool;
@@ -30,9 +30,15 @@ pub fn create_router(pool: Pool, config: EnvConfig) -> Router {
     );
 
     Router::new()
-        .route("/auth/login", get(login))
-        .with_state(app_state)
+        .route("/auth/login", get(login_page))
+        .route("/auth/login", post(login))
+        .route("/", get(home_page))
+        .with_state(app_state.clone())
         .layer(cache_control_layer)
+        .layer(axum::middleware::from_fn_with_state(
+            app_state.clone(),
+            auth_user,
+        ))
         .route("/ping", get(ping))
         .nest_service("/assets", serve_assets)
         .layer(CompressionLayer::new())

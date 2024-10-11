@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include!("../headers/main_header.stpl"); %>
+    <title>Home</title>
+  </head>
+  <h2>Home Page</h2>
+  <div id="toast"></div>
+</html>

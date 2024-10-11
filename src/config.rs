@@ -8,4 +8,6 @@ pub struct EnvConfig {
     pub pg_user: String,
     #[clap(long, env)]
     pub pg_password: String,
+    #[clap(long, env)]
+    pub jwt_secret: String,
 }

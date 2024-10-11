@@ -1,9 +1,0 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <% include!("main_header.stpl"); %>
-    <title>Login</title>
-  </head>
-  <h2 class="bg-slate-500">Login Page</h2>
-  <div class="text-red-700">Admin</div>
-</html>
