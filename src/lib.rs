@@ -5,4 +5,4 @@ pub mod router;
 pub mod utilities;
 pub mod views;
 pub mod middlewares;
-pub mod handlers;
+pub mod controllers;

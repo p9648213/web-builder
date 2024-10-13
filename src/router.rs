@@ -1,6 +1,6 @@
 use crate::{
     config::EnvConfig,
-    handlers::auth::{login, register},
+    controllers::auth::{login, register},
     middlewares::{auth::auth_middleware, csrf::csrf_middleware},
     models::state::AppState,
     views::pages::{
@@ -14,7 +14,7 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use axum_csrf::{CsrfConfig, CsrfLayer, Key};
+use axum_csrf::{CsrfConfig, CsrfLayer};
 use axum_embed::ServeEmbed;
 use deadpool_postgres::Pool;
 use rust_embed::Embed;
