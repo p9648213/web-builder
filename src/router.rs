@@ -36,8 +36,7 @@ pub fn create_router(pool: Pool, config: EnvConfig) -> Router {
         HeaderValue::from_static("no-cache, no-store, must-revalidate"),
     );
 
-    let cfrs_confir = CsrfConfig::default()
-        .with_cookie_same_site(cookie::SameSite::Strict);
+    let cfrs_confir = CsrfConfig::default();
 
     let app_state = AppState { pool, config };
 

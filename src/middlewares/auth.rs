@@ -36,7 +36,7 @@ pub async fn auth_middleware(
                 }
             } else {
                 let token_cookie: Cookie = Cookie::build(("token", ""))
-                    .same_site(cookie::SameSite::Strict)
+                    .same_site(cookie::SameSite::Lax)
                     .http_only(true)
                     .path("/")
                     .max_age(cookie::time::Duration::minutes(0))
