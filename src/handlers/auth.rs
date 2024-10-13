@@ -69,7 +69,7 @@ pub async fn login(
             let token = create_token(&config.jwt_secret, &user.email, &user.role, user.id, 60)?;
 
             let token_cookie: Cookie = Cookie::build(("token", token))
-                .same_site(cookie::SameSite::Lax)
+                .same_site(cookie::SameSite::Strict)
                 .http_only(true)
                 .path("/")
                 .max_age(cookie::time::Duration::minutes(60))
@@ -102,6 +102,16 @@ pub async fn register(
     State(pool): State<Pool>,
     Form(register_form): Form<RegisterForm>,
 ) -> impl IntoResponse {
+    if register_form.email.is_empty()
+        || register_form.password.is_empty()
+        || register_form.username.is_empty()
+    {
+        return Err(AppError::new(
+            StatusCode::BAD_REQUEST,
+            "Input can not be empty".to_string(),
+        ));
+    }
+
     let row = User::get_user_by_email(&register_form.email, &pool).await?;
 
     if let Some(_) = row {

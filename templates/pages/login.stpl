@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <% include!("../headers/main_header.stpl"); %>
-    <title>Register</title>
+    <title>Login</title>
   </head>
   <body hx-boost="true" hx-history="false">
     <main class="flex justify-center items-center h-screen">
@@ -10,17 +10,30 @@
         <h2>Login Page</h2>
         <ul>
           <li>
-            <a class="hover:text-blue-700" id="login-link" href="/auth/login">Login</a>
-            <a class="hover:text-blue-700" href="/auth/register">Register</a>
+            <a class="hover:text-blue-700" id="login-link" href="/auth/login"
+              >Login</a
+            >
+            <a
+              class="hover:text-blue-700"
+              id="register-link"
+              href="/auth/register"
+              >Register</a
+            >
           </li>
         </ul>
         <form
           id="login-form"
-          hx-post="/auth/login
+          hx-post="/auth/login"
+          hx-on::config-request="event.detail.headers['X-Csrf-Protection'] = '1'"
           hx-swap="none"
           hx-on::after-request="if(event.detail.successful) this.reset()"
           hx-disabled-elt="find button"
         >
+          <input
+            type="hidden"
+            name="authenticity_token"
+            value="<%- self.authenticity_token %>"
+          />
           <input
             type="text"
             name="email"

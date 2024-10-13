@@ -9,7 +9,7 @@ use cookie::Cookie;
 
 use crate::{config::EnvConfig, models::error::AppError, utilities::jwt::validate_token};
 
-pub async fn auth_user(
+pub async fn auth_middleware(
     State(config): State<EnvConfig>,
     request: Request,
     next: Next,
@@ -36,7 +36,7 @@ pub async fn auth_user(
                 }
             } else {
                 let token_cookie: Cookie = Cookie::build(("token", ""))
-                    .same_site(cookie::SameSite::Lax)
+                    .same_site(cookie::SameSite::Strict)
                     .http_only(true)
                     .path("/")
                     .max_age(cookie::time::Duration::minutes(0))

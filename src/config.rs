@@ -12,4 +12,8 @@ pub struct EnvConfig {
     pub jwt_secret: String,
     #[clap(long, env)]
     pub port: String,
+    #[clap(long, env)]
+    pub allow_origin: String,
+    #[clap(long, env)]
+    pub domain: String,
 }
