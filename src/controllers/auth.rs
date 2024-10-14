@@ -50,11 +50,11 @@ pub struct RegisterForm {
 }
 
 pub async fn login(
-    State(pool): State<Pool>,
+    State(pg_pool): State<Pool>,
     State(config): State<EnvConfig>,
     Form(login_form): Form<LoginForm>,
 ) -> impl IntoResponse {
-    let row = User::get_user_by_email(&login_form.email, &pool).await?;
+    let row = User::get_user_by_email(&login_form.email, &pg_pool).await?;
 
     if let Some(row) = row {
         let user: UserDTO = User::from_row(row).map_err(|error| {
@@ -99,7 +99,7 @@ pub async fn login(
 }
 
 pub async fn register(
-    State(pool): State<Pool>,
+    State(pg_pool): State<Pool>,
     Form(register_form): Form<RegisterForm>,
 ) -> impl IntoResponse {
     if register_form.email.is_empty()
@@ -112,7 +112,7 @@ pub async fn register(
         ));
     }
 
-    let row = User::get_user_by_email(&register_form.email, &pool).await?;
+    let row = User::get_user_by_email(&register_form.email, &pg_pool).await?;
 
     if let Some(_) = row {
         return Err(AppError::new(
@@ -130,7 +130,7 @@ pub async fn register(
         Some(register_form.email),
     );
 
-    User::insert_user(insert_user, &pool).await?;
+    User::insert_user(insert_user, &pg_pool).await?;
 
     Ok([(
         "HX-Trigger",

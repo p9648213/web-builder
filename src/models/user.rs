@@ -3,7 +3,7 @@ use crate::utilities::db::{excute, query_optional};
 use deadpool_postgres::Pool;
 use tokio_postgres::Row;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct User {
     pub id: Option<i32>,
     pub username: Option<String>,
