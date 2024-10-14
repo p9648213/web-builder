@@ -1,13 +1,9 @@
 use crate::{
-    config::EnvConfig,
     models::{
         error::AppError,
         user::{User, UserDTO},
     },
-    utilities::{
-        hash::{compare_password, hash_password},
-        jwt::create_token,
-    },
+    utilities::hash::{compare_password, hash_password},
 };
 use axum::{
     extract::State,
@@ -15,10 +11,8 @@ use axum::{
     response::{IntoResponse, Response},
     Form,
 };
-use axum_extra::extract::CookieJar;
 use axum_session::Session;
 use axum_session_redispool::SessionRedisPool;
-use cookie::Cookie;
 use deadpool_postgres::Pool;
 use serde::Deserialize;
 
@@ -129,4 +123,16 @@ pub async fn register(
         "HX-Trigger",
         r#"{"toastmessage":{"type":"success","message":"User create successfully"}}"#,
     )])
+}
+
+pub async fn logout(session: Session<SessionRedisPool>) -> Result<impl IntoResponse, AppError> {
+    session.destroy();
+    
+    let response = Response::builder()
+        .status(StatusCode::OK)
+        .header("HX-Location", "/auth/login")
+        .body(axum::body::Body::empty())
+        .unwrap();
+
+    Ok(response)
 }

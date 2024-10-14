@@ -9,13 +9,17 @@ pub struct EnvConfig {
     #[clap(long, env)]
     pub pg_password: String,
     #[clap(long, env)]
-    pub jwt_secret: String,
-    #[clap(long, env)]
     pub port: String,
     #[clap(long, env)]
     pub allow_origin: String,
     #[clap(long, env)]
     pub domain: String,
     #[clap(long, env)]
-    pub redis_url: String
+    pub redis_url: String,
+    #[clap(long,env)]
+    pub csrf_encrypt_key: String,
+    #[clap(long,env)]
+    pub session_encrypt_key: String,
+    #[clap(long,env)]
+    pub database_encrypt_key: String,
 }

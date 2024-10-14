@@ -6,6 +6,20 @@
   </head>
   <body hx-boost="true" hx-history="false">
     <h2>Home Page</h2>
+    <p><%= self.user_id %></p>
+    <form
+      hx-post="/auth/logout"
+      hx-swap="none"
+      hx-on::config-request="event.detail.headers['X-Csrf-Protection'] = '1'"
+    >
+      <input
+        type="hidden"
+        name="authenticity_token"
+        value="<%- self.authenticity_token %>"
+      />
+      <button type="submit" style="color: blue">Logout</button>
+    </form>
+
     <div id="toast"></div>
   </body>
 </html>

@@ -1,6 +1,6 @@
 use crate::{
     config::EnvConfig,
-    controllers::auth::{login, register},
+    controllers::auth::{login, logout, register},
     middlewares::{auth::auth_middleware, csrf::csrf_middleware},
     models::state::AppState,
     views::pages::{
@@ -44,9 +44,23 @@ pub async fn create_router(
         HeaderValue::from_static("no-cache, no-store, must-revalidate"),
     );
 
-    let cfrs_confir = CsrfConfig::default();
+    let cfrs_key = config.csrf_encrypt_key.as_bytes();
 
-    let session_config = SessionConfig::default();
+    let session_key = config.session_encrypt_key.as_bytes();
+
+    let database_key = config.database_encrypt_key.as_bytes();
+
+    let cfrs_confir = CsrfConfig::default().with_key(Some(
+        axum_csrf::Key::try_from(cfrs_key).expect("Error while creating csrf key"),
+    ));
+
+    let session_config = SessionConfig::default()
+        .with_key(
+            axum_session::Key::try_from(session_key).expect("Error while creating session key"),
+        )
+        .with_database_key(
+            axum_session::Key::try_from(database_key).expect("Error while creating session key"),
+        );
 
     let session_store =
         SessionStore::<SessionRedisPool>::new(Some(redis_pool.clone().into()), session_config)
@@ -60,6 +74,7 @@ pub async fn create_router(
         .route("/auth/register", post(register))
         .route("/auth/login", get(login_page))
         .route("/auth/register", get(register_page))
+        .route("/auth/logout", post(logout))
         .route("/", get(home_page))
         .with_state(app_state.clone())
         .layer(cache_control_layer)
