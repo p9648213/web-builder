@@ -49,9 +49,7 @@ impl User {
         let user = User::try_from(row);
         T::from_user(user)
     }
-}
 
-impl User {
     fn try_from(row: Row) -> Self {
         let id: Option<i32> = row.try_get("id").unwrap_or(None);
         let username: Option<String> = row.try_get("username").unwrap_or(None);

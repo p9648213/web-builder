@@ -16,6 +16,8 @@ use axum::{
     Form,
 };
 use axum_extra::extract::CookieJar;
+use axum_session::Session;
+use axum_session_redispool::SessionRedisPool;
 use cookie::Cookie;
 use deadpool_postgres::Pool;
 use serde::Deserialize;
@@ -50,8 +52,8 @@ pub struct RegisterForm {
 }
 
 pub async fn login(
+    session: Session<SessionRedisPool>,
     State(pg_pool): State<Pool>,
-    State(config): State<EnvConfig>,
     Form(login_form): Form<LoginForm>,
 ) -> impl IntoResponse {
     let row = User::get_user_by_email(&login_form.email, &pg_pool).await?;
@@ -66,16 +68,7 @@ pub async fn login(
         })?;
 
         if compare_password(&login_form.password, &user.password)? {
-            let token = create_token(&config.jwt_secret, &user.email, &user.role, user.id, 60)?;
-
-            let token_cookie: Cookie = Cookie::build(("token", token))
-                .same_site(cookie::SameSite::Lax)
-                .http_only(true)
-                .path("/")
-                .max_age(cookie::time::Duration::minutes(60))
-                .into();
-
-            let cookies = CookieJar::new().add(token_cookie);
+            session.set("id", &user.id);
 
             let response = Response::builder()
                 .status(StatusCode::OK)
@@ -83,7 +76,7 @@ pub async fn login(
                 .body(axum::body::Body::empty())
                 .unwrap();
 
-            Ok((cookies, response))
+            Ok(response)
         } else {
             return Err(AppError::new(
                 StatusCode::UNAUTHORIZED,

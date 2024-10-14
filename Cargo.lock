@@ -132,12 +132,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "anyhow"
-version = "1.0.89"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86fdf8605db99b54d3cd748a44c6d04df638eb5dafb219b135d0149bd0db01f6"
-
-[[package]]
 name = "arc-swap"
 version = "1.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -166,17 +160,6 @@ dependencies = [
  "memchr",
  "pin-project-lite",
  "tokio",
-]
-
-[[package]]
-name = "async-recursion"
-version = "1.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3b43422f69d8ff38f95f1b2bb76517c91589a924d1559a0e935d7c8ce0274c11"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -350,30 +333,6 @@ dependencies = [
  "tower-service",
  "tracing",
  "uuid",
-]
-
-[[package]]
-name = "axum_session_auth"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "129764f6aecc0e73490db71d50695d9b9f09160b25bc219521210ed605315137"
-dependencies = [
- "anyhow",
- "async-recursion",
- "async-trait",
- "axum-core",
- "axum_session",
- "bytes",
- "chrono",
- "dashmap",
- "futures",
- "http",
- "http-body",
- "serde",
- "tokio",
- "tower-layer",
- "tower-service",
- "tracing",
 ]
 
 [[package]]
@@ -2370,7 +2329,6 @@ dependencies = [
  "axum-extra",
  "axum_csrf",
  "axum_session",
- "axum_session_auth",
  "axum_session_redispool",
  "chrono",
  "clap",
