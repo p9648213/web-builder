@@ -3,13 +3,13 @@ use axum_csrf::CsrfToken;
 use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce)]
-#[template(path = "pages/login.stpl")]
-struct LoginPageTemplate {
+#[template(path = "builder_pages/login.stpl")]
+struct BuilderLoginPage {
     authenticity_token: String,
 }
 
 pub async fn login_page(token: CsrfToken) -> impl IntoResponse {
-    let ctx = LoginPageTemplate {
+    let ctx = BuilderLoginPage {
         authenticity_token: token.authenticity_token().unwrap(),
     };
 
@@ -17,13 +17,13 @@ pub async fn login_page(token: CsrfToken) -> impl IntoResponse {
 }
 
 #[derive(TemplateOnce)]
-#[template(path = "pages/register.stpl")]
-struct RegisterPageTemplate {
+#[template(path = "builder_pages/register.stpl")]
+struct BuilderRegisterPage {
     authenticity_token: String,
 }
 
 pub async fn register_page(token: CsrfToken) -> impl IntoResponse {
-    let ctx = RegisterPageTemplate {
+    let ctx = BuilderRegisterPage {
         authenticity_token: token.authenticity_token().unwrap(),
     };
 

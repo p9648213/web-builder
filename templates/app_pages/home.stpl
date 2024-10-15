@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include!("../app_headers/main_header.stpl"); %>
+    <title>Home</title>
+  </head>
+  <body hx-boost="true" hx-history="false">
+    <h2>App Home Page</h2>
+    <div id="toast"></div>
+  </body>
+</html>

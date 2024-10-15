@@ -1,1 +1,2 @@
-pub mod pages;
+pub mod builder_pages;
+pub mod app_pages;

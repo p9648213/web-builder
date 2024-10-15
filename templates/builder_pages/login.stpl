@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <% include!("../headers/main_header.stpl"); %>
-    <title>Register</title>
+    <% include!("../builder_headers/main_header.stpl"); %>
+    <title>Login</title>
   </head>
   <body hx-boost="true" hx-history="false">
     <main class="flex justify-center items-center h-screen">
@@ -10,20 +10,20 @@
         <h2>Login Page</h2>
         <ul>
           <li>
-            <a class="hover:text-blue-700" id="login-link" href="/auth/login"
+            <a class="hover:text-blue-700" id="login-link" href="/builder/auth/login"
               >Login</a
             >
             <a
               class="hover:text-blue-700"
               id="register-link"
-              href="/auth/register"
+              href="/builder/auth/register"
               >Register</a
             >
           </li>
         </ul>
         <form
           id="login-form"
-          hx-post="/auth/register"
+          hx-post="/builder/auth/login"
           hx-on::config-request="event.detail.headers['X-Csrf-Protection'] = '1'"
           hx-swap="none"
           hx-on::after-request="if(event.detail.successful) this.reset()"
@@ -32,13 +32,7 @@
           <input
             type="hidden"
             name="authenticity_token"
-            value="<%- self.authenticity_token %>"
-          />
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            autocomplete="on"
+            value="<%= self.authenticity_token %>"
           />
           <input
             type="text"
@@ -52,7 +46,7 @@
             placeholder="Password"
             autocomplete="on"
           />
-          <button type="submit">Register</button>
+          <button type="submit">Login</button>
         </form>
       </div>
     </main>

@@ -17,7 +17,7 @@ pub async fn auth_middleware(
 
     if let Some(_) = user_id {
         match request.uri().path() {
-            "/auth/login" | "/auth/register" => Ok(redirect_307("/")),
+            "/builder/auth/login" | "/builder/auth/register" => Ok(redirect_307("/builder")),
             _ => Ok(next.run(request).await.into_response()),
         }
     } else {
@@ -25,19 +25,20 @@ pub async fn auth_middleware(
         match hx_current_url {
             Some(hx_current_url) => {
                 let url = hx_current_url.to_str().unwrap_or("");
-                if url.contains("auth") {
+                println!("url: {}", url);
+                if url.contains("/builder/auth") {
                     Ok(next.run(request).await.into_response())
                 } else {
                     Ok(Response::builder()
                         .status(StatusCode::NO_CONTENT)
-                        .header("Hx-Location", "/auth/login")
+                        .header("Hx-Location", "/builder/auth/login")
                         .body(axum::body::Body::empty())
                         .unwrap())
                 }
             }
             None => match request.uri().path() {
-                "/auth/login" | "/auth/register" => Ok(next.run(request).await.into_response()),
-                _ => Ok(redirect_307("/auth/login")),
+                "/builder/auth/login" | "/builder/auth/register" => Ok(next.run(request).await.into_response()),
+                _ => Ok(redirect_307("/builder/auth/login")),
             },
         }
     }

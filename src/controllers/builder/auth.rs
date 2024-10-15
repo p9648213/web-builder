@@ -66,7 +66,7 @@ pub async fn login(
 
             let response = Response::builder()
                 .status(StatusCode::OK)
-                .header("HX-Location", "/")
+                .header("HX-Location", "/builder")
                 .body(axum::body::Body::empty())
                 .unwrap();
 
@@ -130,7 +130,7 @@ pub async fn logout(session: Session<SessionRedisPool>) -> Result<impl IntoRespo
     
     let response = Response::builder()
         .status(StatusCode::OK)
-        .header("HX-Location", "/auth/login")
+        .header("HX-Location", "/builder/auth/login")
         .body(axum::body::Body::empty())
         .unwrap();
 

@@ -5,8 +5,8 @@ use axum_session_redispool::SessionRedisPool;
 use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce)]
-#[template(path = "pages/home.stpl")]
-struct HomePageTemplate {
+#[template(path = "builder_pages/home.stpl")]
+struct BuilderHomePageTemplate {
     user_id: i32,
     authenticity_token: String,
 }
@@ -14,7 +14,7 @@ struct HomePageTemplate {
 pub async fn home_page(session: Session<SessionRedisPool>, token: CsrfToken) -> impl IntoResponse {
     let id: i32 = session.get("id").unwrap_or(0);
 
-    let ctx = HomePageTemplate {
+    let ctx = BuilderHomePageTemplate {
         user_id: id,
         authenticity_token: token.authenticity_token().unwrap(),
     };
