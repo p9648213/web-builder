@@ -25,6 +25,8 @@ async fn main() {
 
     postgres::migrate_up(&pg_pool).await;
 
+    tracing::info!("Migrations completed");
+
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", &config.port))
         .await
         .unwrap();
