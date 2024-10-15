@@ -25,7 +25,6 @@ pub async fn auth_middleware(
         match hx_current_url {
             Some(hx_current_url) => {
                 let url = hx_current_url.to_str().unwrap_or("");
-                println!("url: {}", url);
                 if url.contains("/builder/auth") {
                     Ok(next.run(request).await.into_response())
                 } else {
