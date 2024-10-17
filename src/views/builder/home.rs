@@ -5,7 +5,7 @@ use axum_session_redispool::SessionRedisPool;
 use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce)]
-#[template(path = "builder_pages/home.stpl")]
+#[template(path = "builder/home.stpl")]
 struct BuilderHomePageTemplate {
     user_id: i32,
     authenticity_token: String,

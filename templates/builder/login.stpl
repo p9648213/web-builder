@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <% include!("../builder_headers/main_header.stpl"); %>
+    <% include!("../headers/builder_main_header.stpl"); %>
     <title>Login</title>
   </head>
   <body class="min-h-screen" hx-boost="true" hx-history="false">

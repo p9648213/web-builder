@@ -1,12 +1,16 @@
 use crate::{
     config::EnvConfig,
-    controllers::builder,
+    controllers,
     middlewares::{auth::auth_middleware, csrf::csrf_middleware},
     models::state::AppState,
-    views::{app_pages, builder_pages},
+    views,
 };
 use axum::{
-    http::{header::CACHE_CONTROL, HeaderValue, StatusCode}, middleware::from_fn_with_state, response::IntoResponse, routing::{get, post}, Router
+    http::{header::CACHE_CONTROL, HeaderValue, StatusCode},
+    middleware::from_fn_with_state,
+    response::IntoResponse,
+    routing::{get, post},
+    Router,
 };
 use axum_csrf::{CsrfConfig, CsrfLayer};
 use axum_embed::ServeEmbed;
@@ -68,14 +72,14 @@ pub async fn create_router(
     let app_state = AppState { pg_pool, config };
 
     let builder_routes = Router::new()
-        .route("/auth/login", post(builder::auth::login))
-        .route("/auth/register", post(builder::auth::register))
-        .route("/auth/login", get(builder_pages::auth::login_page))
-        .route("/auth/register", get(builder_pages::auth::register_page))
-        .route("/auth/logout", post(builder::auth::logout))
-        .route("/", get(builder_pages::home::home_page));
+        .route("/auth/login", post(controllers::builder::auth::login))
+        .route("/auth/register", post(controllers::builder::auth::register))
+        .route("/auth/logout", post(controllers::builder::auth::logout))
+        .route("/auth/login", get(views::builder::auth::login_page))
+        .route("/auth/register", get(views::builder::auth::register_page))
+        .route("/", get(views::builder::home::home_page));
 
-    let app_routes = Router::new().route("/", get(app_pages::home::home_page));
+    let app_routes = Router::new().route("/", get(views::app::home::home_page));
 
     Router::new()
         .nest("/builder", builder_routes)

@@ -3,7 +3,7 @@ use axum_csrf::CsrfToken;
 use sailfish::TemplateOnce;
 
 #[derive(TemplateOnce)]
-#[template(path = "builder_pages/login.stpl")]
+#[template(path = "builder/login.stpl")]
 struct BuilderLoginPage {
     authenticity_token: String,
 }
@@ -17,7 +17,7 @@ pub async fn login_page(token: CsrfToken) -> impl IntoResponse {
 }
 
 #[derive(TemplateOnce)]
-#[template(path = "builder_pages/register.stpl")]
+#[template(path = "builder/register.stpl")]
 struct BuilderRegisterPage {
     authenticity_token: String,
 }
