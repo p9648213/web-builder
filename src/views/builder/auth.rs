@@ -2,6 +2,8 @@ use axum::response::{Html, IntoResponse};
 use axum_csrf::CsrfToken;
 use sailfish::TemplateOnce;
 
+use crate::utilities::minify::minify_html;
+
 #[derive(TemplateOnce)]
 #[template(path = "builder/login.stpl")]
 struct BuilderLoginPage {
@@ -13,7 +15,9 @@ pub async fn login_page(token: CsrfToken) -> impl IntoResponse {
         authenticity_token: token.authenticity_token().unwrap(),
     };
 
-    (token, Html(ctx.render_once().unwrap())).into_response()
+    let html = ctx.render_once().unwrap();
+
+    (token, Html(minify_html(&html))).into_response()
 }
 
 #[derive(TemplateOnce)]
@@ -27,5 +31,7 @@ pub async fn register_page(token: CsrfToken) -> impl IntoResponse {
         authenticity_token: token.authenticity_token().unwrap(),
     };
 
-    (token, Html(ctx.render_once().unwrap())).into_response()
+    let html = ctx.render_once().unwrap();
+
+    (token, Html(minify_html(&html))).into_response()
 }

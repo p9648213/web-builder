@@ -1,23 +1,16 @@
 use axum::response::{Html, IntoResponse};
-use axum_csrf::CsrfToken;
-use axum_session::Session;
-use axum_session_redispool::SessionRedisPool;
 use sailfish::TemplateOnce;
+
+use crate::utilities::minify::minify_html;
 
 #[derive(TemplateOnce)]
 #[template(path = "builder/home.stpl")]
-struct BuilderHomePageTemplate {
-    user_id: i32,
-    authenticity_token: String,
-}
+struct BuilderHomePageTemplate {}
 
-pub async fn home_page(session: Session<SessionRedisPool>, token: CsrfToken) -> impl IntoResponse {
-    let id: i32 = session.get("id").unwrap_or(0);
+pub async fn home_page() -> impl IntoResponse {
+    let ctx = BuilderHomePageTemplate {};
 
-    let ctx = BuilderHomePageTemplate {
-        user_id: id,
-        authenticity_token: token.authenticity_token().unwrap(),
-    };
+    let html = ctx.render_once().unwrap();
 
-    (token, Html(ctx.render_once().unwrap())).into_response()
+    Html(minify_html(&html)).into_response()
 }
