@@ -29,6 +29,7 @@ const SCRIPTS_DOWN: [(&str, &str); 2] = [
 fn create_config(config: &EnvConfig) -> tokio_postgres::Config {
     let mut cfg = tokio_postgres::Config::new();
     cfg.host(&config.pg_host);
+    cfg.port(config.pg_port);
     cfg.dbname(&config.pg_dbname);
     cfg.user(&config.pg_user);
     cfg.password(&config.pg_password);
