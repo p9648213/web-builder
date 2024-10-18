@@ -127,7 +127,7 @@ pub async fn register(
 
 pub async fn logout(session: Session<SessionRedisPool>) -> Result<impl IntoResponse, AppError> {
     session.destroy();
-    
+
     let response = Response::builder()
         .status(StatusCode::OK)
         .header("HX-Location", "/builder/auth/login")

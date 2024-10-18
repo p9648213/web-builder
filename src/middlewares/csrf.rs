@@ -41,7 +41,10 @@ pub async fn csrf_middleware(
         if let Some(origin) = origin {
             let origin = origin.to_str().map_err(|error| {
                 tracing::error!("Failed to get origin header: {}", error);
-                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error".to_string())
+                AppError::new(
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Server Error".to_string(),
+                )
             })?;
 
             if origin != config.allow_origin.as_str() {

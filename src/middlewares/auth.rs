@@ -36,7 +36,9 @@ pub async fn auth_middleware(
                 }
             }
             None => match request.uri().path() {
-                "/builder/auth/login" | "/builder/auth/register" => Ok(next.run(request).await.into_response()),
+                "/builder/auth/login" | "/builder/auth/register" => {
+                    Ok(next.run(request).await.into_response())
+                }
                 _ => Ok(redirect_307("/builder/auth/login")),
             },
         }

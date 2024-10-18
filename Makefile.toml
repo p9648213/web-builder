@@ -1,0 +1,12 @@
+[tasks.start]
+description = "Start all services (Tailwind, Docker, Axum)"
+script = [
+  "npm run tw &",                              # Start Tailwind watcher in the background
+  "docker compose up -d",                      # Start Docker containers for PostgreSQL, Redis, pgAdmin
+  "cargo watch -c -w src -w templates -x run", # Start Axum server
+]
+
+[tasks.stop]
+description = "Stop Docker containers"
+command = "docker"
+args = ["compose", "down"]
