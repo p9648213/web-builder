@@ -2,8 +2,8 @@ use axum::{http::StatusCode, response::IntoResponse};
 pub struct AppError(StatusCode, String);
 
 impl AppError {
-    pub fn new(status_code: StatusCode, message: String) -> Self {
-        Self(status_code, message)
+    pub fn new(status_code: StatusCode, message: &str) -> Self {
+        Self(status_code, message.to_string())
     }
 }
 
@@ -18,8 +18,10 @@ pub struct DtoError {
 }
 
 impl DtoError {
-    pub fn new(message: String) -> Self {
-        Self { message }
+    pub fn new(message: &str) -> Self {
+        Self {
+            message: message.to_string(),
+        }
     }
 }
 

@@ -30,10 +30,7 @@ pub async fn csrf_middleware(
         let csrf_header = request.headers().get("X-Csrf-Protection");
 
         if csrf_header.is_none() {
-            return Err(AppError::new(
-                StatusCode::FORBIDDEN,
-                "Forbidden".to_string(),
-            ));
+            return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
         }
 
         let origin = request.headers().get("Origin");
@@ -41,23 +38,14 @@ pub async fn csrf_middleware(
         if let Some(origin) = origin {
             let origin = origin.to_str().map_err(|error| {
                 tracing::error!("Failed to get origin header: {}", error);
-                AppError::new(
-                    StatusCode::INTERNAL_SERVER_ERROR,
-                    "Server Error".to_string(),
-                )
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
             })?;
 
             if origin != config.allow_origin.as_str() {
-                return Err(AppError::new(
-                    StatusCode::FORBIDDEN,
-                    "Forbidden".to_string(),
-                ));
+                return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
             }
         } else {
-            return Err(AppError::new(
-                StatusCode::FORBIDDEN,
-                "Forbidden".to_string(),
-            ));
+            return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
         }
 
         let (parts, body) = request.into_parts();
@@ -67,27 +55,18 @@ pub async fn csrf_middleware(
             .await
             .map_err(|error| {
                 tracing::error!("Failed to collect body: {}", error);
-                AppError::new(
-                    StatusCode::INTERNAL_SERVER_ERROR,
-                    "Server Error".to_string(),
-                )
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
             })?
             .to_bytes()
             .to_vec();
 
         let form: CsrfForm = serde_urlencoded::from_bytes(&bytes).map_err(|error| {
             tracing::error!("Failed to deserialize form: {}", error);
-            AppError::new(
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Server Error".to_string(),
-            )
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
         })?;
 
         if token.verify(&form.authenticity_token).is_err() {
-            return Err(AppError::new(
-                StatusCode::FORBIDDEN,
-                "Forbidden".to_string(),
-            ));
+            return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
         }
 
         request = Request::from_parts(parts, Body::from(bytes));

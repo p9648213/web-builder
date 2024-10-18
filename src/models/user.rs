@@ -32,7 +32,7 @@ impl User {
         query_optional("SELECT * FROM users WHERE id = $1", &[&id], pool).await
     }
 
-    pub async fn get_user_by_email(email: &String, pool: &Pool) -> Result<Option<Row>, AppError> {
+    pub async fn get_user_by_email(email: &str, pool: &Pool) -> Result<Option<Row>, AppError> {
         query_optional("SELECT * FROM users WHERE email = $1", &[&email], pool).await
     }
 
@@ -82,21 +82,21 @@ pub struct UserDTO {
 impl FromUser for UserDTO {
     fn from_user(user: User) -> Result<Self, DtoError> {
         Ok(UserDTO {
-            id: user.id.ok_or(DtoError::new(
-                "UserDTO convert error: Id not found".to_string(),
-            ))?,
-            password: user.password.ok_or(DtoError::new(
-                "UserDTO convert error: Password not found".to_string(),
-            ))?,
-            username: user.username.ok_or(DtoError::new(
-                "UserDTO convert error: Username not found".to_string(),
-            ))?,
-            email: user.email.ok_or(DtoError::new(
-                "UserDTO convert error: Email not found".to_string(),
-            ))?,
-            role: user.role.ok_or(DtoError::new(
-                "UserDTO convert error: Role not found".to_string(),
-            ))?,
+            id: user
+                .id
+                .ok_or(DtoError::new("UserDTO convert error: Id not found"))?,
+            password: user
+                .password
+                .ok_or(DtoError::new("UserDTO convert error: Password not found"))?,
+            username: user
+                .username
+                .ok_or(DtoError::new("UserDTO convert error: Username not found"))?,
+            email: user
+                .email
+                .ok_or(DtoError::new("UserDTO convert error: Email not found"))?,
+            role: user
+                .role
+                .ok_or(DtoError::new("UserDTO convert error: Role not found"))?,
         })
     }
 }

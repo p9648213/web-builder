@@ -55,10 +55,7 @@ pub async fn login(
     if let Some(row) = row {
         let user: UserDTO = User::from_row(row).map_err(|error| {
             tracing::error!("Couldn't convert row to UserDTO: {:?}", error);
-            AppError::new(
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Server error".to_string(),
-            )
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
         if compare_password(&login_form.password, &user.password)? {
@@ -74,13 +71,13 @@ pub async fn login(
         } else {
             return Err(AppError::new(
                 StatusCode::UNAUTHORIZED,
-                "Invalid username or password".to_string(),
+                "Invalid username or password",
             ));
         }
     } else {
         return Err(AppError::new(
             StatusCode::UNAUTHORIZED,
-            "Invalid username or password".to_string(),
+            "Invalid username or password",
         ));
     }
 }
@@ -95,7 +92,7 @@ pub async fn register(
     {
         return Err(AppError::new(
             StatusCode::BAD_REQUEST,
-            "Input can not be empty".to_string(),
+            "Input can not be empty",
         ));
     }
 
@@ -104,7 +101,7 @@ pub async fn register(
     if let Some(_) = row {
         return Err(AppError::new(
             StatusCode::UNAUTHORIZED,
-            "Email already exists".to_string(),
+            "Email already exists",
         ));
     }
 

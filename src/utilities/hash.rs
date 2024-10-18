@@ -12,10 +12,7 @@ pub fn hash_password(password: &str) -> Result<String, AppError> {
         .hash_password(password.as_bytes(), &salt)
         .map_err(|e| {
             tracing::error!("Failed to hash password: {}", e);
-            AppError::new(
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Server error".to_string(),
-            )
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
     Ok(password_hash.to_string())
 }
@@ -24,10 +21,7 @@ pub fn compare_password(password: &str, password_hash: &str) -> Result<bool, App
     let password = password.as_bytes();
     let parsed_hash = PasswordHash::new(&password_hash).map_err(|e| {
         tracing::error!("Failed to parsed password hash: {}", e);
-        AppError::new(
-            StatusCode::INTERNAL_SERVER_ERROR,
-            "Server error".to_string(),
-        )
+        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
     })?;
     let password_match = Argon2::default()
         .verify_password(password, &parsed_hash)
