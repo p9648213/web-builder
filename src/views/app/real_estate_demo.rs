@@ -4,11 +4,11 @@ use sailfish::TemplateOnce;
 use crate::utilities::minify::minify_html;
 
 #[derive(TemplateOnce)]
-#[template(path = "app/home.stpl")]
-struct AppHomePage {}
+#[template(path = "app/real_estate_demo.stpl")]
+struct RealEsateDemo {}
 
-pub async fn home_page() -> impl IntoResponse {
-    let ctx = AppHomePage {};
+pub async fn real_estate_demo() -> impl IntoResponse {
+    let ctx = RealEsateDemo {};
 
     let html = ctx.render_once().unwrap();
 

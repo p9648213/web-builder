@@ -79,17 +79,20 @@ pub async fn create_router(
         .route("/auth/register", get(views::builder::auth::register_page))
         .route("/", get(views::builder::home::home_page));
 
-    let app_routes = Router::new().route("/", get(views::app::home::home_page));
+    let app_routes = Router::new().route(
+        "/demo/realestate",
+        get(views::app::real_estate_demo::real_estate_demo),
+    );
 
     Router::new()
         .nest("/builder", builder_routes)
+        .nest("/app", app_routes)
         .with_state(app_state.clone())
         .layer(cache_control_layer)
         .layer(from_fn_with_state(app_state.clone(), auth_middleware))
         .layer(SessionLayer::new(session_store))
         .layer(from_fn_with_state(app_state.clone(), csrf_middleware))
         .layer(CsrfLayer::new(cfrs_confir))
-        .nest("/app", app_routes)
         .route("/ping", get(ping))
         .nest_service("/assets", serve_assets)
         .layer(CompressionLayer::new())

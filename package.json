@@ -1,14 +1,12 @@
 {
   "scripts": {
-    "tw": "npx tailwindcss -i ./styles.css -o ./assets/css/styles.css --watch",
-    "minify:css": "npx tailwindcss -i ./assets/css/styles.css -o ./assets/css/styles.css --minify",
-    "minify:html": "html-minifier --output-dir $INIT_CWD/templates --collapse-whitespace --collapse-inline-tag-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-tag-whitespace --remove-empty-attributes --remove-empty-elements --trim-custom-fragments --use-short-doctype --file-ext stpl --minify-css true --minify-js --input-dir $INIT_CWD/templates",
+    "tw": "npx tailwindcss -i ./tailwind.css -o ./assets/css/lib/tailwind.css --watch",
+    "minify:css": "npx tailwindcss -i ./assets/css/lib/taiwind.css -o ./assets/css/lib/tailwind.css --minify",
     "minify:js": "node minify.js"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.9",
     "autoprefixer": "^10.4.20",
-    "html-minifier": "^4.0.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
