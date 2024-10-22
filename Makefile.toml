@@ -1,6 +1,8 @@
 [tasks.tw]
 description = "Start Tailwind watcher"
-script = ["npx tailwindcss -i ./styles.css -o ./assets/css/styles.css --watch"]
+script = [
+  "npx tailwindcss -i ./tailwind.css -o ./assets/css/lib/tailwind.css --watch",
+]
 
 [tasks.docker]
 description = "Start Docker containers"
@@ -28,12 +30,7 @@ script = ["cargo watch -c -w src -w templates -x run"]
 
 [tasks.start]
 description = "Start all services (Tailwind, Docker, Axum)"
-run_task = { name = [
-  "tw",
-  "docker",
-  "wait_for_docker",
-  "axum",
-], parallel = true }
+run_task = { name = ["tw", "axum"], parallel = true }
 
 [tasks.stop]
 description = "Stop Docker containers"

@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <% include!("../headers/demo_header.stpl"); %>
-    <link rel="stylesheet" href="/assets/css/real_estate_demo.css" />
     <title>Home</title>
   </head>
   <body hx-boost="true" hx-history="false">
