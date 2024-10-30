@@ -1,9 +1,14 @@
 use crate::{
     config::EnvConfig,
-    controllers,
+    controllers::{
+        app::demo::get_real_estate_demo_page,
+        builder::{
+            auth::{get_login_page, get_register_page, login, logout, register},
+            home::get_home_page,
+        },
+    },
     middlewares::{auth::auth_middleware, csrf::csrf_middleware},
     models::state::AppState,
-    views,
 };
 use axum::{
     http::{header::CACHE_CONTROL, HeaderValue, StatusCode},
@@ -72,17 +77,14 @@ pub async fn create_router(
     let app_state = AppState { pg_pool, config };
 
     let builder_routes = Router::new()
-        .route("/auth/login", post(controllers::builder::auth::login))
-        .route("/auth/register", post(controllers::builder::auth::register))
-        .route("/auth/logout", post(controllers::builder::auth::logout))
-        .route("/auth/login", get(views::builder::auth::login_page))
-        .route("/auth/register", get(views::builder::auth::register_page))
-        .route("/", get(views::builder::home::home_page));
+        .route("/auth/login", post(login))
+        .route("/auth/register", post(register))
+        .route("/auth/logout", post(logout))
+        .route("/auth/login", get(get_login_page))
+        .route("/auth/register", get(get_register_page))
+        .route("/", get(get_home_page));
 
-    let app_routes = Router::new().route(
-        "/demo/realestate",
-        get(views::app::real_estate_demo::real_estate_demo),
-    );
+    let app_routes = Router::new().route("/demo/realestate", get(get_real_estate_demo_page));
 
     Router::new()
         .nest("/builder", builder_routes)

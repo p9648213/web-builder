@@ -92,7 +92,7 @@ window.addEventListener("toastmessage", function (event) {
 //....................................................
 htmx.config.defaultSettleDelay = 0;
 
-window.addEventListener("htmx:beforeRequest", function (_) {  
+window.addEventListener("htmx:beforeRequest", function (_) {
   NProgress.start();
 
   const loginLinkEl = document.getElementById("login-link");
@@ -119,17 +119,27 @@ window.addEventListener("htmx:afterRequest", function (event) {
     registerLinkEl.classList.remove("disable-link");
   }
 
-  if (event?.detail?.failed && event?.detail?.xhr?.responseText) {
-    toast({
-      message: event?.detail?.xhr?.responseText,
-      type: "error",
-    });
+  if (event?.detail?.failed) {
+    NProgress.done();
+
+    if (event?.detail?.xhr?.responseText) {
+      toast({
+        message: event?.detail?.xhr?.responseText,
+        type: "error",
+      });
+    }
   }
 });
 
-window.addEventListener("htmx:afterSettle", function() {
+window.addEventListener("htmx:configRequest", function (evt) {
+  if (evt.detail.verb !== "get") {
+    evt.detail.headers["X-Csrf-Protection"] = "1";
+  }
+});
+
+window.addEventListener("htmx:afterSettle", function () {
   NProgress.done();
-})
+});
 
 window.addEventListener("htmx:historyRestore", (_) => {
   window.location.reload();

@@ -4,13 +4,15 @@ use crate::{
         user::{User, UserDTO},
     },
     utilities::hash::{compare_password, hash_password},
+    views::builder::auth::{render_login_page, render_register_page},
 };
 use axum::{
     extract::State,
     http::StatusCode,
-    response::{IntoResponse, Response},
+    response::{Html, IntoResponse, Response},
     Form,
 };
+use axum_csrf::CsrfToken;
 use axum_session::Session;
 use axum_session_redispool::SessionRedisPool;
 use deadpool_postgres::Pool;
@@ -82,6 +84,28 @@ pub async fn login(
     }
 }
 
+pub async fn get_login_page(token: CsrfToken) -> impl IntoResponse {
+    let authenticity_token = token.authenticity_token().unwrap_or("".to_owned());
+
+    (token, Html(render_login_page(authenticity_token)))
+}
+
+//.............................................................................................
+//.RRRRRRRRR....EEEEEEEEEE.....GGGGGG.....III....SSSSSS....TTTTTTTTTTTEEEEEEEEEE..RRRRRRRRR....
+//.RRRRRRRRRRR..EEEEEEEEEE...GGGGGGGGGG...III..SSSSSSSSS...TTTTTTTTTTTEEEEEEEEEE..RRRRRRRRRRR..
+//.RRRRRRRRRRR..EEEEEEEEEE...GGGGGGGGGGG..III..SSSSSSSSSS..TTTTTTTTTTTEEEEEEEEEE..RRRRRRRRRRR..
+//.RRR.....RRR..EEE.........GGGG....GGGG..III..SSS...SSSS......TTT....EEE.........RRR.....RRR..
+//.RRR.....RRR..EEE.........GGG......GG...III..SSSS............TTT....EEE.........RRR.....RRR..
+//.RRRRRRRRRRR..EEEEEEEEEE.EGGG...........III..SSSSSSS.........TTT....EEEEEEEEEE..RRRRRRRRRRR..
+//.RRRRRRRRRR...EEEEEEEEEE.EGGG...GGGGGG..III...SSSSSSSS.......TTT....EEEEEEEEEE..RRRRRRRRRR...
+//.RRRRRRRR.....EEEEEEEEEE.EGGG...GGGGGG..III.....SSSSSSS......TTT....EEEEEEEEEE..RRRRRRRR.....
+//.RRR..RRRR....EEE.........GGG...GGGGGG..III.........SSSS.....TTT....EEE.........RRR..RRRR....
+//.RRR...RRRR...EEE.........GGGG.....GGG..III.ISSS....SSSS.....TTT....EEE.........RRR...RRRR...
+//.RRR....RRRR..EEEEEEEEEEE..GGGGGGGGGGG..III..SSSSSSSSSS......TTT....EEEEEEEEEEE.RRR....RRRR..
+//.RRR....RRRR..EEEEEEEEEEE..GGGGGGGGGG...III..SSSSSSSSSS......TTT....EEEEEEEEEEE.RRR....RRRR..
+//.RRR.....RRRR.EEEEEEEEEEE....GGGGGG.....III....SSSSSS........TTT....EEEEEEEEEEE.RRR.....RRR..
+//.............................................................................................
+
 pub async fn register(
     State(pg_pool): State<Pool>,
     Form(register_form): Form<RegisterForm>,
@@ -121,6 +145,28 @@ pub async fn register(
         r#"{"toastmessage":{"type":"success","message":"User create successfully"}}"#,
     )])
 }
+
+pub async fn get_register_page(token: CsrfToken) -> impl IntoResponse {
+    let authenticity_token = token.authenticity_token().unwrap_or("".to_owned());
+
+    (token, Html(render_register_page(authenticity_token)))
+}
+
+//..............................................................................
+//.LLL...........OOOOOO........GGGGGG........OOOOOO.....UUU....UUUU..TTTTTTTTT..
+//.LLL.........OOOOOOOOOO....GGGGGGGGGG....OOOOOOOOOO...UUU....UUUU..TTTTTTTTT..
+//.LLL........OOOOOOOOOOOO...GGGGGGGGGGG..OOOOOOOOOOOO..UUU....UUUU..TTTTTTTTT..
+//.LLL........OOOO....OOOO..GGGG....GGGG..OOOO....OOOO..UUU....UUUU......TTT....
+//.LLL........OOO......OOO..GGG......GG...OOO......OOO..UUU....UUUU......TTT....
+//.LLL.......LOOO......OOOOOGGG..........GOOO......OOOO.UUU....UUUU......TTT....
+//.LLL.......LOOO......OOOOOGGG...GGGGGG.GOOO......OOOO.UUU....UUUU......TTT....
+//.LLL.......LOOO......OOOOOGGG...GGGGGG.GOOO......OOOO.UUU....UUUU......TTT....
+//.LLL........OOO......OOO..GGG...GGGGGG..OOO......OOO..UUU....UUUU......TTT....
+//.LLL........OOOO....OOOO..GGGG.....GGG..OOOO....OOOO..UUUU...UUUU......TTT....
+//.LLLLLLLLLL.OOOOOOOOOOOO...GGGGGGGGGGG..OOOOOOOOOOOO..UUUUUUUUUUU......TTT....
+//.LLLLLLLLLL..OOOOOOOOOO....GGGGGGGGGG....OOOOOOOOOO....UUUUUUUUU.......TTT....
+//.LLLLLLLLLL....OOOOOO........GGGGGG........OOOOOO.......UUUUUUU........TTT....
+//..............................................................................
 
 pub async fn logout(session: Session<SessionRedisPool>) -> Result<impl IntoResponse, AppError> {
     session.destroy();

@@ -1,16 +1,16 @@
-use axum::response::{Html, IntoResponse};
-use sailfish::TemplateOnce;
+use crate::views::app::header::render_main_app_header;
 
-use crate::utilities::minify::minify_html;
-
-#[derive(TemplateOnce)]
-#[template(path = "app/real_estate_demo.stpl")]
-struct RealEsateDemo {}
-
-pub async fn real_estate_demo() -> impl IntoResponse {
-    let ctx = RealEsateDemo {};
-
-    let html = ctx.render_once().unwrap();
-
-    Html(minify_html(&html))
+pub fn render_real_estate_demo_page() -> String {
+    vy::render! {
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                {render_main_app_header()}
+                <title>"Home"</title>
+            </head>
+            <body hx-boost="true" hx-history="false">
+                <h1>"Demo Real Estate Page"</h1>
+            </body>
+        </html>
+    }
 }
