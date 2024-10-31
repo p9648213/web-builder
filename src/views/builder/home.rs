@@ -6,7 +6,7 @@ pub fn render_home_page() -> String {
         <html class="h-full bg-white" lang="en">
           <head>
             {render_main_builder_header()}
-            <title>"Home"</title>
+            <title>"Builder Home"</title>
           </head>
           <body hx-boost="true" hx-history="false" class="h-full">
             <div class="flex h-full w-full">
@@ -30,15 +30,15 @@ pub fn render_home_page() -> String {
                           <li>
                             <a
                               href="#"
-                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-gray-100 hover:text-indigo-400"
+                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 bg-slate-100 text-indigo-500 hover:bg-slate-100 hover:text-indigo-500"
                             >
-                              "Templates"
+                              "Basic Setup"
                             </a>
                           </li>
                           <li>
                             <a
                               href="#"
-                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-gray-100 hover:text-indigo-400"
+                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-slate-100 hover:text-indigo-500"
                             >
                               "Deployments"
                             </a>
@@ -46,7 +46,7 @@ pub fn render_home_page() -> String {
                           <li>
                             <a
                               href="#"
-                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-gray-100 hover:text-indigo-400"
+                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-slate-100 hover:text-indigo-500"
                             >
                               "Activity"
                             </a>
@@ -54,7 +54,7 @@ pub fn render_home_page() -> String {
                           <li>
                             <a
                               href="#"
-                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-gray-100 hover:text-indigo-400"
+                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-slate-100 hover:text-indigo-500"
                             >
                               "Usage"
                             </a>
@@ -62,7 +62,7 @@ pub fn render_home_page() -> String {
                           <li>
                             <a
                               href="#"
-                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-gray-100 hover:text-indigo-400"
+                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-slate-100 hover:text-indigo-500"
                             >
                               "Settings"
                             </a>
@@ -84,7 +84,7 @@ pub fn render_home_page() -> String {
                         class="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-500 sm:px-6 lg:px-8"
                       >
                         <li>
-                          <a href="#" class="text-indigo-500">"Account"</a>
+                          <a href="#" class="text-indigo-500">"Choose your template"</a>
                         </li>
                         <li>
                           <a href="#" class="hover:text-indigo-500">"Notifications"</a>
@@ -101,7 +101,6 @@ pub fn render_home_page() -> String {
                       </ul>
                     </nav>
                     <div class="p-6">
-                      <h1 class="text-2xl">"Create your template"</h1>
                       <div>
                         <div
                           class="relative my-6 flex w-96 flex-col rounded-lg border border-slate-200 bg-white shadow-sm"
@@ -153,7 +152,7 @@ pub fn render_home_page() -> String {
                               class="w-full rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-center text-sm font-semibold text-white shadow-md transition-all hover:bg-indigo-400 hover:shadow-lg focus:bg-indigo-400 focus:shadow-none active:bg-indigo-400 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                               type="button"
                             >
-                              "Choose this template"
+                              "Select"
                             </button>
                           </div>
                         </div>
