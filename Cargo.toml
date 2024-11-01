@@ -17,6 +17,7 @@ cookie = "0.18.1"
 deadpool-postgres = "0.14.0"
 dotenvy = "0.15.7"
 http-body-util = "0.1.2"
+maud = "0.26.0"
 redis = "0.27.5"
 redis_pool = "0.6.0"
 rust-embed = "8.5.0"
@@ -32,7 +33,6 @@ tower-http = { version = "0.6.1", features = [
 ] }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
-vy = "0.1.1"
 
 [profile.release]
 debug = false

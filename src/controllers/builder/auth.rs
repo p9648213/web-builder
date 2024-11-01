@@ -87,7 +87,10 @@ pub async fn login(
 pub async fn get_login_page(token: CsrfToken) -> impl IntoResponse {
     let authenticity_token = token.authenticity_token().unwrap_or("".to_owned());
 
-    (token, Html(render_login_page(authenticity_token)))
+    (
+        token,
+        Html(render_login_page(authenticity_token).into_string()),
+    )
 }
 
 //.............................................................................................
@@ -149,7 +152,10 @@ pub async fn register(
 pub async fn get_register_page(token: CsrfToken) -> impl IntoResponse {
     let authenticity_token = token.authenticity_token().unwrap_or("".to_owned());
 
-    (token, Html(render_register_page(authenticity_token)))
+    (
+        token,
+        Html(render_register_page(authenticity_token).into_string()),
+    )
 }
 
 //..............................................................................
