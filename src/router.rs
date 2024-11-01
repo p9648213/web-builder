@@ -1,11 +1,12 @@
 use crate::{
     config::EnvConfig,
     controllers::{
-        app::demo::get_real_estate_demo_page,
         builder::{
             auth::{get_login_page, get_register_page, login, logout, register},
             home::get_home_page,
+            section::get_section,
         },
+        real_estate::demo::get_real_estate_demo_page,
     },
     middlewares::{auth::auth_middleware, csrf::csrf_middleware},
     models::state::AppState,
@@ -82,7 +83,8 @@ pub async fn create_router(
         .route("/auth/logout", post(logout))
         .route("/auth/login", get(get_login_page))
         .route("/auth/register", get(get_register_page))
-        .route("/", get(get_home_page));
+        .route("/", get(get_home_page))
+        .route("/contents/:section", get(get_section));
 
     let app_routes = Router::new().route("/demo/realestate", get(get_real_estate_demo_page));
 

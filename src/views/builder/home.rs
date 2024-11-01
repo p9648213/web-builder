@@ -1,4 +1,21 @@
+use vy::PreEscaped;
+
 use crate::views::builder::header::render_main_builder_header;
+
+struct Nav {
+    name: &'static str,
+}
+
+const MAIN_NAV: &[Nav] = &[Nav {
+    name: "Basic Setup",
+}];
+
+const SUB_NAV: &[Nav] = &[
+    Nav {
+        name: "Choose template",
+    },
+    Nav { name: "Setup Data" },
+];
 
 pub fn render_home_page() -> String {
     vy::render! {
@@ -30,7 +47,7 @@ pub fn render_home_page() -> String {
                           <li>
                             <a
                               href="#"
-                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 bg-slate-100 text-indigo-500 hover:bg-slate-100 hover:text-indigo-500"
+                              class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 bg-slate-100 text-indigo-500"
                             >
                               "Basic Setup"
                             </a>
@@ -84,85 +101,94 @@ pub fn render_home_page() -> String {
                         class="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-500 sm:px-6 lg:px-8"
                       >
                         <li>
-                          <a href="#" class="text-indigo-500">"Choose your template"</a>
+                          <div
+                            class="text-indigo-500 cursor-pointer">
+                              "Choose template"
+                          </div>
                         </li>
                         <li>
-                          <a href="#" class="hover:text-indigo-500">"Notifications"</a>
+                          <div
+                            hx-get="builder/contents/data"
+                            hx-trigger="click"
+                            hx-target="#contents"
+                            class="hover:text-indigo-500 cursor-pointer">"Setup Data"</div>
                         </li>
                         <li>
-                          <a href="#" class="hover:text-indigo-500">"Billing"</a>
+                          <div href="#" class="hover:text-indigo-500">"Billing"</div>
                         </li>
                         <li>
-                          <a href="#" class="hover:text-indigo-500">"Teams"</a>
+                          <div href="#" class="hover:text-indigo-500">"Teams"</div>
                         </li>
                         <li>
-                          <a href="#" class="hover:text-indigo-500">"Integrations"</a>
+                          <div href="#" class="hover:text-indigo-500">"Integrations"</div>
                         </li>
                       </ul>
                     </nav>
-                    <div class="p-6">
-                      <div>
-                        <div
-                          class="relative my-6 flex w-96 flex-col rounded-lg border border-slate-200 bg-white shadow-sm"
-                        >
-                          <div
-                            class="relative m-2.5 h-56 overflow-hidden rounded-md text-white"
-                          >
-                            <img
-                              class="h-full w-full object-cover"
-                              src="/assets//images/real_estate.webp"
-                              alt="card-image"
-                            />
-                          </div>
-                          <div class="p-4">
-                            <div class="mb-2 flex w-full items-center justify-between">
-                              <h6 class="text-xl font-semibold text-slate-800">
-                                "Real Estate"
-                              </h6>
-                              <a
-                                class="group flex items-center gap-2 text-indigo-500"
-                                href="/app/demo/realestate"
-                              >
-                                <div class="group">"Preview"</div>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  class="flex-0 h-0 w-0 translate-y-[1px] transition-all group-hover:h-4 group-hover:w-4"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                                  />
-                                </svg>
-                              </a>
-                            </div>
-
-                            <p class="text-slate-600">
-                              "Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                              Consequatur molestiae eum aperiam dicta perferendis."
-                            </p>
-                          </div>
-
-                          <div class="mt-2 px-4 pb-4 pt-0">
-                            <button
-                              class="w-full rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-center text-sm font-semibold text-white shadow-md transition-all hover:bg-indigo-400 hover:shadow-lg focus:bg-indigo-400 focus:shadow-none active:bg-indigo-400 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                              type="button"
-                            >
-                              "Select"
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <main id="contents" class="p-6" hx-get="builder/contents/template" hx-trigger="load"></main>
                   </header>
                 </main>
               </div>
             </div>
           </body>
         </html>
+    }
+}
+
+pub fn render_sub_nav<'a>(active_item: &str) -> PreEscaped<&'a str> {
+    match active_item {
+        "template" => {
+            vy::lazy! {
+              <li>
+                <div
+                  class="text-indigo-500 cursor-pointer">
+                    "Choose template"
+                </div>
+              </li>
+              <li>
+                <div
+                  hx-get="builder/contents/data"
+                  hx-trigger="click"
+                  hx-target="#contents"
+                  class="hover:text-indigo-500 cursor-pointer">"Setup Data"</div>
+              </li>
+              <li>
+                <div href="#" class="hover:text-indigo-500">"Billing"</div>
+              </li>
+              <li>
+                <div href="#" class="hover:text-indigo-500">"Teams"</div>
+              </li>
+              <li>
+                <div href="#" class="hover:text-indigo-500">"Integrations"</div>
+              </li>
+            }
+        }
+        "data" => {
+            vy::lazy! {
+              <li>
+                <div
+                  hx-get="builder/contents/template"
+                  hx-trigger="click"
+                  hx-target="#contents"
+                  class="hover:text-indigo-500 cursor-pointer">
+                    "Choose template"
+                </div>
+              </li>
+              <li>
+                <div class="text-indigo-500 cursor-pointer">"Setup Data"</div>
+              </li>
+              <li>
+                <div href="#" class="hover:text-indigo-500">"Billing"</div>
+              </li>
+              <li>
+                <div href="#" class="hover:text-indigo-500">"Teams"</div>
+              </li>
+              <li>
+                <div href="#" class="hover:text-indigo-500">"Integrations"</div>
+              </li>
+            }
+        }
+        _ => vy::lazy! {
+          ""
+        },
     }
 }
