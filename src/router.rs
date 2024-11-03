@@ -3,6 +3,7 @@ use crate::{
     controllers::{
         builder::{
             auth::{get_login_page, get_register_page, login, logout, register},
+            data::get_data_source,
             home::get_home_page,
             section::get_section,
         },
@@ -84,7 +85,8 @@ pub async fn create_router(
         .route("/auth/login", get(get_login_page))
         .route("/auth/register", get(get_register_page))
         .route("/", get(get_home_page))
-        .route("/contents/:section", get(get_section));
+        .route("/contents/:section", get(get_section))
+        .route("/data/data-source", post(get_data_source));
 
     let app_routes = Router::new().route("/demo/realestate", get(get_real_estate_demo_page));
 

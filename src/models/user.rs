@@ -1,7 +1,14 @@
 use super::error::{AppError, DtoError};
 use crate::utilities::db::{excute, query_optional};
 use deadpool_postgres::Pool;
+use postgres_types::{FromSql, ToSql};
 use tokio_postgres::Row;
+
+#[derive(Debug, ToSql, FromSql, Clone)]
+pub enum Role {
+    User,
+    Admin,
+}
 
 #[derive(Debug, Clone)]
 pub struct User {
@@ -9,7 +16,7 @@ pub struct User {
     pub username: Option<String>,
     pub password: Option<String>,
     pub email: Option<String>,
-    pub role: Option<String>,
+    pub role: Option<Role>,
 }
 
 impl User {
@@ -55,7 +62,7 @@ impl User {
         let username: Option<String> = row.try_get("username").unwrap_or(None);
         let password: Option<String> = row.try_get("password").unwrap_or(None);
         let email: Option<String> = row.try_get("email").unwrap_or(None);
-        let role: Option<String> = row.try_get("role").unwrap_or(None);
+        let role: Option<Role> = row.try_get("role").unwrap_or(None);
 
         User {
             id,
@@ -76,7 +83,7 @@ pub struct UserDTO {
     pub username: String,
     pub password: String,
     pub email: String,
-    pub role: String,
+    pub role: Role,
 }
 
 impl FromUser for UserDTO {

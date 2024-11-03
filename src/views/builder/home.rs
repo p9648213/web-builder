@@ -1,18 +1,24 @@
 use crate::views::builder::header::render_main_builder_header;
 
-struct Nav {
+pub struct Nav {
     name: &'static str,
+    url: &'static str,
 }
 
-const MAIN_NAV: &[Nav] = &[Nav {
+pub const MAIN_NAV: &[Nav] = &[Nav {
     name: "Basic Setup",
+    url: "/builder/contents/basic-setup",
 }];
 
-const SUB_NAV: &[Nav] = &[
+pub const SUB_NAV: &[Nav] = &[
     Nav {
         name: "Choose template",
+        url: "/builder/contents/template",
     },
-    Nav { name: "Setup Data" },
+    Nav {
+        name: "Setup Data",
+        url: "/builder/contents/data",
+    },
 ];
 
 pub fn render_home_page() -> maud::Markup {
@@ -25,74 +31,94 @@ pub fn render_home_page() -> maud::Markup {
             title {
                 "Builder Home"
             }
-            div class="flex h-full w-full" {
-                div class="border-r border-gray-200 xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col" {
-                    div class="flex grow flex-col gap-y-5 overflow-y-auto px-6 ring-1 ring-white/5" {
-                        div class="flex h-16 shrink-0 items-center" {
-                            img class="h-12 w-auto" src="/assets/images/logo.png" alt="Your Company";
+            div class="flex w-full h-full" {
+                div class="xl:z-50 xl:fixed xl:inset-y-0 xl:flex xl:flex-col border-gray-200 border-r xl:w-72" {
+                    div class="flex flex-col gap-y-5 px-6 ring-1 ring-white/5 overflow-y-auto grow" {
+                        div class="flex items-center h-16 shrink-0" {
+                            img class="w-auto h-12" src="/assets/images/logo.png" alt="Your Company";
                         }
-                        nav class="flex flex-1 flex-col" {
-                            ul class="flex flex-1 flex-col gap-y-7" role="list" {
+                        (render_main_nav(MAIN_NAV, "Basic Setup", None))
+                    }
+                }
+                div class="xl:pl-72 w-full" {
+                    main {
+                        h1 class="sr-only" {
+                            "Account Settings"
+                        }
+                        header class="border-white/5 border-b" {
+                            (render_sub_nav(SUB_NAV, "Choose template", None))
+                            main id="contents" class="p-6" hx-get="/builder/contents/template" hx-trigger="load" {}
+                        }
+                    }
+                }
+            }
+            div id="toast" {}
+        }
+    }
+}
+
+pub fn render_main_nav(
+    nav_menu: &[Nav],
+    highlight_item: &str,
+    oob_swap: Option<&str>,
+) -> maud::Markup {
+    maud::html! {
+        nav id="main-nav" hx-swap-oob=[oob_swap] class="flex flex-col flex-1" {
+            ul class="flex flex-col flex-1 gap-y-7" role="list" {
+                li {
+                    ul class="space-y-1 -mx-2" role="list" {
+                        @for nav in nav_menu {
+                            @if nav.name == highlight_item {
                                 li {
-                                    ul class="-mx-2 space-y-1" role="list" {
-                                        @for nav in MAIN_NAV {
-                                          @if nav.name == "Basic Setup" {
-                                            li {
-                                                a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 bg-slate-100 text-indigo-500" href="#" {
-                                                    "Basic Setup"
-                                                }
-                                            }
-                                          }else{
-                                            li {
-                                                a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-500 hover:bg-slate-100 hover:text-indigo-500" href="#" {
-                                                    (nav.name)
-                                                }
-                                            }
-                                          }
-                                        }
+                                    div
+                                        class="flex gap-x-3 bg-slate-100 p-2 rounded-md font-semibold text-indigo-500 text-sm leading-6 cursor-pointer group"
+                                        href="#"
+                                    {
+                                        (nav.name)
+                                    }
+                                }
+                            } @else {
+                                li {
+                                    div
+                                        class="flex gap-x-3 hover:bg-slate-100 p-2 rounded-md font-semibold text-gray-500 text-sm hover:text-indigo-500 leading-6 cursor-pointer group"
+                                        href="#"
+                                    {
+                                        (nav.name)
                                     }
                                 }
                             }
                         }
                     }
                 }
-                div class="w-full xl:pl-72" {
-                    main {
-                        h1 class="sr-only" {
-                            "Account Settings"
-                        }
-                        header class="border-b border-white/5" {
-                            nav class="flex overflow-x-auto border-b border-gray-200 py-4" {
-                                ul class="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-500 sm:px-6 lg:px-8" role="list" {
-                                    li {
-                                        div class="text-indigo-500 cursor-pointer" {
-                                            "Choose template"
-                                        }
-                                    }
-                                    li {
-                                        div class="hover:text-indigo-500 cursor-pointer" hx-get="builder/contents/data" hx-trigger="click" hx-target="#contents" {
-                                            "Setup Data"
-                                        }
-                                    }
-                                    li {
-                                        div class="hover:text-indigo-500" href="#" {
-                                            "Billing"
-                                        }
-                                    }
-                                    li {
-                                        div class="hover:text-indigo-500" href="#" {
-                                            "Teams"
-                                        }
-                                    }
-                                    li {
-                                        div class="hover:text-indigo-500" href="#" {
-                                            "Integrations"
-                                        }
-                                    }
-                                }
-                            }
+            }
+        }
+    }
+}
 
-                            main id="contents" class="p-6" hx-get="builder/contents/template" hx-trigger="load" {
+pub fn render_sub_nav(
+    nav_menu: &[Nav],
+    highlight_item: &str,
+    oob_swap: Option<&str>,
+) -> maud::Markup {
+    maud::html! {
+        nav id="sub-nav" hx-swap-oob=[oob_swap] class="flex border-gray-200 py-4 border-b overflow-x-auto" {
+            ul class="flex flex-none gap-x-6 px-4 sm:px-6 lg:px-8 min-w-full font-semibold text-gray-500 text-sm leading-6" role="list" {
+                @for nav in nav_menu {
+                    @if nav.name == highlight_item {
+                        li {
+                            div class="text-indigo-500 cursor-pointer" {
+                                (nav.name)
+                            }
+                        }
+                    } @else {
+                        li {
+                            div
+                                class="hover:text-indigo-500 cursor-pointer"
+                                hx-get=(nav.url)
+                                hx-trigger="click"
+                                hx-target="#contents"
+                            {
+                                (nav.name)
                             }
                         }
                     }
