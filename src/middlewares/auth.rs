@@ -8,17 +8,24 @@ use axum::{
 use axum_session::Session;
 use axum_session_redispool::SessionRedisPool;
 
+#[derive(Clone, Debug)]
+pub struct UserId(pub i32);
+
 pub async fn auth_middleware(
     session: Session<SessionRedisPool>,
-    request: Request,
+    mut request: Request,
     next: Next,
 ) -> Result<impl IntoResponse, AppError> {
     let user_id: Option<i32> = session.get("id");
 
-    if let Some(_) = user_id {
+    if let Some(id) = user_id {
         match request.uri().path() {
             "/builder/auth/login" | "/builder/auth/register" => Ok(redirect_307("/builder")),
-            _ => Ok(next.run(request).await.into_response()),
+            _ => {
+                let id = UserId(id);
+                request.extensions_mut().insert(id);
+                Ok(next.run(request).await.into_response())
+            }
         }
     } else {
         let hx_current_url = request.headers().get("Hx-Current-Url");

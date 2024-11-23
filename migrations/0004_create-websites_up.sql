@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS websites (
+    id SERIAL PRIMARY KEY,
+    template_id INTEGER,
+    user_id INTEGER,
+    name VARCHAR(255) NOT NULL,
+    domain VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (template_id) REFERENCES templates (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);

@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS "templates" (
+    id SERIAL PRIMARY KEY,
+    template_type "TemplateType" NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)

@@ -4,7 +4,7 @@ use tokio_postgres_migration::Migration;
 
 use crate::config::EnvConfig;
 
-const SCRIPTS_UP: [(&str, &str); 2] = [
+const SCRIPTS_UP: [(&str, &str); 5] = [
     (
         "0001_create-users",
         include_str!("../migrations/0001_create-users_up.sql"),
@@ -13,9 +13,33 @@ const SCRIPTS_UP: [(&str, &str); 2] = [
         "0002_insert-users",
         include_str!("../migrations/0002_insert-users_up.sql"),
     ),
+    (
+        "0003_create-templates",
+        include_str!("../migrations/0003_create-templates_up.sql"),
+    ),
+    (
+        "0004_create-websites",
+        include_str!("../migrations/0004_create-websites_up.sql"),
+    ),
+    (
+        "0005_insert-templates",
+        include_str!("../migrations/0005_insert-templates_up.sql"),
+    ),
 ];
 
-const SCRIPTS_DOWN: [(&str, &str); 2] = [
+const SCRIPTS_DOWN: [(&str, &str); 5] = [
+    (
+        "0004_create-websites",
+        include_str!("../migrations/0004_create-websites_down.sql"),
+    ),
+    (
+        "0005_insert-templates",
+        include_str!("../migrations/0005_insert-templates_down.sql"),
+    ),
+    (
+        "0003_create-templates",
+        include_str!("../migrations/0003_create-templates_down.sql"),
+    ),
     (
         "0002_insert-users",
         include_str!("../migrations/0002_insert-users_down.sql"),

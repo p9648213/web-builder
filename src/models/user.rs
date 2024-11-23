@@ -35,6 +35,27 @@ impl User {
         }
     }
 
+    fn try_from(row: Row) -> Self {
+        let id: Option<i32> = row.try_get("id").unwrap_or(None);
+        let username: Option<String> = row.try_get("username").unwrap_or(None);
+        let password: Option<String> = row.try_get("password").unwrap_or(None);
+        let email: Option<String> = row.try_get("email").unwrap_or(None);
+        let role: Option<Role> = row.try_get("role").unwrap_or(None);
+
+        User {
+            id,
+            username,
+            password,
+            email,
+            role,
+        }
+    }
+
+    pub fn from_row<T: FromUser>(row: Row) -> Result<T, DtoError> {
+        let user = User::try_from(row);
+        T::from_user(user)
+    }
+
     pub async fn get_user_by_id(id: i32, pool: &Pool) -> Result<Option<Row>, AppError> {
         query_optional("SELECT * FROM users WHERE id = $1", &[&id], pool).await
     }
@@ -50,27 +71,6 @@ impl User {
             pool,
         )
         .await
-    }
-
-    pub fn from_row<T: FromUser>(row: Row) -> Result<T, DtoError> {
-        let user = User::try_from(row);
-        T::from_user(user)
-    }
-
-    fn try_from(row: Row) -> Self {
-        let id: Option<i32> = row.try_get("id").unwrap_or(None);
-        let username: Option<String> = row.try_get("username").unwrap_or(None);
-        let password: Option<String> = row.try_get("password").unwrap_or(None);
-        let email: Option<String> = row.try_get("email").unwrap_or(None);
-        let role: Option<Role> = row.try_get("role").unwrap_or(None);
-
-        User {
-            id,
-            username,
-            password,
-            email,
-            role,
-        }
     }
 }
 

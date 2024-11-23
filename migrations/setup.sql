@@ -1,9 +1,15 @@
 -- ENUM (EXCUTE BEFORE MIGRATION)
-DROP TYPE IF EXISTS Role;
+DROP TYPE IF EXISTS "Role";
+DROP TYPE IF EXISTS "TemplateType";
 
 CREATE TYPE "Role" AS ENUM (
     'User',
     'Admin'
+);
+
+CREATE TYPE "TemplateType" AS ENUM (
+    'Ecommerce',
+    'Custom'
 );
 
 -- FUNCTION (EXCUTE BEFORE MIGRATION)

@@ -15,6 +15,6 @@ pub fn render_setup_data(authenticity_token: String) -> maud::Markup {
         }
         pre id="data-view" class="mt-12" {}
       }
-      (render_sub_nav(SUB_NAV, "Setup Data", Some("outerHTML")))
+      (render_sub_nav(SUB_NAV, "Setup data", Some("outerHTML")))
     }
 }

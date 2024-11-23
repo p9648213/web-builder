@@ -12,11 +12,15 @@ pub const MAIN_NAV: &[Nav] = &[Nav {
 
 pub const SUB_NAV: &[Nav] = &[
     Nav {
+        name: "Create website",
+        url: "/builder/contents/website",
+    },
+    Nav {
         name: "Choose template",
         url: "/builder/contents/template",
     },
     Nav {
-        name: "Setup Data",
+        name: "Setup data",
         url: "/builder/contents/data",
     },
 ];
@@ -27,7 +31,7 @@ pub fn render_home_page() -> maud::Markup {
         head {
           (render_main_builder_header())
         }
-        body {
+        body hx-boost="true" {
             title {
                 "Builder Home"
             }
@@ -46,8 +50,8 @@ pub fn render_home_page() -> maud::Markup {
                             "Account Settings"
                         }
                         header class="border-white/5 border-b" {
-                            (render_sub_nav(SUB_NAV, "Choose template", None))
-                            main id="contents" class="p-6" hx-get="/builder/contents/template" hx-trigger="load" {}
+                            nav id="sub-nav" {}
+                            main id="contents" class="p-6" hx-get="/builder/contents/website" hx-trigger="load" {}
                         }
                     }
                 }
