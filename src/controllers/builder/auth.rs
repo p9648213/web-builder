@@ -1,8 +1,5 @@
 use crate::{
-    models::{
-        error::AppError,
-        user::{User, UserDTO},
-    },
+    models::{error::AppError, user::User},
     utilities::hash::{compare_password, hash_password},
     views::builder::auth::{render_login_page, render_register_page},
 };
@@ -51,16 +48,18 @@ pub async fn login(
     session: Session<SessionRedisPool>,
     State(pg_pool): State<Pool>,
     Form(login_form): Form<LoginForm>,
-) -> impl IntoResponse {
+) -> Result<impl IntoResponse, AppError> {
     let row = User::get_user_by_email(&login_form.email, &pg_pool).await?;
 
     if let Some(row) = row {
-        let user: UserDTO = User::from_row(row).map_err(|error| {
-            tracing::error!("Couldn't convert row to UserDTO: {:?}", error);
+        let user = User::try_from(row);
+
+        let user_password = user.password.ok_or_else(|| {
+            tracing::error!("No password column or value is null");
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
-        if compare_password(&login_form.password, &user.password)? {
+        if compare_password(&login_form.password, &user_password)? {
             session.set("id", &user.id);
 
             let response = Response::builder()

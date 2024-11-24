@@ -1,12 +1,12 @@
 use crate::{
-    models::website::WebsiteDTO,
+    models::website::Website,
     views::builder::home::{render_sub_nav, SUB_NAV},
 };
 
-pub fn render_choose_template(website: Option<WebsiteDTO>) -> maud::Markup {
+pub fn render_choose_template(website: Option<Website>) -> maud::Markup {
     maud::html! {
         @if let Some(_) = website {
-            section {
+            section class="choose-template" {
                 div class="relative flex flex-col border-slate-200 bg-white shadow-sm my-6 border rounded-lg w-96" {
                     div class="relative m-2.5 rounded-md h-56 text-white overflow-hidden" {
                         img class="w-full h-full object-cover" src="/assets//images/real_estate.webp" alt="card-image";

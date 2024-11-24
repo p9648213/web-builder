@@ -3,30 +3,47 @@ use tokio_postgres::Row;
 
 use crate::utilities::db::{excute, query_optional};
 
-use super::error::{AppError, DtoError};
+use super::error::AppError;
 
 pub struct Website {
     pub id: Option<i32>,
     pub name: Option<String>,
     pub domain: Option<String>,
+    pub template_id: Option<i32>,
+    pub user_id: Option<i32>,
 }
 
 impl Website {
-    pub fn new(id: Option<i32>, name: Option<String>, domain: Option<String>) -> Self {
-        Self { id, name, domain }
+    pub fn new(
+        id: Option<i32>,
+        name: Option<String>,
+        domain: Option<String>,
+        template_id: Option<i32>,
+        user_id: Option<i32>,
+    ) -> Self {
+        Self {
+            id,
+            name,
+            domain,
+            template_id,
+            user_id,
+        }
     }
 
-    fn try_from(row: Row) -> Self {
+    pub fn try_from(row: Row) -> Self {
         let id: Option<i32> = row.try_get("id").unwrap_or(None);
         let name: Option<String> = row.try_get("name").unwrap_or(None);
         let domain: Option<String> = row.try_get("domain").unwrap_or(None);
+        let template_id: Option<i32> = row.try_get("template_id").unwrap_or(None);
+        let user_id: Option<i32> = row.try_get("user_id").unwrap_or(None);
 
-        Website { id, name, domain }
-    }
-
-    pub fn from_row<T: FromWebsite>(row: Row) -> Result<T, DtoError> {
-        let website = Website::try_from(row);
-        T::from_website(website)
+        Website {
+            id,
+            name,
+            domain,
+            template_id,
+            user_id,
+        }
     }
 
     pub async fn insert_website(
@@ -47,33 +64,10 @@ impl Website {
         pool: &Pool,
     ) -> Result<Option<Row>, AppError> {
         query_optional(
-            "SELECT * FROM websites WHERE user_id = $1",
+            "SELECT id, name, domain FROM websites WHERE user_id = $1",
             &[&user_id],
             pool,
         )
         .await
-    }
-}
-
-pub trait FromWebsite: Sized {
-    fn from_website(website: Website) -> Result<Self, DtoError>;
-}
-
-#[derive(Debug)]
-pub struct WebsiteDTO {
-    pub name: String,
-    pub domain: String,
-}
-
-impl FromWebsite for WebsiteDTO {
-    fn from_website(website: Website) -> Result<Self, DtoError> {
-        Ok(WebsiteDTO {
-            name: website
-                .name
-                .ok_or(DtoError::new("WebsiteDTO convert error: Name not found"))?,
-            domain: website
-                .domain
-                .ok_or(DtoError::new("WebsiteDTO convert error: Domain not found"))?,
-        })
     }
 }

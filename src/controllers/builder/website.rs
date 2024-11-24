@@ -1,9 +1,6 @@
 use crate::{
     middlewares::auth::UserId,
-    models::{
-        error::AppError,
-        website::{Website, WebsiteDTO},
-    },
+    models::{error::AppError, website::Website},
     views::builder::website::render_user_website,
 };
 use axum::{
@@ -12,6 +9,7 @@ use axum::{
     Form,
 };
 use deadpool_postgres::Pool;
+use reqwest::StatusCode;
 use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
@@ -31,15 +29,19 @@ pub async fn create_website(
         None,
         Some(create_webiste_form.name),
         Some(create_webiste_form.domain),
+        None,
+        None,
     );
 
-    Website::insert_website(user_id, &new_website, &pg_pool).await?;
+    let result = Website::insert_website(user_id, &new_website, &pg_pool).await?;
 
-    Ok(Html(
-        render_user_website(WebsiteDTO {
-            name: new_website.name.unwrap(),
-            domain: new_website.domain.unwrap(),
-        })
-        .into_string(),
-    ))
+    if result == 0 {
+        tracing::error!("There was an error inserting the website. No rows were affected.");
+        return Err(AppError::new(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "Server error",
+        ));
+    }
+
+    Ok(Html(render_user_website(new_website)?.into_string()))
 }

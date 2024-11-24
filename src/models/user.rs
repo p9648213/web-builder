@@ -1,4 +1,4 @@
-use super::error::{AppError, DtoError};
+use super::error::AppError;
 use crate::utilities::db::{excute, query_optional};
 use deadpool_postgres::Pool;
 use postgres_types::{FromSql, ToSql};
@@ -35,7 +35,7 @@ impl User {
         }
     }
 
-    fn try_from(row: Row) -> Self {
+    pub fn try_from(row: Row) -> Self {
         let id: Option<i32> = row.try_get("id").unwrap_or(None);
         let username: Option<String> = row.try_get("username").unwrap_or(None);
         let password: Option<String> = row.try_get("password").unwrap_or(None);
@@ -49,11 +49,6 @@ impl User {
             email,
             role,
         }
-    }
-
-    pub fn from_row<T: FromUser>(row: Row) -> Result<T, DtoError> {
-        let user = User::try_from(row);
-        T::from_user(user)
     }
 
     pub async fn get_user_by_id(id: i32, pool: &Pool) -> Result<Option<Row>, AppError> {
@@ -71,39 +66,5 @@ impl User {
             pool,
         )
         .await
-    }
-}
-
-pub trait FromUser: Sized {
-    fn from_user(user: User) -> Result<Self, DtoError>;
-}
-
-pub struct UserDTO {
-    pub id: i32,
-    pub username: String,
-    pub password: String,
-    pub email: String,
-    pub role: Role,
-}
-
-impl FromUser for UserDTO {
-    fn from_user(user: User) -> Result<Self, DtoError> {
-        Ok(UserDTO {
-            id: user
-                .id
-                .ok_or(DtoError::new("UserDTO convert error: Id not found"))?,
-            password: user
-                .password
-                .ok_or(DtoError::new("UserDTO convert error: Password not found"))?,
-            username: user
-                .username
-                .ok_or(DtoError::new("UserDTO convert error: Username not found"))?,
-            email: user
-                .email
-                .ok_or(DtoError::new("UserDTO convert error: Email not found"))?,
-            role: user
-                .role
-                .ok_or(DtoError::new("UserDTO convert error: Role not found"))?,
-        })
     }
 }

@@ -5,14 +5,10 @@ use axum::{
 };
 use axum_csrf::CsrfToken;
 use deadpool_postgres::Pool;
-use reqwest::StatusCode;
 
 use crate::{
     middlewares::auth::UserId,
-    models::{
-        error::AppError,
-        website::{Website, WebsiteDTO},
-    },
+    models::{error::AppError, website::Website},
     views::builder::{
         data::render_setup_data, template::render_choose_template, website::render_create_website,
     },
@@ -28,11 +24,8 @@ pub async fn get_section(
 
     let row = Website::get_website_by_user_id(user_id.0, &pg_pool).await?;
 
-    let website: Option<WebsiteDTO> = if let Some(row) = row {
-        Some(Website::from_row(row).map_err(|error| {
-            tracing::error!("Couldn't convert row to WebsiteDTO: {:?}", error);
-            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
-        })?)
+    let website: Option<Website> = if let Some(row) = row {
+        Some(Website::try_from(row))
     } else {
         None
     };
@@ -45,7 +38,7 @@ pub async fn get_section(
         )
             .into_response()),
         "website" => Ok(
-            Html(render_create_website(authenticity_token, website).into_string()).into_response(),
+            Html(render_create_website(authenticity_token, website)?.into_string()).into_response(),
         ),
         _ => Ok(Html("Not found".to_owned()).into_response()),
     }
