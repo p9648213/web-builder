@@ -785,10 +785,6 @@ select {
   z-index: 10;
 }
 
-.m-2\.5 {
-  margin: 0.625rem;
-}
-
 .-mx-2 {
   margin-left: -0.5rem;
   margin-right: -0.5rem;
@@ -823,6 +819,10 @@ select {
   display: flex;
 }
 
+.table {
+  display: table;
+}
+
 .contents {
   display: contents;
 }
@@ -841,10 +841,6 @@ select {
 
 .h-16 {
   height: 4rem;
-}
-
-.h-56 {
-  height: 14rem;
 }
 
 .h-full {
@@ -982,10 +978,6 @@ select {
   overflow: auto;
 }
 
-.overflow-hidden {
-  overflow: hidden;
-}
-
 .overflow-x-auto {
   overflow-x: auto;
 }
@@ -1073,11 +1065,6 @@ select {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
-.object-cover {
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 
 .p-2 {

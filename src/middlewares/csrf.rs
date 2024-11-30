@@ -30,6 +30,7 @@ pub async fn csrf_middleware(
         let csrf_header = request.headers().get("X-Csrf-Protection");
 
         if csrf_header.is_none() {
+            tracing::error!("X-Csrf-Protection header is missing");
             return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
         }
 
@@ -42,9 +43,11 @@ pub async fn csrf_middleware(
             })?;
 
             if origin != config.allow_origin.as_str() {
+                tracing::error!("Origin header is not allowed");
                 return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
             }
         } else {
+            tracing::error!("Origin header is missing");
             return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
         }
 
@@ -66,6 +69,7 @@ pub async fn csrf_middleware(
         })?;
 
         if token.verify(&form.authenticity_token).is_err() {
+            tracing::error!("Authenticity token is invalid");
             return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
         }
 

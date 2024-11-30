@@ -3,7 +3,7 @@ use crate::views::builder::home::{render_sub_nav, SUB_NAV};
 pub fn render_setup_data(authenticity_token: String) -> maud::Markup {
     maud::html! {
       section {
-        form hx-post="/builder/data/data-source" hx-target="#data-view" class="flex flex-col" {
+        form hx-post="/builder/website/data/data-source" hx-target="#data-view" class="flex flex-col" {
           input type="hidden" name="authenticity_token" value=(authenticity_token);
           label {
             "Data source: "

@@ -8,7 +8,7 @@ CREATE TYPE "Role" AS ENUM (
 );
 
 CREATE TYPE "TemplateType" AS ENUM (
-    'Ecommerce',
+    'RealEstate',
     'Custom'
 );
 

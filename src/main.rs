@@ -22,7 +22,7 @@ async fn main() {
 
     let pg_pool = postgres::create_pool(&config);
 
-    // tracing::info!("Postgres pool created");
+    tracing::info!("Postgres pool created");
 
     postgres::migrate_up(&pg_pool).await;
 

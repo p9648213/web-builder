@@ -37,7 +37,7 @@ impl Website {
         let template_id: Option<i32> = row.try_get("template_id").unwrap_or(None);
         let user_id: Option<i32> = row.try_get("user_id").unwrap_or(None);
 
-        Website {
+        Self {
             id,
             name,
             domain,
@@ -64,8 +64,33 @@ impl Website {
         pool: &Pool,
     ) -> Result<Option<Row>, AppError> {
         query_optional(
-            "SELECT id, name, domain FROM websites WHERE user_id = $1",
+            "SELECT * FROM websites WHERE user_id = $1",
             &[&user_id],
+            pool,
+        )
+        .await
+    }
+
+    pub async fn update_template_by_website_id(
+        website_id: i32,
+        template_id: i32,
+        pool: &Pool,
+    ) -> Result<u64, AppError> {
+        excute(
+            "UPDATE websites SET template_id = $1 where id = $2",
+            &[&template_id, &website_id],
+            pool,
+        )
+        .await
+    }
+
+    pub async fn get_website_template(
+        template_id: i32,
+        pool: &Pool,
+    ) -> Result<Option<Row>, AppError> {
+        query_optional(
+            "SELECT * FROM websites JOIN templates ON websites.template_id = $1",
+            &[&template_id],
             pool,
         )
         .await

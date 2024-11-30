@@ -42,7 +42,7 @@ impl User {
         let email: Option<String> = row.try_get("email").unwrap_or(None);
         let role: Option<Role> = row.try_get("role").unwrap_or(None);
 
-        User {
+        Self {
             id,
             username,
             password,
