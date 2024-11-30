@@ -65,7 +65,7 @@ impl WebsiteTemplate {
           "SELECT template_type FROM websites JOIN templates ON websites.template_id = $1 WHERE websites.id = $2",
           &[&template_id, &website_id],
           pool,
-      )
-      .await
+        )
+        .await
     }
 }

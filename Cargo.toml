@@ -27,14 +27,13 @@ serde = { version = "1.0.215", features = ["derive"] }
 serde_urlencoded = "0.7.1"
 tokio = { version = "1.41.1", features = ["macros", "rt-multi-thread"] }
 tokio-postgres = "0.7.12"
-tokio-postgres-migration = "0.1.0"
 tower-http = { version = "0.6.2", features = [
   "fs",
   "set-header",
   "compression-br",
 ] }
 tracing = "0.1.41"
-tracing-subscriber = "0.3.18"
+tracing-subscriber = "0.3.19"
 
 [profile.release]
 debug = false
