@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "tw": "npx tailwindcss -i ./tailwind.css -o ./assets/css/lib/tailwind.css --watch",
+    "tw": "npx @tailwindcss/cli -i ./tailwind.css -o ./assets/css/lib/tailwind.css --watch",
     "minify:css": "npx tailwindcss -i ./assets/css/lib/taiwind.css -o ./assets/css/lib/tailwind.css --minify",
     "minify:js": "node minify.js"
   },
@@ -10,5 +10,8 @@
     "postcss": "8.4.49",
     "tailwindcss": "^4.0.0-beta.4",
     "uglify-js": "^3.19.3"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.0-beta.4"
   }
 }
