@@ -8,7 +8,7 @@ pub fn render_main_builder_header() -> maud::Markup {
         link rel="stylesheet" href="/assets/css/lib/nprogress.css";
         script src="/assets/js/lib/htmx.js" defer="defer" {}
         script src="/assets/js/lib/nprogress.js" defer="defer" {}
-        script src="/assets/js/main.js" defer="defer" {}
+        script src="/assets/js/main.js" defer="defer" type="module" {}
         link  rel="icon" type="image/x-icon" href="/assets/images/favicon.ico";
       }
     }

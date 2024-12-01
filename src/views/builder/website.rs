@@ -19,7 +19,7 @@ pub fn render_create_website(
                     hx-post="/builder/website/create"
                     hx-target="#create-website"
                     hx-swap="outerHTML"
-                    class="flex flex-col"
+                    class="flex flex-col gap-2 max-w-72"
                 {
                     input type="hidden" name="authenticity_token" value=(authenticity_token);
                     label {

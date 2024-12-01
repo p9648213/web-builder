@@ -117,5 +117,6 @@ pub fn render_no_website() -> Markup {
         div {
             "You don't have any website"
         }
+        (render_sub_nav(SUB_NAV, "Choose template", Some("outerHTML")))
     }
 }

@@ -3,7 +3,7 @@ use crate::{
     controllers::{
         builder::{
             auth::{get_login_page, get_register_page, login, logout, register},
-            data::get_data_source,
+            data::{create_data_source, update_rso_status},
             home::get_home_page,
             section::get_section,
             website::{create_website, select_template_for_webiste},
@@ -17,7 +17,7 @@ use axum::{
     http::{header::CACHE_CONTROL, HeaderValue, StatusCode},
     middleware::from_fn_with_state,
     response::IntoResponse,
-    routing::{get, post},
+    routing::{get, patch, post},
     Router,
 };
 use axum_csrf::{CsrfConfig, CsrfLayer};
@@ -87,7 +87,8 @@ pub async fn create_router(
         .route("/auth/register", get(get_register_page))
         .route("/", get(get_home_page))
         .route("/contents/:section", get(get_section))
-        .route("/website/data/data-source", post(get_data_source))
+        .route("/website/data/rso-data/details", post(create_data_source))
+        .route("/website/data/rso-data/status", patch(update_rso_status))
         .route("/website/create", post(create_website))
         .route(
             "/website/template/select",

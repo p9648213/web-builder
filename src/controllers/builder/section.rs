@@ -10,7 +10,8 @@ use reqwest::StatusCode;
 use crate::{
     middlewares::auth::UserId,
     models::{
-        error::AppError, template::Template, website::Website, website_template::WebsiteTemplate,
+        error::AppError, rso_data::RsoData, template::Template, website::Website,
+        website_template::WebsiteTemplate,
     },
     views::builder::{
         data::render_setup_data,
@@ -79,11 +80,21 @@ pub async fn get_section(
                 Ok(Html(render_no_website().into_string()).into_response())
             }
         }
-        "data" => Ok((
-            token,
-            Html(render_setup_data(authenticity_token).into_string()),
-        )
-            .into_response()),
+        "data" => {
+            let row = RsoData::get_rso_data_by_user_id(user_id.0, &pg_pool).await?;
+
+            let rso_data = if let Some(row) = row {
+                Some(RsoData::try_from(row))
+            } else {
+                None
+            };
+
+            Ok((
+                token,
+                Html(render_setup_data(authenticity_token, rso_data).into_string()),
+            )
+                .into_response())
+        }
         "website" => Ok(
             Html(render_create_website(authenticity_token, website)?.into_string()).into_response(),
         ),

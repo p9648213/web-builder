@@ -1,4 +1,5 @@
 pub mod error;
+pub mod rso_data;
 pub mod state;
 pub mod template;
 pub mod user;

@@ -879,6 +879,14 @@ select {
   max-width: 24rem;
 }
 
+.max-w-60 {
+  max-width: 15rem;
+}
+
+.max-w-72 {
+  max-width: 18rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }

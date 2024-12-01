@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS "templates" (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE IF NOT EXISTS websites (
     id SERIAL PRIMARY KEY,
     template_id INTEGER,
@@ -48,8 +47,24 @@ CREATE TABLE IF NOT EXISTS websites (
     domain VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (template_id) REFERENCES templates (id),
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    CONSTRAINT fk_template FOREIGN KEY (template_id) REFERENCES templates (id) ON DELETE CASCADE,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS rso_data(
+    id SERIAL,
+    user_id INTEGER UNIQUE,
+    identifier_id INTEGER NOT NULL,
+    api_key VARCHAR(255) NOT NULL,
+    filter_id_sale INTEGER NOT NULL,
+    filter_id_long INTEGER NOT NULL,
+    filter_id_short INTEGER NOT NULL,
+    filter_id_featured INTEGER NOT NULL,
+    status BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id, user_id),
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 DO $$
