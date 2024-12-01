@@ -40,7 +40,7 @@ pub fn render_login_page(authenticity_token: String) -> maud::Markup {
                       hx-disabled-elt="find button"
                     {
                         input type="hidden" name="authenticity_token" value=(authenticity_token);
-                        div class="relative -space-y-px rounded-md shadow-sm" {
+                        div class="relative -space-y-px rounded-md shadow-xs" {
                             div class="pointer-events-none absolute inset-0 z-10 rounded-md ring-1 ring-inset ring-gray-300" {
                             }
                             div {
@@ -115,7 +115,7 @@ pub fn render_register_page(authenticity_token: String) -> maud::Markup {
                         hx-disabled-elt="find button"
                     {
                         input type="hidden" name="authenticity_token" value=(authenticity_token);
-                        div class="relative -space-y-px rounded-md shadow-sm" {
+                        div class="relative -space-y-px rounded-md shadow-xs" {
                             div class="pointer-events-none absolute inset-0 z-10 rounded-md ring-1 ring-inset ring-gray-300" {
                             }
                             div {

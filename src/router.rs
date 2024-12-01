@@ -60,7 +60,7 @@ pub async fn create_router(
 
     let database_key = config.database_encrypt_key.as_bytes();
 
-    let cfrs_confir = CsrfConfig::default().with_key(Some(
+    let cfrs_config = CsrfConfig::default().with_key(Some(
         axum_csrf::Key::try_from(cfrs_key).expect("Error while creating csrf key"),
     ));
 
@@ -105,7 +105,7 @@ pub async fn create_router(
         .layer(from_fn_with_state(app_state.clone(), auth_middleware))
         .layer(SessionLayer::new(session_store))
         .layer(from_fn_with_state(app_state.clone(), csrf_middleware))
-        .layer(CsrfLayer::new(cfrs_confir))
+        .layer(CsrfLayer::new(cfrs_config))
         .route("/ping", get(ping))
         .nest_service("/assets", serve_assets)
         .layer(CompressionLayer::new())

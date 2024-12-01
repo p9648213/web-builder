@@ -66,7 +66,7 @@ pub fn render_choose_template(
                     AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                 })?;
 
-                div class="relative flex flex-col border-slate-200 bg-white shadow-sm my-6 border rounded-lg w-96" {
+                div class="relative flex flex-col border-slate-200 bg-white shadow-xs my-6 border rounded-lg w-96" {
                     div class="p-4" {
                         div class="flex justify-between items-center mb-2 w-full" {
                             h6 class="font-semibold text-slate-800 text-xl" {

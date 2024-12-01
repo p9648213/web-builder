@@ -14,7 +14,7 @@ async fn main() {
     let config = config::EnvConfig::parse();
 
     let redis_client = redis::Client::open(config.redis_url.clone())
-        .expect("Error while tryiong to open the redis connection");
+        .expect("Error while trying to open the redis connection");
 
     let redis_pool = redis_pool::RedisPool::from(redis_client);
 
