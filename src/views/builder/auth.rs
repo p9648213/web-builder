@@ -24,10 +24,10 @@ pub fn render_login_page(authenticity_token: String) -> maud::Markup {
             title {
                 "Login"
             }
-            div class="flex h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8" {
-                div class="w-full max-w-sm space-y-10" {
+            div class="flex justify-center items-center px-4 sm:px-6 lg:px-8 py-12 h-screen" {
+                div class="space-y-10 w-full max-w-sm" {
                     div {
-                        h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900" {
+                        h2 class="font-bold text-2xl text-center text-gray-900 leading-9 tracking-tight" {
                             "Sign in to your account"
                         }
                     }
@@ -40,29 +40,29 @@ pub fn render_login_page(authenticity_token: String) -> maud::Markup {
                       hx-disabled-elt="find button"
                     {
                         input type="hidden" name="authenticity_token" value=(authenticity_token);
-                        div class="relative -space-y-px rounded-md shadow-xs" {
-                            div class="pointer-events-none absolute inset-0 z-10 rounded-md ring-1 ring-inset ring-gray-300" {
+                        div class="relative -space-y-px shadow-xs rounded-md" {
+                            div class="z-10 absolute inset-0 rounded-md ring-1 ring-gray-300 ring-inset pointer-events-none" {
                             }
                             div {
                                 label class="sr-only" for="email-address" {
                                     "Email address"
                                 }
-                                input id="email-address" class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" name="email" type="email" autocomplete="email" placeholder="Email address";
+                                input id="email-address" class="block relative focus:z-10 border-0 py-1.5 rounded-t-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="email" type="email" autocomplete="email" placeholder="Email address";
                             }
                             div {
                                 label class="sr-only" for="password" {
                                     "Password"
                                 }
-                                input id="password" class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" name="password" type="password" autocomplete="current-password" placeholder="Password";
+                                input id="password" class="block relative focus:z-10 border-0 py-1.5 rounded-b-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="password" type="password" autocomplete="current-password" placeholder="Password";
                             }
                         }
                         div {
-                            button class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" {
+                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" {
                                 "Sign in"
                             }
                         }
                     }
-                    p class="text-center text-sm leading-6 text-gray-500" {
+                    p class="text-center text-gray-500 text-sm leading-6" {
                         "Not a member?"
                         a id="register-link" class="font-semibold text-indigo-600 hover:text-indigo-500" href="/builder/auth/register" {
                             " Sign Up"
@@ -95,14 +95,14 @@ pub fn render_register_page(authenticity_token: String) -> maud::Markup {
     maud::html! {
       (maud::DOCTYPE)
       (render_main_builder_header())
-      body {
+      body hx-boost="true" {
             title {
                 "Register"
             }
-            div class="flex h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8" {
-                div class="w-full max-w-sm space-y-10" {
+            div class="flex justify-center items-center px-4 sm:px-6 lg:px-8 py-12 h-screen" {
+                div class="space-y-10 w-full max-w-sm" {
                     div {
-                        h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900" {
+                        h2 class="font-bold text-2xl text-center text-gray-900 leading-9 tracking-tight" {
                             "Register account"
                         }
                     }
@@ -115,35 +115,35 @@ pub fn render_register_page(authenticity_token: String) -> maud::Markup {
                         hx-disabled-elt="find button"
                     {
                         input type="hidden" name="authenticity_token" value=(authenticity_token);
-                        div class="relative -space-y-px rounded-md shadow-xs" {
-                            div class="pointer-events-none absolute inset-0 z-10 rounded-md ring-1 ring-inset ring-gray-300" {
+                        div class="relative -space-y-px shadow-xs rounded-md" {
+                            div class="z-10 absolute inset-0 rounded-md ring-1 ring-gray-300 ring-inset pointer-events-none" {
                             }
                             div {
                                 label class="sr-only" for="username" {
                                     "Username"
                                 }
-                                input id="username" class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" name="username" type="text" autocomplete="on" placeholder="Username";
+                                input id="username" class="block relative focus:z-10 border-0 py-1.5 rounded-t-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="username" type="text" autocomplete="on" placeholder="Username";
                             }
                             div {
                                 label class="sr-only" for="email-address" {
                                     "Email address"
                                 }
-                                input id="email-address" class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" name="email" type="email" autocomplete="email" placeholder="Email address";
+                                input id="email-address" class="block relative focus:z-10 border-0 py-1.5 rounded-t-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="email" type="email" autocomplete="email" placeholder="Email address";
                             }
                             div {
                                 label class="sr-only" for="password" {
                                     "Password"
                                 }
-                                input id="password" class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" name="password" type="password" autocomplete="current-password" placeholder="Password";
+                                input id="password" class="block relative focus:z-10 border-0 py-1.5 rounded-b-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="password" type="password" autocomplete="current-password" placeholder="Password";
                             }
                         }
                         div {
-                            button class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" {
+                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" {
                                 "Register"
                             }
                         }
                     }
-                    p class="text-center text-sm leading-6 text-gray-500" {
+                    p class="text-center text-gray-500 text-sm leading-6" {
                         "Already have an account?"
                         a id="register-link" class="font-semibold text-indigo-600 hover:text-indigo-500" href="/builder/auth/login" {
                             " Login"
