@@ -7,7 +7,10 @@ use crate::{
         template::{Template, TemplateType},
         website::Website,
     },
-    views::builder::home::{render_sub_nav, SUB_NAV},
+    views::{
+        builder::home::{render_sub_nav, SUB_NAV},
+        icons::arrow_next_icon,
+    },
 };
 
 pub fn render_website_template(template_type: TemplateType) -> Markup {
@@ -16,20 +19,29 @@ pub fn render_website_template(template_type: TemplateType) -> Markup {
             h1 class="font-bold text-xl" {
                 "Your template"
             }
-            div {
-                h2 {
-                    "Type : "
-                    @match template_type {
-                        TemplateType::RealEstate => "Real Estate",
-                        TemplateType::Custom => "Custom",
-                    }
+            div class="flex gap-2" {
+                "Type : "
+                @match template_type {
+                    TemplateType::RealEstate => {
+                        div class="flex gap-2" {
+                            "Real Estate"
+
+                            a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href="/app/demo/realestate" {
+                                div class="group" {
+                                    "Preview"
+                                }
+                                (arrow_next_icon())
+                            }
+                        }
+                    },
+                    TemplateType::Custom => "Custom",
                 }
             }
             button
                 hx-get="/builder/contents/data"
                 hx-trigger="click"
                 hx-target="#contents"
-                class="text-blue-500 underline"
+                class="text-blue-500 underline cursor-pointer"
             {
                 "Next ->"
             }
@@ -76,13 +88,11 @@ pub fn render_choose_template(
                                 }
                             }
                             @if !matches!(template_type, TemplateType::Custom) {
-                                a class="flex items-center gap-2 text-indigo-500 group" href="/app/demo/realestate" {
+                                a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href="/app/demo/realestate" {
                                     div class="group" {
                                         "Preview"
                                     }
-                                    svg class="group-hover:h-4 group-hover:w-4 flex-0 w-0 h-0 transition-all translate-y-[1px]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" {
-                                        path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" {}
-                                    }
+                                    (arrow_next_icon())
                                 }
                             }
                         }
@@ -99,7 +109,7 @@ pub fn render_choose_template(
                         input type="hidden" name="website_id" value=(website_id);
                         input type="hidden" name="template_id" value=(template_id);
                         div class="mt-2 px-4 pt-0 pb-4" {
-                            button class="bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 active:bg-indigo-400 disabled:opacity-50 shadow-md hover:shadow-lg focus:shadow-none active:shadow-none disabled:shadow-none px-4 py-2 border border-transparent rounded-md w-full font-semibold text-center text-sm text-white transition-all disabled:pointer-events-none" type="submit" {
+                            button class="bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 active:bg-indigo-400 disabled:opacity-50 shadow-md hover:shadow-lg focus:shadow-none active:shadow-none disabled:shadow-none px-4 py-2 border border-transparent rounded-md w-full font-semibold text-center text-sm text-white transition-all cursor-pointer disabled:pointer-events-none" type="submit" {
                                 "Select"
                             }
                         }

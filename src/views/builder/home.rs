@@ -1,4 +1,4 @@
-use crate::views::builder::header::render_main_builder_header;
+use crate::views::builder::head::render_main_builder_header;
 
 pub struct Nav {
     name: &'static str,

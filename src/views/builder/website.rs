@@ -30,7 +30,7 @@ pub fn render_create_website(
                     "Domain: "
                     }
                     input type="text" name="domain" {}
-                    button class="border-gray-500 mt-3 border" {
+                    button class="border-gray-500 mt-3 border cursor-pointer" {
                     "Create"
                     }
                 }
@@ -68,7 +68,7 @@ pub fn render_user_website(website: Website) -> Result<Markup, AppError> {
             hx-get="/builder/contents/template"
             hx-trigger="click"
             hx-target="#contents"
-            class="text-blue-500 underline"
+            class="text-blue-500 underline cursor-pointer"
             {
                 "Next ->"
             }

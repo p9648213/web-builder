@@ -9,11 +9,6 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - 15431:5432
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -25,8 +20,7 @@ services:
     volumes:
       - pgadmin:/var/lib/pgadmin
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
   redis:
     image: redis
     ports:
@@ -34,11 +28,6 @@ services:
     volumes:
       - redisdata:/data
     command: ["redis-server", "--save", "600", "1"]
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 volumes:
   pgdata:

@@ -77,7 +77,7 @@ pub fn render_setup_data(authenticity_token: String, rso_data: Option<RsoData>) 
           }
           input required type="number" name="filter_id_featured" value=[rso_data.filter_id_featured];
 
-          button class="border-gray-500 mt-3 border" {
+          button class="border-gray-500 mt-3 border cursor-pointer" {
             "Save"
           }
         }

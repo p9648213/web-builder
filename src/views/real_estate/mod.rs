@@ -1,2 +1,3 @@
-pub mod header;
-pub mod real_estate_demo;
+pub mod components;
+pub mod head;
+pub mod home;

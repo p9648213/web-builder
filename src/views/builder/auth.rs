@@ -1,4 +1,4 @@
-use crate::views::builder::header::render_main_builder_header;
+use crate::views::builder::head::render_main_builder_header;
 
 //..........................................................
 //.LLL...........OOOOOO........GGGGGG.....III..NNNN....NNN..
@@ -20,7 +20,7 @@ pub fn render_login_page(authenticity_token: String) -> maud::Markup {
     maud::html! {
         (maud::DOCTYPE)
         (render_main_builder_header())
-        body {
+        body hx-boost="true" {
             title {
                 "Login"
             }
@@ -40,9 +40,7 @@ pub fn render_login_page(authenticity_token: String) -> maud::Markup {
                       hx-disabled-elt="find button"
                     {
                         input type="hidden" name="authenticity_token" value=(authenticity_token);
-                        div class="relative -space-y-px shadow-xs rounded-md" {
-                            div class="z-10 absolute inset-0 rounded-md ring-1 ring-gray-300 ring-inset pointer-events-none" {
-                            }
+                        div class="relative -space-y-px border-gray-300 shadow-xs border border-solid rounded-md" {
                             div {
                                 label class="sr-only" for="email-address" {
                                     "Email address"
@@ -57,7 +55,7 @@ pub fn render_login_page(authenticity_token: String) -> maud::Markup {
                             }
                         }
                         div {
-                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" {
+                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" type="submit" {
                                 "Sign in"
                             }
                         }
@@ -115,9 +113,7 @@ pub fn render_register_page(authenticity_token: String) -> maud::Markup {
                         hx-disabled-elt="find button"
                     {
                         input type="hidden" name="authenticity_token" value=(authenticity_token);
-                        div class="relative -space-y-px shadow-xs rounded-md" {
-                            div class="z-10 absolute inset-0 rounded-md ring-1 ring-gray-300 ring-inset pointer-events-none" {
-                            }
+                        div class="relative -space-y-px border-gray-300 shadow-xs border border-solid rounded-md" {
                             div {
                                 label class="sr-only" for="username" {
                                     "Username"
@@ -138,7 +134,7 @@ pub fn render_register_page(authenticity_token: String) -> maud::Markup {
                             }
                         }
                         div {
-                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" {
+                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" type="submit" {
                                 "Register"
                             }
                         }
