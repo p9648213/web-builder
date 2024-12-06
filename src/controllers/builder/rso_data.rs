@@ -1,10 +1,12 @@
-use axum::extract::Query;
+use axum::extract::{Query, State};
 use axum::http::StatusCode;
 use axum::response::Html;
+use deadpool_postgres::Pool;
 use maud::html;
 use serde::Deserialize;
 
 use crate::models::error::AppError;
+use crate::models::rso_data::{LocationParams, RsoData};
 use crate::views::real_estate::components::{render_selection_drop_down, render_selection_label};
 
 #[derive(Deserialize)]
@@ -29,4 +31,48 @@ pub async fn get_listing_type(Query(query): Query<DemoQuery>) -> Result<Html<Str
             "Server Error",
         ))
     }
+}
+
+pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<(), AppError> {
+    let row = RsoData::get_rso_data_by_user_id(1, &pg_pool).await?;
+
+    if let Some(row) = row {
+        let rso_data = RsoData::try_from(row);
+
+        let p_agency_filterid = rso_data.filter_id_sale.ok_or_else(|| {
+            tracing::error!("No filter_id_sale column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        let p1 = rso_data.identifier_id.ok_or_else(|| {
+            tracing::error!("No identifier_id column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        let p2 = rso_data.api_key.ok_or_else(|| {
+            tracing::error!("No api_key column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        let location_params = LocationParams {
+            p_agency_filterid: p_agency_filterid.to_string(),
+            p1: p1.to_string(),
+            p2: p2.to_string(),
+            p_sandbox: "true".to_string(),
+            benchmark: "Public_AR_Current".to_string(),
+            p_sort_type: "0".to_string(),
+            p_all: "false".to_string(),
+            p_ignore_hash: "true".to_string(),
+        };
+
+        let location = RsoData::get_rso_location(location_params).await?;
+    } else {
+        tracing::error!("No rso data found for user id 1");
+        return Err(AppError::new(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "Server Error",
+        ));
+    };
+
+    Ok(())
 }

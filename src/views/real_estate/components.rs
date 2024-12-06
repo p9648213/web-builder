@@ -141,7 +141,7 @@ pub fn render_search_box_selection(
               span class="font-semibold" {(title)}
               (drop_down_icon())
             }
-            div id=(format!("{}-items", dropdown_id)) class="top-7 right-1 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 transition-all duration-500 invisible overflow-hidden pointer-events-none dropdown" {
+            div id=(format!("{}-items", dropdown_id)) class="top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 transition-all duration-500 invisible overflow-hidden pointer-events-none dropdown whitespace-pre" {
               "Loading..."
             }
           }
@@ -167,7 +167,7 @@ pub fn render_home_search_box() -> Markup {
             input class="rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
           (render_search_box_selection("Listing Type", "/rso/listing-type?demo=true", "listing-type-dropdown", "listing-type-label"))
-          // (render_search_box_selection("Location"))
+          (render_search_box_selection("Location", "/rso/location?demo=true", "location-dropdown", "location-label"))
           // (render_search_box_selection("Property Types"))
           // (render_search_box_selection("Price"))
           // (render_search_box_selection("Bath"))

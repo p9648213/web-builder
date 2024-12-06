@@ -5,7 +5,7 @@ use crate::{
             auth::{get_login_page, get_register_page, login, logout, register},
             data::{create_data_source, update_rso_status},
             home::get_home_page,
-            rso_data::get_listing_type,
+            rso_data::{get_listing_type, get_locations},
             section::get_section,
             website::{create_website, select_template_for_webiste},
         },
@@ -98,7 +98,9 @@ pub async fn create_router(
 
     let demo_routes = Router::new().route("/realestate", get(get_real_estate_demo_page));
 
-    let rso_routes = Router::new().route("/listing-type", get(get_listing_type));
+    let rso_routes = Router::new()
+        .route("/listing-type", get(get_listing_type))
+        .route("/location", get(get_locations));
 
     Router::new()
         .nest("/builder", builder_routes)

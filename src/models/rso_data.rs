@@ -1,9 +1,13 @@
 use deadpool_postgres::Pool;
+use reqwest::StatusCode;
+use serde::{Deserialize, Serialize};
 use tokio_postgres::Row;
 
 use crate::utilities::db::{excute, query_optional};
 
 use super::error::AppError;
+
+const RSO_URL: &str = "https://webapi.resales-online.com/V6/SearchLocations.php";
 
 pub struct RsoData {
     pub id: Option<i32>,
@@ -127,4 +131,116 @@ impl RsoData {
         )
         .await
     }
+
+    pub async fn get_rso_location(params: LocationParams) -> Result<LocationResponse, AppError> {
+        let params = [
+            ("p_agency_filterid", params.p_agency_filterid),
+            ("p1", params.p1),
+            ("p2", params.p2),
+            ("P_sandbox", params.p_sandbox),
+            ("benchmark", params.benchmark),
+            ("P_SortType", params.p_sort_type),
+            ("P_All", params.p_all),
+            ("P_IgnoreHash", params.p_ignore_hash),
+        ];
+
+        let url = reqwest::Url::parse_with_params(RSO_URL, params).map_err(|err| {
+            tracing::error!("Error parse rso location params: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let response = reqwest::get(url).await.map_err(|err| {
+            tracing::error!("Error getting rso location: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let text = response.text().await.map_err(|err| {
+            tracing::error!("Error getting rso location: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let location: LocationResponse = serde_json::from_str(&text).map_err(|err| {
+            tracing::error!("Failed to deserialize rso location: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        Ok(location)
+    }
+}
+
+pub struct LocationParams {
+    pub p_agency_filterid: String,
+    pub p1: String,
+    pub p2: String,
+    pub p_sandbox: String,
+    pub benchmark: String,
+    pub p_sort_type: String,
+    pub p_all: String,
+    pub p_ignore_hash: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Transaction {
+    pub status: String,
+    pub errordescription: String,
+    #[serde(rename = "incomingIp")]
+    pub incoming_ip: String,
+    pub version: u8,
+    pub service: String,
+    pub datetime: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct QueryInfo {
+    #[serde(rename = "ApiId")]
+    pub api_id: u32,
+    #[serde(rename = "LocationCount")]
+    pub location_count: u8,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ProvinceArea {
+    #[serde(rename = "ProvinceAreaName")]
+    pub province_area_name: String,
+    #[serde(rename = "Locations")]
+    pub locations: Locations,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Locations {
+    #[serde(rename = "Location")]
+    pub location: Location,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum Location {
+    Single(String),
+    Multiple(Vec<String>),
+}
+
+impl Location {
+    pub fn as_vec(&self) -> Vec<String> {
+        match self {
+            Location::Single(s) => vec![s.clone()],
+            Location::Multiple(vec) => vec.clone(),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct LocationData {
+    #[serde(rename = "Country")]
+    pub country: String,
+    #[serde(rename = "ProvinceArea")]
+    pub province_area: ProvinceArea,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct LocationResponse {
+    pub transaction: Transaction,
+    #[serde(rename = "QueryInfo")]
+    pub query_info: QueryInfo,
+    #[serde(rename = "LocationData")]
+    pub location_data: LocationData,
 }
