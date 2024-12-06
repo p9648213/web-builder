@@ -1,10 +1,16 @@
 export function setupDropdown() {
-  const dropDownTitleEl = document.getElementById(
-    "listing-type-dropdown-title"
+  const dropDownListingTypeEl = document.getElementById(
+    "listing-type-dropdown"
   );
-  const dropDownEl = document.getElementById("listing-type-dropdown");
 
-  dropDownTitleEl.addEventListener("click", () => {
+  addEventListenerToDropdown(dropDownListingTypeEl);
+}
+
+function addEventListenerToDropdown(dropDownContainerEl) {
+  const dropDownEl =
+    dropDownContainerEl.parentElement.querySelector(".dropdown");
+
+  dropDownContainerEl.addEventListener("click", () => {
     if (dropDownEl.classList.contains("invisible")) {
       dropDownEl.classList.remove(
         "invisible",

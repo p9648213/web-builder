@@ -115,7 +115,12 @@ pub fn render_selection_label(label: &str, id: &str) -> Markup {
     }
 }
 
-pub fn render_search_box_selection(title: &str, hx_get: &str, id: &str) -> Markup {
+pub fn render_search_box_selection(
+    title: &str,
+    hx_get: &str,
+    dropdown_id: &str,
+    label_id: &str,
+) -> Markup {
     let container_class = if title != "Bed" {
         "relative flex justify-center items-center border-r border-black border-solid"
     } else {
@@ -127,20 +132,20 @@ pub fn render_search_box_selection(title: &str, hx_get: &str, id: &str) -> Marku
         hx-get=(hx_get)
         hx-swap="innerHTML"
         hx-trigger="load"
-        hx-target=(format!("#{}", id))
+        hx-target=(format!("#{}-items", dropdown_id))
         class=(container_class)
       {
         div class="flex flex-col gap-4" {
           div class="flex" {
-            div id=(format!("{}-title", id)) class="flex items-end gap-1 cursor-pointer" {
+            div id=(dropdown_id) class="flex items-end gap-1 cursor-pointer" {
               span class="font-semibold" {(title)}
               (drop_down_icon())
             }
-            div id=(id) class="top-7 right-1 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 transition-all duration-500 invisible overflow-hidden pointer-events-none" {
+            div id=(format!("{}-items", dropdown_id)) class="top-7 right-1 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 transition-all duration-500 invisible overflow-hidden pointer-events-none dropdown" {
               "Loading..."
             }
           }
-          div id="listing-type-label" hx-swap-oob="outerHTML" class="text-slate-500 text-sm" {
+          div id=(label_id) hx-swap-oob="outerHTML" class="text-slate-500 text-sm" {
             "Loading..."
           }
         }
@@ -161,7 +166,7 @@ pub fn render_home_search_box() -> Markup {
           div class="flex justify-end items-center pr-3" {
             input class="rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
-          (render_search_box_selection("Listing Type", "/rso/listing-type?demo=true", "listing-type-dropdown"))
+          (render_search_box_selection("Listing Type", "/rso/listing-type?demo=true", "listing-type-dropdown", "listing-type-label"))
           // (render_search_box_selection("Location"))
           // (render_search_box_selection("Property Types"))
           // (render_search_box_selection("Price"))
