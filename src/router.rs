@@ -5,6 +5,7 @@ use crate::{
             auth::{get_login_page, get_register_page, login, logout, register},
             data::{create_data_source, update_rso_status},
             home::get_home_page,
+            rso_data::get_listing_type,
             section::get_section,
             website::{create_website, select_template_for_webiste},
         },
@@ -95,14 +96,17 @@ pub async fn create_router(
             post(select_template_for_webiste),
         );
 
-    let app_routes = Router::new().route("/demo/realestate", get(get_real_estate_demo_page));
+    let demo_routes = Router::new().route("/realestate", get(get_real_estate_demo_page));
+
+    let rso_routes = Router::new().route("/listing-type", get(get_listing_type));
 
     Router::new()
         .nest("/builder", builder_routes)
-        .nest("/app", app_routes)
+        .nest("/demo", demo_routes)
+        .layer(from_fn_with_state(app_state.clone(), auth_middleware))
+        .nest("/rso", rso_routes)
         .with_state(app_state.clone())
         .layer(cache_control_layer)
-        .layer(from_fn_with_state(app_state.clone(), auth_middleware))
         .layer(SessionLayer::new(session_store))
         .layer(from_fn_with_state(app_state.clone(), csrf_middleware))
         .layer(CsrfLayer::new(cfrs_config))

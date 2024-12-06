@@ -1,6 +1,6 @@
 export function checkDataFormDropdown() {
-  let createDataFormEl = document.getElementById("create-data-form");
-  let rsoDataCheckBoxEl = document.getElementById("rso-data-status");
+  const createDataFormEl = document.getElementById("create-data-form");
+  const rsoDataCheckBoxEl = document.getElementById("rso-data-status");
 
   function toggleCreateDataFormDisplay() {
     if (createDataFormEl && rsoDataCheckBoxEl) {

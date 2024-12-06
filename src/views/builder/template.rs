@@ -26,7 +26,7 @@ pub fn render_website_template(template_type: TemplateType) -> Markup {
                         div class="flex gap-2" {
                             "Real Estate"
 
-                            a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href="/app/demo/realestate" {
+                            a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href="/demo/realestate" {
                                 div class="group" {
                                     "Preview"
                                 }
@@ -88,7 +88,7 @@ pub fn render_choose_template(
                                 }
                             }
                             @if !matches!(template_type, TemplateType::Custom) {
-                                a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href="/app/demo/realestate" {
+                                a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href="/demo/realestate" {
                                     div class="group" {
                                         "Preview"
                                     }
