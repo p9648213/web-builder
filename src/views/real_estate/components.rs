@@ -1,6 +1,9 @@
 use maud::{html, Markup, PreEscaped};
 
-use crate::views::icons::{drop_down_icon, mail_icon, phone_icon};
+use crate::{
+    models::rso_data::{LocationDynamic, ProvinceAreaDynamic},
+    views::icons::{drop_down_icon, mail_icon, phone_icon},
+};
 
 pub fn render_nav_bar() -> Markup {
     html! {
@@ -95,14 +98,80 @@ pub fn render_selection_drop_down(choices: Vec<&str>, highlight: &str) -> Markup
     html! {
       @for choice in choices {
         @if choice == highlight {
-          div class="bg-blue-400 px-2 rounded-sm text-white" {
+          div class="bg-blue-400 px-2 py-0.5 rounded-sm text-sm text-white" {
             (choice)
           }
         } @else {
-          div class="hover:bg-blue-300 px-2 rounded-sm hover:text-white cursor-pointer" {
+          div class="hover:bg-blue-300 px-2 py-0.5 rounded-sm text-sm hover:text-white cursor-pointer" {
             (choice)
           }
         }
+      }
+    }
+}
+
+pub fn render_location_selection_drop_down(
+    provinces: ProvinceAreaDynamic,
+    highlight: &str,
+) -> Markup {
+    html! {
+      div class="flex flex-col gap-3" {
+        @match provinces {
+          ProvinceAreaDynamic::Single(province_area) => {
+            @if highlight == "All" {
+              @let id = format!("{}-location", province_area.province_area_name);
+              (render_input_radio("All", "all-location", Some(true)))
+              (render_input_radio(province_area.province_area_name.as_str(), id.as_str(), None))
+
+              @match province_area.locations.location {
+                LocationDynamic::Single(location) => {
+                  div {"Location 1"}
+                },
+                LocationDynamic::Multiple(locations) => {
+                  @for location in locations {
+                    @let id = format!("{}-child", location);
+
+                    div class="flex items-center gap-2 ml-5 text-sm" {
+                      input class="rounded-sm" type="checkbox" name=(location) id=(id);
+                      label for=(id) {(location)}
+                    }
+                  }
+                },
+              }
+
+            } @else {
+              @let id = format!("{}-location", province_area.province_area_name);
+
+              (render_input_radio("All", "all-location", None))
+
+              @if province_area.province_area_name == highlight {
+                (render_input_radio(province_area.province_area_name.as_str(), id.as_str(), Some(true)))
+              }@else {
+                (render_input_radio(province_area.province_area_name.as_str(), id.as_str(), None))
+              }
+            }
+          },
+          ProvinceAreaDynamic::Multiple(province_areas) => {
+            @if highlight == "All" {
+              div class="bg-blue-400 px-2 rounded-sm text-white" {
+                "All"
+              }
+            } @else {
+              div class="hover:bg-blue-300 px-2 rounded-sm hover:text-white cursor-pointer" {
+                "All"
+              }
+            }
+          },
+        }
+      }
+    }
+}
+
+pub fn render_input_radio(name: &str, id: &str, checked: Option<bool>) -> Markup {
+    html! {
+      div class="flex items-center gap-2 text-sm" {
+        input type="radio" checked=[checked] id=(id) name=(name);
+        label for=(id) {(name)}
       }
     }
 }
@@ -141,7 +210,7 @@ pub fn render_search_box_selection(
               span class="font-semibold" {(title)}
               (drop_down_icon())
             }
-            div id=(format!("{}-items", dropdown_id)) class="top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 transition-all duration-500 invisible overflow-hidden pointer-events-none dropdown whitespace-pre" {
+            div id=(format!("{}-items", dropdown_id)) class="top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible overflow-hidden pointer-events-none dropdown" {
               "Loading..."
             }
           }

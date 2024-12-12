@@ -63,6 +63,10 @@ function toast({ message = "", type = "info", duration = 3000 }) {
     `;
 
     main.appendChild(toast);
+
+    setTimeout(() => {
+      main.innerHTML = "";
+    }, duration + 1000);
   }
 }
 

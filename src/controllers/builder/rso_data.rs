@@ -7,7 +7,9 @@ use serde::Deserialize;
 
 use crate::models::error::AppError;
 use crate::models::rso_data::{LocationParams, RsoData};
-use crate::views::real_estate::components::{render_selection_drop_down, render_selection_label};
+use crate::views::real_estate::components::{
+    render_location_selection_drop_down, render_selection_drop_down, render_selection_label,
+};
 
 #[derive(Deserialize)]
 pub struct DemoQuery {
@@ -33,7 +35,7 @@ pub async fn get_listing_type(Query(query): Query<DemoQuery>) -> Result<Html<Str
     }
 }
 
-pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<(), AppError> {
+pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, AppError> {
     let row = RsoData::get_rso_data_by_user_id(1, &pg_pool).await?;
 
     if let Some(row) = row {
@@ -66,13 +68,19 @@ pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<(), AppError> 
         };
 
         let location = RsoData::get_rso_location(location_params).await?;
+
+        let html = html! {
+            (render_location_selection_drop_down(location.location_data.province_area, "All"))
+            (render_selection_label("All", "location-label"))
+        }
+        .into_string();
+
+        Ok(Html(html))
     } else {
         tracing::error!("No rso data found for user id 1");
         return Err(AppError::new(
             StatusCode::INTERNAL_SERVER_ERROR,
             "Server Error",
         ));
-    };
-
-    Ok(())
+    }
 }

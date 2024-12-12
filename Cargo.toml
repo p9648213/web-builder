@@ -11,7 +11,7 @@ axum-extra = { version = "0.9.6", features = ["cookie", "multipart"] }
 axum_csrf = { version = "0.10.2", features = ["layer"] }
 axum_session = { version = "0.14.0" }
 axum_session_redispool = { version = "0.3.0" }
-chrono = "0.4.38"
+chrono = "0.4.39"
 clap = { version = "4.5.23", features = ["derive", "env"] }
 cookie = "0.18.1"
 deadpool-postgres = "0.14.0"
@@ -23,7 +23,7 @@ redis = "0.27.6"
 redis_pool = "0.6.0"
 reqwest = "0.12.9"
 rust-embed = "8.5.0"
-serde = { version = "1.0.215", features = ["derive"] }
+serde = { version = "1.0.216", features = ["derive"] }
 serde_json = "1.0.133"
 serde_urlencoded = "0.7.1"
 tokio = { version = "1.42.0", features = ["macros", "rt-multi-thread"] }

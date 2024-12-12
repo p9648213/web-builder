@@ -185,7 +185,7 @@ pub struct Transaction {
     pub errordescription: String,
     #[serde(rename = "incomingIp")]
     pub incoming_ip: String,
-    pub version: u8,
+    pub version: u32,
     pub service: String,
     pub datetime: String,
 }
@@ -195,7 +195,7 @@ pub struct QueryInfo {
     #[serde(rename = "ApiId")]
     pub api_id: u32,
     #[serde(rename = "LocationCount")]
-    pub location_count: u8,
+    pub location_count: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -209,23 +209,21 @@ pub struct ProvinceArea {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Locations {
     #[serde(rename = "Location")]
-    pub location: Location,
+    pub location: LocationDynamic,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum Location {
+pub enum LocationDynamic {
     Single(String),
     Multiple(Vec<String>),
 }
 
-impl Location {
-    pub fn as_vec(&self) -> Vec<String> {
-        match self {
-            Location::Single(s) => vec![s.clone()],
-            Location::Multiple(vec) => vec.clone(),
-        }
-    }
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ProvinceAreaDynamic {
+    Single(ProvinceArea),
+    Multiple(Vec<ProvinceArea>),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -233,7 +231,7 @@ pub struct LocationData {
     #[serde(rename = "Country")]
     pub country: String,
     #[serde(rename = "ProvinceArea")]
-    pub province_area: ProvinceArea,
+    pub province_area: ProvinceAreaDynamic,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
