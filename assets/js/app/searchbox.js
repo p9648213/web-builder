@@ -12,14 +12,14 @@ function addEventListenerToDropdown(dropDownContainerEl, type) {
   const dropDownEl =
     dropDownContainerEl.parentElement.querySelector(".dropdown");
 
-  let childNode =
-    type === "listingType"
-      ? dropDownEl.childNodes
-      : dropDownEl.childNodes[0].childNodes;
-
-  console.log(childNode);
-
   dropDownContainerEl.addEventListener("click", () => {
+    let childNode =
+      type === "listingType"
+        ? dropDownEl.childNodes
+        : dropDownEl.childNodes[0].childNodes;
+
+    console.log(childNode);
+
     if (dropDownEl.classList.contains("invisible")) {
       dropDownEl.classList.remove(
         "invisible",
