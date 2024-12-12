@@ -18,24 +18,35 @@ function addEventListenerToDropdown(dropDownContainerEl, type) {
         ? dropDownEl.childNodes
         : dropDownEl.childNodes[0].childNodes;
 
-    console.log(childNode);
+    let height = 1.93 * childNode.length;
+
+    if (type == "location") {
+      height = 2.1 * childNode.length;
+    }
+
+    if (childNode.length < 6 && type === "location") {
+      dropDownEl.classList.remove("overflow-scroll");
+      dropDownEl.classList.add("overflow-hidden");
+    }
 
     if (dropDownEl.classList.contains("invisible")) {
       dropDownEl.classList.remove(
         "invisible",
         "pointer-events-none",
-        "h-0",
-        "opacity-0"
+        "opacity-0",
+        "max-h-0"
       );
 
-      dropDownEl.classList.add("h-31", "opacity-100");
+      dropDownEl.classList.add("opacity-100", "max-h-50");
+      dropDownEl.style.height = `${height}rem`;
     } else {
-      dropDownEl.classList.remove("h-31", "opacity-100");
+      dropDownEl.style.height = 0;
+      dropDownEl.classList.remove("opacity-100", "max-h-50");
       dropDownEl.classList.add(
         "invisible",
         "pointer-events-none",
-        "h-0",
-        "opacity-0"
+        "opacity-0",
+        "max-h-0"
       );
     }
   });

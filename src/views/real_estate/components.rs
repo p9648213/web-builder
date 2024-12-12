@@ -120,21 +120,18 @@ pub fn render_location_selection_drop_down(
           ProvinceAreaDynamic::Single(province_area) => {
             @if highlight == "All" {
               @let id = format!("{}-location", province_area.province_area_name);
-              (render_input_radio("All", "all-location", Some(true)))
-              (render_input_radio(province_area.province_area_name.as_str(), id.as_str(), None))
+              (render_input_radio("All", "province", "all-location", Some(true)))
+              (render_input_radio(province_area.province_area_name.as_str(), "province", id.as_str(), None))
 
               @match province_area.locations.location {
                 LocationDynamic::Single(location) => {
-                  div {"Location 1"}
+                  @let id = format!("{}-child", location);
+                  (render_check_box(location.as_str(), id.as_str(), None));
                 },
                 LocationDynamic::Multiple(locations) => {
                   @for location in locations {
                     @let id = format!("{}-child", location);
-
-                    div class="flex items-center gap-2 ml-5 text-sm" {
-                      input class="rounded-sm" type="checkbox" name=(location) id=(id);
-                      label for=(id) {(location)}
-                    }
+                    (render_check_box(location.as_str(), id.as_str(), None));
                   }
                 },
               }
@@ -142,23 +139,37 @@ pub fn render_location_selection_drop_down(
             } @else {
               @let id = format!("{}-location", province_area.province_area_name);
 
-              (render_input_radio("All", "all-location", None))
+              (render_input_radio("All", "province", "all-location", None))
 
               @if province_area.province_area_name == highlight {
-                (render_input_radio(province_area.province_area_name.as_str(), id.as_str(), Some(true)))
+                (render_input_radio(province_area.province_area_name.as_str(), "province", id.as_str(), Some(true)))
               }@else {
-                (render_input_radio(province_area.province_area_name.as_str(), id.as_str(), None))
+                (render_input_radio(province_area.province_area_name.as_str(), "province", id.as_str(), None))
               }
             }
           },
           ProvinceAreaDynamic::Multiple(province_areas) => {
             @if highlight == "All" {
-              div class="bg-blue-400 px-2 rounded-sm text-white" {
-                "All"
-              }
+              (render_input_radio("All", "province", "all-location", Some(true)))
             } @else {
-              div class="hover:bg-blue-300 px-2 rounded-sm hover:text-white cursor-pointer" {
-                "All"
+              (render_input_radio("All", "province", "all-location", None))
+            }
+
+            @for province_area in province_areas {
+              @let id = format!("{}-location", province_area.province_area_name);
+              (render_input_radio(province_area.province_area_name.as_str(), "province", id.as_str(), None))
+
+              @match province_area.locations.location {
+                LocationDynamic::Single(location) => {
+                  @let id = format!("{}-child", location);
+                  (render_check_box(location.as_str(), id.as_str(), None));
+                },
+                LocationDynamic::Multiple(locations) => {
+                  @for location in locations {
+                    @let id = format!("{}-child", location);
+                    (render_check_box(location.as_str(), id.as_str(), None));
+                  }
+                },
               }
             }
           },
@@ -167,10 +178,19 @@ pub fn render_location_selection_drop_down(
     }
 }
 
-pub fn render_input_radio(name: &str, id: &str, checked: Option<bool>) -> Markup {
+pub fn render_input_radio(value: &str, name: &str, id: &str, checked: Option<bool>) -> Markup {
     html! {
       div class="flex items-center gap-2 text-sm" {
-        input type="radio" checked=[checked] id=(id) name=(name);
+        input type="radio" checked=[checked] id=(id) name=(name) value=(value);
+        label for=(id) {(value)}
+      }
+    }
+}
+
+pub fn render_check_box(name: &str, id: &str, checked: Option<bool>) -> Markup {
+    html! {
+      div class="flex items-center gap-2 ml-5 text-sm" {
+        input class="rounded-sm" type="checkbox" name=(name) id=(id) checked=[checked];
         label for=(id) {(name)}
       }
     }
@@ -196,6 +216,12 @@ pub fn render_search_box_selection(
         "relative flex justify-center items-center"
     };
 
+    let mut dropdown_items_class = "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-hidden";
+
+    if title == "Location" {
+        dropdown_items_class = "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-scroll"
+    }
+
     html! {
       div
         hx-get=(hx_get)
@@ -210,7 +236,7 @@ pub fn render_search_box_selection(
               span class="font-semibold" {(title)}
               (drop_down_icon())
             }
-            div id=(format!("{}-items", dropdown_id)) class="top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible overflow-hidden pointer-events-none dropdown" {
+            div id=(format!("{}-items", dropdown_id)) class=(dropdown_items_class) {
               "Loading..."
             }
           }
