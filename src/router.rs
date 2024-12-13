@@ -5,11 +5,14 @@ use crate::{
             auth::{get_login_page, get_register_page, login, logout, register},
             data::{create_data_source, update_rso_status},
             home::get_home_page,
-            rso_data::{get_listing_type, get_locations, get_property_types},
             section::get_section,
             website::{create_website, select_template_for_webiste},
         },
-        real_estate::demo::get_real_estate_demo_page,
+        real_estate::{
+            data::get_listing_type,
+            demo::get_real_estate_demo_page,
+            rso_data::{get_locations, get_property_types},
+        },
     },
     middlewares::{auth::auth_middleware, csrf::csrf_middleware},
     models::state::AppState,
@@ -99,15 +102,17 @@ pub async fn create_router(
     let demo_routes = Router::new().route("/realestate", get(get_real_estate_demo_page));
 
     let rso_routes = Router::new()
-        .route("/listing-type", get(get_listing_type))
         .route("/location", get(get_locations))
         .route("/property-types", get(get_property_types));
+
+    let web_app_routes = Router::new().route("/listing-type", get(get_listing_type));
 
     Router::new()
         .nest("/builder", builder_routes)
         .nest("/demo", demo_routes)
         .layer(from_fn_with_state(app_state.clone(), auth_middleware))
         .nest("/rso", rso_routes)
+        .nest("/app", web_app_routes)
         .with_state(app_state.clone())
         .layer(cache_control_layer)
         .layer(SessionLayer::new(session_store))

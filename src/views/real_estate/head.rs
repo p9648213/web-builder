@@ -9,7 +9,7 @@ pub fn render_main_head() -> maud::Markup {
             link rel="stylesheet" href="/assets/css/lib/toast.css";
             script src="/assets/js/lib/htmx.js" defer="defer" {}
             script src="/assets/js/lib/nprogress.js" defer="defer" {}
-            script src="/assets/js/main.js" defer="defer" {}
+            script src="/assets/js/main.js" defer="defer" type="module" {}
         }
     }
 }

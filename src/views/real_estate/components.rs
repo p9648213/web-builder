@@ -319,7 +319,7 @@ pub fn render_home_search_box() -> Markup {
           div class="flex justify-end items-center pr-3" {
             input class="rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
-          (render_search_box_selection("Listing Type", "/rso/listing-type?demo=true", "listing-type-dropdown", "listing-type-label"))
+          (render_search_box_selection("Listing Type", "/app/listing-type?demo=true", "listing-type-dropdown", "listing-type-label"))
           (render_search_box_selection("Location", "/rso/location?demo=true", "location-dropdown", "location-label"))
           (render_search_box_selection("Property Types", "/rso/property-types?demo=true", "property-types-dropdown", "property-types-label"))
           // (render_search_box_selection("Price"))
