@@ -5,7 +5,10 @@ use serde::Deserialize;
 
 use crate::{
     models::error::AppError,
-    views::real_estate::components::{render_selection_drop_down, render_selection_label},
+    views::real_estate::components::{
+        render_beds_baths_selection_drop_down, render_price_input, render_selection_drop_down,
+        render_selection_label,
+    },
 };
 
 #[derive(Deserialize)]
@@ -30,4 +33,32 @@ pub async fn get_listing_type(Query(query): Query<DemoQuery>) -> Result<Html<Str
             "Server Error",
         ))
     }
+}
+
+pub async fn get_price() -> Result<Html<String>, AppError> {
+    Ok(Html(render_price_input("price-label").into_string()))
+}
+
+pub async fn get_beds() -> Result<Html<String>, AppError> {
+    let choices = vec!["Any", "1", "2", "3", "4", "5"];
+
+    let html = html! {
+        (render_beds_baths_selection_drop_down(choices, "Any"))
+        (render_selection_label("Any", "bed-label"))
+    }
+    .into_string();
+
+    Ok(Html(html))
+}
+
+pub async fn get_baths() -> Result<Html<String>, AppError> {
+    let choices = vec!["Any", "1", "2", "3", "4", "5"];
+
+    let html = html! {
+        (render_beds_baths_selection_drop_down(choices, "Any"))
+        (render_selection_label("Any", "bath-label"))
+    }
+    .into_string();
+
+    Ok(Html(html))
 }

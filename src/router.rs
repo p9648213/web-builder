@@ -9,7 +9,7 @@ use crate::{
             website::{create_website, select_template_for_webiste},
         },
         real_estate::{
-            data::get_listing_type,
+            data::{get_baths, get_beds, get_listing_type, get_price},
             demo::get_real_estate_demo_page,
             rso_data::{get_locations, get_property_types},
         },
@@ -105,7 +105,11 @@ pub async fn create_router(
         .route("/location", get(get_locations))
         .route("/property-types", get(get_property_types));
 
-    let web_app_routes = Router::new().route("/listing-type", get(get_listing_type));
+    let web_app_routes = Router::new()
+        .route("/listing-type", get(get_listing_type))
+        .route("/prices", get(get_price))
+        .route("/beds", get(get_beds))
+        .route("/baths", get(get_baths));
 
     Router::new()
         .nest("/builder", builder_routes)

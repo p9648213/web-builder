@@ -143,6 +143,30 @@ pub fn render_selection_drop_down(choices: Vec<&str>, highlight: &str) -> Markup
     }
 }
 
+pub fn render_beds_baths_selection_drop_down(choices: Vec<&str>, highlight: &str) -> Markup {
+    html! {
+      div class="flex justify-center h-full text-sm gap-4 flex-col px-2" {
+        div class="flex border border-slate-900 rounded-md h-10" {
+          @for choice in choices {
+            @if choice == highlight {
+              div class="flex w-10.5 justify-center items-center border-r border-slate-900 first:rounded-tl-md first:rounded-bl-md last:border-none last:rounded-br-md last:rounded-tr-md bg-blue-400 text-white cursor-pointer" {
+                (choice)
+              }
+            }@else {
+              div class="flex w-10.5 justify-center items-center border-r border-slate-900 first:rounded-tl-md first:rounded-bl-md last:border-none last:rounded-br-md last:rounded-tr-md cursor-pointer hover:bg-blue-300 hover:text-white" {
+                (choice)
+              }
+            }
+          }
+        }
+        div class="flex gap-2 items-center" {
+          input id="exact" class="rounded-sm" name="exact-checkbox" type="checkbox";
+          label for="exact" {"Exact number"}
+        }
+      }
+    }
+}
+
 pub fn render_location_selection_drop_down(
     provinces: ProvinceAreaDynamic,
     highlight: &str,
@@ -262,6 +286,28 @@ pub fn render_selection_label(label: &str, id: &str) -> Markup {
     }
 }
 
+pub fn render_price_input(id: &str) -> Markup {
+    html! {
+      (PreEscaped(r#"
+        <script type="module">
+            import {setupPriceInput} from "/assets/js/app/searchbox.js";
+            setupPriceInput();
+        </script>
+      "#))
+      div id=(id) hx-swap-oob="outerHTML" {
+        label class="relative" {
+          span class="absolute right-0 top-0 pr-2 text-slate-500 text-sm" {"€"}
+          input id=(format!("{}-min", id)) placeholder="From" class="h-5 w-[50%] outline-none bg-transparent focus:ring-0 border-l-0 border-t-0 border-b-0 border-r border-r-slate-700 pr-4.5 placeholder:text-slate-500 placeholder:text-sm text-sm";
+        }
+        label class="relative" {
+          span class="absolute right-0 top-0 pr-2 text-slate-500 text-sm" {"€"}
+          input id=(format!("{}-max", id)) placeholder="To" class="h-5 w-[50%] border-none outline-none bg-transparent focus:ring-0 placeholder:text-slate-500 placeholder:text-sm pr-4.5 text-sm";
+        }
+
+      }
+    }
+}
+
 pub fn render_search_box_selection(
     title: &str,
     hx_get: &str,
@@ -274,11 +320,17 @@ pub fn render_search_box_selection(
         "relative flex justify-center items-center"
     };
 
-    let mut dropdown_items_class = "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-hidden z-1";
+    let dropdown_items_class = if title != "Listing Type" {
+        "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-auto z-1"
+    } else {
+        "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-hidden z-1"
+    };
 
-    if title != "Listing Type" {
-        dropdown_items_class = "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-scroll z-1"
-    }
+    let title_container_class = if title != "Price" {
+        "flex gap-1 cursor-pointer justify-center items-center w-full"
+    } else {
+        "flex gap-1 justify-center items-center w-full"
+    };
 
     html! {
       div
@@ -290,9 +342,11 @@ pub fn render_search_box_selection(
       {
         div class="flex flex-col gap-4" {
           div class="flex" {
-            div id=(dropdown_id) class="flex items-end gap-1 cursor-pointer" {
+            div id=(dropdown_id) class=(title_container_class) {
               span class="font-semibold" {(title)}
-              (drop_down_icon())
+              @if title != "Price" {
+                (drop_down_icon())
+              }
             }
             div id=(format!("{}-items", dropdown_id)) class=(dropdown_items_class) {
               "Loading..."
@@ -310,21 +364,26 @@ pub fn render_home_search_box() -> Markup {
     html! {
       (PreEscaped(r#"
         <script type="module">
-            import {setupDropdown} from "/assets/js/app/searchbox.js";
+            import {setupDropdown, setupPriceInput} from "/assets/js/app/searchbox.js";
             setupDropdown();
         </script>
       "#))
-      div class="right-0 bottom-0 left-0 absolute flex justify-center items-center bg-[rgba(255,255,255,0.8)] p-6 h-50" {
-        div class="grid grid-cols-[300px_170px_170px_170px_170px_100px_100px] w-full max-w-6xl" {
+      div class="right-0 bottom-0 left-0 absolute flex justify-center items-center bg-[rgba(255,255,255,0.8)] p-6 h-60 flex-col gap-6" {
+        div class="grid grid-cols-[300px_170px_170px_170px_200px_100px_100px] w-full max-w-7xl justify-center" {
           div class="flex justify-end items-center pr-3" {
             input class="rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
           (render_search_box_selection("Listing Type", "/app/listing-type?demo=true", "listing-type-dropdown", "listing-type-label"))
           (render_search_box_selection("Location", "/rso/location?demo=true", "location-dropdown", "location-label"))
           (render_search_box_selection("Property Types", "/rso/property-types?demo=true", "property-types-dropdown", "property-types-label"))
-          // (render_search_box_selection("Price"))
-          // (render_search_box_selection("Bath"))
-          // (render_search_box_selection("Bed"))
+          (render_search_box_selection("Price", "/app/prices", "price-dropdown", "price-label"))
+          (render_search_box_selection("Bath", "/app/baths", "bath-dropdown", "bath-label"))
+          (render_search_box_selection("Bed", "/app/beds", "bed-dropdown", "bed-label"))
+        }
+        div {
+          button class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-14 rounded-md cursor-pointer" {
+            "Search"
+          }
         }
       }
     }

@@ -4,19 +4,6 @@
 
 @variant dark (&:is(.dark *));
 
-/* @theme {
-  --animate-dropdown: dropdown 0.5s;
-  @keyframes dropdown {
-    50% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
-} */
-
 @layer base {
   *,
   ::after,

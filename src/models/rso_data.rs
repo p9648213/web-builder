@@ -7,7 +7,7 @@ use crate::utilities::db::{excute, query_optional};
 
 use super::error::AppError;
 
-const RSO_URL: &str = "http://release-238.git.env1.resales-online.com/WebApi/V6-0";
+const RSO_URL: &str = "https://webapi.resales-online.com/V6";
 
 //........................................
 //.RRRRRRRRR......SSSSSS.......OOOOOO.....
@@ -199,7 +199,7 @@ impl RsoData {
             ("P_SortType", params.p_sort_type),
             ("P_All", params.p_all),
             ("P_IgnoreHash", params.p_ignore_hash),
-            ("P_Lange", params.p_lang),
+            ("P_Lang", params.p_lang),
         ];
 
         let url = reqwest::Url::parse_with_params(

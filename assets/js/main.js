@@ -96,8 +96,18 @@ window.addEventListener("toastmessage", function (event) {
 //....................................................
 htmx.config.defaultSettleDelay = 0;
 
-window.addEventListener("htmx:beforeRequest", function (_) {
+window.addEventListener("htmx:beforeRequest", function (event) {
   NProgress.start();
+
+  if (event?.detail?.pathInfo?.requestPath?.includes("/rso/location")) {
+    const locationDropdownEl = document.getElementById("location-dropdown");
+    locationDropdownEl.classList.add("disable-link");
+  }
+
+  if (event?.detail?.pathInfo?.requestPath?.includes("/rso/property-types")) {
+    const propertyTypeEl = document.getElementById("property-types-dropdown");
+    propertyTypeEl.classList.add("disable-link");
+  }
 
   const loginLinkEl = document.getElementById("login-link");
   const registerLinkEl = document.getElementById("register-link");
@@ -114,6 +124,16 @@ window.addEventListener("htmx:beforeRequest", function (_) {
 window.addEventListener("htmx:afterRequest", function (event) {
   const loginLinkEl = document.getElementById("login-link");
   const registerLinkEl = document.getElementById("register-link");
+
+  if (event?.detail?.pathInfo?.requestPath?.includes("/rso/location")) {
+    const locationDropdownEl = document.getElementById("location-dropdown");
+    locationDropdownEl.classList.remove("disable-link");
+  }
+
+  if (event?.detail?.pathInfo?.requestPath?.includes("/rso/property-types")) {
+    const propertyTypeEl = document.getElementById("property-types-dropdown");
+    propertyTypeEl.classList.remove("disable-link");
+  }
 
   if (loginLinkEl) {
     loginLinkEl.classList.remove("disable-link");
@@ -135,9 +155,9 @@ window.addEventListener("htmx:afterRequest", function (event) {
   }
 });
 
-window.addEventListener("htmx:configRequest", function (evt) {
-  if (evt.detail.verb !== "get") {
-    evt.detail.headers["X-Csrf-Protection"] = "1";
+window.addEventListener("htmx:configRequest", function (event) {
+  if (event.detail.verb !== "get") {
+    event.detail.headers["X-Csrf-Protection"] = "1";
   }
 });
 
