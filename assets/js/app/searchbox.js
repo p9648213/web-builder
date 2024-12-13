@@ -3,9 +3,11 @@ export function setupDropdown() {
     "listing-type-dropdown"
   );
   const dropDownLocationEl = document.getElementById("location-dropdown");
+  const dropDownPropertyEl = document.getElementById("property-types-dropdown");
 
   addEventListenerToDropdown(dropDownListingTypeEl, "listingType");
   addEventListenerToDropdown(dropDownLocationEl, "location");
+  addEventListenerToDropdown(dropDownPropertyEl, "propertyType");
 }
 
 function addEventListenerToDropdown(dropDownContainerEl, type) {
@@ -20,11 +22,11 @@ function addEventListenerToDropdown(dropDownContainerEl, type) {
 
     let height = 1.93 * childNode.length;
 
-    if (type == "location") {
+    if (type !== "listingType") {
       height = 2.1 * childNode.length;
     }
 
-    if (childNode.length < 6 && type === "location") {
+    if (childNode.length < 6 && type !== "listingType") {
       dropDownEl.classList.remove("overflow-scroll");
       dropDownEl.classList.add("overflow-hidden");
     }

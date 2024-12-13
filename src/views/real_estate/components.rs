@@ -1,9 +1,26 @@
 use maud::{html, Markup, PreEscaped};
+use tailwind_fuse::tw_merge;
 
 use crate::{
-    models::rso_data::{LocationDynamic, ProvinceAreaDynamic},
+    models::rso_data::{LocationDynamic, PropertyType, ProvinceAreaDynamic},
     views::icons::{drop_down_icon, mail_icon, phone_icon},
 };
+
+//......................................
+//.NNNN....NNN.....AAAA...AAAV.....VVV..
+//.NNNN....NNN.....AAAAA...AAV.....VVV..
+//.NNNNN...NNN.....AAAAA...AAVV....VVV..
+//.NNNNN...NNN....AAAAAA...AAVV...VVVV..
+//.NNNNNN..NNN....AAAAAAA...AVV...VVVV..
+//.NNNNNNN.NNN...AAAA.AAA...AVVV..VVV...
+//.NNN.NNN.NNN...AAA..AAAA..AVVV.VVVV...
+//.NNN.NNNNNNN...AAAAAAAAA...VVV.VVVV...
+//.NNN..NNNNNN..AAAAAAAAAA...VVVVVVV....
+//.NNN..NNNNNN..AAAAAAAAAAA..VVVVVVV....
+//.NNN...NNNNN..AAA.....AAA...VVVVV.....
+//.NNN....NNNN.NAAA.....AAAA..VVVVV.....
+//.NNN....NNNN.NAA......AAAA..VVVVV.....
+//......................................
 
 pub fn render_nav_bar() -> Markup {
     html! {
@@ -76,6 +93,22 @@ pub fn render_nav_bar() -> Markup {
     }
 }
 
+//..............................................................................
+//.BBBBBBBBB.......AAAA......NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRR....
+//.BBBBBBBBBBB.....AAAAA.....NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRRRR..
+//.BBBBBBBBBBB.....AAAAA.....NNNNN...NNN..NNNNN...NNN..EEEEEEEEEE..RRRRRRRRRRR..
+//.BBB.....BBB....AAAAAA.....NNNNN...NNN..NNNNN...NNN..EEE.........RRR.....RRR..
+//.BBB.....BBB....AAAAAAA....NNNNNN..NNN..NNNNNN..NNN..EEE.........RRR.....RRR..
+//.BBBBBBBBBB....AAAA.AAA....NNNNNNN.NNN..NNNNNNN.NNN..EEEEEEEEEE..RRRRRRRRRRR..
+//.BBBBBBBBBB....AAA..AAAA...NNN.NNN.NNN..NNN.NNN.NNN..EEEEEEEEEE..RRRRRRRRRR...
+//.BBBBBBBBBBB...AAAAAAAAA...NNN.NNNNNNN..NNN.NNNNNNN..EEEEEEEEEE..RRRRRRRR.....
+//.BBB.....BBBB.AAAAAAAAAA...NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR..RRRR....
+//.BBB.....BBBB.AAAAAAAAAAA..NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR...RRRR...
+//.BBBBBBBBBBB..AAA.....AAA..NNN...NNNNN..NNN...NNNNN..EEEEEEEEEEE.RRR....RRRR..
+//.BBBBBBBBBBB.BAAA.....AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR....RRRR..
+//.BBBBBBBBBB..BAA......AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR.....RRR..
+//..............................................................................
+
 pub fn render_home_banner() -> Markup {
     html! {
       div class="flex justify-center items-center w-full" {
@@ -126,12 +159,12 @@ pub fn render_location_selection_drop_down(
               @match province_area.locations.location {
                 LocationDynamic::Single(location) => {
                   @let id = format!("{}-child", location);
-                  (render_check_box(location.as_str(), id.as_str(), None));
+                  (render_check_box(location.as_str(), None, id.as_str(), None, None));
                 },
                 LocationDynamic::Multiple(locations) => {
                   @for location in locations {
                     @let id = format!("{}-child", location);
-                    (render_check_box(location.as_str(), id.as_str(), None));
+                    (render_check_box(location.as_str(), None, id.as_str(), None, None));
                   }
                 },
               }
@@ -162,17 +195,30 @@ pub fn render_location_selection_drop_down(
               @match province_area.locations.location {
                 LocationDynamic::Single(location) => {
                   @let id = format!("{}-child", location);
-                  (render_check_box(location.as_str(), id.as_str(), None));
+                  (render_check_box(location.as_str(), None, id.as_str(), None, None));
                 },
                 LocationDynamic::Multiple(locations) => {
                   @for location in locations {
                     @let id = format!("{}-child", location);
-                    (render_check_box(location.as_str(), id.as_str(), None));
+                    (render_check_box(location.as_str(), None, id.as_str(), None, None));
                   }
                 },
               }
             }
           },
+        }
+      }
+    }
+}
+
+pub fn render_property_types_selection_drop_down(property_types: Vec<PropertyType>) -> Markup {
+    html! {
+      div class="flex flex-col gap-3" {
+        @for property_type in property_types {
+          (render_check_box(property_type.prop_type.as_str(), Some(property_type.option_value.as_str()) , property_type.option_value.as_str(), None, Some("ml-0")));
+          @for sub_type in property_type.sub_types {
+            (render_check_box(sub_type.prop_sub_type.as_str(), Some(property_type.option_value.as_str()), sub_type.sub_type_option_value.as_str(), None, None));
+          }
         }
       }
     }
@@ -187,10 +233,22 @@ pub fn render_input_radio(value: &str, name: &str, id: &str, checked: Option<boo
     }
 }
 
-pub fn render_check_box(name: &str, id: &str, checked: Option<bool>) -> Markup {
+pub fn render_check_box(
+    name: &str,
+    value: Option<&str>,
+    id: &str,
+    checked: Option<bool>,
+    tw_class: Option<&str>,
+) -> Markup {
+    let class = if let Some(tw_class) = tw_class {
+        tw_merge!("flex items-center gap-2 ml-5 text-sm", tw_class)
+    } else {
+        "flex items-center gap-2 ml-5 text-sm".to_string()
+    };
+
     html! {
-      div class="flex items-center gap-2 ml-5 text-sm" {
-        input class="rounded-sm" type="checkbox" name=(name) id=(id) checked=[checked];
+      div class=(class) {
+        input class="rounded-sm" type="checkbox" name=(name) value=[value] id=(id) checked=[checked];
         label for=(id) {(name)}
       }
     }
@@ -216,10 +274,10 @@ pub fn render_search_box_selection(
         "relative flex justify-center items-center"
     };
 
-    let mut dropdown_items_class = "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-hidden";
+    let mut dropdown_items_class = "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-hidden z-1";
 
-    if title == "Location" {
-        dropdown_items_class = "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-scroll"
+    if title != "Listing Type" {
+        dropdown_items_class = "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-scroll z-1"
     }
 
     html! {
@@ -263,7 +321,7 @@ pub fn render_home_search_box() -> Markup {
           }
           (render_search_box_selection("Listing Type", "/rso/listing-type?demo=true", "listing-type-dropdown", "listing-type-label"))
           (render_search_box_selection("Location", "/rso/location?demo=true", "location-dropdown", "location-label"))
-          // (render_search_box_selection("Property Types"))
+          (render_search_box_selection("Property Types", "/rso/property-types?demo=true", "property-types-dropdown", "property-types-label"))
           // (render_search_box_selection("Price"))
           // (render_search_box_selection("Bath"))
           // (render_search_box_selection("Bed"))

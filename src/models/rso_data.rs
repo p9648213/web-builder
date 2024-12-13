@@ -7,7 +7,23 @@ use crate::utilities::db::{excute, query_optional};
 
 use super::error::AppError;
 
-const RSO_URL: &str = "https://webapi.resales-online.com/V6/SearchLocations.php";
+const RSO_URL: &str = "http://release-238.git.env1.resales-online.com/WebApi/V6-0";
+
+//........................................
+//.RRRRRRRRR......SSSSSS.......OOOOOO.....
+//.RRRRRRRRRRR..SSSSSSSSS....OOOOOOOOOO...
+//.RRRRRRRRRRR..SSSSSSSSSS..OOOOOOOOOOOO..
+//.RRR.....RRR..SSS...SSSS..OOOO....OOOO..
+//.RRR.....RRR..SSSS........OOO......OOO..
+//.RRRRRRRRRRR..SSSSSSS....SOOO......OOO..
+//.RRRRRRRRRR....SSSSSSSS..SOOO......OOO..
+//.RRRRRRRR........SSSSSSS.SOOO......OOO..
+//.RRR..RRRR...........SSSS.OOO......OOO..
+//.RRR...RRRR..RSSS....SSSS.OOOO....OOOO..
+//.RRR....RRRR..SSSSSSSSSS..OOOOOOOOOOOO..
+//.RRR....RRRR..SSSSSSSSSS...OOOOOOOOOO...
+//.RRR.....RRRR...SSSSSS.......OOOOOO.....
+//........................................
 
 pub struct RsoData {
     pub id: Option<i32>,
@@ -144,7 +160,11 @@ impl RsoData {
             ("P_IgnoreHash", params.p_ignore_hash),
         ];
 
-        let url = reqwest::Url::parse_with_params(RSO_URL, params).map_err(|err| {
+        let url = reqwest::Url::parse_with_params(
+            format!("{}/SearchLocations.php", RSO_URL).as_str(),
+            params,
+        )
+        .map_err(|err| {
             tracing::error!("Error parse rso location params: {}", err.to_string());
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
@@ -155,7 +175,7 @@ impl RsoData {
         })?;
 
         let text = response.text().await.map_err(|err| {
-            tracing::error!("Error getting rso location: {}", err.to_string());
+            tracing::error!("Error parsing rso location text: {}", err.to_string());
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
@@ -166,7 +186,68 @@ impl RsoData {
 
         Ok(location)
     }
+
+    pub async fn get_rso_property_type(
+        params: PropertyTypeParams,
+    ) -> Result<PropertyTypeResponse, AppError> {
+        let params = [
+            ("p_agency_filterid", params.p_agency_filterid),
+            ("p1", params.p1),
+            ("p2", params.p2),
+            ("P_sandbox", params.p_sandbox),
+            ("benchmark", params.benchmark),
+            ("P_SortType", params.p_sort_type),
+            ("P_All", params.p_all),
+            ("P_IgnoreHash", params.p_ignore_hash),
+            ("P_Lange", params.p_lang),
+        ];
+
+        let url = reqwest::Url::parse_with_params(
+            format!("{}/SearchPropertyTypes.php", RSO_URL).as_str(),
+            params,
+        )
+        .map_err(|err| {
+            tracing::error!("Error parse rso property type params: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let response = reqwest::get(url).await.map_err(|err| {
+            tracing::error!("Error getting rso property type: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let text = response.text().await.map_err(|err| {
+            tracing::error!("Error parsing rso property type text: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let property_type: PropertyTypeResponse = serde_json::from_str(&text).map_err(|err| {
+            tracing::error!(
+                "Failed to deserialize rso property type: {}",
+                err.to_string()
+            );
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        Ok(property_type)
+    }
 }
+
+//..............................................................................................
+//.LLL...........OOOOOO........CCCCCC.......AAAA....AATTTTTTTTTTTII....OOOOOOO....OONN....NNNN..
+//.LLL.........OOOOOOOOOO....CCCCCCCCC......AAAAA...AATTTTTTTTTTTII...OOOOOOOOO...OONNN...NNNN..
+//.LLL........OOOOOOOOOOOO..CCCCCCCCCCC.....AAAAA...AATTTTTTTTTTTII..IOOOOOOOOOO..OONNN...NNNN..
+//.LLL........OOOO....OOOO..CCCC...CCCC....AAAAAA.......TTTT...TTII.IIOOO...OOOOO.OONNNN..NNNN..
+//.LLL........OOO......OOO..CCC.....CC.....AAAAAAA......TTTT...TTII.IIOO.....OOOO.OONNNNN.NNNN..
+//.LLL.......LOOO......OOOOOCCC...........AAAA.AAA......TTTT...TTII.IIO.......OOO.OONNNNN.NNNN..
+//.LLL.......LOOO......OOOOOCCC...........AAA..AAAA.....TTTT...TTII.IIO.......OOO.OONNNNNNNNNN..
+//.LLL.......LOOO......OOOOOCCC...........AAAAAAAAA.....TTTT...TTII.IIO.......OOO.OONN.NNNNNNN..
+//.LLL........OOO......OOO..CCC.....CC...AAAAAAAAAA.....TTTT...TTII.IIOO.....OOOO.OONN.NNNNNNN..
+//.LLL........OOOO....OOOO..CCCC...CCCC..AAAAAAAAAAA....TTTT...TTII.IIOOO...OOOOO.OONN..NNNNNN..
+//.LLLLLLLLLL.OOOOOOOOOOOO..CCCCCCCCCCC..AAA.....AAA....TTTT...TTII..IOOOOOOOOOO..OONN..NNNNNN..
+//.LLLLLLLLLL..OOOOOOOOOO....CCCCCCCCC..CAAA.....AAAA...TTTT...TTII...OOOOOOOOO...OONN...NNNNN..
+//.LLLLLLLLLL....OOOOOO........CCCCCC...CAA......AAAA...TTTT...TTII....OOOOOOO....OONN....NNNN..
+//..............................................................................................
 
 pub struct LocationParams {
     pub p_agency_filterid: String,
@@ -191,7 +272,7 @@ pub struct Transaction {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct QueryInfo {
+pub struct LocationQueryInfo {
     #[serde(rename = "ApiId")]
     pub api_id: u32,
     #[serde(rename = "LocationCount")]
@@ -238,7 +319,76 @@ pub struct LocationData {
 pub struct LocationResponse {
     pub transaction: Transaction,
     #[serde(rename = "QueryInfo")]
-    pub query_info: QueryInfo,
+    pub query_info: LocationQueryInfo,
     #[serde(rename = "LocationData")]
     pub location_data: LocationData,
+}
+
+//.........................................................................
+//.PPPPPPPPP...RRRRRRRRR....TTTTTTTTTTTYYY....YYYY.PPPPPPPPP...EEEEEEEEEE..
+//.PPPPPPPPPP..RRRRRRRRRRR..TTTTTTTTTTTYYY....YYY..PPPPPPPPPP..EEEEEEEEEE..
+//.PPPPPPPPPP..RRRRRRRRRRR..TTTTTTTTTTTYYYY..YYYY..PPPPPPPPPP..EEEEEEEEEE..
+//.PPP....PPPP.RRR.....RRR......TTT.....YYY..YYY...PPP....PPPP.EEE.........
+//.PPP....PPPP.RRR.....RRR......TTT.....YYYYYYYY...PPP....PPPP.EEE.........
+//.PPPPPPPPPP..RRRRRRRRRRR......TTT......YYYYYY....PPPPPPPPPP..EEEEEEEEEE..
+//.PPPPPPPPPP..RRRRRRRRRR.......TTT.......YYYY.....PPPPPPPPPP..EEEEEEEEEE..
+//.PPPPPPPPP...RRRRRRRR.........TTT.......YYYY.....PPPPPPPPP...EEEEEEEEEE..
+//.PPP.........RRR..RRRR........TTT.......YYYY.....PPP.........EEE.........
+//.PPP.........RRR...RRRR.......TTT.......YYYY.....PPP.........EEE.........
+//.PPP.........RRR....RRRR......TTT.......YYYY.....PPP.........EEEEEEEEEE..
+//.PPP.........RRR....RRRR......TTT.......YYYY.....PPP.........EEEEEEEEEE..
+//.PPP.........RRR.....RRRR.....TTT.......YYYY.....PPP.........EEEEEEEEEE..
+//.........................................................................
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyTypeParams {
+    pub p_agency_filterid: String,
+    pub p1: String,
+    pub p2: String,
+    pub p_sandbox: String,
+    pub benchmark: String,
+    pub p_sort_type: String,
+    pub p_all: String,
+    pub p_ignore_hash: String,
+    pub p_lang: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyTypeResponse {
+    pub transaction: Transaction,
+    #[serde(rename = "QueryInfo")]
+    pub query_info: PropertyTypeQueryInfo,
+    #[serde(rename = "PropertyTypes")]
+    pub property_types: PropertyTypes,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyTypeQueryInfo {
+    #[serde(rename = "ApiId")]
+    pub api_id: u32,
+    #[serde(rename = "PropertyTypesCount")]
+    pub property_types_count: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyTypes {
+    #[serde(rename = "PropertyType")]
+    pub property_type: Vec<PropertyType>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyType {
+    #[serde(rename = "Type")]
+    pub prop_type: String,
+    #[serde(rename = "OptionValue")]
+    pub option_value: String,
+    #[serde(rename = "SubType")]
+    pub sub_types: Vec<PropertySubType>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertySubType {
+    #[serde(rename = "Type")]
+    pub prop_sub_type: String,
+    #[serde(rename = "OptionValue")]
+    pub sub_type_option_value: String,
 }
