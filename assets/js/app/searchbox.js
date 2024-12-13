@@ -13,11 +13,11 @@ export function setupDropdown() {
   addEventListenerToDropdown(dropDownBedsEl, "bed");
   addEventListenerToDropdown(dropDownBathsEl, "bath");
 
-  handleClickOutsideDropdown(dropDownListingTypeEl);
-  handleClickOutsideDropdown(dropDownLocationEl);
-  handleClickOutsideDropdown(dropDownPropertyEl);
-  handleClickOutsideDropdown(dropDownBedsEl);
-  handleClickOutsideDropdown(dropDownBathsEl);
+  handleClickOutsideDropdown(dropDownListingTypeEl, "listingType");
+  handleClickOutsideDropdown(dropDownLocationEl, "location");
+  handleClickOutsideDropdown(dropDownPropertyEl, "propertyType");
+  handleClickOutsideDropdown(dropDownBedsEl, "bed");
+  handleClickOutsideDropdown(dropDownBathsEl, "bath");
 }
 
 function addEventListenerToDropdown(dropDownContainerEl, type) {
@@ -77,7 +77,7 @@ function hideShowDropdown(dropDownEl, type) {
   }
 }
 
-function handleClickOutsideDropdown(dropDownContainerEl) {
+function handleClickOutsideDropdown(dropDownContainerEl, type) {
   document.addEventListener("click", (event) => {
     if (event.target === dropDownContainerEl) {
       return;
@@ -85,6 +85,10 @@ function handleClickOutsideDropdown(dropDownContainerEl) {
 
     const dropDownEl =
       dropDownContainerEl.parentElement.querySelector(".dropdown");
+
+    if (type !== "listingType" && dropDownEl.contains(event.target)) {
+      return;
+    }
 
     if (!dropDownContainerEl.contains(event.target)) {
       dropDownEl.style.height = 0;
