@@ -2,8 +2,8 @@ use maud::{html, Markup, PreEscaped};
 use tailwind_fuse::tw_merge;
 
 use crate::{
-    models::rso_data::{LocationDynamic, PropertyType, ProvinceAreaDynamic},
-    views::icons::{drop_down_icon, mail_icon, phone_icon},
+    models::rso_data::{LocationDynamic, Property, PropertyType, ProvinceAreaDynamic, TextOrNum},
+    views::icons::{bath_icon, bed_icon, buit_size_icon, drop_down_icon, mail_icon, phone_icon},
 };
 
 //......................................
@@ -412,18 +412,105 @@ pub fn render_home_search_box() -> Markup {
 pub fn render_hot_property() -> Markup {
     html! {
       div class="flex justify-center items-center" {
-        div class="flex flex-col justify-center items-center gap-10 px-15 py-10 w-full" {
-          div class="flex flex-col gap-4" {
-            h3 class="font-bold text-xl" {
-              "View our featured listings"
+        div class="flex justify-center px-15 py-10 w-full" {
+          div class="flex flex-col gap-12" {
+            div class="flex flex-col gap-4" {
+              h3 class="font-bold text-2xl" {
+                "View our featured listings"
+              }
+              p class="max-w-120 text-xl" {
+                "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"
+              }
+              div class="border-b-3 border-b-black border-b-solid w-8" {}
             }
-            p class="max-w-120" {
-              "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"
+            div
+              hx-get="/rso/properties-slider"
+              hx-trigger="load"
+              hx-swap="innerHTML"
+            {
+              "Loading..."
             }
-            div class="border-b-3 border-b-black border-b-solid w-8" {}
           }
-          div id="hot-properties-slider" {
-            "Loading..."
+        }
+      }
+    }
+}
+
+pub fn render_hot_property_slider(hot_properties: Vec<Property>) -> Markup {
+    let mut properties_chunks = vec![];
+
+    let mut i = 0;
+    let mut j;
+
+    while i < hot_properties.len() {
+        let mut chunk = vec![];
+        j = i;
+        while j < i + 6 && j < hot_properties.len() {
+            chunk.push(&hot_properties[j]);
+            j = j + 1;
+        }
+        properties_chunks.push(chunk);
+        i = i + 6;
+    }
+
+    html! {
+      (PreEscaped(r#"
+        <script type="module">
+            import {setupHotPropertySlider} from "/assets/js/app/slider.js";
+            setupHotPropertySlider();
+        </script>
+      "#))
+      div id="hot-properties-slider" class="max-w-5xl flex overflow-x-hidden py-3" {
+        @for property_chunk in &properties_chunks {
+          div class="grid grid-cols-[292px_292px_292px] gap-10 pl-12" {
+            @for property in property_chunk {
+              (render_hot_property_card(property))
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_hot_property_card(property: &Property) -> Markup {
+    html! {
+      div class="flex flex-col gap-2 rounded-lg overflow-hidden shadow-md" {
+        div class="h-42" {
+          img class="h-full w-full" src=(property.pictures.picture[0].picture_url);
+        }
+        div class="flex flex-col gap-2 px-3 py-2" {
+          div class="font-bold" {
+            @if property.newdev_name == "" {
+              (property.property_type.name_type)
+            }@else {
+              (property.newdev_name)
+            }
+          }
+          div class="text-lg font-bold text-blue-500" {
+            (property.price) " €"
+          }
+          div class="text-sm" {
+            (property.location)
+          }
+          div class="text-sm flex gap-4" {
+            div class="flex gap-2 items-center" {
+              (bed_icon())
+              (property.bedrooms)
+            }
+            div class="flex gap-2 items-center" {
+              (bath_icon())
+              (property.bathrooms)
+            }
+            div class="flex gap-2 items-center" {
+              (buit_size_icon())
+              @match &property.built {
+                  TextOrNum::Text(built) => (built),
+                  TextOrNum::Num(built) => (built),
+              }
+              @if property.dimensions == "Metres" {
+                "m²"
+              }
+            }
           }
         }
       }

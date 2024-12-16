@@ -11,7 +11,7 @@ use crate::{
         real_estate::{
             data::{get_baths, get_beds, get_listing_type, get_price},
             demo::get_real_estate_demo_page,
-            rso_data::{get_locations, get_property_types},
+            rso_data::{get_locations, get_property_types, get_property_types_slider},
         },
     },
     middlewares::{auth::auth_middleware, csrf::csrf_middleware},
@@ -103,7 +103,8 @@ pub async fn create_router(
 
     let rso_routes = Router::new()
         .route("/location", get(get_locations))
-        .route("/property-types", get(get_property_types));
+        .route("/property-types", get(get_property_types))
+        .route("/properties-slider", get(get_property_types_slider));
 
     let web_app_routes = Router::new()
         .route("/listing-type", get(get_listing_type))
