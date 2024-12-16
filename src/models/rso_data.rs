@@ -1,6 +1,9 @@
 use deadpool_postgres::Pool;
 use reqwest::StatusCode;
-use serde::{Deserialize, Serialize};
+use serde::{
+    de::{self, Visitor},
+    Deserialize, Serialize,
+};
 use tokio_postgres::Row;
 
 use crate::utilities::db::{excute, query_optional};
@@ -391,4 +394,208 @@ pub struct PropertySubType {
     pub prop_sub_type: String,
     #[serde(rename = "OptionValue")]
     pub sub_type_option_value: String,
+}
+
+//....................................................
+//.PPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP...
+//.PPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..
+//.PPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..
+//.PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPP..
+//.PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPP..
+//.PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP..
+//.PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP..
+//.PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP...
+//.PPP.........RRR..RRRR....OOO......OOO..PPP.........
+//.PPP.........RRR...RRRR...OOOO....OOOO..PPP.........
+//.PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.........
+//.PPP.........RRR....RRRR...OOOOOOOOOO...PPP.........
+//.PPP.........RRR.....RRRR....OOOOOO.....PPP.........
+//....................................................
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyParams {
+    pub p_agency_filterid: String,
+    pub p1: String,
+    pub p2: String,
+    pub p_lang: String,
+    pub p_sort_type: String,
+    pub benchmark: String,
+    pub p_sandbox: String,
+    pub p_currency: String,
+    pub p_images: String,
+    pub p_ignore_hash: String,
+    pub p_shownewdevname: String,
+    pub p_include_rented: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyTransaction {
+    pub status: String,
+    #[serde(rename = "incomingIp")]
+    pub incoming_ip: String,
+    pub version: String,
+    pub subversion: String,
+    pub service: String,
+    pub datetime: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyQueryInfo {
+    #[serde(rename = "ApiId")]
+    pub app_id: String,
+    #[serde(rename = "QueryId")]
+    pub query_id: String,
+    #[serde(rename = "SearchType")]
+    pub search_type: String,
+    #[serde(rename = "PropertyCount")]
+    pub property_count: u32,
+    #[serde(rename = "CurrentPage")]
+    pub current_page: u32,
+    #[serde(rename = "PropertiesPerPage")]
+    pub properties_per_page: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Property {
+    pub reference: String,
+    pub newdev_name: String,
+    pub agency_ref: String,
+    pub country: String,
+    pub province: String,
+    pub area: String,
+    pub location: String,
+    pub sub_location: String,
+    pub property_type: TypeProperty,
+    pub status: StatusProperty,
+    pub bedrooms: String,
+    pub bathrooms: String,
+    pub currency: String,
+    pub price: String,
+    pub original_price: String,
+    pub dimensions: String,
+    pub built: String,
+    pub terrace: String,
+    pub garden_plot: String,
+    pub co2_rated: String,
+    pub energy_rated: String,
+    pub own_property: String,
+    pub pool: u32,
+    pub parking: u32,
+    pub garden: u32,
+    pub description: u32,
+    pub property_features: PropertyFeatures,
+    pub pictures: PropertyPictures,
+}
+
+#[derive(Debug, Serialize)]
+pub struct TypeProperty {
+    pub name_type: String,
+    pub property_type: String,
+    pub type_id: String,
+    pub subtypes: Vec<Subtype>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Subtype {
+    pub name: String,
+    pub id: String,
+}
+
+impl<'a> Deserialize<'a> for TypeProperty {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'a>,
+    {
+        struct PropertyTypeVisitor;
+
+        impl<'a> Visitor<'a> for PropertyTypeVisitor {
+            type Value = TypeProperty;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("a map with dynamic subtype fields")
+            }
+
+            fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
+            where
+                A: serde::de::MapAccess<'a>,
+            {
+                let mut name_type = None;
+                let mut property_type = None;
+                let mut type_id = None;
+                let mut subtypes: Vec<Subtype> = Vec::new();
+
+                let mut subtype_names = std::collections::HashMap::new();
+                let mut subtype_ids = std::collections::HashMap::new();
+
+                while let Some(key) = map.next_key::<String>()? {
+                    match key.as_str() {
+                        "NameType" => name_type = Some(map.next_value()?),
+                        "Type" => property_type = Some(map.next_value()?),
+                        "TypeId" => type_id = Some(map.next_value()?),
+                        key if key.starts_with("SubtypeId") => {
+                            let id: String = map.next_value()?;
+                            subtype_ids
+                                .insert(key.strip_prefix("SubtypeId").unwrap().to_string(), id);
+                        }
+                        key if key.starts_with("Subtype") => {
+                            let name: String = map.next_value()?;
+                            subtype_names
+                                .insert(key.strip_prefix("Subtype").unwrap().to_string(), name);
+                        }
+                        _ => {
+                            let _: serde_json::Value = map.next_value()?;
+                        }
+                    }
+                }
+
+                for (key, name) in subtype_names {
+                    if let Some(id) = subtype_ids.get(&key) {
+                        subtypes.push(Subtype {
+                            name,
+                            id: id.clone(),
+                        });
+                    }
+                }
+
+                Ok(TypeProperty {
+                    name_type: name_type.ok_or_else(|| de::Error::missing_field("NameType"))?,
+                    property_type: property_type.ok_or_else(|| de::Error::missing_field("Type"))?,
+                    type_id: type_id.ok_or_else(|| de::Error::missing_field("TypeId"))?,
+                    subtypes,
+                })
+            }
+        }
+
+        deserializer.deserialize_map(PropertyTypeVisitor)
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct StatusProperty {
+    pub system: String,
+    pub en: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyFeatures {
+    category: PropertyCategory,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyCategory {
+    category_type: String,
+    category_value: Vec<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyPictures {
+    count: u32,
+    picture: Vec<PropertyPicture>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyPicture {
+    pub id: u32,
+    pub picture_url: String,
+    pub picture_caption: String,
 }

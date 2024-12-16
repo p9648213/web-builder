@@ -1,7 +1,7 @@
 use maud::PreEscaped;
 
 use crate::views::real_estate::{
-    components::{render_home_banner, render_home_search_box, render_nav_bar},
+    components::{render_home_banner, render_home_search_box, render_hot_property, render_nav_bar},
     head::render_main_head,
 };
 
@@ -20,6 +20,7 @@ pub fn render_home_page() -> maud::Markup {
                 (render_nav_bar())
                 (render_home_banner())
                 (render_home_search_box())
+                (render_hot_property())
             }
             div id="toast" {}
         }

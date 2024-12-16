@@ -145,21 +145,21 @@ pub fn render_selection_drop_down(choices: Vec<&str>, highlight: &str) -> Markup
 
 pub fn render_beds_baths_selection_drop_down(choices: Vec<&str>, highlight: &str) -> Markup {
     html! {
-      div class="flex justify-center h-full text-sm gap-4 flex-col px-2" {
-        div class="flex border border-slate-900 rounded-md h-10" {
+      div class="flex flex-col justify-center gap-4 px-2 h-full text-sm" {
+        div class="flex border-slate-900 border rounded-md h-10" {
           @for choice in choices {
             @if choice == highlight {
-              div class="flex w-10.5 justify-center items-center border-r border-slate-900 first:rounded-tl-md first:rounded-bl-md last:border-none last:rounded-br-md last:rounded-tr-md bg-blue-400 text-white cursor-pointer" {
+              div class="flex justify-center items-center border-slate-900 bg-blue-400 border-r last:border-none first:rounded-tl-md last:rounded-tr-md first:rounded-bl-md last:rounded-br-md w-10.5 text-white cursor-pointer" {
                 (choice)
               }
             }@else {
-              div class="flex w-10.5 justify-center items-center border-r border-slate-900 first:rounded-tl-md first:rounded-bl-md last:border-none last:rounded-br-md last:rounded-tr-md cursor-pointer hover:bg-blue-300 hover:text-white" {
+              div class="flex justify-center items-center border-slate-900 hover:bg-blue-300 border-r last:border-none first:rounded-tl-md last:rounded-tr-md first:rounded-bl-md last:rounded-br-md w-10.5 hover:text-white cursor-pointer" {
                 (choice)
               }
             }
           }
         }
-        div class="flex gap-2 items-center" {
+        div class="flex items-center gap-2" {
           input id="exact" class="rounded-sm" name="exact-checkbox" type="checkbox";
           label for="exact" {"Exact number"}
         }
@@ -296,12 +296,12 @@ pub fn render_price_input(id: &str) -> Markup {
       "#))
       div id=(id) hx-swap-oob="outerHTML" {
         label class="relative" {
-          span class="absolute right-0 top-0 pr-2 text-slate-500 text-sm" {"€"}
-          input id=(format!("{}-min", id)) placeholder="From" class="h-5 w-[50%] outline-none bg-transparent focus:ring-0 border-l-0 border-t-0 border-b-0 border-r border-r-slate-700 pr-4.5 placeholder:text-slate-500 placeholder:text-sm text-sm";
+          span class="top-0 right-0 absolute pr-2 text-slate-500 text-sm" {"€"}
+          input id=(format!("{}-min", id)) placeholder="From" class="bg-transparent pr-4.5 border-t-0 border-r border-r-slate-700 border-b-0 border-l-0 focus:ring-0 w-[50%] h-5 text-sm placeholder:text-slate-500 placeholder:text-sm outline-none";
         }
         label class="relative" {
-          span class="absolute right-0 top-0 pr-2 text-slate-500 text-sm" {"€"}
-          input id=(format!("{}-max", id)) placeholder="To" class="h-5 w-[50%] border-none outline-none bg-transparent focus:ring-0 placeholder:text-slate-500 placeholder:text-sm pr-4.5 text-sm";
+          span class="top-0 right-0 absolute pr-2 text-slate-500 text-sm" {"€"}
+          input id=(format!("{}-max", id)) placeholder="To" class="bg-transparent pr-4.5 border-none focus:ring-0 w-[50%] h-5 text-sm placeholder:text-slate-500 placeholder:text-sm outline-none";
         }
 
       }
@@ -321,7 +321,11 @@ pub fn render_search_box_selection(
     };
 
     let dropdown_items_class = if title != "Listing Type" {
-        "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-auto z-1"
+        if title == "Bed" || title == "Bath" {
+            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-auto z-1 right-0"
+        } else {
+            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-auto z-1"
+        }
     } else {
         "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-hidden z-1"
     };
@@ -368,8 +372,8 @@ pub fn render_home_search_box() -> Markup {
             setupDropdown();
         </script>
       "#))
-      div class="right-0 bottom-0 left-0 absolute flex justify-center items-center bg-[rgba(255,255,255,0.8)] p-6 h-60 flex-col gap-6" {
-        div class="grid grid-cols-[300px_170px_170px_170px_200px_100px_100px] w-full max-w-7xl justify-center" {
+      div class="right-0 bottom-0 left-0 absolute flex flex-col justify-center items-center gap-6 bg-[rgba(255,255,255,0.8)] p-6 h-60" {
+        div class="justify-center grid grid-cols-[300px_170px_170px_170px_200px_100px_100px] w-full max-w-7xl" {
           div class="flex justify-end items-center pr-3" {
             input class="rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
@@ -381,8 +385,45 @@ pub fn render_home_search_box() -> Markup {
           (render_search_box_selection("Bed", "/app/beds", "bed-dropdown", "bed-label"))
         }
         div {
-          button class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-14 rounded-md cursor-pointer" {
+          button class="bg-blue-500 hover:bg-blue-700 px-14 py-3 rounded-md font-semibold text-white cursor-pointer" {
             "Search"
+          }
+        }
+      }
+    }
+}
+
+//......................................................................................................
+//.HHH.....HHH.....OOOOOO.....TTTTTTTTTTTPPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP.....SSSSSS....
+//.HHH.....HHH...OOOOOOOOOO...TTTTTTTTTTTPPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..SSSSSSSSS...
+//.HHH.....HHH..OOOOOOOOOOOO..TTTTTTTTTTTPPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..SSSSSSSSSS..
+//.HHH.....HHH..OOOO....OOOO......TTT....PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPPP.SSS...SSSS..
+//.HHH.....HHH..OOO......OOO......TTT....PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPPP.SSSS........
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP..SSSSSSS.....
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP...SSSSSSSS...
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP......SSSSSSS..
+//.HHH.....HHH..OOO......OOO......TTT....PPP.........RRR..RRRR....OOO......OOO..PPP................SSS..
+//.HHH.....HHH..OOOO....OOOO......TTT....PPP.........RRR...RRRR...OOOO....OOOO..PPP........PSSS....SSS..
+//.HHH.....HHH..OOOOOOOOOOOO......TTT....PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.........SSSSSSSSSS..
+//.HHH.....HHH...OOOOOOOOOO.......TTT....PPP.........RRR....RRRR...OOOOOOOOOO...PPP.........SSSSSSSSSS..
+//.HHH.....HHH.....OOOOOO.........TTT....PPP.........RRR.....RRRR....OOOOOO.....PPP...........SSSSSS....
+//......................................................................................................
+
+pub fn render_hot_property() -> Markup {
+    html! {
+      div class="flex justify-center items-center" {
+        div class="flex flex-col justify-center items-center gap-10 px-15 py-10 w-full" {
+          div class="flex flex-col gap-4" {
+            h3 class="font-bold text-xl" {
+              "View our featured listings"
+            }
+            p class="max-w-120" {
+              "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"
+            }
+            div class="border-b-3 border-b-black border-b-solid w-8" {}
+          }
+          div id="hot-properties-slider" {
+            "Loading..."
           }
         }
       }

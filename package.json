@@ -6,12 +6,12 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.9",
-    "@tailwindcss/postcss": "^4.0.0-beta.4",
+    "@tailwindcss/postcss": "^4.0.0-beta.7",
     "postcss": "8.4.49",
-    "tailwindcss": "^4.0.0-beta.4",
+    "tailwindcss": "^4.0.0-beta.7",
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.0.0-beta.6"
+    "@tailwindcss/cli": "^4.0.0-beta.7"
   }
 }
