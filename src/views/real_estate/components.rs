@@ -3,7 +3,10 @@ use tailwind_fuse::tw_merge;
 
 use crate::{
     models::rso_data::{LocationDynamic, Property, PropertyType, ProvinceAreaDynamic, TextOrNum},
-    views::icons::{bath_icon, bed_icon, buit_size_icon, drop_down_icon, mail_icon, phone_icon},
+    views::icons::{
+        bath_icon, bed_icon, buit_size_icon, drop_down_icon, mail_icon, next_icon, phone_icon,
+        previous_icon,
+    },
 };
 
 //......................................
@@ -437,6 +440,9 @@ pub fn render_hot_property() -> Markup {
 }
 
 pub fn render_hot_property_slider(hot_properties: Vec<Property>) -> Markup {
+    let chunk_size = 6;
+    let total_pages = (hot_properties.len() as f64 / chunk_size as f64).ceil();
+
     let mut properties_chunks = vec![];
 
     let mut i = 0;
@@ -445,27 +451,54 @@ pub fn render_hot_property_slider(hot_properties: Vec<Property>) -> Markup {
     while i < hot_properties.len() {
         let mut chunk = vec![];
         j = i;
-        while j < i + 6 && j < hot_properties.len() {
+        while j < i + chunk_size && j < hot_properties.len() {
             chunk.push(&hot_properties[j]);
             j = j + 1;
         }
         properties_chunks.push(chunk);
-        i = i + 6;
+        i = i + chunk_size;
     }
 
     html! {
       (PreEscaped(r#"
         <script type="module">
-            import {setupHotPropertySlider} from "/assets/js/app/slider.js";
+            import {setupHotPropertySlider, setupHotPropertyPictureSlider} from "/assets/js/app/slider.js";
             setupHotPropertySlider();
+            setupHotPropertyPictureSlider();
         </script>
       "#))
-      div id="hot-properties-slider" class="max-w-5xl flex overflow-x-hidden py-3" {
-        @for property_chunk in &properties_chunks {
-          div class="grid grid-cols-[292px_292px_292px] gap-10 pl-12" {
-            @for property in property_chunk {
-              (render_hot_property_card(property))
+      input id="hot-props-total-pages" type="hidden" value=(total_pages) ;
+      div class="flex justify-end gap-4 mb-4 w-full" {
+        button
+          id="hot-props-previous-button"
+          class="border-slate-600 hover:bg-blue-400 p-2 border border-solid rounded-full cursor-pointer hover:stroke-white stroke-black"
+        {
+          (previous_icon())
+        }
+        button
+          id="hot-props-next-button"
+          class="border-slate-600 hover:bg-blue-400 p-2 border border-solid rounded-full cursor-pointer hover:stroke-white stroke-black"
+        {
+          (next_icon())
+        }
+      }
+      div class="py-3 max-w-5xl overflow-x-hidden" {
+        div id="hot-properties-slider" class="flex gap-10 transition-transform duration-500" {
+          @for property_chunk in &properties_chunks {
+            div class="gap-10 grid grid-cols-[292px_292px_292px] pl-12" {
+              @for property in property_chunk {
+                (render_hot_property_card(property))
+              }
             }
+          }
+        }
+      }
+      div class="flex justify-center gap-2 mt-4 w-full" id="hot-property-dots" {
+        @for i in 0..total_pages as u8 {
+          @if i == 0 {
+            div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+          } @else {
+            div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
           }
         }
       }
@@ -473,12 +506,26 @@ pub fn render_hot_property_slider(hot_properties: Vec<Property>) -> Markup {
 }
 
 pub fn render_hot_property_card(property: &Property) -> Markup {
+    let total_pictures = *&property.pictures.count;
+
     html! {
-      div class="flex flex-col gap-2 rounded-lg overflow-hidden shadow-md" {
-        div class="h-42" {
-          img class="h-full w-full" src=(property.pictures.picture[0].picture_url);
+      div class="relative flex flex-col gap-2 shadow-md rounded-lg overflow-hidden hot-props-picture-container" {
+        div class="flex h-42 transition-transform duration-500 hot-props-picture-slider" {
+          input type="hidden" value=(total_pictures) ;
+          @for picture in &property.pictures.picture {
+            img class="w-full h-full shrink-0" src=(picture.picture_url);
+          }
         }
-        div class="flex flex-col gap-2 px-3 py-2" {
+        div class="bottom-38 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden hot-props-pictures-dots" {
+          @for i in 0..total_pictures as u8 {
+            @if i == 0 {
+              div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+            } @else {
+              div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+            }
+          }
+        }
+        div class="flex flex-col gap-2 px-3 py-2 cursor-pointer" {
           div class="font-bold" {
             @if property.newdev_name == "" {
               (property.property_type.name_type)
@@ -486,22 +533,22 @@ pub fn render_hot_property_card(property: &Property) -> Markup {
               (property.newdev_name)
             }
           }
-          div class="text-lg font-bold text-blue-500" {
+          div class="font-bold text-blue-500 text-lg" {
             (property.price) " €"
           }
           div class="text-sm" {
             (property.location)
           }
-          div class="text-sm flex gap-4" {
-            div class="flex gap-2 items-center" {
+          div class="flex gap-4 text-sm" {
+            div class="flex items-center gap-2" {
               (bed_icon())
               (property.bedrooms)
             }
-            div class="flex gap-2 items-center" {
+            div class="flex items-center gap-2" {
               (bath_icon())
               (property.bathrooms)
             }
-            div class="flex gap-2 items-center" {
+            div class="flex items-center gap-2" {
               (buit_size_icon())
               @match &property.built {
                   TextOrNum::Text(built) => (built),
