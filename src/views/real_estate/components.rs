@@ -510,10 +510,12 @@ pub fn render_hot_property_card(property: &Property) -> Markup {
 
     html! {
       div class="relative flex flex-col gap-2 shadow-md rounded-lg overflow-hidden hot-props-picture-container" {
-        div class="flex h-42 transition-transform duration-500 hot-props-picture-slider" {
-          input type="hidden" value=(total_pictures) ;
-          @for picture in &property.pictures.picture {
-            img class="w-full h-full shrink-0" src=(picture.picture_url);
+        div class="hot-props-picture-slider-container" {
+          div class="flex h-42 transition-transform duration-500 hot-props-picture-slider" {
+            input type="hidden" value=(total_pictures) ;
+            @for picture in &property.pictures.picture {
+              img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
+            }
           }
         }
         div class="bottom-38 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden hot-props-pictures-dots" {
@@ -562,4 +564,43 @@ pub fn render_hot_property_card(property: &Property) -> Markup {
         }
       }
     }
+}
+
+//.................................................................................
+//....SSSSSS....EEEEEEEEEE..RRRRRRRRR..RVVV.....VVVV.III.....CCCCC.....EEEEEEEEEE..
+//..SSSSSSSSS...EEEEEEEEEE..RRRRRRRRRRR.VVV.....VVVV.III...CCCCCCCCC...EEEEEEEEEE..
+//..SSSSSSSSSS..EEEEEEEEEE..RRRRRRRRRRR.VVVV....VVV..III..CCCCCCCCCCC..EEEEEEEEEE..
+//..SSS...SSSS..EEE.........RRR.....RRR.VVVV...VVVV..III..CCCC...CCCC..EEE.........
+//..SSSS........EEE.........RRR.....RRR..VVV...VVVV..III.CCCC.....CC...EEE.........
+//..SSSSSSS.....EEEEEEEEEE..RRRRRRRRRRR..VVVV..VVV...III.CCCC..........EEEEEEEEEE..
+//...SSSSSSSS...EEEEEEEEEE..RRRRRRRRRR...VVVV.VVVV...III.CCCC..........EEEEEEEEEE..
+//.....SSSSSSS..EEEEEEEEEE..RRRRRRRR......VVV.VVVV...III.CCCC..........EEEEEEEEEE..
+//.........SSSS.EEE.........RRR..RRRR.....VVVVVVV....III.CCCC.....CC...EEE.........
+//.SSSS....SSSS.EEE.........RRR...RRRR....VVVVVVV....III..CCCC...CCCC..EEE.........
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III..CCCCCCCCCCC..EEEEEEEEEE..
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III...CCCCCCCCC...EEEEEEEEEE..
+//....SSSSSS....EEEEEEEEEEE.RRR.....RRRR...VVVVV.....III.....CCCCCC....EEEEEEEEEE..
+//.................................................................................
+
+pub fn render_our_services() -> Markup {
+  html!{
+    div class="flex justify-center items-center bg-slate-950 text-white" {
+      div class="flex px-15 py-10" {
+        div {
+          (render_services_box())
+        }
+        div {
+          (render_services_descriptions())
+        }
+      }
+    }
+  }
+}
+
+pub fn render_services_box() -> Markup {
+  html! {}
+}
+
+pub fn render_services_descriptions() -> Markup {
+  html! {}
 }

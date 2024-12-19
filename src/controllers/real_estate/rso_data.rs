@@ -144,7 +144,7 @@ pub async fn get_property_types_slider(
             benchmark: "Public_AR_Current".to_string(),
             p_sandbox: "false".to_string(),
             p_currency: "EUR".to_string(),
-            p_images: "100".to_string(),
+            p_images: "5".to_string(),
             p_ignore_hash: "true".to_string(),
             p_shownewdevname: "true".to_string(),
             p_include_rented: "1".to_string(),

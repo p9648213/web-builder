@@ -52,9 +52,18 @@ export function setupHotPropertyPictureSlider() {
   hotPropsPictureContainerEl.forEach((element) => {
     let currentPictureIndex = 0;
 
+    let sliderContainerEl = element.querySelector(
+      ".hot-props-picture-slider-container"
+    );
+
     let hotPropsPictureSliderEl = element.querySelector(
       ".hot-props-picture-slider"
     );
+
+    let total_picture = parseInt(
+      hotPropsPictureSliderEl.querySelector("input").value
+    );
+
     let pictureDots = element.querySelector(".hot-props-pictures-dots");
 
     let dotChilds = pictureDots.childNodes;
@@ -68,12 +77,46 @@ export function setupHotPropertyPictureSlider() {
         updateDotsColor(dotChilds, currentPictureIndex);
       });
     }
+
+    SwipeListener(sliderContainerEl);
+
+    sliderContainerEl.addEventListener("swipe", (e) => {
+      let directions = e.detail.directions;
+
+      if (directions.left) {
+        currentPictureIndex++;
+
+        if (currentPictureIndex > total_picture - 1) {
+          currentPictureIndex = 0;
+        }
+        
+        hotPropsPictureSliderEl.style.transform = `translateX(-${
+          currentPictureIndex * 100
+        }%)`;
+
+        updateDotsColor(dotChilds, currentPictureIndex);
+      }
+
+      if (directions.right) {
+        currentPictureIndex--;
+
+        if (currentPictureIndex < 0) {
+          currentPictureIndex = total_picture - 1;
+        }
+
+        hotPropsPictureSliderEl.style.transform = `translateX(-${
+          currentPictureIndex * 100
+        }%)`;
+
+        updateDotsColor(dotChilds, currentPictureIndex);
+      }
+    });
   });
 }
 
-function updateDotsColor(dotChilds, currentIndex) {
+function updateDotsColor(dotChilds, currentPictureIndex) {
   for (let i = 0; i < dotChilds.length; i++) {
-    if (i == currentIndex) {
+    if (i == currentPictureIndex) {
       dotChilds[i].classList.add("bg-blue-500");
       dotChilds[i].classList.remove("bg-blue-200");
     } else {
