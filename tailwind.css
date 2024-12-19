@@ -17,3 +17,7 @@
 .disable-link {
   pointer-events: none;
 }
+
+.hot-props-picture-slider-container {
+  user-select: none;
+}

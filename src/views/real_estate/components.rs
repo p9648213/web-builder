@@ -4,8 +4,8 @@ use tailwind_fuse::tw_merge;
 use crate::{
     models::rso_data::{LocationDynamic, Property, PropertyType, ProvinceAreaDynamic, TextOrNum},
     views::icons::{
-        bath_icon, bed_icon, buit_size_icon, drop_down_icon, mail_icon, next_icon, phone_icon,
-        previous_icon,
+        bath_icon, bed_icon, buit_size_icon, check_icon, drop_down_icon, mail_icon, next_icon,
+        phone_icon, previous_icon, star_icon,
     },
 };
 
@@ -415,7 +415,7 @@ pub fn render_home_search_box() -> Markup {
 pub fn render_hot_property() -> Markup {
     html! {
       div class="flex justify-center items-center" {
-        div class="flex justify-center px-15 py-10 w-full" {
+        div class="flex justify-center px-15 py-20 w-full" {
           div class="flex flex-col gap-12" {
             div class="flex flex-col gap-4" {
               h3 class="font-bold text-2xl" {
@@ -583,24 +583,220 @@ pub fn render_hot_property_card(property: &Property) -> Markup {
 //.................................................................................
 
 pub fn render_our_services() -> Markup {
-  html!{
-    div class="flex justify-center items-center bg-slate-950 text-white" {
-      div class="flex px-15 py-10" {
-        div {
-          (render_services_box())
-        }
-        div {
-          (render_services_descriptions())
+    html! {
+      div class="flex justify-center items-center bg-slate-950 text-white" {
+        div class="flex px-15 py-20 max-w-7xl gap-20 justify-center items-center" {
+          div class="flex-1 flex flex-col gap-5" {
+            (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+          }
+          div class="flex-1" {
+            (render_services_descriptions("Short highlight of your services", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+          }
         }
       }
     }
+}
+
+pub fn render_services_box(title: &str, description: &str) -> Markup {
+    html! {
+      div class="bg-slate-500 p-3 rounded-lg px-5" {
+        div class="flex gap-4 items-center" {
+          div class="flex gap-2 flex-col text-lg" {
+            div class="text-slate-950" {
+              (title)
+            }
+            div {
+              (description)
+            }
+          }
+          div {
+            (check_icon())
+          }
+        }
+      }
+    }
+}
+
+pub fn render_services_descriptions(title: &str, description: &str) -> Markup {
+    html! {
+      div class="flex flex-col gap-4" {
+        div class="text-3xl flex flex-col gap-2"{
+          (title)
+          div class="w-7 border-t-2 border-t-white" {}
+        }
+        div class="text-lg"{
+          (description)
+        }
+      }
+    }
+}
+
+//.....................................................
+//.TTTTTTTTTTT.EEEEEEEEEE...SSSSSSSS..STTTTTTTTTT.III..
+//.TTTTTTTTTTT.EEEEEEEEEE..SSSSSSSSSS.STTTTTTTTTT.III..
+//.TTTTTTTTTTT.EEEEEEEEEE..SSSS..SSSS.STTTTTTTTTT.III..
+//.....TTT.....EEE.........SSS....SSS.....TTT.....III..
+//.....TTT.....EEE.........SSSSS..........TTT.....III..
+//.....TTT.....EEEEEEEEEE..SSSSSSSSS......TTT.....III..
+//.....TTT.....EEEEEEEEEE...SSSSSSSSS.....TTT.....III..
+//.....TTT.....EEEEEEEEEE.....SSSSSSSS....TTT.....III..
+//.....TTT.....EEE................SSSS....TTT.....III..
+//.....TTT.....EEE........ESSS....SSSS....TTT.....III..
+//.....TTT.....EEEEEEEEEEEESSSSSSSSSSS....TTT.....III..
+//.....TTT.....EEEEEEEEEEE.SSSSSSSSSS.....TTT.....III..
+//.....TTT.....EEEEEEEEEEE..SSSSSSSS......TTT.....III..
+//.....................................................
+
+pub fn render_testimonial() -> Markup {
+    html! {
+      div class="flex justify-center items-center" {
+        div class="flex px-15 py-20 max-w-360 gap-20 justify-center items-center flex-col" {
+          div class="font-bold flex w-full justify-center flex-col gap-10 text-center" {
+            div class="text-lg" {
+              "Testimonials"
+            }
+            div class="text-xl" {
+              "What do our customers think about us?"
+            }
+          }
+          div class="overflow-hidden max-w-6xl p-3" {
+            div class="flex gap-12" {
+              @for _ in 0..6 {
+                ((render_testimonial_card()))
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_testimonial_card() -> Markup {
+    html! {
+      div class="flex flex-col gap-10 p-7 rounded-lg w-84 shrink-0" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;" {
+        div class="flex flex-col gap-4 justify-center items-center" {
+          div class="w-17 h-17 shadow-md rounded-full overflow-hidden" {
+            img class="w-full" src="https://d1qawt2l8egll1.cloudfront.net/prod/images/231117083301-51-22.jpg" ;
+          }
+
+          div class="text-sm" {
+            "Linda"
+          }
+
+          div class="flex gap-2" {
+            @for _ in 0..5 {
+              (star_icon())
+            }
+          }
+
+          div class="text-center text-neutral-500" {
+            "Moving to Spain was a big decision to me, especially finding a house. Then I found DEMO AGENCY and my journey from that moment was much easier than before. Thanks for their wise knowledge and professional skills."
+          }
+        }
+
+        div class="text-right text-sm" {
+          "- I got an amazing new home -"
+        }
+      }
+    }
+}
+
+//.........................................................................................
+//....CCCCCCCC.....OOOOOOOO....NNNN....NNN.TTTTTTTTTTT...AAAAA......CCCCCCCCC.CCTTTTTTTTT..
+//...CCCCCCCCCC...OOOOOOOOOO...NNNNN...NNN.TTTTTTTTTTT...AAAAA.....CCCCCCCCCCCCCTTTTTTTTT..
+//..CCCCCCCCCCCC.OOOOOOOOOOOO..NNNNN...NNN.TTTTTTTTTTT..AAAAAA.....CCCCCCCCCCC.CTTTTTTTTT..
+//..CCCC....CCCC.OOOO....OOOO..NNNNNN..NNN.....TTT......AAAAAAA...ACCCC....CCCC...TTTT.....
+//.CCCC......C..OOOO......OOOO.NNNNNN..NNN.....TTT......AAAAAAA...ACCC.....CC.....TTTT.....
+//.CCCC.........OOOO......OOOO.NNNNNNN.NNN.....TTT.....AAAA.AAA...ACCC............TTTT.....
+//.CCCC.........OOOO......OOOO.NNN.NNN.NNN.....TTT.....AAAA.AAAA..ACCC............TTTT.....
+//.CCCC.........OOOO......OOOO.NNN.NNNNNNN.....TTT....AAAAAAAAAA..ACCC............TTTT.....
+//.CCCC......CC.OOOO......OOOO.NNN..NNNNNN.....TTT....AAAAAAAAAA..ACCC.....CCC....TTTT.....
+//..CCCC....CCCC.OOOO....OOOO..NNN..NNNNNN.....TTT....AAAAAAAAAAA.ACCCC....CCCC...TTTT.....
+//..CCCCCCCCCCCC.OOOOOOOOOOOO..NNN...NNNNN.....TTT...TAAA....AAAA..CCCCCCCCCCC....TTTT.....
+//...CCCCCCCCCC...OOOOOOOOOO...NNN...NNNNN.....TTT...TAAA.....AAA..CCCCCCCCCCC....TTTT.....
+//....CCCCCCCC.....OOOOOOOO....NNN....NNNN.....TTT...TAAA.....AAAA...CCCCCCCC.....TTTT.....
+//.........................................................................................
+
+pub fn render_contact() -> Markup {
+    html! {
+      div class="flex justify-center items-center text-white" style="background-image: url('https://d1qawt2l8egll1.cloudfront.net/prod/images/230926025644-contact.jpg'); background-color: rgba(0,0,0,0.5); background-blend-mode: overlay;" {
+        div class="flex px-15 py-30 max-w-360 gap-20 justify-center items-center flex-col w-full" {
+          div class="w-full flex gap-2 items-center" {
+            div class="w-4 border-t-3 border-t-white" {}
+            div class="uppercase text-lg font-bold" {
+              "Inquiry About This Property"
+            }
+          }
+          div class="flex max-w-4xl justify-center flex-col items-center gap-10" {
+            div class="text-lg w-full" {
+              "Do not hesitate contacting us, we will be happy to help you"
+            }
+            div class="flex flex-col gap-5" {
+              div class="flex flex-col gap-4" {
+                div class="flex gap-7" {
+                  (render_contact_input("First name"))
+                  (render_contact_input("Last name"))
+                }
+                div class="flex gap-7" {
+                  (render_contact_input("Phone number"))
+                  (render_contact_input("Email Address"))
+                }
+                div {
+                  (render_contact_input("Subject of inquiry"))
+                }
+                textarea placeholder="Your message" class="rounded-md" rows="7" {}
+                div class="flex gap-3 items-center" {
+                  input type="checkbox" ;
+                  label {
+                    "I have read and agreed to the  Terms and Conditions   and  Privacy Policy"
+                  }
+                }
+              }
+              button class="cursor-pointer w-full py-2 bg-blue-500 rounded-md text-white hover:bg-blue-400" {
+                "Submit"
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_contact_input(label: &str) -> Markup {
+    html! {
+      div class="flex flex-col gap-2" {
+        label {
+          (label)
+        }
+        input class="rounded-md";
+      }
+    }
+}
+
+//............................................................................
+//.FFFFFFFFFF...OOOOOOOO......OOOOOOOO...OTTTTTTTTTT.EEEEEEEEEE..RRRRRRRRRR...
+//.FFFFFFFFFF..OOOOOOOOOO....OOOOOOOOOO..OTTTTTTTTTT.EEEEEEEEEE..RRRRRRRRRRR..
+//.FFFFFFFFFF.OOOOOOOOOOOO..OOOOOOOOOOOO.OTTTTTTTTTT.EEEEEEEEEE..RRRRRRRRRRR..
+//.FFF........OOOO....OOOO..OOOO....OOOO.....TTT.....EEE.........RRR.....RRR..
+//.FFF.......FOOO......OOOOOOOO......OOOO....TTT.....EEE.........RRR.....RRR..
+//.FFF.......FOOO......OOOOOOOO......OOOO....TTT.....EEEEEEEEEE..RRR...RRRRR..
+//.FFFFFFFFFFFOOO......OOOOOOOO......OOOO....TTT.....EEEEEEEEEE..RRRRRRRRRRR..
+//.FFFFFFFFFFFOOO......OOOOOOOO......OOOO....TTT.....EEEEEEEEEE..RRRRRRRRRR...
+//.FFFFFFFFFFFOOO......OOOOOOOO......OOOO....TTT.....EEE.........RRRRRRRRRR...
+//.FFF........OOOO....OOOO..OOOO....OOOO.....TTT.....EEE.........RRR...RRRR...
+//.FFF........OOOOOOOOOOOO..OOOOOOOOOOOO.....TTT.....EEEEEEEEEEE.RRR....RRRR..
+//.FFF.........OOOOOOOOOO....OOOOOOOOOO......TTT.....EEEEEEEEEEE.RRR....RRRR..
+//.FFF..........OOOOOOOO......OOOOOOOO.......TTT.....EEEEEEEEEEE.RRR.....RRR..
+//............................................................................
+
+pub fn render_footer() -> Markup {
+  html! {
+    div class="flex justify-center items-center" {
+      div class="flex px-15 py-15 max-w-360 w-full" {
+        "Footer"
+      }
+    }
   }
-}
-
-pub fn render_services_box() -> Markup {
-  html! {}
-}
-
-pub fn render_services_descriptions() -> Markup {
-  html! {}
 }
