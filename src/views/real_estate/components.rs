@@ -4,8 +4,8 @@ use tailwind_fuse::tw_merge;
 use crate::{
     models::rso_data::{LocationDynamic, Property, PropertyType, ProvinceAreaDynamic, TextOrNum},
     views::icons::{
-        bath_icon, bed_icon, buit_size_icon, check_icon, drop_down_icon, mail_icon, next_icon,
-        phone_icon, previous_icon, star_icon,
+        bath_icon, bed_icon, buit_size_icon, check_icon, drop_down_icon, email_icon, location_icon,
+        mail_icon, next_icon, phone_icon, previous_icon, star_icon,
     },
 };
 
@@ -53,15 +53,22 @@ pub fn render_nav_bar() -> Markup {
           }
         }
         div class="justify-center items-center gap-15 grid grid-cols-[auto_auto] bg-blue-500 px-4 py-4 h-full" {
-          div class="h-10" {
+          div
+            hx-get="/section/real-estate/contents/home"
+            hx-push-url="/"
+            hx-target="main"
+            class="h-10 cursor-pointer"
+          {
             img class="h-full" src="https://cdn.resales-online.com/public/804pf2s7h1/agencies/3/3.jpg";
           }
           div class="flex items-center gap-10 h-full font-[500] text-white" {
             a class="hover:opacity-80" href="#" {"Home"}
             div class="relative flex items-center h-full group" {
-              div class="flex items-end gap-1 hover:opacity-80 cursor-pointer" {
+              div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"About us"}
-                (drop_down_icon())
+                div class="translate-y-0.5" {
+                  (drop_down_icon())
+                }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-30 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
                 a href="#" class="hover:opacity-80" {"Contact us"}
@@ -71,9 +78,11 @@ pub fn render_nav_bar() -> Markup {
             }
             a class="hover:opacity-80" href="#" {"Sell your propery"}
             div class="relative flex items-center h-full group" {
-              div class="flex items-end gap-1 hover:opacity-80 cursor-pointer" {
+              div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"For sale"}
-                (drop_down_icon())
+                div class="translate-y-0.5" {
+                  (drop_down_icon())
+                }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
                 a href="#" class="hover:opacity-80" {"Resales"}
@@ -81,9 +90,11 @@ pub fn render_nav_bar() -> Markup {
               }
             }
             div class="relative flex items-center h-full group" {
-              div class="flex items-end gap-1 hover:opacity-80 cursor-pointer" {
+              div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"For rent"}
-                (drop_down_icon())
+                div class="translate-y-0.5" {
+                  (drop_down_icon())
+                }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
                 a href="#" class="hover:opacity-80" {"Short rental"}
@@ -299,11 +310,11 @@ pub fn render_price_input(id: &str) -> Markup {
       "#))
       div id=(id) hx-swap-oob="outerHTML" {
         label class="relative" {
-          span class="top-0 right-0 absolute pr-2 text-slate-500 text-sm" {"€"}
+          span class="top-[2px] right-0 absolute pr-2 text-slate-500 text-sm" {"€"}
           input id=(format!("{}-min", id)) placeholder="From" class="bg-transparent pr-4.5 border-t-0 border-r border-r-slate-700 border-b-0 border-l-0 focus:ring-0 w-[50%] h-5 text-sm placeholder:text-slate-500 placeholder:text-sm outline-none";
         }
         label class="relative" {
-          span class="top-0 right-0 absolute pr-2 text-slate-500 text-sm" {"€"}
+          span class="top-[2px] right-0 absolute pr-2 text-slate-500 text-sm" {"€"}
           input id=(format!("{}-max", id)) placeholder="To" class="bg-transparent pr-4.5 border-none focus:ring-0 w-[50%] h-5 text-sm placeholder:text-slate-500 placeholder:text-sm outline-none";
         }
 
@@ -359,7 +370,7 @@ pub fn render_search_box_selection(
               "Loading..."
             }
           }
-          div id=(label_id) hx-swap-oob="outerHTML" class="text-slate-500 text-sm" {
+          div id=(label_id) class="text-slate-500 text-sm" {
             "Loading..."
           }
         }
@@ -380,15 +391,20 @@ pub fn render_home_search_box() -> Markup {
           div class="flex justify-end items-center pr-3" {
             input class="rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
-          (render_search_box_selection("Listing Type", "/app/listing-type?demo=true", "listing-type-dropdown", "listing-type-label"))
-          (render_search_box_selection("Location", "/rso/location?demo=true", "location-dropdown", "location-label"))
-          (render_search_box_selection("Property Types", "/rso/property-types?demo=true", "property-types-dropdown", "property-types-label"))
-          (render_search_box_selection("Price", "/app/prices", "price-dropdown", "price-label"))
-          (render_search_box_selection("Bath", "/app/baths", "bath-dropdown", "bath-label"))
-          (render_search_box_selection("Bed", "/app/beds", "bed-dropdown", "bed-label"))
+          (render_search_box_selection("Listing Type", "/data/real-estate/listing-type", "listing-type-dropdown", "listing-type-label"))
+          (render_search_box_selection("Location", "/rso/location", "location-dropdown", "location-label"))
+          (render_search_box_selection("Property Types", "/rso/property-types", "property-types-dropdown", "property-types-label"))
+          (render_search_box_selection("Price", "/data/real-estate/prices", "price-dropdown", "price-label"))
+          (render_search_box_selection("Bath", "/data/real-estate/baths", "bath-dropdown", "bath-label"))
+          (render_search_box_selection("Bed", "/data/real-estate/beds", "bed-dropdown", "bed-label"))
         }
         div {
-          button class="bg-blue-500 hover:bg-blue-700 px-14 py-3 rounded-md font-semibold text-white cursor-pointer" {
+          button
+            hx-get="/section/real-estate/contents/search-result"
+            hx-push-url="/search-result"
+            hx-target="main"
+            class="bg-blue-500 hover:bg-blue-700 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"
+          {
             "Search"
           }
         }
@@ -585,8 +601,8 @@ pub fn render_hot_property_card(property: &Property) -> Markup {
 pub fn render_our_services() -> Markup {
     html! {
       div class="flex justify-center items-center bg-slate-950 text-white" {
-        div class="flex px-15 py-20 max-w-7xl gap-20 justify-center items-center" {
-          div class="flex-1 flex flex-col gap-5" {
+        div class="flex justify-center items-center gap-20 px-15 py-20 max-w-7xl" {
+          div class="flex flex-col flex-1 gap-5" {
             (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
             (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
             (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
@@ -601,9 +617,9 @@ pub fn render_our_services() -> Markup {
 
 pub fn render_services_box(title: &str, description: &str) -> Markup {
     html! {
-      div class="bg-slate-500 p-3 rounded-lg px-5" {
-        div class="flex gap-4 items-center" {
-          div class="flex gap-2 flex-col text-lg" {
+      div class="bg-slate-500 px-5 p-3 rounded-lg" {
+        div class="flex items-center gap-4" {
+          div class="flex flex-col gap-2 text-lg" {
             div class="text-slate-950" {
               (title)
             }
@@ -622,9 +638,9 @@ pub fn render_services_box(title: &str, description: &str) -> Markup {
 pub fn render_services_descriptions(title: &str, description: &str) -> Markup {
     html! {
       div class="flex flex-col gap-4" {
-        div class="text-3xl flex flex-col gap-2"{
+        div class="flex flex-col gap-2 text-3xl"{
           (title)
-          div class="w-7 border-t-2 border-t-white" {}
+          div class="border-t-2 border-t-white w-7" {}
         }
         div class="text-lg"{
           (description)
@@ -652,8 +668,8 @@ pub fn render_services_descriptions(title: &str, description: &str) -> Markup {
 pub fn render_testimonial() -> Markup {
     html! {
       div class="flex justify-center items-center" {
-        div class="flex px-15 py-20 max-w-360 gap-20 justify-center items-center flex-col" {
-          div class="font-bold flex w-full justify-center flex-col gap-10 text-center" {
+        div class="flex flex-col justify-center items-center gap-20 px-15 py-20 max-w-360" {
+          div class="flex flex-col justify-center gap-10 w-full font-bold text-center" {
             div class="text-lg" {
               "Testimonials"
             }
@@ -661,7 +677,7 @@ pub fn render_testimonial() -> Markup {
               "What do our customers think about us?"
             }
           }
-          div class="overflow-hidden max-w-6xl p-3" {
+          div class="p-3 max-w-6xl overflow-hidden" {
             div class="flex gap-12" {
               @for _ in 0..6 {
                 ((render_testimonial_card()))
@@ -675,9 +691,9 @@ pub fn render_testimonial() -> Markup {
 
 pub fn render_testimonial_card() -> Markup {
     html! {
-      div class="flex flex-col gap-10 p-7 rounded-lg w-84 shrink-0" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;" {
-        div class="flex flex-col gap-4 justify-center items-center" {
-          div class="w-17 h-17 shadow-md rounded-full overflow-hidden" {
+      div class="flex flex-col gap-10 p-7 rounded-lg w-84 shrink-0" style="box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;" {
+        div class="flex flex-col justify-center items-center gap-4" {
+          div class="shadow-md rounded-full w-17 h-17 overflow-hidden" {
             img class="w-full" src="https://d1qawt2l8egll1.cloudfront.net/prod/images/231117083301-51-22.jpg" ;
           }
 
@@ -722,15 +738,15 @@ pub fn render_testimonial_card() -> Markup {
 pub fn render_contact() -> Markup {
     html! {
       div class="flex justify-center items-center text-white" style="background-image: url('https://d1qawt2l8egll1.cloudfront.net/prod/images/230926025644-contact.jpg'); background-color: rgba(0,0,0,0.5); background-blend-mode: overlay;" {
-        div class="flex px-15 py-30 max-w-360 gap-20 justify-center items-center flex-col w-full" {
-          div class="w-full flex gap-2 items-center" {
-            div class="w-4 border-t-3 border-t-white" {}
-            div class="uppercase text-lg font-bold" {
+        div class="flex flex-col justify-center items-center gap-20 px-15 py-30 w-full max-w-360" {
+          div class="flex items-center gap-2 w-full" {
+            div class="border-t-3 border-t-white w-4" {}
+            div class="font-bold text-lg uppercase" {
               "Inquiry About This Property"
             }
           }
-          div class="flex max-w-4xl justify-center flex-col items-center gap-10" {
-            div class="text-lg w-full" {
+          div class="flex flex-col justify-center items-center gap-10 max-w-4xl" {
+            div class="w-full text-lg" {
               "Do not hesitate contacting us, we will be happy to help you"
             }
             div class="flex flex-col gap-5" {
@@ -747,14 +763,14 @@ pub fn render_contact() -> Markup {
                   (render_contact_input("Subject of inquiry"))
                 }
                 textarea placeholder="Your message" class="rounded-md" rows="7" {}
-                div class="flex gap-3 items-center" {
+                div class="flex items-center gap-3" {
                   input type="checkbox" ;
                   label {
                     "I have read and agreed to the  Terms and Conditions   and  Privacy Policy"
                   }
                 }
               }
-              button class="cursor-pointer w-full py-2 bg-blue-500 rounded-md text-white hover:bg-blue-400" {
+              button class="bg-blue-500 hover:bg-blue-400 py-2 rounded-md w-full text-white cursor-pointer" {
                 "Submit"
               }
             }
@@ -766,7 +782,7 @@ pub fn render_contact() -> Markup {
 
 pub fn render_contact_input(label: &str) -> Markup {
     html! {
-      div class="flex flex-col gap-2" {
+      div class="flex flex-col gap-2 w-full" {
         label {
           (label)
         }
@@ -792,11 +808,75 @@ pub fn render_contact_input(label: &str) -> Markup {
 //............................................................................
 
 pub fn render_footer() -> Markup {
-  html! {
-    div class="flex justify-center items-center" {
-      div class="flex px-15 py-15 max-w-360 w-full" {
-        "Footer"
+    html! {
+      div class="flex flex-col justify-center items-center w-full" {
+        div class="flex flex-col gap-5 px-15 py-15 w-ful w-full max-w-360" {
+          div class="flex justify-between w-full" {
+            div class="flex gap-30" {
+              div class="flex flex-col gap-4"  {
+                div class="rounded-sm max-w-60 overflow-hidden" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
+                  img class="h-full" src="https://cdn.resales-online.com/public/804pf2s7h1/agencies/3/3.jpg";
+                }
+                div class="max-w-85 text-justify" {
+                  "Welcome to DEMO AGENCY, your trusted partner in the world of real estate. With years of experience and a passion for exceptional service, we specialize in helping clients buy, sell, and invest in properties. Our dedicated team of professionals is committed to delivering personalized solutions and exceeding your expectations every step of the way."
+                }
+              }
+              div class="flex gap-15" {
+                div class="flex flex-col gap-3" {
+                  div class="hover:text-blue-500 cursor-pointer" { "Home" }
+                  div class="hover:text-blue-500 cursor-pointer" { "Contact us" }
+                  div class="hover:text-blue-500 cursor-pointer" { "About us" }
+                  div class="hover:text-blue-500 cursor-pointer" { "Meet the team" }
+                  div class="hover:text-blue-500 cursor-pointer" { "Sell your property" }
+                }
+                div class="flex flex-col gap-3" {
+                  div class="hover:text-blue-500 cursor-pointer" { "Resales" }
+                  div class="hover:text-blue-500 cursor-pointer" { "New development" }
+                  div class="hover:text-blue-500 cursor-pointer" { "Short rental" }
+                  div class="hover:text-blue-500 cursor-pointer" { "Long rental" }
+                }
+              }
+            }
+            div class="flex flex-col gap-4" {
+              div class="flex items-center gap-2" {
+                div class="translate-y-0.5" {
+                  (email_icon())
+                }
+                "hanatest0102@gmail.com"
+              }
+              div class="flex items-center gap-2" {
+                div class="translate-y-0.5" {
+                  (email_icon())
+                }
+                "nguyenhan0696@gmail.com"
+              }
+              div class="flex items-center gap-2" {
+                (phone_icon())
+                "Sale Manager +34 0973477994"
+              }
+              div class="flex items-center gap-2" {
+                (phone_icon())
+                "Sale Manager +34 39652874"
+              }
+              div class="flex items-center gap-2" {
+                (location_icon())
+                "Testing Address 4"
+              }
+            }
+          }
+          div class="border-slate-950 border-b-1 w-full" {}
+          div class="flex flex-col gap-3" {
+            div {
+              "Copyright © 2023 - DEMO AGENCY. All Rights Reserved."
+            }
+            div class="flex divide-x divide-slate-950 text-sm" {
+              div class="pr-3 hover:text-blue-500 cursor-pointer" { "Terms and Conditions" }
+              div class="px-3 hover:text-blue-500 cursor-pointer" { "Privacy Policy" }
+              div class="px-3 hover:text-blue-500 cursor-pointer" { "Cookie Policy" }
+              div class="px-3 hover:text-blue-500 cursor-pointer" { "Cookie Settings" }
+            }
+          }
+        }
       }
     }
-  }
 }

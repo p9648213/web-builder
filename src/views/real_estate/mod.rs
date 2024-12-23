@@ -1,3 +1,4 @@
 pub mod components;
 pub mod head;
-pub mod home;
+pub mod pages;
+pub mod search_components;
