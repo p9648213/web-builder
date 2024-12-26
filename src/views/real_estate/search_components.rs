@@ -98,12 +98,21 @@ pub fn render_search_result() -> Markup {
     }
 }
 
-pub fn render_property_grids(properties: &Vec<Property>) -> Markup {
+pub fn render_property_grids(
+    properties: &Vec<Property>,
+    property_count: u32,
+    properties_per_page: u32,
+    page_no: u32,
+) -> Markup {
+    let page_size = (property_count as f64 / properties_per_page as f64).ceil();
+
     html! {
       (PreEscaped(r#"
       <script type="module">
+          import {scrollToTop} from "/assets/js/main.js";
           import {setupPropertyPictureSlider} from "/assets/js/app/slider.js";
           setupPropertyPictureSlider();
+          scrollToTop();
       </script>
     "#))
       div class="gap-9 grid grid-cols-4" {
@@ -112,7 +121,7 @@ pub fn render_property_grids(properties: &Vec<Property>) -> Markup {
         }
       }
       div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-        (render_pagination(20, 5))
+        (render_pagination(page_size as u32, page_no))
       }
     }
 }
@@ -142,13 +151,23 @@ pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
     html! {
       ul class="flex" {
         @if page > 1 {
-          li class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+          li
+            hx-get=(format!("/rso/search-results?page={}", page - 1))
+            hx-target="#search-result"
+            hx-trigger="click"
+            class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+          {
             span { (PreEscaped("&#x276E;")) }
           }
         }
 
         @if page > 2 {
-          li class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+          li
+            hx-get="/rso/search-results?page=1"
+            hx-target="#search-result"
+            hx-trigger="click"
+            class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+          {
             span { "1" }
           }
           @if page > 3 {
@@ -157,16 +176,22 @@ pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
         }
 
         @for page_length in before_page..=after_page {
-          @if page_length > total_pages {
-            continue;
-          }
-          @if page == page_length {
-            li class="bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg text-white leading-[45px] cursor-pointer list-none" {
-              span { (page_length) }
-            }
-          } @else {
-            li class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
-              span { (page_length) }
+          @if page_length <= total_pages && page_length != 0 {
+            @if page == page_length {
+              li
+                class="bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg text-white leading-[45px] cursor-pointer list-none"
+              {
+                span { (page_length) }
+              }
+            } @else {
+              li
+                hx-get=(format!("/rso/search-results?page={}", page_length))
+                hx-target="#search-result"
+                hx-trigger="click"
+                class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+              {
+                span { (page_length) }
+              }
             }
           }
         }
@@ -175,13 +200,23 @@ pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
           @if page < total_pages - 2 {
             li class="text-center text-xl leading-[45px] cursor-default list-none" { span { "..." } }
           }
-          li class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+          li
+            hx-get=(format!("/rso/search-results?page={}", total_pages))
+            hx-target="#search-result"
+            hx-trigger="click"
+            class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+          {
             span { (total_pages) }
           }
         }
 
         @if page < total_pages {
-          li class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+          li
+            hx-get=(format!("/rso/search-results?page={}", page + 1))
+            hx-target="#search-result"
+            hx-trigger="click"
+            class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+          {
             span { (PreEscaped("&#x276F;")) }
           }
         }
