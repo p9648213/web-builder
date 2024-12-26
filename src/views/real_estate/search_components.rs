@@ -1,14 +1,42 @@
-use maud::{html, Markup};
+use maud::{html, Markup, PreEscaped};
 
-use crate::views::icons::{bath_icon_light, bed_icon_light, drop_down_icon, location_icon};
+use crate::{
+    models::rso_data::Property,
+    views::{
+        icons::{bath_icon_light, bed_icon_light, drop_down_icon, location_icon},
+        real_estate::shared_components::render_property_card,
+    },
+};
+
+//..............................................................................
+//....SSSSSS....EEEEEEEEEE.....AAAA......RRRRRRRRR.......CCCCCC....HHH.....HHH..
+//..SSSSSSSSS...EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR...CCCCCCCCC...HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR..CCCCCCCCCCC..HHH.....HHH..
+//..SSS...SSSS..EEE...........AAAAAA.....RRR.....RRR..CCCC...CCCC..HHH.....HHH..
+//..SSSS........EEE...........AAAAAAA....RRR.....RRR..CCC.....CC...HHH.....HHH..
+//..SSSSSSS.....EEEEEEEEEE...AAAA.AAA....RRRRRRRRRRR.CCCC..........HHHHHHHHHHH..
+//...SSSSSSSS...EEEEEEEEEE...AAA..AAAA...RRRRRRRRRR..CCCC..........HHHHHHHHHHH..
+//.....SSSSSSS..EEEEEEEEEE...AAAAAAAAA...RRRRRRRR....CCCC..........HHHHHHHHHHH..
+//.........SSSS.EEE.........AAAAAAAAAA...RRR..RRRR....CCC.....CC...HHH.....HHH..
+//.SSSS....SSSS.EEE.........AAAAAAAAAAA..RRR...RRRR...CCCC...CCCC..HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEEE.AAA.....AAA..RRR....RRRR..CCCCCCCCCCC..HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEEEAAAA.....AAAA.RRR....RRRR...CCCCCCCCC...HHH.....HHH..
+//....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH..
+//..............................................................................
 
 pub fn render_search_box() -> Markup {
     html! {
+      (PreEscaped(r#"
+        <script type="module">
+            import {scrollToTop} from "/assets/js/main.js";
+            scrollToTop();
+        </script>
+      "#))
       div class="flex justify-center items-center mt-25" {
         div class="flex justify-center px-15 py-15 w-full max-w-360" {
           div class="gap-4 grid grid-cols-[4fr_4fr_3fr_3fr] grid-rows-[1fr_1fr] text-sm" {
             div class="flex items-center" {
-              input class="rounded-md placeholder:text-sm" type="search" placeholder="Search Ref ID";
+              input class="border-slate-800 rounded-md placeholder:text-sm" type="search" placeholder="Search Ref ID";
             }
             (render_selection_box("All Locations", Some(location_icon())))
             (render_selection_box("Any", Some(bed_icon_light())))
@@ -35,6 +63,128 @@ pub fn render_selection_box(label: &str, icon: Option<Markup>) -> Markup {
           }
         }
         (drop_down_icon())
+      }
+    }
+}
+
+//........................................................................
+//.RRRRRRRRR....EEEEEEEEEE....SSSSSS....UUU.....UUU..LLL......LLTTTTTTTT..
+//.RRRRRRRRRRR..EEEEEEEEEE..SSSSSSSSS...UUU.....UUU..LLL......LLTTTTTTTT..
+//.RRRRRRRRRRR..EEEEEEEEEE..SSSSSSSSSS..UUU.....UUU..LLL......LLTTTTTTTT..
+//.RRR.....RRR..EEE.........SSS...SSSS..UUU.....UUU..LLL..........TTTT....
+//.RRR.....RRR..EEE.........SSSS........UUU.....UUU..LLL..........TTTT....
+//.RRRRRRRRRRR..EEEEEEEEEE..SSSSSSS.....UUU.....UUU..LLL..........TTTT....
+//.RRRRRRRRRR...EEEEEEEEEE...SSSSSSSS...UUU.....UUU..LLL..........TTTT....
+//.RRRRRRRR.....EEEEEEEEEE.....SSSSSSS..UUU.....UUU..LLL..........TTTT....
+//.RRR..RRRR....EEE................SSSS.UUU.....UUU..LLL..........TTTT....
+//.RRR...RRRR...EEE........ESSS....SSSS.UUUU...UUUU..LLL..........TTTT....
+//.RRR....RRRR..EEEEEEEEEEE.SSSSSSSSSS..UUUUUUUUUUU..LLLLLLLLLL...TTTT....
+//.RRR....RRRR..EEEEEEEEEEE.SSSSSSSSSS...UUUUUUUUU...LLLLLLLLLL...TTTT....
+//.RRR.....RRRR.EEEEEEEEEEE...SSSSSS......UUUUUUU....LLLLLLLLLL...TTTT....
+//........................................................................
+
+pub fn render_search_result() -> Markup {
+    html! {
+      div
+        hx-get="/rso/search-results"
+        hx-target="#search-result"
+        hx-trigger="load"
+        class="flex justify-center items-center"
+      {
+        div id="search-result" class="flex flex-col justify-center items-center gap-10 px-15 pb-15 w-full max-w-360" {
+          "Loading..."
+        }
+      }
+    }
+}
+
+pub fn render_property_grids(properties: &Vec<Property>) -> Markup {
+    html! {
+      (PreEscaped(r#"
+      <script type="module">
+          import {setupPropertyPictureSlider} from "/assets/js/app/slider.js";
+          setupPropertyPictureSlider();
+      </script>
+    "#))
+      div class="gap-9 grid grid-cols-4" {
+        @for property in properties {
+          (render_property_card(property))
+        }
+      }
+      div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
+        (render_pagination(20, 5))
+      }
+    }
+}
+
+pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
+    let mut before_page = page - 1;
+    let mut after_page = page + 1;
+
+    if page == total_pages {
+        before_page = before_page - 2;
+    } else if page == total_pages - 1 {
+        before_page = before_page - 1;
+    }
+
+    if page == 1 {
+        after_page = after_page + 2;
+    } else if page == total_pages - 1 {
+        before_page = before_page + 1;
+    }
+
+    if page == 1 {
+        after_page = after_page + 2;
+    } else if page == 2 {
+        after_page = after_page + 1;
+    }
+
+    html! {
+      ul class="flex" {
+        @if page > 1 {
+          li class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+            span { (PreEscaped("&#x276E;")) }
+          }
+        }
+
+        @if page > 2 {
+          li class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+            span { "1" }
+          }
+          @if page > 3 {
+            li class="text-center text-xl leading-[45px] cursor-default list-none" { span { "..." } }
+          }
+        }
+
+        @for page_length in before_page..=after_page {
+          @if page_length > total_pages {
+            continue;
+          }
+          @if page == page_length {
+            li class="bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg text-white leading-[45px] cursor-pointer list-none" {
+              span { (page_length) }
+            }
+          } @else {
+            li class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+              span { (page_length) }
+            }
+          }
+        }
+
+        @if page < total_pages - 1 {
+          @if page < total_pages - 2 {
+            li class="text-center text-xl leading-[45px] cursor-default list-none" { span { "..." } }
+          }
+          li class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+            span { (total_pages) }
+          }
+        }
+
+        @if page < total_pages {
+          li class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out" {
+            span { (PreEscaped("&#x276F;")) }
+          }
+        }
       }
     }
 }

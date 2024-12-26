@@ -44,27 +44,22 @@ export function setupHotPropertySlider() {
   });
 }
 
-export function setupHotPropertyPictureSlider() {
-  let hotPropsPictureContainerEl = document.querySelectorAll(
-    ".hot-props-picture-container"
-  );
+export function setupPropertyPictureSlider() {
+  let hotPropsPictureContainerEl =
+    document.querySelectorAll(".picture-container");
 
   hotPropsPictureContainerEl.forEach((element) => {
     let currentPictureIndex = 0;
 
-    let sliderContainerEl = element.querySelector(
-      ".hot-props-picture-slider-container"
-    );
+    let sliderContainerEl = element.querySelector(".picture-slider-container");
 
-    let hotPropsPictureSliderEl = element.querySelector(
-      ".hot-props-picture-slider"
-    );
+    let hotPropsPictureSliderEl = element.querySelector(".picture-slider");
 
     let total_picture = parseInt(
       hotPropsPictureSliderEl.querySelector("input").value
     );
 
-    let pictureDots = element.querySelector(".hot-props-pictures-dots");
+    let pictureDots = element.querySelector(".pictures-dots");
 
     let dotChilds = pictureDots.childNodes;
 
@@ -89,7 +84,7 @@ export function setupHotPropertyPictureSlider() {
         if (currentPictureIndex > total_picture - 1) {
           currentPictureIndex = 0;
         }
-        
+
         hotPropsPictureSliderEl.style.transform = `translateX(-${
           currentPictureIndex * 100
         }%)`;

@@ -1,3 +1,7 @@
+export function scrollToTop() {
+  window.scrollTo(0, 0);
+}
+
 //..............................................................
 //.TTTTTTTTTTT..OOOOOOO........AAAA.......SSSSSSS...SSTTTTTTTT..
 //.TTTTTTTTTTT.OOOOOOOOOO.....AAAAAA.....SSSSSSSSS..SSTTTTTTTT..

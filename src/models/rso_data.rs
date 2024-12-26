@@ -235,7 +235,7 @@ impl RsoData {
         Ok(property_type)
     }
 
-    pub async fn get_rso_property(params: PropertyParams) -> Result<PropertyResponse, AppError> {
+    pub async fn get_rso_property(params: HotPropertyParams) -> Result<PropertyResponse, AppError> {
         let params = [
             ("p_agency_filterid", params.p_agency_filterid),
             ("p1", params.p1),
@@ -277,6 +277,135 @@ impl RsoData {
 
         Ok(property)
     }
+
+    pub async fn get_search_result(
+        params: SearchResultParams,
+    ) -> Result<PropertyResponse, AppError> {
+        let params = [
+            ("p_agency_filterid", params.p_agency_filterid),
+            ("p1", params.p1),
+            ("p2", params.p2),
+            ("P_Lang", params.p_lang),
+            ("P_SortType", params.p_sort_type),
+            ("benchmark", params.benchmark),
+            ("P_sandbox", params.p_sandbox),
+            ("P_Currency", params.p_currency),
+            ("p_images", params.p_images),
+            ("P_IgnoreHash", params.p_ignore_hash),
+            ("P_shownewdevname", params.p_shownewdevname),
+            ("P_IncludeRented", params.p_include_rented),
+            ("P_All", params.p_all),
+            ("P_VirtualTours", params.p_virtual_tours),
+            ("P_Dimension", params.p_dimension),
+            ("P_MustHaveFeatures", params.p_must_have_features),
+            ("P_PageNo", params.p_page_no),
+            ("P_PageSize", params.p_page_size),
+        ];
+
+        let url = reqwest::Url::parse_with_params(
+            format!("{}/SearchProperties.php", RSO_URL).as_str(),
+            params,
+        )
+        .map_err(|err| {
+            tracing::error!("Error parse rso property params: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let response = reqwest::get(url).await.map_err(|err| {
+            tracing::error!("Error getting rso property: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let text = response.text().await.map_err(|err| {
+            tracing::error!("Error parsing rso property text: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let property: PropertyResponse = serde_json::from_str(&text).map_err(|err| {
+            tracing::error!("Failed to deserialize rso property: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        Ok(property)
+    }
+}
+
+//..............................................................................
+//.PPPPPPPPP.....AAAA......ARRRRRRRR.......AAAA.....AAMMM....MMMMM...SSSSSS.....
+//.PPPPPPPPPP....AAAA......ARRRRRRRRR......AAAA.....AAMMM....MMMMM..MSSSSSSSS...
+//.PPPPPPPPPP...AAAAAA.....ARRRRRRRRRR....AAAAAA....AAMMMM..MMMMMM.MMSSSSSSSS...
+//.PPP....PPPP..AAAAAA.....ARR....RRRR....AAAAAA....AAMMMM..MMMMMM.MMSS...SSSS..
+//.PPP....PPPP..AAAAAAA....ARR....RRRR....AAAAAAA...AAMMMM..MMMMMM.MMSS.........
+//.PPPPPPPPPP..AAAAAAAA....ARRRRRRRRRR...AAAAAAAA...AAMMMMM.MMMMMM..MSSSSSS.....
+//.PPPPPPPPPP..AAA..AAA....ARRRRRRRRR....AAA..AAA...AAMMMMMMMMMMMM...SSSSSSSS...
+//.PPPPPPPPP..PAAAAAAAAA...ARRRRRRR.....RAAAAAAAAA..AAMMMMMMMMMMMM.....SSSSSSS..
+//.PPP........PAAAAAAAAA...ARR..RRRR....RAAAAAAAAA..AAMMMMMMMMMMMM........SSSS..
+//.PPP........PAAAAAAAAAA..ARR...RRRR...RAAAAAAAAAA.AAMMMMMMMMMMMM.MMS....SSSS..
+//.PPP.......PPAA....AAAA..ARR...RRRR..RRAA....AAAA.AAMM.MMMM.MMMM.MMSSSSSSSSS..
+//.PPP.......PPA......AAA..ARR....RRRR.RRA......AAA.AAMM.MMMM.MMMM..MSSSSSSSS...
+//.PPP.......PPA......AAAA.ARR.....RRRRRRA......AAAAAAMM.MMMM.MMMM...SSSSSSS....
+//..............................................................................
+
+pub struct LocationParams {
+    pub p_agency_filterid: String,
+    pub p1: String,
+    pub p2: String,
+    pub p_sandbox: String,
+    pub benchmark: String,
+    pub p_sort_type: String,
+    pub p_all: String,
+    pub p_ignore_hash: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyTypeParams {
+    pub p_agency_filterid: String,
+    pub p1: String,
+    pub p2: String,
+    pub p_sandbox: String,
+    pub benchmark: String,
+    pub p_sort_type: String,
+    pub p_all: String,
+    pub p_ignore_hash: String,
+    pub p_lang: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct HotPropertyParams {
+    pub p_agency_filterid: String,
+    pub p1: String,
+    pub p2: String,
+    pub p_lang: String,
+    pub p_sort_type: String,
+    pub benchmark: String,
+    pub p_sandbox: String,
+    pub p_currency: String,
+    pub p_images: String,
+    pub p_ignore_hash: String,
+    pub p_shownewdevname: String,
+    pub p_include_rented: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SearchResultParams {
+    pub p_agency_filterid: String,
+    pub p1: String,
+    pub p2: String,
+    pub p_lang: String,
+    pub p_sort_type: String,
+    pub benchmark: String,
+    pub p_sandbox: String,
+    pub p_currency: String,
+    pub p_images: String,
+    pub p_ignore_hash: String,
+    pub p_shownewdevname: String,
+    pub p_include_rented: String,
+    pub p_all: String,
+    pub p_virtual_tours: String,
+    pub p_dimension: String,
+    pub p_must_have_features: String,
+    pub p_page_no: String,
+    pub p_page_size: String,
 }
 
 //..............................................................................................
@@ -294,17 +423,6 @@ impl RsoData {
 //.LLLLLLLLLL..OOOOOOOOOO....CCCCCCCCC..CAAA.....AAAA...TTTT...TTII...OOOOOOOOO...OONN...NNNNN..
 //.LLLLLLLLLL....OOOOOO........CCCCCC...CAA......AAAA...TTTT...TTII....OOOOOOO....OONN....NNNN..
 //..............................................................................................
-
-pub struct LocationParams {
-    pub p_agency_filterid: String,
-    pub p1: String,
-    pub p2: String,
-    pub p_sandbox: String,
-    pub benchmark: String,
-    pub p_sort_type: String,
-    pub p_all: String,
-    pub p_ignore_hash: String,
-}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Transaction {
@@ -385,18 +503,6 @@ pub struct LocationResponse {
 //.PPP.........RRR....RRRR......TTT.......YYYY.....PPP.........EEEEEEEEEE..
 //.PPP.........RRR.....RRRR.....TTT.......YYYY.....PPP.........EEEEEEEEEE..
 //.........................................................................
-#[derive(Debug, Serialize, Deserialize)]
-pub struct PropertyTypeParams {
-    pub p_agency_filterid: String,
-    pub p1: String,
-    pub p2: String,
-    pub p_sandbox: String,
-    pub benchmark: String,
-    pub p_sort_type: String,
-    pub p_all: String,
-    pub p_ignore_hash: String,
-    pub p_lang: String,
-}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PropertyTypeResponse {
@@ -439,37 +545,21 @@ pub struct PropertySubType {
     pub sub_type_option_value: String,
 }
 
-//....................................................
-//.PPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP...
-//.PPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..
-//.PPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..
-//.PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPP..
-//.PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPP..
-//.PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP..
-//.PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP..
-//.PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP...
-//.PPP.........RRR..RRRR....OOO......OOO..PPP.........
-//.PPP.........RRR...RRRR...OOOO....OOOO..PPP.........
-//.PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.........
-//.PPP.........RRR....RRRR...OOOOOOOOOO...PPP.........
-//.PPP.........RRR.....RRRR....OOOOOO.....PPP.........
-//....................................................
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct PropertyParams {
-    pub p_agency_filterid: String,
-    pub p1: String,
-    pub p2: String,
-    pub p_lang: String,
-    pub p_sort_type: String,
-    pub benchmark: String,
-    pub p_sandbox: String,
-    pub p_currency: String,
-    pub p_images: String,
-    pub p_ignore_hash: String,
-    pub p_shownewdevname: String,
-    pub p_include_rented: String,
-}
+//....................................................................................................
+//.PPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP...EEEEEEEEEE..RRRRRRRRR....TTTTTTTTTTTYYY....YYY..
+//.PPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR..TTTTTTTTTTTYYY....YYY..
+//.PPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR..TTTTTTTTTTTYYYY..YYYY..
+//.PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPPP.EEE.........RRR.....RRR......TTT.....YYY..YYY...
+//.PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPPP.EEE.........RRR.....RRR......TTT.....YYYYYYYY...
+//.PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR......TTT......YYYYYY....
+//.PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRR.......TTT.......YYYY.....
+//.PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP...EEEEEEEEEE..RRRRRRRR.........TTT.......YYYY.....
+//.PPP.........RRR..RRRR....OOO......OOO..PPP.........EEE.........RRR..RRRR........TTT.......YYYY.....
+//.PPP.........RRR...RRRR...OOOO....OOOO..PPP.........EEE.........RRR...RRRR.......TTT.......YYYY.....
+//.PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.........EEEEEEEEEEE.RRR....RRRR......TTT.......YYYY.....
+//.PPP.........RRR....RRRR...OOOOOOOOOO...PPP.........EEEEEEEEEEE.RRR....RRRR......TTT.......YYYY.....
+//.PPP.........RRR.....RRRR....OOOOOO.....PPP.........EEEEEEEEEEE.RRR.....RRRR.....TTT.......YYYY.....
+//....................................................................................................
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PropertyResponse {

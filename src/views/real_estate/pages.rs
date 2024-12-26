@@ -1,12 +1,7 @@
 use maud::{html, Markup, PreEscaped, DOCTYPE};
 
 use crate::views::real_estate::{
-    components::{
-        render_contact, render_footer, render_home_banner, render_home_search_box,
-        render_hot_property, render_nav_bar, render_our_services, render_testimonial,
-    },
-    head::render_main_head,
-    search_components,
+    components, head::render_main_head, search_components, shared_components,
 };
 
 pub fn render_home_page() -> Markup {
@@ -21,16 +16,16 @@ pub fn render_home_page() -> Markup {
                 (PreEscaped(r#"
                     <script>0</script>
                 "#))
-                (render_nav_bar())
+                (shared_components::render_nav_bar())
                 main {
-                    (render_home_banner())
-                    (render_home_search_box())
-                    (render_hot_property())
-                    (render_our_services())
-                    (render_testimonial())
-                    (render_contact())
+                    (components::render_home_banner())
+                    (components::render_home_search_box())
+                    (components::render_hot_property())
+                    (components::render_our_services())
+                    (components::render_testimonial())
+                    (components::render_contact())
                 }
-                (render_footer())
+                (shared_components::render_footer())
                 div id="toast" {}
             }
         }
@@ -49,11 +44,12 @@ pub fn render_search_result_page() -> Markup {
                 (PreEscaped(r#"
                     <script>0</script>
                 "#))
-                (render_nav_bar())
+                (shared_components::render_nav_bar())
                 main {
                     (search_components::render_search_box())
+                    (search_components::render_search_result())
                 }
-                (render_footer())
+                (shared_components::render_footer())
                 div id="toast" {}
             }
         }

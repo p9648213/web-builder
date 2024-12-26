@@ -32,6 +32,7 @@ pub async fn get_section(Path(section): Path<String>) -> Result<impl IntoRespons
         "search-result" => {
             let html = html! {
                 (search_components::render_search_box())
+                (search_components::render_search_result())
             };
 
             Ok(Html(html.into_string()).into_response())
