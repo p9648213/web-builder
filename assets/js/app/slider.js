@@ -73,38 +73,34 @@ export function setupPropertyPictureSlider() {
       });
     }
 
-    SwipeListener(sliderContainerEl);
+    new SwipeContent(sliderContainerEl);
 
-    sliderContainerEl.addEventListener("swipe", (e) => {
-      let directions = e.detail.directions;
+    sliderContainerEl.addEventListener("swipeLeft", function () {
+      currentPictureIndex++;
 
-      if (directions.left) {
-        currentPictureIndex++;
-
-        if (currentPictureIndex > total_picture - 1) {
-          currentPictureIndex = 0;
-        }
-
-        hotPropsPictureSliderEl.style.transform = `translateX(-${
-          currentPictureIndex * 100
-        }%)`;
-
-        updateDotsColor(dotChilds, currentPictureIndex);
+      if (currentPictureIndex > total_picture - 1) {
+        currentPictureIndex = 0;
       }
 
-      if (directions.right) {
-        currentPictureIndex--;
+      hotPropsPictureSliderEl.style.transform = `translateX(-${
+        currentPictureIndex * 100
+      }%)`;
 
-        if (currentPictureIndex < 0) {
-          currentPictureIndex = total_picture - 1;
-        }
+      updateDotsColor(dotChilds, currentPictureIndex);
+    });
 
-        hotPropsPictureSliderEl.style.transform = `translateX(-${
-          currentPictureIndex * 100
-        }%)`;
+    sliderContainerEl.addEventListener("swipeRight", function () {
+      currentPictureIndex--;
 
-        updateDotsColor(dotChilds, currentPictureIndex);
+      if (currentPictureIndex < 0) {
+        currentPictureIndex = total_picture - 1;
       }
+
+      hotPropsPictureSliderEl.style.transform = `translateX(-${
+        currentPictureIndex * 100
+      }%)`;
+
+      updateDotsColor(dotChilds, currentPictureIndex);
     });
   });
 }
