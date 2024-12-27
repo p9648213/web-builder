@@ -3,7 +3,6 @@ use axum::http::StatusCode;
 use axum::response::Html;
 use deadpool_postgres::Pool;
 use maud::html;
-use serde::Deserialize;
 
 use crate::models::error::AppError;
 use crate::models::rso_data::{
@@ -15,10 +14,7 @@ use crate::views::real_estate::home::{
 };
 use crate::views::real_estate::search_result;
 
-#[derive(Deserialize, Debug)]
-pub struct SearchQuery {
-    pub page: Option<u32>,
-}
+use super::pages::{ListingType, SearchQuery};
 
 pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, AppError> {
     let row = RsoData::get_rso_data_by_user_id(1, &pg_pool).await?;
@@ -185,11 +181,6 @@ pub async fn get_search_result(
     if let Some(row) = row {
         let rso_data = RsoData::try_from(row);
 
-        let p_agency_filterid = rso_data.filter_id_featured.ok_or_else(|| {
-            tracing::error!("No filter_id_sale column or value is null");
-            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
-        })?;
-
         let p1 = rso_data.identifier_id.ok_or_else(|| {
             tracing::error!("No identifier_id column or value is null");
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
@@ -200,7 +191,26 @@ pub async fn get_search_result(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
         })?;
 
-        let page_no = search_query.page.unwrap_or(1);
+        let page_no = search_query.0.page.unwrap_or(1);
+
+        let listing_type = search_query.0.listing_type.unwrap_or(ListingType::Sale);
+
+        let p_agency_filterid = match listing_type {
+            ListingType::Sale | ListingType::NewDev => {
+                rso_data.filter_id_sale.ok_or_else(|| {
+                    tracing::error!("No filter_id_sale column or value is null");
+                    AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+                })?
+            }
+            ListingType::ShortRental => rso_data.filter_id_short.ok_or_else(|| {
+                tracing::error!("No filter_id_short column or value is null");
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+            })?,
+            ListingType::LongRental => rso_data.filter_id_long.ok_or_else(|| {
+                tracing::error!("No filter_id_long column or value is null");
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+            })?,
+        };
 
         let search_result_params = SearchResultParams {
             p_agency_filterid: p_agency_filterid.to_string(),
@@ -226,7 +236,7 @@ pub async fn get_search_result(
         let search_response = RsoData::get_search_result(search_result_params).await?;
 
         let html = html! {
-            (search_result::render_property_grids(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page))
+            (search_result::render_property_grids(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type))
         }
         .into_string();
 

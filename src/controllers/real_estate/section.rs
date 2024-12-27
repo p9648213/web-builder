@@ -6,7 +6,7 @@ use maud::html;
 
 use crate::{
     models::error::AppError,
-    views::real_estate::{home, search_result, shared},
+    views::real_estate::{home, property_details, search_result, shared},
 };
 
 pub async fn get_section(Path(section): Path<String>) -> Result<impl IntoResponse, AppError> {
@@ -23,11 +23,18 @@ pub async fn get_section(Path(section): Path<String>) -> Result<impl IntoRespons
 
             Ok(Html(html.into_string()).into_response())
         }
-        "search-result" => {
+        "search-results" => {
             let html = html! {
                 (search_result::render_search_box())
-                (search_result::render_search_result())
+                (search_result::render_search_result(None))
                 (shared::render_contact())
+            };
+
+            Ok(Html(html.into_string()).into_response())
+        }
+        "property" => {
+            let html = html! {
+                (property_details::render_pictures_slider())
             };
 
             Ok(Html(html.into_string()).into_response())

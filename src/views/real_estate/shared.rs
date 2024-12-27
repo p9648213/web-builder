@@ -1,11 +1,10 @@
 use maud::{html, Markup, PreEscaped};
 
 use crate::{
-    models::rso_data::{Property, TextOrNum},
-    views::icons::{
+    controllers::real_estate::pages::ListingType, models::rso_data::{Property, TextOrNum}, views::icons::{
         bath_icon, bed_icon, buit_size_icon, drop_down_icon, email_icon, location_icon, mail_icon,
         phone_icon,
-    },
+    }
 };
 
 //......................................
@@ -284,7 +283,7 @@ pub fn render_footer() -> Markup {
 //.PPP.........RRR.....RRRR....OOOOOO.....PPP.........EEEEEEEEEEE.RRR.....RRRR.....TTT.......YYYY.....
 //....................................................................................................
 
-pub fn render_property_card(property: &Property) -> Markup {
+pub fn render_property_card(property: &Property, listing_type: &ListingType) -> Markup {
     let total_pictures = *&property.pictures.count;
 
     html! {
@@ -306,7 +305,13 @@ pub fn render_property_card(property: &Property) -> Markup {
             }
           }
         }
-        div class="flex flex-col gap-2 px-3 py-2 cursor-pointer" {
+        div
+          hx-get=(format!("/property?id={}", property.reference))
+          hx-push-url=(format!("/property?id={}", property.reference))
+          hx-trigger="click"
+          hx-target="main" 
+          class="flex flex-col gap-2 px-3 py-2 cursor-pointer" 
+        {
           div class="font-bold" {
             @if property.newdev_name == "" {
               (property.property_type.name_type)

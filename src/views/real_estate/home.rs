@@ -2,11 +2,10 @@ use maud::{html, Markup, PreEscaped};
 use tailwind_fuse::tw_merge;
 
 use crate::{
-    models::rso_data::{LocationDynamic, Property, PropertyType, ProvinceAreaDynamic},
-    views::{
+    controllers::real_estate::pages::ListingType, models::rso_data::{LocationDynamic, Property, PropertyType, ProvinceAreaDynamic}, views::{
         icons::{check_icon, drop_down_icon, next_icon, previous_icon, star_icon},
         real_estate::shared::render_property_card,
-    },
+    }
 };
 
 //..............................................................................
@@ -302,8 +301,8 @@ pub fn render_home_search_box() -> Markup {
         }
         div {
           button
-            hx-get="/section/real-estate/contents/search-result"
-            hx-push-url="/search-result"
+            hx-get="/section/real-estate/contents/search-results"
+            hx-push-url="/search-results"
             hx-target="main"
             class="bg-blue-500 hover:bg-blue-700 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"
           {
@@ -405,7 +404,7 @@ pub fn render_hot_property_slider(hot_properties: Vec<Property>) -> Markup {
           @for property_chunk in &properties_chunks {
             div class="gap-10 grid grid-cols-[292px_292px_292px] pl-12" {
               @for property in property_chunk {
-                (render_property_card(property))
+                (render_property_card(property, &ListingType::Sale))
               }
             }
           }

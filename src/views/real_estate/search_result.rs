@@ -1,10 +1,11 @@
 use maud::{html, Markup, PreEscaped};
 
 use crate::{
+    controllers::real_estate::pages::ListingType,
     models::rso_data::Property,
     views::{
         icons::{bath_icon_light, bed_icon_light, drop_down_icon, location_icon},
-        real_estate::shared::render_property_card,
+        real_estate::shared,
     },
 };
 
@@ -83,15 +84,21 @@ pub fn render_selection_box(label: &str, icon: Option<Markup>) -> Markup {
 //.RRR.....RRRR.EEEEEEEEEEE...SSSSSS......UUUUUUU....LLLLLLLLLL...TTTT....
 //........................................................................
 
-pub fn render_search_result() -> Markup {
+pub fn render_search_result(page: Option<u32>) -> Markup {
+    let hx_get = if let Some(page) = page {
+        format!("/rso/search-results?page={}", page)
+    } else {
+        "/rso/search-results".to_string()
+    };
+
     html! {
       div
-        hx-get="/rso/search-results"
-        hx-target="#search-result"
+        hx-get=(hx_get)
+        hx-target="#search-results"
         hx-trigger="load"
         class="flex justify-center items-center"
       {
-        div id="search-result" class="flex flex-col justify-center items-center gap-10 px-15 pb-15 w-full max-w-360" {
+        div id="search-results" class="flex flex-col justify-center items-center gap-10 px-15 pb-15 w-full max-w-360" {
           "Loading..."
         }
       }
@@ -103,6 +110,7 @@ pub fn render_property_grids(
     property_count: u32,
     properties_per_page: u32,
     page_no: u32,
+    listing_type: &ListingType,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -121,7 +129,7 @@ pub fn render_property_grids(
 
       div class="gap-9 grid grid-cols-4" {
         @for property in properties {
-          (render_property_card(property))
+          (shared::render_property_card(property, listing_type))
         }
       }
       div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
@@ -157,7 +165,8 @@ pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
         @if page > 1 {
           li
             hx-get=(format!("/rso/search-results?page={}", page - 1))
-            hx-target="#search-result"
+            hx-push-url=(format!("/search-results?page={}", page - 1))
+            hx-target="#search-results"
             hx-trigger="click"
             class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
           {
@@ -168,7 +177,8 @@ pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
         @if page > 2 {
           li
             hx-get="/rso/search-results?page=1"
-            hx-target="#search-result"
+            hx-push-url="/search-results?page=1"
+            hx-target="#search-results"
             hx-trigger="click"
             class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
           {
@@ -190,7 +200,8 @@ pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
             } @else {
               li
                 hx-get=(format!("/rso/search-results?page={}", page_length))
-                hx-target="#search-result"
+                hx-push-url=(format!("/search-results?page={}", page_length))
+                hx-target="#search-results"
                 hx-trigger="click"
                 class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
               {
@@ -206,7 +217,8 @@ pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
           }
           li
             hx-get=(format!("/rso/search-results?page={}", total_pages))
-            hx-target="#search-result"
+            hx-push-url=(format!("/search-results?page={}", total_pages))
+            hx-target="#search-results"
             hx-trigger="click"
             class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
           {
@@ -217,7 +229,8 @@ pub fn render_pagination(total_pages: u32, page: u32) -> Markup {
         @if page < total_pages {
           li
             hx-get=(format!("/rso/search-results?page={}", page + 1))
-            hx-target="#search-result"
+            hx-push-url=(format!("/search-results?page={}", page + 1))
+            hx-target="#search-results"
             hx-trigger="click"
             class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
           {
