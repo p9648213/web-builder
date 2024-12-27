@@ -5,7 +5,7 @@ use crate::{
     models::rso_data::{LocationDynamic, Property, PropertyType, ProvinceAreaDynamic},
     views::{
         icons::{check_icon, drop_down_icon, next_icon, previous_icon, star_icon},
-        real_estate::shared_components::render_property_card,
+        real_estate::shared::render_property_card,
     },
 };
 
@@ -556,78 +556,6 @@ pub fn render_testimonial_card() -> Markup {
         div class="text-right text-sm" {
           "- I got an amazing new home -"
         }
-      }
-    }
-}
-
-//.........................................................................................
-//....CCCCCCCC.....OOOOOOOO....NNNN....NNN.TTTTTTTTTTT...AAAAA......CCCCCCCCC.CCTTTTTTTTT..
-//...CCCCCCCCCC...OOOOOOOOOO...NNNNN...NNN.TTTTTTTTTTT...AAAAA.....CCCCCCCCCCCCCTTTTTTTTT..
-//..CCCCCCCCCCCC.OOOOOOOOOOOO..NNNNN...NNN.TTTTTTTTTTT..AAAAAA.....CCCCCCCCCCC.CTTTTTTTTT..
-//..CCCC....CCCC.OOOO....OOOO..NNNNNN..NNN.....TTT......AAAAAAA...ACCCC....CCCC...TTTT.....
-//.CCCC......C..OOOO......OOOO.NNNNNN..NNN.....TTT......AAAAAAA...ACCC.....CC.....TTTT.....
-//.CCCC.........OOOO......OOOO.NNNNNNN.NNN.....TTT.....AAAA.AAA...ACCC............TTTT.....
-//.CCCC.........OOOO......OOOO.NNN.NNN.NNN.....TTT.....AAAA.AAAA..ACCC............TTTT.....
-//.CCCC.........OOOO......OOOO.NNN.NNNNNNN.....TTT....AAAAAAAAAA..ACCC............TTTT.....
-//.CCCC......CC.OOOO......OOOO.NNN..NNNNNN.....TTT....AAAAAAAAAA..ACCC.....CCC....TTTT.....
-//..CCCC....CCCC.OOOO....OOOO..NNN..NNNNNN.....TTT....AAAAAAAAAAA.ACCCC....CCCC...TTTT.....
-//..CCCCCCCCCCCC.OOOOOOOOOOOO..NNN...NNNNN.....TTT...TAAA....AAAA..CCCCCCCCCCC....TTTT.....
-//...CCCCCCCCCC...OOOOOOOOOO...NNN...NNNNN.....TTT...TAAA.....AAA..CCCCCCCCCCC....TTTT.....
-//....CCCCCCCC.....OOOOOOOO....NNN....NNNN.....TTT...TAAA.....AAAA...CCCCCCCC.....TTTT.....
-//.........................................................................................
-
-pub fn render_contact() -> Markup {
-    html! {
-      div class="flex justify-center items-center text-white" style="background-image: url('https://d1qawt2l8egll1.cloudfront.net/prod/images/230926025644-contact.jpg'); background-color: rgba(0,0,0,0.5); background-blend-mode: overlay;" {
-        div class="flex flex-col justify-center items-center gap-20 px-15 py-30 w-full max-w-360" {
-          div class="flex items-center gap-2 w-full" {
-            div class="border-t-3 border-t-white w-4" {}
-            div class="font-bold text-lg uppercase" {
-              "Inquiry About This Property"
-            }
-          }
-          div class="flex flex-col justify-center items-center gap-10 max-w-4xl" {
-            div class="w-full text-lg" {
-              "Do not hesitate contacting us, we will be happy to help you"
-            }
-            div class="flex flex-col gap-5" {
-              div class="flex flex-col gap-4" {
-                div class="flex gap-7" {
-                  (render_contact_input("First name"))
-                  (render_contact_input("Last name"))
-                }
-                div class="flex gap-7" {
-                  (render_contact_input("Phone number"))
-                  (render_contact_input("Email Address"))
-                }
-                div {
-                  (render_contact_input("Subject of inquiry"))
-                }
-                textarea placeholder="Your message" class="rounded-md" rows="7" {}
-                div class="flex items-center gap-3" {
-                  input type="checkbox" ;
-                  label {
-                    "I have read and agreed to the  Terms and Conditions   and  Privacy Policy"
-                  }
-                }
-              }
-              button class="bg-blue-500 hover:bg-blue-400 py-2 rounded-md w-full text-white cursor-pointer" {
-                "Submit"
-              }
-            }
-          }
-        }
-      }
-    }
-}
-
-pub fn render_contact_input(label: &str) -> Markup {
-    html! {
-      div class="flex flex-col gap-2 w-full" {
-        label {
-          (label)
-        }
-        input class="rounded-md";
       }
     }
 }

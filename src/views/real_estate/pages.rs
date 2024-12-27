@@ -1,8 +1,6 @@
 use maud::{html, Markup, PreEscaped, DOCTYPE};
 
-use crate::views::real_estate::{
-    components, head::render_main_head, search_components, shared_components,
-};
+use crate::views::real_estate::{head::render_main_head, home, search_result, shared};
 
 pub fn render_home_page() -> Markup {
     html! {
@@ -16,16 +14,16 @@ pub fn render_home_page() -> Markup {
                 (PreEscaped(r#"
                     <script>0</script>
                 "#))
-                (shared_components::render_nav_bar())
+                (shared::render_nav_bar())
                 main {
-                    (components::render_home_banner())
-                    (components::render_home_search_box())
-                    (components::render_hot_property())
-                    (components::render_our_services())
-                    (components::render_testimonial())
-                    (components::render_contact())
+                    (home::render_home_banner())
+                    (home::render_home_search_box())
+                    (home::render_hot_property())
+                    (home::render_our_services())
+                    (home::render_testimonial())
+                    (shared::render_contact())
                 }
-                (shared_components::render_footer())
+                (shared::render_footer())
                 div id="toast" {}
             }
         }
@@ -44,12 +42,13 @@ pub fn render_search_result_page() -> Markup {
                 (PreEscaped(r#"
                     <script>0</script>
                 "#))
-                (shared_components::render_nav_bar())
+                (shared::render_nav_bar())
                 main {
-                    (search_components::render_search_box())
-                    (search_components::render_search_result())
+                    (search_result::render_search_box())
+                    (search_result::render_search_result())
+                    (shared::render_contact())
                 }
-                (shared_components::render_footer())
+                (shared::render_footer())
                 div id="toast" {}
             }
         }

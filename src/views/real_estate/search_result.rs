@@ -4,7 +4,7 @@ use crate::{
     models::rso_data::Property,
     views::{
         icons::{bath_icon_light, bed_icon_light, drop_down_icon, location_icon},
-        real_estate::shared_components::render_property_card,
+        real_estate::shared::render_property_card,
     },
 };
 
@@ -115,6 +115,10 @@ pub fn render_property_grids(
           scrollToTop();
       </script>
     "#))
+      div class="flex justify-end w-full" {
+        div class="text-xl" { (property_count) " properties" }
+      }
+
       div class="gap-9 grid grid-cols-4" {
         @for property in properties {
           (render_property_card(property))

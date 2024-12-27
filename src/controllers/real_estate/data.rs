@@ -3,7 +3,7 @@ use maud::html;
 
 use crate::{
     models::error::AppError,
-    views::real_estate::components::{
+    views::real_estate::home::{
         render_beds_baths_selection_drop_down, render_price_input, render_selection_drop_down,
         render_selection_label,
     },

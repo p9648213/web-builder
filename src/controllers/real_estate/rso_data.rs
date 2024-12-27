@@ -9,11 +9,11 @@ use crate::models::error::AppError;
 use crate::models::rso_data::{
     HotPropertyParams, LocationParams, PropertyTypeParams, RsoData, SearchResultParams,
 };
-use crate::views::real_estate::components::{
+use crate::views::real_estate::home::{
     render_hot_property_slider, render_location_selection_drop_down,
     render_property_types_selection_drop_down, render_selection_label,
 };
-use crate::views::real_estate::search_components;
+use crate::views::real_estate::search_result;
 
 #[derive(Deserialize, Debug)]
 pub struct SearchQuery {
@@ -226,7 +226,7 @@ pub async fn get_search_result(
         let search_response = RsoData::get_search_result(search_result_params).await?;
 
         let html = html! {
-            (search_components::render_property_grids(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page))
+            (search_result::render_property_grids(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page))
         }
         .into_string();
 
