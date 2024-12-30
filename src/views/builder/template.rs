@@ -25,13 +25,6 @@ pub fn render_website_template(template_type: TemplateType) -> Markup {
                     TemplateType::RealEstate => {
                         div class="flex gap-2" {
                             "Real Estate"
-
-                            a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href="/" {
-                                div class="group" {
-                                    "Preview"
-                                }
-                                (arrow_next_icon())
-                            }
                         }
                     },
                     TemplateType::Custom => "Custom",

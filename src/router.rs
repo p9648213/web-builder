@@ -2,11 +2,7 @@ use crate::{
     config::EnvConfig,
     controllers::{
         builder::{
-            self,
-            auth::{get_login_page, get_register_page, login, logout, register},
-            data::{create_data_source, update_rso_status},
-            home::get_builder_home_page,
-            website::{create_website, select_template_for_webiste},
+            self, auth::{get_login_page, get_register_page, login, logout, register}, data::{create_data_source, update_rso_status}, edit::get_edit_page, home::get_builder_home_page, website::{create_website, select_template_for_webiste}
         },
         real_estate::{
             self,
@@ -90,6 +86,8 @@ pub async fn create_router(
 
     let app_state = AppState { pg_pool, config };
 
+    let edit_routes = Router::new().route("/", get(get_edit_page));
+
     let builder_routes = Router::new()
         .route("/auth/login", post(login))
         .route("/auth/register", post(register))
@@ -104,7 +102,8 @@ pub async fn create_router(
         .route(
             "/website/template/select",
             post(select_template_for_webiste),
-        );
+        )
+        .nest("/edit/:website_id", edit_routes);
 
     let main_view_routes = Router::new()
         .route("/", get(get_real_estate_home_page))

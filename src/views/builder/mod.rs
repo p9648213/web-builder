@@ -4,3 +4,4 @@ pub mod head;
 pub mod home;
 pub mod template;
 pub mod website;
+pub mod edit;
