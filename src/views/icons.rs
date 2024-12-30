@@ -167,3 +167,140 @@ pub fn location_icon() -> Markup {
         }
     }
 }
+
+pub fn buit_size_gray_icon() -> Markup {
+    html! {
+        svg class="lucide lucide-pencil-ruler" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            path d="M13 7 8.7 2.7a2.41 2.41 0 0 0-3.4 0L2.7 5.3a2.41 2.41 0 0 0 0 3.4L7 13" {
+            }
+            path d="m8 6 2-2" {
+            }
+            path d="m18 16 2-2" {
+            }
+            path d="m17 11 4.3 4.3c.94.94.94 2.46 0 3.4l-2.6 2.6c-.94.94-2.46.94-3.4 0L11 17" {
+            }
+            path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" {
+            }
+            path d="m15 5 4 4" {
+            }
+        }
+    }
+}
+
+pub fn plot_size_gray_icon() -> Markup {
+    html! {
+        svg class="lucide lucide-layers" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" {
+            }
+            path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" {
+            }
+            path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" {
+            }
+        }
+    }
+}
+
+pub fn useful_size_gray_icon() -> Markup {
+    html! {
+        svg class="lucide-grid-2x2 lucide" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            path d="M12 3v18" {
+            }
+            path d="M3 12h18" {
+            }
+            rect x="3" y="3" width="18" height="18" rx="2" {
+            }
+        }
+    }
+}
+
+pub fn terrace_size_gray_icon() -> Markup {
+    html! {
+        svg class="lucide lucide-fence" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            path d="M4 3 2 5v15c0 .6.4 1 1 1h2c.6 0 1-.4 1-1V5Z" {
+            }
+            path d="M6 8h4" {
+            }
+            path d="M6 18h4" {
+            }
+            path d="m12 3-2 2v15c0 .6.4 1 1 1h2c.6 0 1-.4 1-1V5Z" {
+            }
+            path d="M14 8h4" {
+            }
+            path d="M14 18h4" {
+            }
+            path d="m20 3-2 2v15c0 .6.4 1 1 1h2c.6 0 1-.4 1-1V5Z" {
+            }
+        }
+    }
+}
+
+pub fn bedroom_gray_icon() -> Markup {
+    html! {
+        svg class="lucide lucide-bed-double" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8" {
+            }
+            path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4" {
+            }
+            path d="M12 4v6" {
+            }
+            path d="M2 18h20" {
+            }
+        }
+    }
+}
+
+pub fn bathroom_gray_icon() -> Markup {
+    html! {
+        svg class="lucide lucide-bath" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            path d="M10 4 8 6" {
+            }
+            path d="M17 19v2" {
+            }
+            path d="M2 12h20" {
+            }
+            path d="M7 19v2" {
+            }
+            path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" {
+            }
+        }
+    }
+}
+
+pub fn ibi_tax_gray_icon() -> Markup {
+    html! {
+        svg class="lucide lucide-omega" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            path d="M3 20h4.5a.5.5 0 0 0 .5-.5v-.282a.52.52 0 0 0-.247-.437 8 8 0 1 1 8.494-.001.52.52 0 0 0-.247.438v.282a.5.5 0 0 0 .5.5H21" {
+            }
+        }
+    }
+}
+
+pub fn basura_tax_gray_icon() -> Markup {
+    html! {
+        svg class="lucide lucide-square-percent" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            rect width="18" height="18" x="3" y="3" rx="2" {
+            }
+            path d="m15 9-6 6" {
+            }
+            path d="M9 9h.01" {
+            }
+            path d="M15 15h.01" {
+            }
+        }
+    }
+}
+
+pub fn community_fee_gray_icon() -> Markup {
+    html! {
+        svg class="lucide lucide-newspaper" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868d9b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+            path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" {
+            }
+            path d="M18 14h-8" {
+            }
+            path d="M15 18h-5" {
+            }
+            path d="M10 6h8v4h-8V6Z" {
+            }
+        }
+    }
+}

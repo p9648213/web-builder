@@ -1,6 +1,9 @@
 use maud::{html, Markup, PreEscaped, DOCTYPE};
 
-use crate::{controllers::real_estate::pages::SearchQuery, views::real_estate::{head::render_main_head, home, property_details, search_result, shared}};
+use crate::{
+    controllers::real_estate::pages::{PropertyQuery, SearchQuery},
+    views::real_estate::{head::render_main_head, home, property_details, search_result, shared},
+};
 
 pub fn render_home_page() -> Markup {
     html! {
@@ -18,7 +21,7 @@ pub fn render_home_page() -> Markup {
                 main {
                     (home::render_home_banner())
                     (home::render_home_search_box())
-                    (home::render_hot_property())
+                    (home::render_hot_properties())
                     (home::render_our_services())
                     (home::render_testimonial())
                     (shared::render_contact())
@@ -30,9 +33,7 @@ pub fn render_home_page() -> Markup {
     }
 }
 
-pub fn render_search_result_page(
-    search_query: SearchQuery,
-) -> Markup {
+pub fn render_search_result_page(search_query: SearchQuery) -> Markup {
     html! {
         (DOCTYPE)
         html lang="en" {
@@ -57,7 +58,7 @@ pub fn render_search_result_page(
     }
 }
 
-pub fn render_property_details_page() -> Markup {
+pub fn render_property_details_page(property_query: PropertyQuery) -> Markup {
     html! {
         (DOCTYPE)
         html lang="en" {
@@ -71,7 +72,7 @@ pub fn render_property_details_page() -> Markup {
                 "#))
                 (shared::render_nav_bar())
                 main {
-                    (property_details::render_pictures_slider())
+                    (property_details::render_property_details(property_query))
                 }
                 (shared::render_footer())
                 div id="toast" {}

@@ -235,7 +235,9 @@ impl RsoData {
         Ok(property_type)
     }
 
-    pub async fn get_rso_property(params: HotPropertyParams) -> Result<PropertyResponse, AppError> {
+    pub async fn get_rso_hot_properties(
+        params: HotPropertyParams,
+    ) -> Result<SearchResponse, AppError> {
         let params = [
             ("p_agency_filterid", params.p_agency_filterid),
             ("p1", params.p1),
@@ -256,31 +258,32 @@ impl RsoData {
             params,
         )
         .map_err(|err| {
-            tracing::error!("Error parse rso property params: {}", err.to_string());
+            tracing::error!("Error parse rso hot property params: {}", err.to_string());
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
         let response = reqwest::get(url).await.map_err(|err| {
-            tracing::error!("Error getting rso property: {}", err.to_string());
+            tracing::error!("Error getting rso hot property: {}", err.to_string());
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
         let text = response.text().await.map_err(|err| {
-            tracing::error!("Error parsing rso property text: {}", err.to_string());
+            tracing::error!("Error parsing rso hot property text: {}", err.to_string());
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
-        let property: PropertyResponse = serde_json::from_str(&text).map_err(|err| {
-            tracing::error!("Failed to deserialize rso property: {}", err.to_string());
+        let search: SearchResponse = serde_json::from_str(&text).map_err(|err| {
+            tracing::error!(
+                "Failed to deserialize rso hot property: {}",
+                err.to_string()
+            );
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
-        Ok(property)
+        Ok(search)
     }
 
-    pub async fn get_search_result(
-        params: SearchResultParams,
-    ) -> Result<PropertyResponse, AppError> {
+    pub async fn get_search_result(params: SearchResultParams) -> Result<SearchResponse, AppError> {
         let params = [
             ("p_agency_filterid", params.p_agency_filterid),
             ("p1", params.p1),
@@ -304,6 +307,53 @@ impl RsoData {
 
         let url = reqwest::Url::parse_with_params(
             format!("{}/SearchProperties.php", RSO_URL).as_str(),
+            params,
+        )
+        .map_err(|err| {
+            tracing::error!("Error parse rso search result params: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let response = reqwest::get(url).await.map_err(|err| {
+            tracing::error!("Error getting rso search result: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let text = response.text().await.map_err(|err| {
+            tracing::error!("Error parsing rso search result text: {}", err.to_string());
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let search: SearchResponse = serde_json::from_str(&text).map_err(|err| {
+            tracing::error!(
+                "Failed to deserialize rso search result: {}",
+                err.to_string()
+            );
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        Ok(search)
+    }
+
+    pub async fn get_property(params: PropertyParams) -> Result<PropertyResponse, AppError> {
+        let params = [
+            ("p_agency_filterid", params.p_agency_filterid),
+            ("p1", params.p1),
+            ("p2", params.p2),
+            ("P_Lang", params.p_lang),
+            ("benchmark", params.benchmark),
+            ("P_sandbox", params.p_sandbox),
+            ("P_Currency", params.p_currency),
+            ("P_IgnoreHash", params.p_ignore_hash),
+            ("P_shownewdevname", params.p_shownewdevname),
+            ("P_VirtualTours", params.p_virtual_tours),
+            ("P_Dimension", params.p_dimension),
+            ("P_RefId", params.p_ref_id),
+            ("subversion", params.subversion),
+        ];
+
+        let url = reqwest::Url::parse_with_params(
+            format!("{}/PropertyDetails.php", RSO_URL).as_str(),
             params,
         )
         .map_err(|err| {
@@ -406,6 +456,23 @@ pub struct SearchResultParams {
     pub p_must_have_features: String,
     pub p_page_no: String,
     pub p_page_size: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyParams {
+    pub p_agency_filterid: String,
+    pub p1: String,
+    pub p2: String,
+    pub p_lang: String,
+    pub p_ref_id: String,
+    pub benchmark: String,
+    pub p_sandbox: String,
+    pub p_currency: String,
+    pub p_ignore_hash: String,
+    pub p_shownewdevname: String,
+    pub p_virtual_tours: String,
+    pub p_dimension: String,
+    pub subversion: String,
 }
 
 //..............................................................................................
@@ -545,33 +612,32 @@ pub struct PropertySubType {
     pub sub_type_option_value: String,
 }
 
-//....................................................................................................
-//.PPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP...EEEEEEEEEE..RRRRRRRRR....TTTTTTTTTTTYYY....YYY..
-//.PPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR..TTTTTTTTTTTYYY....YYY..
-//.PPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR..TTTTTTTTTTTYYYY..YYYY..
-//.PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPPP.EEE.........RRR.....RRR......TTT.....YYY..YYY...
-//.PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPPP.EEE.........RRR.....RRR......TTT.....YYYYYYYY...
-//.PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR......TTT......YYYYYY....
-//.PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRR.......TTT.......YYYY.....
-//.PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP...EEEEEEEEEE..RRRRRRRR.........TTT.......YYYY.....
-//.PPP.........RRR..RRRR....OOO......OOO..PPP.........EEE.........RRR..RRRR........TTT.......YYYY.....
-//.PPP.........RRR...RRRR...OOOO....OOOO..PPP.........EEE.........RRR...RRRR.......TTT.......YYYY.....
-//.PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.........EEEEEEEEEEE.RRR....RRRR......TTT.......YYYY.....
-//.PPP.........RRR....RRRR...OOOOOOOOOO...PPP.........EEEEEEEEEEE.RRR....RRRR......TTT.......YYYY.....
-//.PPP.........RRR.....RRRR....OOOOOO.....PPP.........EEEEEEEEEEE.RRR.....RRRR.....TTT.......YYYY.....
-//....................................................................................................
+//..............................................................................
+//....SSSSSS....EEEEEEEEEE.....AAAA......RRRRRRRRR.......CCCCCC....HHH.....HHH..
+//..SSSSSSSSS...EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR...CCCCCCCCC...HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR..CCCCCCCCCCC..HHH.....HHH..
+//..SSS...SSSS..EEE...........AAAAAA.....RRR.....RRR..CCCC...CCCC..HHH.....HHH..
+//..SSSS........EEE...........AAAAAAA....RRR.....RRR..CCC.....CC...HHH.....HHH..
+//..SSSSSSS.....EEEEEEEEEE...AAAA.AAA....RRRRRRRRRRR.CCCC..........HHHHHHHHHHH..
+//...SSSSSSSS...EEEEEEEEEE...AAA..AAAA...RRRRRRRRRR..CCCC..........HHHHHHHHHHH..
+//.....SSSSSSS..EEEEEEEEEE...AAAAAAAAA...RRRRRRRR....CCCC..........HHHHHHHHHHH..
+//.........SSSS.EEE.........AAAAAAAAAA...RRR..RRRR....CCC.....CC...HHH.....HHH..
+//.SSSS....SSSS.EEE.........AAAAAAAAAAA..RRR...RRRR...CCCC...CCCC..HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEEE.AAA.....AAA..RRR....RRRR..CCCCCCCCCCC..HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEEEAAAA.....AAAA.RRR....RRRR...CCCCCCCCC...HHH.....HHH..
+//....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH..
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct PropertyResponse {
-    pub transaction: PropertyTransaction,
+pub struct SearchResponse {
+    pub transaction: SearchTransaction,
     #[serde(rename = "QueryInfo")]
-    pub query_info: PropertyQueryInfo,
+    pub query_info: SearchQueryInfo,
     #[serde(rename = "Property")]
-    pub property: Vec<Property>,
+    pub property: Vec<SearchProperty>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct PropertyTransaction {
+pub struct SearchTransaction {
     pub status: String,
     #[serde(rename = "incomingIp")]
     pub incoming_ip: String,
@@ -582,7 +648,7 @@ pub struct PropertyTransaction {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct PropertyQueryInfo {
+pub struct SearchQueryInfo {
     #[serde(rename = "ApiId")]
     pub app_id: String,
     #[serde(rename = "QueryId")]
@@ -605,7 +671,7 @@ pub enum TextOrNum {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Property {
+pub struct SearchProperty {
     #[serde(rename = "Reference")]
     pub reference: String,
     #[serde(rename = "NewDevName")]
@@ -659,7 +725,7 @@ pub struct Property {
     #[serde(rename = "PropertyFeatures")]
     pub property_features: PropertyFeatures,
     #[serde(rename = "Pictures")]
-    pub pictures: PropertyPictures,
+    pub pictures: SearchPropertyPictures,
 }
 
 #[derive(Debug, Serialize, Clone)]
@@ -769,9 +835,27 @@ pub struct PropertyCategory {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct PropertyPictures {
+pub struct SearchPropertyPictures {
     #[serde(rename = "Count")]
     pub count: u32,
+    #[serde(rename = "Picture")]
+    pub picture: Vec<SearchPropertyPicture>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct SearchPropertyPicture {
+    #[serde(rename = "Id")]
+    pub id: u32,
+    #[serde(rename = "PictureURL")]
+    pub picture_url: String,
+    #[serde(rename = "PictureCaption")]
+    pub picture_caption: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct PropertyPictures {
+    #[serde(rename = "Count")]
+    pub count: String,
     #[serde(rename = "Picture")]
     pub picture: Vec<PropertyPicture>,
 }
@@ -782,6 +866,165 @@ pub struct PropertyPicture {
     pub id: u32,
     #[serde(rename = "PictureURL")]
     pub picture_url: String,
-    #[serde(rename = "PictureCaption")]
-    pub picture_caption: String,
+}
+
+//....................................................................................................
+//.PPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP...EEEEEEEEEE..RRRRRRRRR....TTTTTTTTTTTYYY....YYY..
+//.PPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR..TTTTTTTTTTTYYY....YYY..
+//.PPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR..TTTTTTTTTTTYYYY..YYYY..
+//.PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPPP.EEE.........RRR.....RRR......TTT.....YYY..YYY...
+//.PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPPP.EEE.........RRR.....RRR......TTT.....YYYYYYYY...
+//.PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR......TTT......YYYYYY....
+//.PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRR.......TTT.......YYYY.....
+//.PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP...EEEEEEEEEE..RRRRRRRR.........TTT.......YYYY.....
+//.PPP.........RRR..RRRR....OOO......OOO..PPP.........EEE.........RRR..RRRR........TTT.......YYYY.....
+//.PPP.........RRR...RRRR...OOOO....OOOO..PPP.........EEE.........RRR...RRRR.......TTT.......YYYY.....
+//.PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.........EEEEEEEEEEE.RRR....RRRR......TTT.......YYYY.....
+//.PPP.........RRR....RRRR...OOOOOOOOOO...PPP.........EEEEEEEEEEE.RRR....RRRR......TTT.......YYYY.....
+//.PPP.........RRR.....RRRR....OOOOOO.....PPP.........EEEEEEEEEEE.RRR.....RRRR.....TTT.......YYYY.....
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyResponse {
+    pub transaction: PropertyTransaction,
+    #[serde(rename = "QueryInfo")]
+    pub query_info: PropertyQueryInfo,
+    #[serde(rename = "Property")]
+    pub property: Property,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyTransaction {
+    pub status: String,
+    #[serde(rename = "incomingIp")]
+    pub incoming_ip: String,
+    pub version: String,
+    pub subversion: String,
+    pub service: String,
+    pub datetime: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PropertyQueryInfo {
+    #[serde(rename = "ApiId")]
+    pub api_id: String,
+    #[serde(rename = "QueryId")]
+    pub query_id: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct EnergyRating {
+    #[serde(rename = "CO2Rated")]
+    pub co2_rated: String,
+    #[serde(rename = "CO2Value")]
+    pub co2_value: String,
+    #[serde(rename = "EnergyRated")]
+    pub energy_rated: String,
+    #[serde(rename = "EnergyValue")]
+    pub energy_value: String,
+    #[serde(rename = "Image")]
+    pub image: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PublicDocument {
+    #[serde(rename = "type")]
+    pub document_type: String,
+    pub order: String,
+    #[serde(rename = "URL")]
+    pub url: String,
+    pub captions: Vec<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Property {
+    #[serde(rename = "Reference")]
+    pub reference: String,
+    #[serde(rename = "NewDevName")]
+    pub newdev_name: String,
+    #[serde(rename = "AgencyRef")]
+    pub agency_ref: String,
+    #[serde(rename = "Status")]
+    pub status: StatusProperty,
+    #[serde(rename = "Country")]
+    pub country: String,
+    #[serde(rename = "Province")]
+    pub province: String,
+    #[serde(rename = "Area")]
+    pub area: String,
+    #[serde(rename = "Location")]
+    pub location: String,
+    #[serde(rename = "SubLocation")]
+    pub sub_location: String,
+    #[serde(rename = "PropertyType")]
+    pub property_type: TypeProperty,
+    #[serde(rename = "Decree218")]
+    pub decree_218: TextOrNum,
+    #[serde(rename = "Bedrooms")]
+    pub bedrooms: String,
+    #[serde(rename = "Bathrooms")]
+    pub bathrooms: String,
+    #[serde(rename = "Currency")]
+    pub currency: String,
+    #[serde(rename = "Price")]
+    pub price: TextOrNum,
+    #[serde(rename = "OriginalPrice")]
+    pub original_price: u32,
+    #[serde(rename = "Community_Fees_Year")]
+    pub community_fee_year: String,
+    #[serde(rename = "Basura_Tax_Year")]
+    pub basura_tax_year: String,
+    #[serde(rename = "IBI_Fees_Year")]
+    pub ibi_fee_year: String,
+    #[serde(rename = "RentalPeriodShortTerm")]
+    pub rental_period_short_term: String,
+    #[serde(rename = "RentalPrice1ShortTerm")]
+    pub rental_price_1_short_term: u32,
+    #[serde(rename = "RentalPrice2ShortTerm")]
+    pub rental_price_2_short_term: u32,
+    #[serde(rename = "RentalPeriodLongTerm")]
+    pub rental_period_long_term: String,
+    #[serde(rename = "RentalPrice1LongTerm")]
+    pub rental_price_1_long_term: u32,
+    #[serde(rename = "RentalPrice2LongTerm")]
+    pub rental_price_2_long_term: u32,
+    #[serde(rename = "Dimensions")]
+    pub dimensions: String,
+    #[serde(rename = "Built")]
+    pub built: TextOrNum,
+    #[serde(rename = "Terrace")]
+    pub terrace: TextOrNum,
+    #[serde(rename = "GardenPlot")]
+    pub garden_plot: TextOrNum,
+    #[serde(rename = "IntFloorSpace")]
+    pub int_floor_space: TextOrNum,
+    #[serde(rename = "Levels")]
+    pub levels: String,
+    #[serde(rename = "EnergyRating")]
+    pub energy_rating: EnergyRating,
+    #[serde(rename = "RentalLicenseRef")]
+    pub rental_license_ref: String,
+    #[serde(rename = "OwnProperty")]
+    pub own_property: String,
+    #[serde(rename = "VirtualTour")]
+    pub virtual_tour: String,
+    #[serde(rename = "VideoTour")]
+    pub video_tour: String,
+    #[serde(rename = "Pool")]
+    pub pool: u32,
+    #[serde(rename = "Parking")]
+    pub parking: u32,
+    #[serde(rename = "Garden")]
+    pub garden: u32,
+    #[serde(rename = "CompletionDate")]
+    pub completion_date: String,
+    #[serde(rename = "BuiltYear")]
+    pub built_year: String,
+    #[serde(rename = "PublicDocuments")]
+    pub public_documents: Option<PublicDocument>,
+    #[serde(rename = "Description")]
+    pub description: String,
+    #[serde(rename = "PropertyFeatures")]
+    pub property_features: PropertyFeatures,
+    #[serde(rename = "Pictures")]
+    pub pictures: PropertyPictures,
 }

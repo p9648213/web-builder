@@ -1,8 +1,7 @@
 use maud::{html, Markup, PreEscaped};
 
 use crate::{
-    controllers::real_estate::pages::ListingType,
-    models::rso_data::Property,
+    models::rso_data::SearchProperty,
     views::{
         icons::{bath_icon_light, bed_icon_light, drop_down_icon, location_icon},
         real_estate::shared,
@@ -106,11 +105,11 @@ pub fn render_search_result(page: Option<u32>) -> Markup {
 }
 
 pub fn render_property_grids(
-    properties: &Vec<Property>,
+    properties: &Vec<SearchProperty>,
     property_count: u32,
     properties_per_page: u32,
     page_no: u32,
-    listing_type: &ListingType,
+    listing_type: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 

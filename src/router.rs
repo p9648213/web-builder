@@ -11,9 +11,13 @@ use crate::{
         real_estate::{
             self,
             data::{get_baths, get_beds, get_listing_type, get_price},
-            pages::{get_real_estate_home_page, get_real_estate_property_page, get_real_estate_search_result_page},
+            pages::{
+                get_real_estate_home_page, get_real_estate_property_page,
+                get_real_estate_search_result_page,
+            },
             rso_data::{
-                get_locations, get_property_types, get_property_types_slider, get_search_result,
+                get_hot_properties, get_locations, get_property, get_property_types,
+                get_search_result,
             },
         },
     },
@@ -105,13 +109,14 @@ pub async fn create_router(
     let main_view_routes = Router::new()
         .route("/", get(get_real_estate_home_page))
         .route("/search-results", get(get_real_estate_search_result_page))
-        .route("/property",get( get_real_estate_property_page));
+        .route("/property", get(get_real_estate_property_page));
 
     let rso_routes = Router::new()
         .route("/location", get(get_locations))
         .route("/property-types", get(get_property_types))
-        .route("/properties-slider", get(get_property_types_slider))
-        .route("/search-results", get(get_search_result));
+        .route("/hot-properties", get(get_hot_properties))
+        .route("/search-results", get(get_search_result))
+        .route("/property", get(get_property));
 
     let real_estate_data_routes = Router::new()
         .route("/listing-type", get(get_listing_type))

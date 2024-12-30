@@ -1,10 +1,11 @@
 use maud::{html, Markup, PreEscaped};
 
 use crate::{
-    controllers::real_estate::pages::ListingType, models::rso_data::{Property, TextOrNum}, views::icons::{
+    models::rso_data::{SearchProperty, TextOrNum},
+    views::icons::{
         bath_icon, bed_icon, buit_size_icon, drop_down_icon, email_icon, location_icon, mail_icon,
         phone_icon,
-    }
+    },
 };
 
 //......................................
@@ -195,7 +196,7 @@ pub fn render_contact_input(label: &str) -> Markup {
 
 pub fn render_footer() -> Markup {
     html! {
-      div class="flex flex-col justify-center items-center w-full" {
+      div class="flex flex-col justify-center items-center bg-blue-500 w-full text-white" {
         div class="flex flex-col gap-5 px-15 py-15 w-ful w-full max-w-360" {
           div class="flex justify-between w-full" {
             div class="flex gap-30" {
@@ -209,17 +210,17 @@ pub fn render_footer() -> Markup {
               }
               div class="flex gap-15" {
                 div class="flex flex-col gap-3" {
-                  div class="hover:text-blue-500 cursor-pointer" { "Home" }
-                  div class="hover:text-blue-500 cursor-pointer" { "Contact us" }
-                  div class="hover:text-blue-500 cursor-pointer" { "About us" }
-                  div class="hover:text-blue-500 cursor-pointer" { "Meet the team" }
-                  div class="hover:text-blue-500 cursor-pointer" { "Sell your property" }
+                  div class="cursor-pointer" { "Home" }
+                  div class="cursor-pointer" { "Contact us" }
+                  div class="cursor-pointer" { "About us" }
+                  div class="cursor-pointer" { "Meet the team" }
+                  div class="cursor-pointer" { "Sell your property" }
                 }
                 div class="flex flex-col gap-3" {
-                  div class="hover:text-blue-500 cursor-pointer" { "Resales" }
-                  div class="hover:text-blue-500 cursor-pointer" { "New development" }
-                  div class="hover:text-blue-500 cursor-pointer" { "Short rental" }
-                  div class="hover:text-blue-500 cursor-pointer" { "Long rental" }
+                  div class="cursor-pointer" { "Resales" }
+                  div class="cursor-pointer" { "New development" }
+                  div class="cursor-pointer" { "Short rental" }
+                  div class="cursor-pointer" { "Long rental" }
                 }
               }
             }
@@ -250,16 +251,16 @@ pub fn render_footer() -> Markup {
               }
             }
           }
-          div class="border-slate-950 border-b-1 w-full" {}
+          div class="border-white border-b-1 w-full" {}
           div class="flex flex-col gap-3" {
             div {
               "Copyright © 2023 - DEMO AGENCY. All Rights Reserved."
             }
-            div class="flex divide-x divide-slate-950 text-sm" {
-              div class="pr-3 hover:text-blue-500 cursor-pointer" { "Terms and Conditions" }
-              div class="px-3 hover:text-blue-500 cursor-pointer" { "Privacy Policy" }
-              div class="px-3 hover:text-blue-500 cursor-pointer" { "Cookie Policy" }
-              div class="px-3 hover:text-blue-500 cursor-pointer" { "Cookie Settings" }
+            div class="flex divide-x divide-white text-sm" {
+              div class="pr-3 cursor-pointer" { "Terms and Conditions" }
+              div class="px-3 cursor-pointer" { "Privacy Policy" }
+              div class="px-3 cursor-pointer" { "Cookie Policy" }
+              div class="px-3 cursor-pointer" { "Cookie Settings" }
             }
           }
         }
@@ -283,7 +284,7 @@ pub fn render_footer() -> Markup {
 //.PPP.........RRR.....RRRR....OOOOOO.....PPP.........EEEEEEEEEEE.RRR.....RRRR.....TTT.......YYYY.....
 //....................................................................................................
 
-pub fn render_property_card(property: &Property, listing_type: &ListingType) -> Markup {
+pub fn render_property_card(property: &SearchProperty, listing_type: &str) -> Markup {
     let total_pictures = *&property.pictures.count;
 
     html! {
@@ -306,11 +307,11 @@ pub fn render_property_card(property: &Property, listing_type: &ListingType) -> 
           }
         }
         div
-          hx-get=(format!("/property?id={}", property.reference))
-          hx-push-url=(format!("/property?id={}", property.reference))
+          hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, listing_type))
+          hx-push-url=(format!("/property?id={}&type={}", property.reference, listing_type))
           hx-trigger="click"
-          hx-target="main" 
-          class="flex flex-col gap-2 px-3 py-2 cursor-pointer" 
+          hx-target="main"
+          class="flex flex-col gap-2 px-3 py-2 cursor-pointer"
         {
           div class="font-bold" {
             @if property.newdev_name == "" {

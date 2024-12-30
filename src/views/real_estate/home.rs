@@ -2,10 +2,11 @@ use maud::{html, Markup, PreEscaped};
 use tailwind_fuse::tw_merge;
 
 use crate::{
-    controllers::real_estate::pages::ListingType, models::rso_data::{LocationDynamic, Property, PropertyType, ProvinceAreaDynamic}, views::{
+    models::rso_data::{LocationDynamic, PropertyType, ProvinceAreaDynamic, SearchProperty},
+    views::{
         icons::{check_icon, drop_down_icon, next_icon, previous_icon, star_icon},
         real_estate::shared::render_property_card,
-    }
+    },
 };
 
 //..............................................................................
@@ -304,7 +305,7 @@ pub fn render_home_search_box() -> Markup {
             hx-get="/section/real-estate/contents/search-results"
             hx-push-url="/search-results"
             hx-target="main"
-            class="bg-blue-500 hover:bg-blue-700 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"
+            class="bg-blue-500 hover:bg-blue-400 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"
           {
             "Search"
           }
@@ -329,7 +330,7 @@ pub fn render_home_search_box() -> Markup {
 //.HHH.....HHH.....OOOOOO.........TTT....PPP.........RRR.....RRRR....OOOOOO.....PPP...........SSSSSS....
 //......................................................................................................
 
-pub fn render_hot_property() -> Markup {
+pub fn render_hot_properties() -> Markup {
     html! {
       div class="flex justify-center items-center" {
         div class="flex justify-center px-15 py-20 w-full" {
@@ -344,7 +345,7 @@ pub fn render_hot_property() -> Markup {
               div class="border-b-3 border-b-black border-b-solid w-8" {}
             }
             div
-              hx-get="/rso/properties-slider"
+              hx-get="/rso/hot-properties"
               hx-trigger="load"
               hx-swap="innerHTML"
             {
@@ -356,7 +357,7 @@ pub fn render_hot_property() -> Markup {
     }
 }
 
-pub fn render_hot_property_slider(hot_properties: Vec<Property>) -> Markup {
+pub fn render_hot_properties_slider(hot_properties: Vec<SearchProperty>) -> Markup {
     let chunk_size = 6;
     let total_pages = (hot_properties.len() as f64 / chunk_size as f64).ceil();
 
@@ -404,7 +405,7 @@ pub fn render_hot_property_slider(hot_properties: Vec<Property>) -> Markup {
           @for property_chunk in &properties_chunks {
             div class="gap-10 grid grid-cols-[292px_292px_292px] pl-12" {
               @for property in property_chunk {
-                (render_property_card(property, &ListingType::Sale))
+                (render_property_card(property, "sale"))
               }
             }
           }
