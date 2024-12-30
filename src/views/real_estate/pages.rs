@@ -73,6 +73,7 @@ pub fn render_property_details_page(property_query: PropertyQuery) -> Markup {
                 (shared::render_nav_bar())
                 main {
                     (property_details::render_property_details(property_query))
+                    (shared::render_contact())
                 }
                 (shared::render_footer())
                 div id="toast" {}
