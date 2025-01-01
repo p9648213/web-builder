@@ -2,7 +2,11 @@ use crate::{
     config::EnvConfig,
     controllers::{
         builder::{
-            self, auth::{get_login_page, get_register_page, login, logout, register}, data::{create_data_source, update_rso_status}, edit::get_edit_page, home::get_builder_home_page, website::{create_website, select_template_for_webiste}
+            self,
+            auth::{get_login_page, get_register_page, login, logout, register},
+            data::{create_data_source, update_rso_status},
+            pages::{get_builder_setup_page, get_edit_page},
+            website::{create_website, select_template_for_webiste},
         },
         real_estate::{
             self,
@@ -94,7 +98,7 @@ pub async fn create_router(
         .route("/auth/logout", post(logout))
         .route("/auth/login", get(get_login_page))
         .route("/auth/register", get(get_register_page))
-        .route("/", get(get_builder_home_page))
+        .route("/", get(get_builder_setup_page))
         .route("/contents/:section", get(builder::section::get_section))
         .route("/website/data/rso-data/details", post(create_data_source))
         .route("/website/data/rso-data/status", patch(update_rso_status))
@@ -103,7 +107,7 @@ pub async fn create_router(
             "/website/template/select",
             post(select_template_for_webiste),
         )
-        .nest("/edit/:website_id", edit_routes);
+        .nest("/edit/:website_id/:section/:sub_section", edit_routes);
 
     let main_view_routes = Router::new()
         .route("/", get(get_real_estate_home_page))

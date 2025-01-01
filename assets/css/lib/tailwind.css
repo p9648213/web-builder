@@ -581,8 +581,8 @@
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
   }
-  .bottom-38 {
-    bottom: calc(var(--spacing) * 38);
+  .bottom-2 {
+    bottom: calc(var(--spacing) * 2);
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
@@ -596,14 +596,14 @@
   .left-\[50\%\] {
     left: 50%;
   }
-  .z-0 {
-    z-index: 0;
-  }
   .z-1 {
     z-index: 1;
   }
-  .z-4 {
-    z-index: 4;
+  .z-7 {
+    z-index: 7;
+  }
+  .z-8 {
+    z-index: 8;
   }
   .z-10 {
     z-index: 10;
@@ -628,6 +628,9 @@
     @media (width >= 96rem) {
       max-width: 96rem;
     }
+  }
+  .m-8 {
+    margin: calc(var(--spacing) * 8);
   }
   .-mx-2 {
     margin-inline: calc(var(--spacing) * -2);
@@ -704,6 +707,9 @@
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
+  .h-8 {
+    height: calc(var(--spacing) * 8);
+  }
   .h-10 {
     height: calc(var(--spacing) * 10);
   }
@@ -736,9 +742,6 @@
   }
   .max-h-50 {
     max-height: calc(var(--spacing) * 50);
-  }
-  .w-1 {
-    width: calc(var(--spacing) * 1);
   }
   .w-3 {
     width: calc(var(--spacing) * 3);
@@ -779,6 +782,9 @@
   .w-auto {
     width: auto;
   }
+  .w-fit {
+    width: fit-content;
+  }
   .w-full {
     width: 100%;
   }
@@ -788,8 +794,8 @@
   .max-w-5xl {
     max-width: var(--container-5xl);
   }
-  .max-w-7xl {
-    max-width: var(--container-7xl);
+  .max-w-6xl {
+    max-width: var(--container-6xl);
   }
   .max-w-18 {
     max-width: calc(var(--spacing) * 18);
@@ -797,11 +803,11 @@
   .max-w-60 {
     max-width: calc(var(--spacing) * 60);
   }
-  .max-w-6xl {
-    max-width: var(--container-6xl);
-  }
   .max-w-72 {
     max-width: calc(var(--spacing) * 72);
+  }
+  .max-w-7xl {
+    max-width: var(--container-7xl);
   }
   .max-w-85 {
     max-width: calc(var(--spacing) * 85);
@@ -960,6 +966,9 @@
   }
   .gap-30 {
     gap: calc(var(--spacing) * 30);
+  }
+  .gap-36 {
+    gap: calc(var(--spacing) * 36);
   }
   .-space-y-px {
     :where(& > :not(:last-child)) {
@@ -1191,6 +1200,9 @@
   .stroke-black {
     stroke: var(--color-black);
   }
+  .p-0 {
+    padding: calc(var(--spacing) * 0);
+  }
   .p-1 {
     padding: calc(var(--spacing) * 1);
   }
@@ -1209,8 +1221,8 @@
   .p-7 {
     padding: calc(var(--spacing) * 7);
   }
-  .p-90949 {
-    padding: calc(var(--spacing) * 90949);
+  .p-8 {
+    padding: calc(var(--spacing) * 8);
   }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
@@ -1409,10 +1421,6 @@
   .uppercase {
     text-transform: uppercase;
   }
-  .ordinal {
-    --tw-ordinal: ordinal;
-    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
-  }
   .underline {
     text-decoration-line: underline;
   }
@@ -1488,9 +1496,6 @@
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
-  }
-  .\[j���D\17 \"���0��\5 j�\]c�\]\6 I\=F\:�fZ�\$\f kߍϸ\|�R��R�X�\1 �I�_��\3 ���\*��l\17 \"���0��\5 j�\]c�\] {
-    j���D"���0��j�]c�]I=F: �fZ�$kߍϸ|�R �R X��I  �   �* �l"���0��j�]c�;
   }
   .outline-none {
     --tw-outline-style: none;
@@ -1615,6 +1620,13 @@
     &:hover {
       @media (hover: hover) {
         stroke: var(--color-white);
+      }
+    }
+  }
+  .hover\:text-blue-500 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-blue-500);
       }
     }
   }
@@ -1963,11 +1975,6 @@
       --tw-leading: initial;
       --tw-font-weight: initial;
       --tw-tracking: initial;
-      --tw-ordinal: initial;
-      --tw-slashed-zero: initial;
-      --tw-numeric-figure: initial;
-      --tw-numeric-spacing: initial;
-      --tw-numeric-fraction: initial;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
       --tw-inset-shadow: 0 0 #0000;
@@ -2094,26 +2101,6 @@
   inherits: false;
 }
 @property --tw-tracking {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-ordinal {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-slashed-zero {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-numeric-figure {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-numeric-spacing {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-numeric-fraction {
   syntax: "*";
   inherits: false;
 }

@@ -40,6 +40,7 @@ pub async fn get_section(
         "property" => {
             let html = html! {
                 (property_details::render_property_details(property_query.0))
+                (shared::render_contact())
             };
 
             Ok(Html(html.into_string()).into_response())

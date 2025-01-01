@@ -39,7 +39,7 @@ pub fn drop_down_icon() -> Markup {
 
 pub fn bed_icon() -> Markup {
     html! {
-        svg class="lucide lucide-bed" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+        svg class="lucide lucide-bed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
             path d="M2 4v16" {
             }
             path d="M2 8h18a2 2 0 0 1 2 2v10" {
@@ -69,7 +69,7 @@ pub fn bed_icon_light() -> Markup {
 
 pub fn bath_icon() -> Markup {
     html! {
-        svg class="lucide lucide-bath" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+        svg class="lucide lucide-bath" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
             path d="M10 4 8 6" {
             }
             path d="M17 19v2" {
@@ -103,7 +103,7 @@ pub fn bath_icon_light() -> Markup {
 
 pub fn buit_size_icon() -> Markup {
     html! {
-        svg class="lucide lucide-table-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
+        svg class="lucide lucide-table-2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {
             path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" {
             }
         }

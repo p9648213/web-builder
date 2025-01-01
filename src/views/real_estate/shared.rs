@@ -289,20 +289,20 @@ pub fn render_property_card(property: &SearchProperty, listing_type: &str) -> Ma
 
     html! {
       div class="relative flex flex-col gap-2 shadow-md rounded-lg overflow-hidden picture-container" {
-        div class="picture-slider-container" {
+        div class="relative picture-slider-container" {
           div class="flex h-42 transition-transform duration-500 picture-slider" {
             input type="hidden" value=(total_pictures) ;
             @for picture in &property.pictures.picture {
               img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
             }
           }
-        }
-        div class="bottom-38 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
-          @for i in 0..total_pictures as u8 {
-            @if i == 0 {
-              div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
-            } @else {
-              div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+            @for i in 0..total_pictures as u8 {
+              @if i == 0 {
+                div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+              } @else {
+                div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+              }
             }
           }
         }
@@ -311,7 +311,7 @@ pub fn render_property_card(property: &SearchProperty, listing_type: &str) -> Ma
           hx-push-url=(format!("/property?id={}&type={}", property.reference, listing_type))
           hx-trigger="click"
           hx-target="main"
-          class="flex flex-col gap-2 px-3 py-2 cursor-pointer"
+          class="flex flex-col justify-between gap-2 px-3 py-2 h-full cursor-pointer"
         {
           div class="font-bold" {
             @if property.newdev_name == "" {
@@ -320,29 +320,31 @@ pub fn render_property_card(property: &SearchProperty, listing_type: &str) -> Ma
               (property.newdev_name)
             }
           }
-          div class="font-bold text-blue-500 text-lg" {
-            (property.price) " €"
-          }
-          div class="text-sm" {
-            (property.location)
-          }
-          div class="flex gap-4 text-sm" {
-            div class="flex items-center gap-2" {
-              (bed_icon())
-              (property.bedrooms)
+          div class="flex flex-col gap-2" {
+            div class="font-bold text-blue-500 text-lg" {
+              (property.price) " €"
             }
-            div class="flex items-center gap-2" {
-              (bath_icon())
-              (property.bathrooms)
+            div class="text-sm" {
+              (property.location)
             }
-            div class="flex items-center gap-2" {
-              (buit_size_icon())
-              @match &property.built {
-                  TextOrNum::Text(built) => (built),
-                  TextOrNum::Num(built) => (built),
+            div class="flex gap-4 text-sm" {
+              div class="flex items-center gap-2" {
+                (bed_icon())
+                (property.bedrooms)
               }
-              @if property.dimensions == "Metres" {
-                "m²"
+              div class="flex items-center gap-2" {
+                (bath_icon())
+                (property.bathrooms)
+              }
+              div class="flex items-center gap-2" {
+                (buit_size_icon())
+                @match &property.built {
+                    TextOrNum::Text(built) => (built),
+                    TextOrNum::Num(built) => (built),
+                }
+                @if property.dimensions == "Metres" {
+                  "m²"
+                }
               }
             }
           }

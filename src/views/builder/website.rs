@@ -2,7 +2,8 @@ use maud::Markup;
 use reqwest::StatusCode;
 
 use crate::{
-    models::{error::AppError, website::Website}, views::builder::home::{render_sub_nav, SUB_NAV}
+    models::{error::AppError, website::Website},
+    views::builder::home::{render_sub_nav, SUB_NAV},
 };
 
 pub fn render_create_website(
@@ -36,7 +37,7 @@ pub fn render_create_website(
 }
 
 pub fn render_user_website(website: Website) -> Result<Markup, AppError> {
-    let website_id= website.id.ok_or_else(|| {
+    let website_id = website.id.ok_or_else(|| {
         tracing::error!("No id column or value is null");
         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
     })?;
@@ -51,7 +52,10 @@ pub fn render_user_website(website: Website) -> Result<Markup, AppError> {
         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
     })?;
 
-    let builder_link = format!("http://localhost:17000/builder/edit/{}", website_id);
+    let builder_link = format!(
+        "http://localhost:17000/builder/edit/{}/style/header",
+        website_id
+    );
 
     Ok(maud::html! {
         section id="create-website" {
