@@ -1,30 +1,42 @@
 use maud::{html, Markup, DOCTYPE};
 
-use crate::views::builder::head::render_main_builder_header;
+use crate::views::{
+    builder::head::render_main_builder_header,
+    icons::{footer_back_icon, footer_next_icon},
+};
 
 const MAIN_NAV_ITEM: [&str; 4] = ["CHOOSE STYLE", "BRANDING", "CONTENT", "ADVANCED SETTINGS"];
 
 pub fn render_edit_header_page() -> Markup {
     html! {
         (DOCTYPE)
-        head {
-          (render_main_builder_header())
-        }
-        body hx-boost="true" {
-            title {
-                "Edit Header"
-            }
-            main {
+        html class="h-full" {
+          head {
+            (render_main_builder_header())
+          }
+          body class="grid h-full" style="grid-template: auto 1fr auto / auto 1fr auto;" hx-boost="true" {
+              title {
+                  "Edit Header"
+              }
               (render_nav_bar(0))
-            }
-            div id="toast" {}
+              main class="grid grid-cols-10 col-[1/4] grow" {
+                div class="col-span-7 bg-[#F3F3F3]" {
+
+                }
+                div class="col-span-3" {
+
+                }
+              }
+              (render_footer())
+              div id="toast" {}
+          }
         }
     }
 }
 
 pub fn render_nav_bar(highlight_index: usize) -> Markup {
     html! {
-      nav class="shadow-md" {
+      nav class="z-10 shadow-md col-[1/4]" {
         div class="flex p-6" {
           div class="w-fit h-8" {
             img class="h-full" src="/assets/images/builder-logo.svg" alt="logo" ;
@@ -40,6 +52,33 @@ pub fn render_nav_bar(highlight_index: usize) -> Markup {
               }
             }
           }
+        }
+      }
+    }
+}
+
+pub fn render_footer() -> Markup {
+    html! {
+      footer class="z-10 flex justify-between mt-auto px-6 py-4 col-[1/4]" style="box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;" {
+        div class="flex items-center gap-10" {
+          button class="border-slate-300 px-12 py-2 border hover:border-blue-500 border-solid rounded-4xl text-lg hover:text-blue-500 transition-all duration-300 cursor-pointer" { "Preview" }
+          button class="bg-blue-500 hover:bg-white px-12 py-2 border border-transparent hover:border-blue-500 rounded-4xl text-lg text-white hover:text-blue-500 transition-all duration-300 cursor-pointer" { "Publish" }
+          div {
+            button class="text-blue-500 text-lg cursor-pointer" { "View Site" }
+          }
+        }
+        div class="flex items-center gap-10" {
+          div {
+            button class="flex items-center gap-2 text-black text-lg hover:text-gray-400 transition-all duration-300 cursor-pointer hover:stroke-gray-400 stroke-black"
+            {
+              (footer_back_icon()) "Back"
+            }
+          }
+          div class="flex gap-2" {
+            button class="flex items-center gap-2 bg-blue-500 hover:bg-white px-8 py-2 border border-transparent hover:border-blue-500 rounded-4xl text-lg text-white hover:text-blue-500 transition-all duration-300 cursor-pointer"
+            {
+              "Next" (footer_next_icon())}
+            }
         }
       }
     }
