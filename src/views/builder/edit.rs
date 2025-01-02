@@ -6,6 +6,14 @@ use crate::views::{
 };
 
 const MAIN_NAV_ITEM: [&str; 4] = ["CHOOSE STYLE", "BRANDING", "CONTENT", "ADVANCED SETTINGS"];
+const CHOOSE_STYLE_NAV: [&str; 6] = [
+    "Header",
+    "Footer",
+    "Home",
+    "Search Result",
+    "Property Details",
+    "Contact",
+];
 
 pub fn render_edit_header_page() -> Markup {
     html! {
@@ -21,10 +29,10 @@ pub fn render_edit_header_page() -> Markup {
               (render_nav_bar(0))
               main class="grid grid-cols-10 col-[1/4] grow" {
                 div class="col-span-7 bg-[#F3F3F3]" {
-
+                  (render_left_content())
                 }
                 div class="col-span-3" {
-
+                  (render_right_content())
                 }
               }
               (render_footer())
@@ -79,6 +87,34 @@ pub fn render_footer() -> Markup {
             {
               "Next" (footer_next_icon())}
             }
+        }
+      }
+    }
+}
+
+pub fn render_left_content() -> Markup {
+    html! {
+      (render_sub_nav(0))
+    }
+}
+
+pub fn render_right_content() -> Markup {
+    html! {
+      "Right Content"
+    }
+}
+
+pub fn render_sub_nav(highlight_index: usize) -> Markup {
+    html! {
+      div class="flex justify-center p-8" {
+        div class="flex gap-15 border-b border-b-gray-300 h-9 text-lg" {
+          @for (index ,item) in CHOOSE_STYLE_NAV.into_iter().enumerate() {
+            @if highlight_index == index {
+              div class="border-b-2 border-b-blue-500 text-blue-500 cursor-pointer" { (item) }
+            } @else {
+              div class="border-b-2 border-b-transparent hover:border-b-blue-500 hover:text-blue-500 transition-all duration-300 cursor-pointer" { (item) }
+            }
+          }
         }
       }
     }
