@@ -71,6 +71,18 @@ impl Website {
         .await
     }
 
+    pub async fn get_website_by_domain_name(
+        domain_name: &String,
+        pool: &Pool,
+    ) -> Result<Option<Row>, AppError> {
+        query_optional(
+            "SELECT * FROM websites WHERE domain = $1",
+            &[&domain_name],
+            pool,
+        )
+        .await
+    }
+
     pub async fn update_template_by_website_id(
         website_id: i32,
         template_id: i32,

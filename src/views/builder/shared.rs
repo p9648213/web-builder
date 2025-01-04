@@ -1,68 +1,37 @@
-use crate::views::builder::head::render_main_builder_header;
-
-pub struct Nav {
+pub struct MainNav {
     name: &'static str,
-    url: &'static str,
 }
 
-pub const MAIN_NAV: &[Nav] = &[Nav {
+pub struct SubNav {
+    name: &'static str,
+    url: &'static str,
+    push_url: &'static str,
+}
+
+pub const MAIN_NAV: &[MainNav] = &[MainNav {
     name: "Basic Setup",
-    url: "/builder/contents/basic-setup",
 }];
 
-pub const SUB_NAV: &[Nav] = &[
-    Nav {
+pub const SUB_NAV: &[SubNav] = &[
+    SubNav {
         name: "Create website",
         url: "/builder/contents/website",
+        push_url: "/builder/create-website",
     },
-    Nav {
+    SubNav {
         name: "Choose template",
         url: "/builder/contents/template",
+        push_url: "/builder/select-template",
     },
-    Nav {
+    SubNav {
         name: "Setup data",
         url: "/builder/contents/data",
+        push_url: "/builder/setup-data",
     },
 ];
 
-pub fn render_setup_page() -> maud::Markup {
-    maud::html! {
-        (maud::DOCTYPE)
-        head {
-          (render_main_builder_header())
-        }
-        body hx-boost="true" {
-            title {
-                "General Setup"
-            }
-            div class="flex w-full h-full" {
-                div class="xl:z-50 xl:fixed xl:inset-y-0 xl:flex xl:flex-col border-gray-200 border-r xl:w-72" {
-                    div class="flex flex-col gap-y-5 px-6 ring-1 ring-white/5 overflow-y-auto grow" {
-                        div class="flex items-center h-16 shrink-0" {
-                            img class="w-auto h-12" src="/assets/images/builder-logo.svg" alt="Your Company";
-                        }
-                        (render_main_nav(MAIN_NAV, "Basic Setup", None))
-                    }
-                }
-                div class="xl:pl-72 w-full" {
-                    main {
-                        h1 class="sr-only" {
-                            "Account Settings"
-                        }
-                        header class="border-white/5 border-b" {
-                            nav id="sub-nav" {}
-                            main id="contents" class="p-6" hx-get="/builder/contents/website" hx-trigger="load" {}
-                        }
-                    }
-                }
-            }
-            div id="toast" {}
-        }
-    }
-}
-
 pub fn render_main_nav(
-    nav_menu: &[Nav],
+    nav_menu: &[MainNav],
     highlight_item: &str,
     oob_swap: Option<&str>,
 ) -> maud::Markup {
@@ -100,7 +69,7 @@ pub fn render_main_nav(
 }
 
 pub fn render_sub_nav(
-    nav_menu: &[Nav],
+    nav_menu: &[SubNav],
     highlight_item: &str,
     oob_swap: Option<&str>,
 ) -> maud::Markup {
@@ -119,6 +88,7 @@ pub fn render_sub_nav(
                             div
                                 class="hover:text-indigo-500 cursor-pointer"
                                 hx-get=(nav.url)
+                                hx-push-url=(nav.push_url)
                                 hx-trigger="click"
                                 hx-target="#contents"
                             {

@@ -64,7 +64,7 @@ pub async fn login(
 
             let response = Response::builder()
                 .status(StatusCode::OK)
-                .header("HX-Location", "/builder")
+                .header("HX-Location", "/builder/create-website")
                 .body(axum::body::Body::empty())
                 .unwrap();
 

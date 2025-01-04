@@ -1,6 +1,8 @@
 use crate::{
     middlewares::auth::UserId,
-    models::{error::AppError, template::Template, website::Website},
+    models::{
+        error::AppError, template::Template, website::Website, website_setting::WebsiteSetting,
+    },
     views::builder::{template::render_website_template, website::render_user_website},
 };
 use axum::{
@@ -49,7 +51,50 @@ pub async fn create_website(
         ));
     }
 
-    Ok(Html(render_user_website(new_website)?.into_string()))
+    let row = Website::get_website_by_domain_name(&new_website.domain.as_ref().unwrap(), &pg_pool)
+        .await?;
+
+    if let Some(row) = row {
+        let created_website = Website::try_from(row);
+
+        let website_id = created_website.id.ok_or_else(|| {
+            tracing::error!("No id column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+        let new_website_setting = WebsiteSetting::new(
+            None,
+            Some(website_id),
+            Some(1),
+            Some(1),
+            Some(1),
+            Some(1),
+            Some(1),
+            Some(1),
+        );
+
+        let result =
+            WebsiteSetting::insert_website_setting(website_id, &new_website_setting, &pg_pool)
+                .await?;
+
+        if result == 0 {
+            tracing::error!(
+                "There was an error inserting the website setting. No rows were affected."
+            );
+            return Err(AppError::new(
+                StatusCode::INTERNAL_SERVER_ERROR,
+                "Server error",
+            ));
+        }
+
+        Ok(Html(render_user_website(&created_website)?.into_string()))
+    } else {
+        tracing::error!("There was an error getting the website by domain name.");
+        Err(AppError::new(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "Server error",
+        ))
+    }
 }
 
 pub async fn select_template_for_webiste(

@@ -5,7 +5,10 @@ use crate::{
             self,
             auth::{get_login_page, get_register_page, login, logout, register},
             data::{create_data_source, update_rso_status},
-            pages::{get_builder_setup_page, get_edit_page},
+            pages::{
+                get_create_website_page, get_edit_page, get_select_template_page,
+                get_setup_data_page,
+            },
             website::{create_website, select_template_for_webiste},
         },
         real_estate::{
@@ -98,7 +101,9 @@ pub async fn create_router(
         .route("/auth/logout", post(logout))
         .route("/auth/login", get(get_login_page))
         .route("/auth/register", get(get_register_page))
-        .route("/", get(get_builder_setup_page))
+        .route("/create-website", get(get_create_website_page))
+        .route("/select-template", get(get_select_template_page))
+        .route("/setup-data", get(get_setup_data_page))
         .route("/contents/:section", get(builder::section::get_section))
         .route("/website/data/rso-data/details", post(create_data_source))
         .route("/website/data/rso-data/status", patch(update_rso_status))

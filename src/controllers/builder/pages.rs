@@ -5,8 +5,27 @@ use serde::Deserialize;
 use crate::{
     middlewares::auth::UserId,
     models::error::AppError,
-    views::builder::{edit::render_edit_header_page, home::render_setup_page},
+    views::builder::{
+        data::render_setup_data_page, edit::render_edit_style_page,
+        template::render_website_template_page, website::render_create_website_page,
+    },
 };
+
+pub enum BuilderStyle {
+    Header,
+    Footer,
+    Home,
+    SearchResult,
+    PropertyDetail,
+    Contact,
+}
+
+pub enum BuilderSection {
+    ChooseStyle,
+    Branding,
+    Content,
+    AdvancedSetting,
+}
 
 #[derive(Deserialize)]
 pub struct EditParams {
@@ -15,8 +34,16 @@ pub struct EditParams {
     pub sub_section: String,
 }
 
-pub async fn get_builder_setup_page() -> Html<String> {
-    Html(render_setup_page().into_string())
+pub async fn get_create_website_page() -> Html<String> {
+    Html(render_create_website_page().into_string())
+}
+
+pub async fn get_select_template_page() -> Html<String> {
+    Html(render_website_template_page().into_string())
+}
+
+pub async fn get_setup_data_page() -> Html<String> {
+    Html(render_setup_data_page().into_string())
 }
 
 pub async fn get_edit_page(
@@ -31,7 +58,7 @@ pub async fn get_edit_page(
         "style" => {
             match sub_section.as_str() {
                 "header" => html! {
-                    (render_edit_header_page())
+                    (render_edit_style_page(BuilderSection::ChooseStyle ,BuilderStyle::Header))
                 },
                 _ => html! {
                     "Not Found"

@@ -20,7 +20,9 @@ pub async fn auth_middleware(
 
     if let Some(id) = user_id {
         match request.uri().path() {
-            "/builder/auth/login" | "/builder/auth/register" => Ok(redirect_307("/builder")),
+            "/builder/auth/login" | "/builder/auth/register" => {
+                Ok(redirect_307("/builder/create-website"))
+            }
             _ => {
                 let id = UserId(id);
                 request.extensions_mut().insert(id);
