@@ -84,9 +84,15 @@ impl WebsiteSetting {
     pub async fn get_website_setting_by_website_id(
         website_id: i32,
         pool: &deadpool_postgres::Pool,
+        columns: Vec<&str>,
     ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
         query_optional(
-            "SELECT * FROM website_settings WHERE webiste_id = $1",
+            &format!(
+                "SELECT {} FROM website_settings WHERE website_id = $1",
+                columns
+            ),
             &[&website_id],
             pool,
         )

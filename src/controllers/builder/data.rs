@@ -28,7 +28,7 @@ pub async fn create_data_source(
     State(pg_pool): State<Pool>,
     Form(form): Form<DataSourceForm>,
 ) -> Result<impl IntoResponse, AppError> {
-    let row = RsoData::get_rso_data_by_user_id(user_id.0, &pg_pool).await?;
+    let row = RsoData::get_rso_data_by_user_id(user_id.0, &pg_pool, vec!["id"]).await?;
 
     if let Some(_) = row {
         let updated_rso_data = RsoData::new(
@@ -85,7 +85,7 @@ pub async fn update_rso_status(
     State(pg_pool): State<Pool>,
     Form(form): Form<RsoStatusForm>,
 ) -> Result<impl IntoResponse, AppError> {
-    let row = RsoData::get_rso_data_by_user_id(user_id.0, &pg_pool).await?;
+    let row = RsoData::get_rso_data_by_user_id(user_id.0, &pg_pool, vec!["id"]).await?;
 
     if let Some(_) = row {
         let status = if let Some(_) = form.rso_data_status {

@@ -61,16 +61,20 @@ impl Template {
         templates
     }
 
-    pub async fn get_all_templates(pool: &Pool) -> Result<Vec<Row>, AppError> {
-        query("SELECT * FROM templates", &[], pool).await
+    pub async fn get_all_templates(pool: &Pool, columns: Vec<&str>) -> Result<Vec<Row>, AppError> {
+        let columns = columns.join(",");
+        query(&format!("SELECT {} FROM templates", columns), &[], pool).await
     }
 
     pub async fn get_template_by_id(
         template_id: i32,
         pool: &Pool,
+        columns: Vec<&str>,
     ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
         query_optional(
-            "SELECT * FROM templates WHERE templates.id = $1",
+            &format!("SELECT {} FROM templates WHERE templates.id = $1", columns),
             &[&template_id],
             pool,
         )

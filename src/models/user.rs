@@ -51,12 +51,34 @@ impl User {
         }
     }
 
-    pub async fn get_user_by_id(id: i32, pool: &Pool) -> Result<Option<Row>, AppError> {
-        query_optional("SELECT * FROM users WHERE id = $1", &[&id], pool).await
+    pub async fn get_user_by_id(
+        id: i32,
+        pool: &Pool,
+        columns: Vec<&str>,
+    ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
+        query_optional(
+            &format!("SELECT {} FROM users WHERE id = $1", columns),
+            &[&id],
+            pool,
+        )
+        .await
     }
 
-    pub async fn get_user_by_email(email: &str, pool: &Pool) -> Result<Option<Row>, AppError> {
-        query_optional("SELECT * FROM users WHERE email = $1", &[&email], pool).await
+    pub async fn get_user_by_email(
+        email: &str,
+        pool: &Pool,
+        columns: Vec<&str>,
+    ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
+        query_optional(
+            &format!("SELECT {} FROM users WHERE email = $1", columns),
+            &[&email],
+            pool,
+        )
+        .await
     }
 
     pub async fn insert_user(user: User, pool: &Pool) -> Result<u64, AppError> {

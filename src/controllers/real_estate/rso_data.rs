@@ -19,7 +19,12 @@ use crate::views::real_estate::search_result;
 use super::pages::{PropertyQuery, SearchQuery};
 
 pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, AppError> {
-    let row = RsoData::get_rso_data_by_user_id(1, &pg_pool).await?;
+    let row = RsoData::get_rso_data_by_user_id(
+        1,
+        &pg_pool,
+        vec!["filter_id_sale", "identifier_id", "api_key"],
+    )
+    .await?;
 
     if let Some(row) = row {
         let rso_data = RsoData::try_from(row);
@@ -69,7 +74,12 @@ pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, 
 }
 
 pub async fn get_property_types(State(pg_pool): State<Pool>) -> Result<Html<String>, AppError> {
-    let row = RsoData::get_rso_data_by_user_id(1, &pg_pool).await?;
+    let row = RsoData::get_rso_data_by_user_id(
+        1,
+        &pg_pool,
+        vec!["filter_id_sale", "identifier_id", "api_key"],
+    )
+    .await?;
 
     if let Some(row) = row {
         let rso_data = RsoData::try_from(row);
@@ -120,13 +130,18 @@ pub async fn get_property_types(State(pg_pool): State<Pool>) -> Result<Html<Stri
 }
 
 pub async fn get_hot_properties(State(pg_pool): State<Pool>) -> Result<Html<String>, AppError> {
-    let row = RsoData::get_rso_data_by_user_id(1, &pg_pool).await?;
+    let row = RsoData::get_rso_data_by_user_id(
+        1,
+        &pg_pool,
+        vec!["filter_id_featured", "identifier_id", "api_key"],
+    )
+    .await?;
 
     if let Some(row) = row {
         let rso_data = RsoData::try_from(row);
 
         let p_agency_filterid = rso_data.filter_id_featured.ok_or_else(|| {
-            tracing::error!("No filter_id_sale column or value is null");
+            tracing::error!("No filter_id_featured column or value is null");
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
         })?;
 
@@ -180,7 +195,18 @@ pub async fn get_property(
         return Ok(Html("Property not found".to_string()));
     }
 
-    let row = RsoData::get_rso_data_by_user_id(1, &pg_pool).await?;
+    let row = RsoData::get_rso_data_by_user_id(
+        1,
+        &pg_pool,
+        vec![
+            "identifier_id",
+            "api_key",
+            "filter_id_sale",
+            "filter_id_long",
+            "filter_id_short",
+        ],
+    )
+    .await?;
 
     if let Some(row) = row {
         let rso_data = RsoData::try_from(row);
@@ -236,7 +262,7 @@ pub async fn get_property(
             subversion: "v6.1".to_string(),
         };
 
-        let property_response = RsoData::get_property(property_params).await?;
+        let property_response = RsoData::get_rso_property(property_params).await?;
 
         let html = html! {
             (render_detail(&property_response.property))
@@ -257,7 +283,18 @@ pub async fn get_search_result(
     State(pg_pool): State<Pool>,
     search_query: Query<SearchQuery>,
 ) -> Result<Html<String>, AppError> {
-    let row = RsoData::get_rso_data_by_user_id(1, &pg_pool).await?;
+    let row = RsoData::get_rso_data_by_user_id(
+        1,
+        &pg_pool,
+        vec![
+            "identifier_id",
+            "api_key",
+            "filter_id_sale",
+            "filter_id_long",
+            "filter_id_short",
+        ],
+    )
+    .await?;
 
     if let Some(row) = row {
         let rso_data = RsoData::try_from(row);
@@ -319,7 +356,7 @@ pub async fn get_search_result(
             p_virtual_tours: "2".to_string(),
         };
 
-        let search_response = RsoData::get_search_result(search_result_params).await?;
+        let search_response = RsoData::get_rso_search_result(search_result_params).await?;
 
         let html = html! {
             (search_result::render_property_grids(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type))

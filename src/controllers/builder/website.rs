@@ -51,8 +51,12 @@ pub async fn create_website(
         ));
     }
 
-    let row = Website::get_website_by_domain_name(&new_website.domain.as_ref().unwrap(), &pg_pool)
-        .await?;
+    let row = Website::get_website_by_domain_name(
+        &new_website.domain.as_ref().unwrap(),
+        &pg_pool,
+        vec!["id", "name", "domain"],
+    )
+    .await?;
 
     if let Some(row) = row {
         let created_website = Website::try_from(row);
@@ -114,7 +118,7 @@ pub async fn select_template_for_webiste(
         ));
     }
 
-    let row = Template::get_template_by_id(template_id, &pg_pool)
+    let row = Template::get_template_by_id(template_id, &pg_pool, vec!["template_type"])
         .await?
         .ok_or_else(|| {
             tracing::error!("Can not find template with template_id: {template_id}");

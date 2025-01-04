@@ -49,7 +49,7 @@ pub async fn login(
     State(pg_pool): State<Pool>,
     Form(login_form): Form<LoginForm>,
 ) -> Result<impl IntoResponse, AppError> {
-    let row = User::get_user_by_email(&login_form.email, &pg_pool).await?;
+    let row = User::get_user_by_email(&login_form.email, &pg_pool, vec!["id", "password"]).await?;
 
     if let Some(row) = row {
         let user = User::try_from(row);
@@ -59,8 +59,13 @@ pub async fn login(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
+        let user_id = user.id.ok_or_else(|| {
+            tracing::error!("No id column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
         if compare_password(&login_form.password, &user_password)? {
-            session.set("id", &user.id);
+            session.set("id", &user_id);
 
             let response = Response::builder()
                 .status(StatusCode::OK)
@@ -122,7 +127,7 @@ pub async fn register(
         ));
     }
 
-    let row = User::get_user_by_email(&register_form.email, &pg_pool).await?;
+    let row = User::get_user_by_email(&register_form.email, &pg_pool, vec!["id"]).await?;
 
     if let Some(_) = row {
         return Err(AppError::new(

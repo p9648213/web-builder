@@ -142,9 +142,12 @@ impl RsoData {
     pub async fn get_rso_data_by_user_id(
         user_id: i32,
         pool: &Pool,
+        columns: Vec<&str>,
     ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
         query_optional(
-            "SELECT * FROM rso_data WHERE user_id = $1",
+            &format!("SELECT {} FROM rso_data WHERE user_id = $1", columns),
             &[&user_id],
             pool,
         )
@@ -283,7 +286,9 @@ impl RsoData {
         Ok(search)
     }
 
-    pub async fn get_search_result(params: SearchResultParams) -> Result<SearchResponse, AppError> {
+    pub async fn get_rso_search_result(
+        params: SearchResultParams,
+    ) -> Result<SearchResponse, AppError> {
         let params = [
             ("p_agency_filterid", params.p_agency_filterid),
             ("p1", params.p1),
@@ -335,7 +340,7 @@ impl RsoData {
         Ok(search)
     }
 
-    pub async fn get_property(params: PropertyParams) -> Result<PropertyResponse, AppError> {
+    pub async fn get_rso_property(params: PropertyParams) -> Result<PropertyResponse, AppError> {
         let params = [
             ("p_agency_filterid", params.p_agency_filterid),
             ("p1", params.p1),

@@ -62,9 +62,12 @@ impl Website {
     pub async fn get_website_by_user_id(
         user_id: i32,
         pool: &Pool,
+        columns: Vec<&str>,
     ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
         query_optional(
-            "SELECT * FROM websites WHERE user_id = $1",
+            &format!("SELECT {} FROM websites WHERE user_id = $1", columns),
             &[&user_id],
             pool,
         )
@@ -74,9 +77,12 @@ impl Website {
     pub async fn get_website_by_domain_name(
         domain_name: &String,
         pool: &Pool,
+        columns: Vec<&str>,
     ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
         query_optional(
-            "SELECT * FROM websites WHERE domain = $1",
+            &format!("SELECT {} FROM websites WHERE domain = $1", columns),
             &[&domain_name],
             pool,
         )
@@ -91,18 +97,6 @@ impl Website {
         excute(
             "UPDATE websites SET template_id = $1 where id = $2",
             &[&template_id, &website_id],
-            pool,
-        )
-        .await
-    }
-
-    pub async fn get_website_template(
-        template_id: i32,
-        pool: &Pool,
-    ) -> Result<Option<Row>, AppError> {
-        query_optional(
-            "SELECT * FROM websites JOIN templates ON websites.template_id = $1",
-            &[&template_id],
             pool,
         )
         .await

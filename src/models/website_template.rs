@@ -60,10 +60,13 @@ impl WebsiteTemplate {
         website_id: i32,
         template_id: i32,
         pool: &Pool,
+        columns: Vec<&str>,
     ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
         query_optional(
-          "SELECT template_type FROM websites JOIN templates ON websites.template_id = $1 WHERE websites.id = $2",
-          &[&template_id, &website_id],
+          &format!("SELECT {} FROM websites JOIN templates ON websites.template_id = templates.id WHERE websites.id = $1 AND templates.id = $2", columns),
+          &[&website_id, &template_id],
           pool,
         )
         .await

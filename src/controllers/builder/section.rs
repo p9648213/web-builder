@@ -28,16 +28,21 @@ pub async fn get_section(
 ) -> Result<impl IntoResponse, AppError> {
     let authenticity_token = token.authenticity_token().unwrap_or("".to_owned());
 
-    let row = Website::get_website_by_user_id(user_id.0, &pg_pool).await?;
-
-    let website: Option<Website> = if let Some(row) = row {
-        Some(Website::try_from(row))
-    } else {
-        None
-    };
-
     match section.as_str() {
         "template" => {
+            let row = Website::get_website_by_user_id(
+                user_id.0,
+                &pg_pool,
+                vec!["id", "template_id", "name"],
+            )
+            .await?;
+
+            let website: Option<Website> = if let Some(row) = row {
+                Some(Website::try_from(row))
+            } else {
+                None
+            };
+
             if let Some(website) = website {
                 if let Some(template_id) = website.template_id {
                     let website_id = website.id.ok_or_else(|| {
@@ -49,6 +54,7 @@ pub async fn get_section(
                         website_id,
                         template_id,
                         &pg_pool,
+                        vec!["template_type"],
                     )
                     .await?
                     .ok_or_else(|| {
@@ -67,7 +73,11 @@ pub async fn get_section(
 
                     Ok(Html(render_website_template(template_type).into_string()).into_response())
                 } else {
-                    let row = Template::get_all_templates(&pg_pool).await?;
+                    let row = Template::get_all_templates(
+                        &pg_pool,
+                        vec!["id", "template_type", "description"],
+                    )
+                    .await?;
                     let template = Template::try_from_rows(row);
 
                     Ok(Html(
@@ -81,7 +91,19 @@ pub async fn get_section(
             }
         }
         "data" => {
-            let row = RsoData::get_rso_data_by_user_id(user_id.0, &pg_pool).await?;
+            let row = RsoData::get_rso_data_by_user_id(
+                user_id.0,
+                &pg_pool,
+                vec![
+                    "identifier_id",
+                    "api_key",
+                    "filter_id_sale",
+                    "filter_id_long",
+                    "filter_id_short",
+                    "filter_id_featured",
+                ],
+            )
+            .await?;
 
             let rso_data = if let Some(row) = row {
                 Some(RsoData::try_from(row))
@@ -95,9 +117,21 @@ pub async fn get_section(
             )
                 .into_response())
         }
-        "website" => Ok(
-            Html(render_create_website(authenticity_token, website)?.into_string()).into_response(),
-        ),
+        "website" => {
+            let row =
+                Website::get_website_by_user_id(user_id.0, &pg_pool, vec!["id", "name", "domain"])
+                    .await?;
+
+            let website: Option<Website> = if let Some(row) = row {
+                Some(Website::try_from(row))
+            } else {
+                None
+            };
+            Ok(
+                Html(render_create_website(authenticity_token, website)?.into_string())
+                    .into_response(),
+            )
+        }
         _ => Ok(Html("Not found".to_owned()).into_response()),
     }
 }
