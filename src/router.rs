@@ -95,57 +95,67 @@ pub async fn create_router(
 
     let edit_routes = Router::new().route("/", get(get_edit_page));
 
-    let builder_routes = Router::new()
-        .route("/auth/login", post(login))
-        .route("/auth/register", post(register))
-        .route("/auth/logout", post(logout))
-        .route("/auth/login", get(get_login_page))
-        .route("/auth/register", get(get_register_page))
-        .route("/create-website", get(get_create_website_page))
-        .route("/select-template", get(get_select_template_page))
-        .route("/setup-data", get(get_setup_data_page))
-        .route("/contents/:section", get(builder::section::get_section))
-        .route("/website/data/rso-data/details", post(create_data_source))
-        .route("/website/data/rso-data/status", patch(update_rso_status))
-        .route("/website/create", post(create_website))
-        .route(
-            "/website/template/select",
-            post(select_template_for_webiste),
-        )
-        .nest("/edit/:website_id/:section/:sub_section", edit_routes);
+    let builder_routes = Router::new().nest(
+        "/builder",
+        Router::new()
+            .route("/auth/login", post(login))
+            .route("/auth/register", post(register))
+            .route("/auth/logout", post(logout))
+            .route("/auth/login", get(get_login_page))
+            .route("/auth/register", get(get_register_page))
+            .route("/create-website", get(get_create_website_page))
+            .route("/select-template", get(get_select_template_page))
+            .route("/setup-data", get(get_setup_data_page))
+            .route("/contents/{section}", get(builder::section::get_section))
+            .route("/website/data/rso-data/details", post(create_data_source))
+            .route("/website/data/rso-data/status", patch(update_rso_status))
+            .route("/website/create", post(create_website))
+            .route(
+                "/website/template/select",
+                post(select_template_for_webiste),
+            )
+            .nest("/edit/{website_id}/{section}/{sub_section}", edit_routes),
+    );
 
     let main_view_routes = Router::new()
         .route("/", get(get_real_estate_home_page))
         .route("/search-results", get(get_real_estate_search_result_page))
         .route("/property", get(get_real_estate_property_page));
 
-    let rso_routes = Router::new()
-        .route("/location", get(get_locations))
-        .route("/property-types", get(get_property_types))
-        .route("/hot-properties", get(get_hot_properties))
-        .route("/search-results", get(get_search_result))
-        .route("/property", get(get_property));
+    let real_estate_rso_routes = Router::new().nest(
+        "/rso",
+        Router::new()
+            .route("/location", get(get_locations))
+            .route("/property-types", get(get_property_types))
+            .route("/hot-properties", get(get_hot_properties))
+            .route("/search-results", get(get_search_result))
+            .route("/property", get(get_property)),
+    );
 
-    let real_estate_data_routes = Router::new()
-        .route("/listing-type", get(get_listing_type))
-        .route("/prices", get(get_price))
-        .route("/beds", get(get_beds))
-        .route("/baths", get(get_baths));
+    let real_estate_data_routes = Router::new().nest(
+        "/data/real-estate",
+        Router::new()
+            .route("/listing-type", get(get_listing_type))
+            .route("/prices", get(get_price))
+            .route("/beds", get(get_beds))
+            .route("/baths", get(get_baths)),
+    );
 
-    let real_estate_section_routes =
-        Router::new().route("/contents/:section", get(real_estate::section::get_section));
-
-    let data_real_estate_routes = Router::new().nest("/real-estate", real_estate_data_routes);
-
-    let section_real_estate_routes = Router::new().nest("/real-estate", real_estate_section_routes);
+    let real_estate_section_routes = Router::new().nest(
+        "/section/real-estate",
+        Router::new().route(
+            "/contents/{section}",
+            get(real_estate::section::get_section),
+        ),
+    );
 
     Router::new()
-        .nest("/builder", builder_routes)
+        .merge(builder_routes)
         .layer(from_fn_with_state(app_state.clone(), auth_middleware))
-        .nest("/", main_view_routes)
-        .nest("/rso", rso_routes)
-        .nest("/data", data_real_estate_routes)
-        .nest("/section", section_real_estate_routes)
+        .merge(main_view_routes)
+        .merge(real_estate_rso_routes)
+        .merge(real_estate_data_routes)
+        .merge(real_estate_section_routes)
         .with_state(app_state.clone())
         .layer(cache_control_layer)
         .layer(SessionLayer::new(session_store))
