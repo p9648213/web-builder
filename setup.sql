@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS rso_data (
 CREATE TABLE IF NOT EXISTS website_settings (
     id SERIAL PRIMARY KEY,
     website_id INTEGER UNIQUE,
+    user_id INTEGER NOT NULL,
     header_theme INTEGER NOT NULL DEFAULT 1,
     footer_theme INTEGER NOT NULL DEFAULT 1,
     home_theme INTEGER NOT NULL DEFAULT 1,
@@ -78,7 +79,8 @@ CREATE TABLE IF NOT EXISTS website_settings (
     contact_theme INTEGER NOT NULL DEFAULT 1,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_website FOREIGN KEY (website_id) REFERENCES websites (id) ON DELETE CASCADE
+    CONSTRAINT fk_website FOREIGN KEY (website_id) REFERENCES websites (id) ON DELETE CASCADE,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 DO $$

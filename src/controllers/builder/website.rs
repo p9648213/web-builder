@@ -69,6 +69,7 @@ pub async fn create_website(
         let new_website_setting = WebsiteSetting::new(
             None,
             Some(website_id),
+            Some(user_id),
             Some(1),
             Some(1),
             Some(1),

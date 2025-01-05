@@ -46,7 +46,7 @@ pub async fn create_data_source(
             RsoData::update_rso_data_by_user_id(user_id.0, &updated_rso_data, &pg_pool).await?;
 
         if result == 0 {
-            tracing::error!("Error while updating rso data");
+            tracing::error!("Error while updating rso data. No rows were affected");
             return Err(AppError::new(
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Server error",
@@ -69,7 +69,7 @@ pub async fn create_data_source(
         let result = RsoData::create_rso_data_by_user_id(user_id.0, &rso_data, &pg_pool).await?;
 
         if result == 0 {
-            tracing::error!("Error while creating rso data");
+            tracing::error!("Error while creating rso data. No rows were affected");
             return Err(AppError::new(
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Server error",
@@ -98,7 +98,7 @@ pub async fn update_rso_status(
             RsoData::update_status_rso_data_by_user_id(user_id.0, status, &pg_pool).await?;
 
         if result == 0 {
-            tracing::error!("Error while updating rso data status");
+            tracing::error!("Error while updating rso data status. No rows were affected");
             return Err(AppError::new(
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Server error",

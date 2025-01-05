@@ -8,9 +8,10 @@ use crate::{
     },
 };
 
-pub struct StyleItem<'a> {
-    pub style_no: u8,
-    pub img_url: &'a str,
+pub struct LayoutItem<'a> {
+    pub layout_no: i32,
+    pub layout_img_url: &'a str,
+    pub preview_img_url: &'a str,
 }
 
 const MAIN_NAV_ITEM: [&str; 4] = ["CHOOSE STYLE", "BRANDING", "CONTENT", "ADVANCED SETTINGS"];
@@ -24,31 +25,71 @@ const CHOOSE_STYLE_NAV: [&str; 6] = [
     "Contact",
 ];
 
-const HEADER_STYLE: [StyleItem; 4] = [
-    StyleItem {
-        style_no: 1,
-        img_url: "/assets/images/real_estate/header-layout-1.webp",
+pub const HEADER_LAYOUT: [LayoutItem; 4] = [
+    LayoutItem {
+        layout_no: 1,
+        layout_img_url: "/assets/images/real_estate/header-layout-1.webp",
+        preview_img_url: "/assets/images/real_estate/header-preview-1.webp",
     },
-    StyleItem {
-        style_no: 2,
-        img_url: "/assets/images/real_estate/header-layout-2.webp",
+    LayoutItem {
+        layout_no: 2,
+        layout_img_url: "/assets/images/real_estate/header-layout-2.webp",
+        preview_img_url: "/assets/images/real_estate/header-preview-2.webp",
     },
-    StyleItem {
-        style_no: 3,
-        img_url: "/assets/images/real_estate/header-layout-3.webp",
+    LayoutItem {
+        layout_no: 3,
+        layout_img_url: "/assets/images/real_estate/header-layout-3.webp",
+        preview_img_url: "/assets/images/real_estate/header-preview-3.webp",
     },
-    StyleItem {
-        style_no: 4,
-        img_url: "/assets/images/real_estate/header-layout-4.webp",
+    LayoutItem {
+        layout_no: 4,
+        layout_img_url: "/assets/images/real_estate/header-layout-4.webp",
+        preview_img_url: "/assets/images/real_estate/header-preview-4.webp",
     },
 ];
 
-pub fn render_edit_style_page(section: BuilderSection, style: BuilderStyle) -> Markup {
-    let highlight_index = match section {
+pub fn render_edit_style_page(
+    section: BuilderSection,
+    style: BuilderStyle,
+    header_theme: i32,
+    setting_id: i32,
+    user_id: i32,
+    authenticity_token: String,
+) -> Markup {
+    let highlight_nav_index = match section {
         BuilderSection::ChooseStyle => 1,
         BuilderSection::Branding => 2,
         BuilderSection::Content => 3,
         BuilderSection::AdvancedSetting => 4,
+    };
+
+    let (highlight_sub_nav_index, document_title, right_content_title, style_items) = match style {
+        BuilderStyle::Header => (1, "Edit Header", "Choose your Header layout", HEADER_LAYOUT),
+        BuilderStyle::Footer => (2, "Edit Footer", "Choose your Footer layout", HEADER_LAYOUT),
+        BuilderStyle::Home => (
+            3,
+            "Edit Home",
+            "Choose your Home page layout",
+            HEADER_LAYOUT,
+        ),
+        BuilderStyle::SearchResult => (
+            4,
+            "Edit Search Result",
+            "Choose your Search result layout",
+            HEADER_LAYOUT,
+        ),
+        BuilderStyle::PropertyDetail => (
+            5,
+            "Edit Property Detail",
+            "Choose your Property Detail layout",
+            HEADER_LAYOUT,
+        ),
+        BuilderStyle::Contact => (
+            6,
+            "Edit Contact",
+            "Choose your Contact us layout",
+            HEADER_LAYOUT,
+        ),
     };
 
     html! {
@@ -59,15 +100,15 @@ pub fn render_edit_style_page(section: BuilderSection, style: BuilderStyle) -> M
           }
           body class="grid h-full" style="grid-template: auto 1fr auto / auto 1fr auto;" hx-boost="true" {
               title {
-                  "Edit Header"
+                  (document_title)
               }
-              (render_nav_bar(highlight_index))
+              (render_nav_bar(highlight_nav_index))
               main class="grid grid-cols-10 col-[1/4] grow" {
                 div class="col-span-7 bg-[#F3F3F3]" {
-                  (render_left_content(&style))
+                  (render_left_content(highlight_sub_nav_index, &style_items, header_theme))
                 }
                 div class="col-span-3" {
-                  (render_right_content(&style))
+                  (render_right_content(right_content_title, &style_items, header_theme, setting_id, user_id, authenticity_token))
                 }
               }
               (render_footer())
@@ -127,36 +168,30 @@ pub fn render_footer() -> Markup {
     }
 }
 
-pub fn render_left_content(style: &BuilderStyle) -> Markup {
-    let highlight_index = match style {
-        BuilderStyle::Header => 1,
-        BuilderStyle::Footer => 2,
-        BuilderStyle::Home => 3,
-        BuilderStyle::SearchResult => 4,
-        BuilderStyle::PropertyDetail => 5,
-        BuilderStyle::Contact => 6,
-    };
-
+pub fn render_left_content(
+    hightlight_sub_nav_index: usize,
+    style_items: &[LayoutItem; 4],
+    header_theme: i32,
+) -> Markup {
     html! {
-      (render_sub_nav(highlight_index))
+      (render_sub_nav(hightlight_sub_nav_index))
+      (render_preview_image(&style_items, header_theme, None))
     }
 }
 
-pub fn render_right_content(style: &BuilderStyle) -> Markup {
-    let (title, style_items) = match style {
-        BuilderStyle::Header => ("Choose your Header layout", HEADER_STYLE),
-        BuilderStyle::Footer => ("Choose your Footer layout", HEADER_STYLE),
-        BuilderStyle::Home => ("Choose your Home page layout", HEADER_STYLE),
-        BuilderStyle::SearchResult => ("Choose your Search result layout", HEADER_STYLE),
-        BuilderStyle::PropertyDetail => ("Choose your Property Detail layout", HEADER_STYLE),
-        BuilderStyle::Contact => ("Choose your Contact us layout", HEADER_STYLE),
-    };
-
+pub fn render_right_content(
+    title: &str,
+    style_items: &[LayoutItem; 4],
+    header_theme: i32,
+    setting_id: i32,
+    user_id: i32,
+    authenticity_token: String,
+) -> Markup {
     html! {
       div class="flex items-center p-8 h-full" {
         div class="flex flex-col gap-10" {
           span class="text-3xl" { (title) }
-          (render_style_selection(&style_items, 1))
+          (render_style_selection(&style_items, header_theme, setting_id, user_id, authenticity_token))
         }
       }
     }
@@ -178,18 +213,48 @@ pub fn render_sub_nav(highlight_index: usize) -> Markup {
     }
 }
 
-pub fn render_style_selection(style_items: &[StyleItem; 4], choosen_style: u8) -> Markup {
+pub fn render_style_selection(
+    style_items: &[LayoutItem; 4],
+    choosen_style: i32,
+    setting_id: i32,
+    user_id: i32,
+    authenticity_token: String,
+) -> Markup {
     html! {
-      div class="gap-5 grid grid-cols-2" {
+      div id="style-selection" class="gap-5 grid grid-cols-2" {
         @for item in style_items {
-          @if choosen_style == item.style_no {
+          @if choosen_style == item.layout_no {
             div class="border-3 border-blue-500 cursor-pointer" {
-              img src=(item.img_url) alt=(format!("header-theme-{}", item.style_no));
+              img src=(item.layout_img_url) alt=(format!("header-layout-{}", item.layout_no));
             }
           } @else {
-            div class="border-3 border-transparent hover:border-blue-500 cursor-pointer" {
-              img src=(item.img_url) alt=(format!("header-theme-{}", item.style_no));
+            form
+              hx-patch=(format!("/builder/edit/{}/{}/header/{}", user_id, setting_id, item.layout_no))
+              hx-trigger="click"
+              hx-target="#style-selection"
+              hx-swap="outerHTML"
+            {
+              div class="border-3 border-transparent hover:border-blue-500 cursor-pointer" {
+                img src=(item.layout_img_url) alt=(format!("header-layout-{}", item.layout_no));
+              }
+              input type="hidden" name="authenticity_token" value=(authenticity_token);
             }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_preview_image(
+    style_items: &[LayoutItem; 4],
+    choosen_style: i32,
+    oob_swap: Option<&str>,
+) -> Markup {
+    html! {
+      div hx-swap-oob=[oob_swap] id="preview-image" class="flex justify-center" {
+        @for item in style_items {
+          @if choosen_style == item.layout_no {
+            img src=(item.preview_img_url) alt=(format!("header-preview-{}", item.layout_no));
           }
         }
       }

@@ -74,6 +74,25 @@ impl Website {
         .await
     }
 
+    pub async fn get_website_by_user_id_and_website_id(
+        user_id: i32,
+        website_id: i32,
+        pool: &Pool,
+        columns: Vec<&str>,
+    ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
+        query_optional(
+            &format!(
+                "SELECT {} FROM websites WHERE user_id = $1 AND id = $2",
+                columns
+            ),
+            &[&user_id, &website_id],
+            pool,
+        )
+        .await
+    }
+
     pub async fn get_website_by_domain_name(
         domain_name: &String,
         pool: &Pool,

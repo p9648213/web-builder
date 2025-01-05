@@ -7,6 +7,7 @@ use super::error::AppError;
 pub struct WebsiteSetting {
     pub id: Option<i32>,
     pub website_id: Option<i32>,
+    pub user_id: Option<i32>,
     pub header_theme: Option<i32>,
     pub footer_theme: Option<i32>,
     pub home_theme: Option<i32>,
@@ -19,6 +20,7 @@ impl WebsiteSetting {
     pub fn new(
         id: Option<i32>,
         website_id: Option<i32>,
+        user_id: Option<i32>,
         header_theme: Option<i32>,
         footer_theme: Option<i32>,
         home_theme: Option<i32>,
@@ -29,6 +31,7 @@ impl WebsiteSetting {
         Self {
             id,
             website_id,
+            user_id,
             header_theme,
             footer_theme,
             home_theme,
@@ -41,6 +44,7 @@ impl WebsiteSetting {
     pub fn try_from(row: Row) -> Self {
         let id: Option<i32> = row.try_get("id").unwrap_or(None);
         let website_id: Option<i32> = row.try_get("webiste_id").unwrap_or(None);
+        let user_id: Option<i32> = row.try_get("user_id").unwrap_or(None);
         let header_theme: Option<i32> = row.try_get("header_theme").unwrap_or(None);
         let footer_theme: Option<i32> = row.try_get("footer_theme").unwrap_or(None);
         let home_theme: Option<i32> = row.try_get("home_theme").unwrap_or(None);
@@ -51,6 +55,7 @@ impl WebsiteSetting {
         Self {
             id,
             website_id,
+            user_id,
             header_theme,
             footer_theme,
             home_theme,
@@ -66,7 +71,7 @@ impl WebsiteSetting {
         pool: &deadpool_postgres::Pool,
     ) -> Result<u64, AppError> {
         excute(
-            "INSERT INTO website_settings (website_id, header_theme, footer_theme, home_theme, search_theme, property_theme, contact_theme) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+            "INSERT INTO website_settings (website_id, header_theme, footer_theme, home_theme, search_theme, property_theme, contact_theme, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
             &[
                 &website_id,
                 &setting.header_theme,
@@ -75,6 +80,7 @@ impl WebsiteSetting {
                 &setting.search_theme,
                 &setting.property_theme,
                 &setting.contact_theme,
+                &setting.user_id,
             ],
             pool,
         )
@@ -99,14 +105,33 @@ impl WebsiteSetting {
         .await
     }
 
-    pub async fn update_header_theme_by_website_id(
-        website_id: i32,
+    pub async fn get_website_setting_by_id_and_user_id(
+        id: i32,
+        user_id: i32,
+        pool: &deadpool_postgres::Pool,
+        columns: Vec<&str>,
+    ) -> Result<Option<Row>, AppError> {
+        let columns = columns.join(",");
+
+        query_optional(
+            &format!(
+                "SELECT {} FROM website_settings WHERE id = $1 AND user_id = $2",
+                columns
+            ),
+            &[&id, &user_id],
+            pool,
+        )
+        .await
+    }
+
+    pub async fn update_header_theme_by_id(
+        id: i32,
         header_theme: i32,
         pool: &deadpool_postgres::Pool,
     ) -> Result<u64, AppError> {
         excute(
-            "UPDATE website_settings SET header_theme = $1 WHERE webiste_id = $2",
-            &[&header_theme, &website_id],
+            "UPDATE website_settings SET header_theme = $1 WHERE id = $2",
+            &[&header_theme, &id],
             pool,
         )
         .await

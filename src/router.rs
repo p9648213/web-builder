@@ -4,6 +4,7 @@ use crate::{
         builder::{
             self,
             auth::{get_login_page, get_register_page, login, logout, register},
+            choose_style::update_style,
             data::{create_data_source, update_rso_status},
             pages::{
                 get_create_website_page, get_edit_page, get_select_template_page,
@@ -93,8 +94,6 @@ pub async fn create_router(
 
     let app_state = AppState { pg_pool, config };
 
-    let edit_routes = Router::new().route("/", get(get_edit_page));
-
     let builder_routes = Router::new().nest(
         "/builder",
         Router::new()
@@ -114,7 +113,14 @@ pub async fn create_router(
                 "/website/template/select",
                 post(select_template_for_webiste),
             )
-            .nest("/edit/{website_id}/{section}/{sub_section}", edit_routes),
+            .route(
+                "/edit/{website_id}/{section}/{sub_section}",
+                get(get_edit_page),
+            )
+            .route(
+                "/edit/{user_id}/{setting_id}/{part}/{theme}",
+                patch(update_style),
+            ),
     );
 
     let main_view_routes = Router::new()
