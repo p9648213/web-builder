@@ -17,7 +17,7 @@ pub fn render_home_page() -> Markup {
                 (PreEscaped(r#"
                     <script>0</script>
                 "#))
-                (shared::render_nav_bar())
+                (shared::render_nav_bar_1())
                 main {
                     (home::render_home_banner())
                     (home::render_home_search_box())
@@ -45,7 +45,7 @@ pub fn render_search_result_page(search_query: SearchQuery) -> Markup {
                 (PreEscaped(r#"
                     <script>0</script>
                 "#))
-                (shared::render_nav_bar())
+                (shared::render_nav_bar_1())
                 main {
                     (search_result::render_search_box())
                     (search_result::render_search_result(search_query.page))
@@ -70,7 +70,7 @@ pub fn render_property_details_page(property_query: PropertyQuery) -> Markup {
                 (PreEscaped(r#"
                     <script>0</script>
                 "#))
-                (shared::render_nav_bar())
+                (shared::render_nav_bar_1())
                 main {
                     (property_details::render_property_details(property_query))
                     (shared::render_contact())

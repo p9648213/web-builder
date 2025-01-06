@@ -1,8 +1,17 @@
-use axum::{extract::Query, response::Html};
+use axum::{
+    extract::{Query, Request, State},
+    http::HeaderValue,
+    response::Html,
+};
+use deadpool_postgres::Pool;
+use reqwest::StatusCode;
 use serde::Deserialize;
 
-use crate::views::real_estate::pages::{
-    render_home_page, render_property_details_page, render_search_result_page,
+use crate::{
+    models::{error::AppError, website::Website},
+    views::real_estate::pages::{
+        render_home_page, render_property_details_page, render_search_result_page,
+    },
 };
 
 #[derive(Deserialize, Debug)]
@@ -18,8 +27,29 @@ pub struct PropertyQuery {
     pub listing_type: Option<String>,
 }
 
-pub async fn get_real_estate_home_page() -> Html<String> {
-    Html(render_home_page().into_string())
+pub async fn get_real_estate_home_page(
+    State(pg_pool): State<Pool>,
+    request: Request,
+) -> Result<Html<String>, AppError> {
+    let default_host = HeaderValue::from_static("");
+
+    let host = request
+        .headers()
+        .get("host")
+        .unwrap_or(&default_host)
+        .to_str()
+        .map_err(|error| {
+            tracing::error!("Failed to convert host header to string: {}", error);
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+    let row = Website::get_website_by_domain_name(&host, &pg_pool, vec!["id"]).await?;
+
+    if let Some(_) = row {
+        Ok(Html(render_home_page().into_string()))
+    } else {
+        Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
+    }
 }
 
 pub async fn get_real_estate_search_result_page(search_query: Query<SearchQuery>) -> Html<String> {

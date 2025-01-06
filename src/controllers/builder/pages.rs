@@ -1,6 +1,6 @@
 use axum::{
     extract::{Path, State},
-    response::Html,
+    response::{Html, IntoResponse},
     Extension,
 };
 use axum_csrf::CsrfToken;
@@ -41,16 +41,16 @@ pub struct EditParams {
     pub sub_section: String,
 }
 
-pub async fn get_create_website_page() -> Html<String> {
-    Html(render_create_website_page().into_string())
+pub async fn get_create_website_page(token: CsrfToken) -> impl IntoResponse {
+    (token, Html(render_create_website_page().into_string()))
 }
 
-pub async fn get_select_template_page() -> Html<String> {
-    Html(render_website_template_page().into_string())
+pub async fn get_select_template_page(token: CsrfToken) -> impl IntoResponse {
+    (token, Html(render_website_template_page().into_string()))
 }
 
-pub async fn get_setup_data_page() -> Html<String> {
-    Html(render_setup_data_page().into_string())
+pub async fn get_setup_data_page(token: CsrfToken) -> impl IntoResponse {
+    (token, Html(render_setup_data_page().into_string()))
 }
 
 pub async fn get_edit_page(
@@ -62,7 +62,7 @@ pub async fn get_edit_page(
     token: CsrfToken,
     State(pg_pool): State<Pool>,
     Extension(user_id): Extension<UserId>,
-) -> Result<Html<String>, AppError> {
+) -> Result<impl IntoResponse, AppError> {
     let authenticity_token = token.authenticity_token().unwrap_or("".to_owned());
 
     let row =
@@ -128,5 +128,5 @@ pub async fn get_edit_page(
         .into_string(),
     };
 
-    Ok(Html(html))
+    Ok((token, Html(html)))
 }

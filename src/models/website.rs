@@ -94,7 +94,7 @@ impl Website {
     }
 
     pub async fn get_website_by_domain_name(
-        domain_name: &String,
+        domain_name: &str,
         pool: &Pool,
         columns: Vec<&str>,
     ) -> Result<Option<Row>, AppError> {

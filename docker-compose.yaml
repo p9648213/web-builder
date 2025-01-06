@@ -28,6 +28,13 @@ services:
     volumes:
       - redisdata:/data
     command: ["redis-server", "--save", "600", "1"]
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    network_mode: host
 
 volumes:
   pgdata:
