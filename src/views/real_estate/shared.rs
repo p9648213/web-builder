@@ -3,8 +3,8 @@ use maud::{html, Markup, PreEscaped};
 use crate::{
     models::rso_data::{SearchProperty, TextOrNum},
     views::icons::{
-        bath_icon, bed_icon, buit_size_icon, drop_down_icon, email_icon, location_icon, mail_icon,
-        phone_icon,
+        bath_icon, bed_icon, buit_size_icon, drop_down_icon, email_icon, hamburger_icon,
+        location_icon, mail_icon, phone_icon,
     },
 };
 
@@ -25,6 +25,56 @@ use crate::{
 //..............................................
 
 pub fn render_nav_bar_1() -> Markup {
+    html! {
+      (PreEscaped(r#"
+        <script type="module">
+            import {showHideTopBarWhenScroll} from "/assets/js/app/navbar.js";
+            showHideTopBarWhenScroll();
+        </script>
+      "#))
+      header id="navbar" class="flex justify-center top-0 right-0 left-0 z-50 fixed transition-all duration-500 bg-blue-500 px-4 py-4" {
+        div class="flex justify-between items-center w-full h-full max-w-360" {
+          div class="flex items-center gap-7" {
+            div class="text-white cursor-pointer" {
+              (hamburger_icon())
+            }
+            div
+              hx-get="/section/real-estate/contents/home"
+              hx-push-url="/"
+              hx-target="main"
+              class="h-10 cursor-pointer"
+            {
+              img class="h-full" src="https://cdn.resales-online.com/public/804pf2s7h1/agencies/3/3.jpg";
+            }
+          }
+          div class="flex items-center gap-2 text-white" {
+            span { "EN" }
+            div class="cursor-pointer" {
+              (drop_down_icon())
+            }
+          }
+        }
+      }
+    }
+}
+
+//................................................
+//.NNNN....NNN.....AAAA...AAAV.....VVVV..22222....
+//.NNNN....NNN.....AAAAA...AAV.....VVVV.V2222222..
+//.NNNNN...NNN.....AAAAA...AAVV....VVV.VV22..222..
+//.NNNNN...NNN....AAAAAA...AAVV...VVVV.VV2...222..
+//.NNNNNN..NNN....AAAAAAA...AVV...VVVV.......222..
+//.NNNNNNN.NNN...AAAA.AAA...AVVV..VVV.......2222..
+//.NNN.NNN.NNN...AAA..AAAA..AVVV.VVVV......2222...
+//.NNN.NNNNNNN...AAAAAAAAA...VVV.VVVV.....22222...
+//.NNN..NNNNNN..AAAAAAAAAA...VVVVVVV.....22222....
+//.NNN..NNNNNN..AAAAAAAAAAA..VVVVVVV....V2222.....
+//.NNN...NNNNN..AAA.....AAA...VVVVV.....V222......
+//.NNN....NNNN.NAAA.....AAAA..VVVVV....VV2222222..
+//.NNN....NNNN.NAA......AAAA..VVVVV....VV2222222..
+//................................................
+
+pub fn render_nav_bar_2() -> Markup {
     html! {
       (PreEscaped(r#"
         <script type="module">
@@ -107,28 +157,6 @@ pub fn render_nav_bar_1() -> Markup {
 }
 
 //................................................
-//.NNNN....NNN.....AAAA...AAAV.....VVVV..22222....
-//.NNNN....NNN.....AAAAA...AAV.....VVVV.V2222222..
-//.NNNNN...NNN.....AAAAA...AAVV....VVV.VV22..222..
-//.NNNNN...NNN....AAAAAA...AAVV...VVVV.VV2...222..
-//.NNNNNN..NNN....AAAAAAA...AVV...VVVV.......222..
-//.NNNNNNN.NNN...AAAA.AAA...AVVV..VVV.......2222..
-//.NNN.NNN.NNN...AAA..AAAA..AVVV.VVVV......2222...
-//.NNN.NNNNNNN...AAAAAAAAA...VVV.VVVV.....22222...
-//.NNN..NNNNNN..AAAAAAAAAA...VVVVVVV.....22222....
-//.NNN..NNNNNN..AAAAAAAAAAA..VVVVVVV....V2222.....
-//.NNN...NNNNN..AAA.....AAA...VVVVV.....V222......
-//.NNN....NNNN.NAAA.....AAAA..VVVVV....VV2222222..
-//.NNN....NNNN.NAA......AAAA..VVVVV....VV2222222..
-//................................................
-
-pub fn render_nav_bar_2() -> Markup {
-    html! {
-      "Nav 2"
-    }
-}
-
-//................................................
 //.NNNN....NNN.....AAAA...AAAV.....VVVV..33333....
 //.NNNN....NNN.....AAAAA...AAV.....VVVV.V333333...
 //.NNNNN...NNN.....AAAAA...AAVV....VVV..V33.3333..
@@ -146,7 +174,68 @@ pub fn render_nav_bar_2() -> Markup {
 
 pub fn render_nav_bar_3() -> Markup {
     html! {
-      "Nav 3"
+      (PreEscaped(r#"
+        <script type="module">
+            import {showHideTopBarWhenScroll} from "/assets/js/app/navbar.js";
+            showHideTopBarWhenScroll();
+        </script>
+      "#))
+      header id="navbar" class="flex justify-center top-0 right-0 left-0 z-50 fixed transition-all duration-500 px-4 py-4" {
+        div class="flex justify-between items-center h-full px-10 py-3 rounded-[40px] gap-5" style="background-color: rgba(128,128,128,0.5)" {
+          div
+            hx-get="/section/real-estate/contents/home"
+            hx-push-url="/"
+            hx-target="main"
+            class="h-10 cursor-pointer"
+          {
+            img class="h-full" src="https://cdn.resales-online.com/public/804pf2s7h1/agencies/3/3.jpg";
+          }
+          div class="flex items-center gap-7 h-full font-[500] text-white" {
+            a class="hover:opacity-80" href="#" {"Home"}
+            div class="relative flex items-center h-full group" {
+              div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
+                span {"About us"}
+                div class="translate-y-0.5" {
+                  (drop_down_icon())
+                }
+              }
+              div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-30 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" style="background-color: rgba(128,128,128,0.5)" {
+                a href="#" class="hover:opacity-80" {"Contact us"}
+                a href="#" class="hover:opacity-80" {"About us"}
+                a href="#" class="hover:opacity-80" {"Meet the team"}
+              }
+            }
+            a class="hover:opacity-80" href="#" {"Sell your propery"}
+            div class="relative flex items-center h-full group" {
+              div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
+                span {"For sale"}
+                div class="translate-y-0.5" {
+                  (drop_down_icon())
+                }
+              }
+              div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" style="background-color: rgba(128,128,128,0.5)" {
+                a href="#" class="hover:opacity-80" {"Resales"}
+                a href="#" class="hover:opacity-80" {"New development"}
+              }
+            }
+            div class="relative flex items-center h-full group" {
+              div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
+                span {"For rent"}
+                div class="translate-y-0.5" {
+                  (drop_down_icon())
+                }
+              }
+              div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" style="background-color: rgba(128,128,128,0.5)" {
+                a href="#" class="hover:opacity-80" {"Short rental"}
+                a href="#" class="hover:opacity-80" {"Long rental"}
+              }
+            }
+            button class="px-4 py-2 bg-blue-500 hover:bg-blue-400 rounded-3xl cursor-pointer" {
+              "Contact Us"
+            }
+          }
+        }
+      }
     }
 }
 

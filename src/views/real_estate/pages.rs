@@ -5,7 +5,7 @@ use crate::{
     views::real_estate::{head::render_main_head, home, property_details, search_result, shared},
 };
 
-pub fn render_home_page() -> Markup {
+pub fn render_home_page(header_theme: i32) -> Markup {
     html! {
         (DOCTYPE)
         html lang="en" {
@@ -17,7 +17,23 @@ pub fn render_home_page() -> Markup {
                 (PreEscaped(r#"
                     <script>0</script>
                 "#))
-                (shared::render_nav_bar_1())
+                @match header_theme {
+                    1 => {
+                        (shared::render_nav_bar_1())
+                    },
+                    2 => {
+                        (shared::render_nav_bar_2())
+                    },
+                    3 => {
+                        (shared::render_nav_bar_3())
+                    },
+                    4 => {
+                        (shared::render_nav_bar_4())
+                    },
+                    _ => {
+                        ""
+                    }
+                }
                 main {
                     (home::render_home_banner())
                     (home::render_home_search_box())

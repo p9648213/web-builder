@@ -6,3 +6,4 @@ pub mod user;
 pub mod website;
 pub mod website_setting;
 pub mod website_template;
+pub mod website_setting_website;

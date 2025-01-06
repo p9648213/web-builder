@@ -4,11 +4,11 @@ use axum::{
     response::Html,
 };
 use deadpool_postgres::Pool;
-use reqwest::StatusCode;
+use reqwest::{header, StatusCode};
 use serde::Deserialize;
 
 use crate::{
-    models::{error::AppError, website::Website},
+    models::{error::AppError, website_setting_website::WebsiteSettingWebsite},
     views::real_estate::pages::{
         render_home_page, render_property_details_page, render_search_result_page,
     },
@@ -43,10 +43,22 @@ pub async fn get_real_estate_home_page(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
-    let row = Website::get_website_by_domain_name(&host, &pg_pool, vec!["id"]).await?;
+    let row = WebsiteSettingWebsite::get_website_setting_by_domain(
+        host,
+        &pg_pool,
+        vec!["header_theme", "footer_theme", "home_theme"],
+    )
+    .await?;
 
-    if let Some(_) = row {
-        Ok(Html(render_home_page().into_string()))
+    if let Some(row) = row {
+        let website_setting = WebsiteSettingWebsite::try_from(row);
+
+        let header_theme = website_setting.header_theme.ok_or_else(|| {
+            tracing::error!("No header_theme column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        Ok(Html(render_home_page(header_theme).into_string()))
     } else {
         Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
     }

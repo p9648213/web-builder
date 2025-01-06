@@ -92,9 +92,11 @@ pub fn render_user_website(website: &Website) -> Result<Markup, AppError> {
     })?;
 
     let builder_link = format!(
-        "http://localhost:17000/builder/edit/{}/style/header",
-        website_id
+        "http://{}/builder/edit/{}/style/header",
+        website_domain, website_id
     );
+
+    let website_domain = format!("http://{}", website_domain);
 
     Ok(maud::html! {
         section id="create-website" {
@@ -105,14 +107,11 @@ pub fn render_user_website(website: &Website) -> Result<Markup, AppError> {
                 h2 {
                     "Name: " (website_name)
                 }
-                h2 {
-                    "Domain: " (website_domain)
-                }
                 h2 class="flex gap-2" {
-                    "Preview Link: "
-                    a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href="/" {
+                    "Domain: "
+                    a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href=(website_domain) {
                         div class="group" {
-                            "http://localhost:17000/"
+                            (website_domain)
                         }
                     }
                 }
