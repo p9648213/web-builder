@@ -115,6 +115,41 @@ pub async fn get_edit_page(
                     html! {
                         (render_edit_style_page(BuilderSection::ChooseStyle, BuilderStyle::Header, header_theme, id, user_id.0, authenticity_token))
                     }
+                },
+                "footer" => {
+                    let row = WebsiteSetting::get_website_setting_by_website_id(
+                        website_id,
+                        &pg_pool,
+                        vec!["id","footer_theme"],
+                    )
+                    .await?;
+
+                    let website_setting = if let Some(row) = row {
+                        WebsiteSetting::try_from(row)
+                    } else {
+                        tracing::error!(
+                            "No website_setting with website_id {} is found",
+                            website_id
+                        );
+                        return Err(AppError::new(
+                            StatusCode::INTERNAL_SERVER_ERROR,
+                            "Server Error",
+                        ));
+                    };
+
+                    let footer_theme = website_setting.footer_theme.ok_or_else(|| {
+                        tracing::error!("No footer_theme column or value is null");
+                        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+                    })?;
+
+                    let id = website_setting.id.ok_or_else(|| {
+                        tracing::error!("No id column or value is null");
+                        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+                    })?;
+
+                    html! {
+                        (render_edit_style_page(BuilderSection::ChooseStyle, BuilderStyle::Footer, footer_theme, id, user_id.0, authenticity_token))
+                    }
                 }
                 _ => html! {
                     "Not Found"

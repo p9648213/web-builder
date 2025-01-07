@@ -632,8 +632,8 @@
       max-width: 96rem;
     }
   }
-  .m-8 {
-    margin: calc(var(--spacing) * 8);
+  .m-7 {
+    margin: calc(var(--spacing) * 7);
   }
   .-mx-2 {
     margin-inline: calc(var(--spacing) * -2);
@@ -736,9 +736,6 @@
   }
   .h-17 {
     height: calc(var(--spacing) * 17);
-  }
-  .h-26 {
-    height: calc(var(--spacing) * 26);
   }
   .h-42 {
     height: calc(var(--spacing) * 42);

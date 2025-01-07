@@ -43,8 +43,10 @@ pub async fn csrf_middleware(
             })?;
 
             if origin != config.allow_origin.as_str() {
-                tracing::error!("Origin header is not allowed");
-                return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
+                if !origin.starts_with("http://localhost") {
+                    tracing::error!("Origin header is not allowed");
+                    return Err(AppError::new(StatusCode::FORBIDDEN, "Forbidden"));
+                }
             }
         } else {
             tracing::error!("Origin header is missing");
