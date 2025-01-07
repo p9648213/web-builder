@@ -1,4 +1,5 @@
 use crate::{
+    config::EnvConfig,
     middlewares::auth::UserId,
     models::{
         error::AppError, template::Template, website::Website, website_setting::WebsiteSetting,
@@ -28,6 +29,7 @@ pub struct SelectTemplateForm {
 
 pub async fn create_website(
     State(pg_pool): State<Pool>,
+    State(config): State<EnvConfig>,
     Extension(user_id): Extension<UserId>,
     Form(create_webiste_form): Form<CreateWebsiteForm>,
 ) -> Result<Html<String>, AppError> {
@@ -92,7 +94,9 @@ pub async fn create_website(
             ));
         }
 
-        Ok(Html(render_user_website(&created_website)?.into_string()))
+        Ok(Html(
+            render_user_website(&created_website, config.allow_origin)?.into_string(),
+        ))
     } else {
         tracing::error!("There was an error getting the website by domain name.");
         Err(AppError::new(

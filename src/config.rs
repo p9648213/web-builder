@@ -15,8 +15,6 @@ pub struct EnvConfig {
     #[clap(long, env)]
     pub allow_origin: String,
     #[clap(long, env)]
-    pub domain: String,
-    #[clap(long, env)]
     pub redis_url: String,
     #[clap(long, env)]
     pub csrf_encrypt_key: String,

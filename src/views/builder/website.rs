@@ -48,11 +48,12 @@ pub fn render_create_website_page() -> maud::Markup {
 pub fn render_create_website(
     authenticity_token: String,
     website: Option<Website>,
+    builder_link: String,
 ) -> Result<Markup, AppError> {
     Ok(maud::html! {
         section id="create-website" {
             @if let Some(website) = website {
-                (render_user_website(&website)?)
+                (render_user_website(&website, builder_link)?)
             } @else {
                 form
                     hx-post="/builder/website/create"
@@ -75,7 +76,7 @@ pub fn render_create_website(
     })
 }
 
-pub fn render_user_website(website: &Website) -> Result<Markup, AppError> {
+pub fn render_user_website(website: &Website, builder_link: String) -> Result<Markup, AppError> {
     let website_id = website.id.ok_or_else(|| {
         tracing::error!("No id column or value is null");
         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
@@ -91,10 +92,7 @@ pub fn render_user_website(website: &Website) -> Result<Markup, AppError> {
         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
     })?;
 
-    let builder_link = format!(
-        "http://{}/builder/edit/{}/style/header",
-        website_domain, website_id
-    );
+    let builder_link = format!("{}/builder/edit/{}/style/header", builder_link, website_id);
 
     let website_domain = format!("http://{}", website_domain);
 

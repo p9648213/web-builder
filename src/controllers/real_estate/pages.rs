@@ -4,7 +4,7 @@ use axum::{
     response::Html,
 };
 use deadpool_postgres::Pool;
-use reqwest::{header, StatusCode};
+use reqwest::StatusCode;
 use serde::Deserialize;
 
 use crate::{

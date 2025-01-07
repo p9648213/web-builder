@@ -8,6 +8,7 @@ use deadpool_postgres::Pool;
 use reqwest::StatusCode;
 
 use crate::{
+    config::EnvConfig,
     middlewares::auth::UserId,
     models::{
         error::AppError, rso_data::RsoData, template::Template, website::Website,
@@ -24,6 +25,7 @@ pub async fn get_section(
     Path(section): Path<String>,
     token: CsrfToken,
     State(pg_pool): State<Pool>,
+    State(config): State<EnvConfig>,
     Extension(user_id): Extension<UserId>,
 ) -> Result<impl IntoResponse, AppError> {
     let authenticity_token = token.authenticity_token().unwrap_or("".to_owned());
@@ -127,10 +129,11 @@ pub async fn get_section(
             } else {
                 None
             };
-            Ok(
-                Html(render_create_website(authenticity_token, website)?.into_string())
-                    .into_response(),
+            Ok(Html(
+                render_create_website(authenticity_token, website, config.allow_origin)?
+                    .into_string(),
             )
+            .into_response())
         }
         _ => Ok(Html("Not found".to_owned()).into_response()),
     }

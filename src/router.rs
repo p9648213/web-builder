@@ -29,9 +29,9 @@ use crate::{
     models::state::AppState,
 };
 use axum::{
-    http::{header::CACHE_CONTROL, HeaderValue, StatusCode},
+    http::{header, HeaderValue, StatusCode},
     middleware::from_fn_with_state,
-    response::IntoResponse,
+    response::{IntoResponse, Response},
     routing::{get, patch, post},
     Router,
 };
@@ -57,6 +57,14 @@ async fn fallback() -> impl IntoResponse {
     (StatusCode::NOT_FOUND, "Not Found")
 }
 
+async fn builder_fallback() -> impl IntoResponse {
+    Response::builder()
+        .status(StatusCode::TEMPORARY_REDIRECT)
+        .header(header::LOCATION, "/builder/auth/login")
+        .body(axum::body::Body::empty())
+        .unwrap()
+}
+
 pub async fn create_router(
     pg_pool: Pool,
     redis_pool: RedisPool<Client, MultiplexedConnection>,
@@ -65,7 +73,7 @@ pub async fn create_router(
     let serve_assets = ServeEmbed::<Assets>::new();
 
     let cache_control_layer = SetResponseHeaderLayer::if_not_present(
-        CACHE_CONTROL,
+        header::CACHE_CONTROL,
         HeaderValue::from_static("no-cache, no-store, must-revalidate"),
     );
 
@@ -120,7 +128,8 @@ pub async fn create_router(
             .route(
                 "/edit/{user_id}/{setting_id}/{part}/{theme}",
                 patch(update_style),
-            ),
+            )
+            .route("/", get(builder_fallback)),
     );
 
     let main_view_routes = Router::new()
@@ -158,15 +167,15 @@ pub async fn create_router(
     Router::new()
         .merge(builder_routes)
         .layer(from_fn_with_state(app_state.clone(), auth_middleware))
+        .layer(from_fn_with_state(app_state.clone(), csrf_middleware))
+        .layer(CsrfLayer::new(cfrs_config))
+        .layer(SessionLayer::new(session_store))
         .merge(main_view_routes)
         .merge(real_estate_rso_routes)
         .merge(real_estate_data_routes)
         .merge(real_estate_section_routes)
         .with_state(app_state.clone())
         .layer(cache_control_layer)
-        .layer(SessionLayer::new(session_store))
-        .layer(from_fn_with_state(app_state.clone(), csrf_middleware))
-        .layer(CsrfLayer::new(cfrs_config))
         .route("/ping", get(ping))
         .nest_service("/assets", serve_assets)
         .layer(CompressionLayer::new())
