@@ -35,6 +35,9 @@ RUN ./configure \
     && make \
     && make install
 
+# Copy mime.types file - Add this
+RUN cp conf/mime.types /etc/nginx/mime.types
+
 # Runtime stage
 FROM debian:bullseye-slim
 
@@ -47,15 +50,16 @@ RUN apt-get update && apt-get install -y \
 
 # Copy the compiled nginx binary and modules
 COPY --from=builder /usr/sbin/nginx /usr/sbin/nginx
-
-# Copy default nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy mime.types - Add this line
+COPY --from=builder /etc/nginx/mime.types /etc/nginx/mime.types
 
 # Create necessary directories and user
 RUN addgroup --system nginx || true \
     && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false nginx || true \
     && mkdir -p /var/log/nginx \
     && mkdir -p /var/run \
-    && chown -R nginx:nginx /var/log/nginx
+    && chown -R nginx:nginx /var/log/nginx \
+    && mkdir -p /usr/share/nginx/assets \
+    && chown -R nginx:nginx /usr/share/nginx/assets
 
 CMD ["nginx", "-g", "daemon off;"]

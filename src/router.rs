@@ -36,18 +36,12 @@ use axum::{
     Router,
 };
 use axum_csrf::{CsrfConfig, CsrfLayer};
-use axum_embed::ServeEmbed;
 use axum_session::{SessionConfig, SessionLayer, SessionStore};
 use axum_session_redispool::SessionRedisPool;
 use deadpool_postgres::Pool;
 use redis::{aio::MultiplexedConnection, Client};
 use redis_pool::RedisPool;
-use rust_embed::Embed;
 use tower_http::set_header::SetResponseHeaderLayer;
-
-#[derive(Embed, Clone)]
-#[folder = "assets"]
-struct Assets;
 
 async fn ping() -> &'static str {
     "pong"
@@ -70,8 +64,6 @@ pub async fn create_router(
     redis_pool: RedisPool<Client, MultiplexedConnection>,
     config: EnvConfig,
 ) -> Router {
-    let serve_assets = ServeEmbed::<Assets>::new();
-
     let cache_control_layer = SetResponseHeaderLayer::if_not_present(
         header::CACHE_CONTROL,
         HeaderValue::from_static("no-cache, no-store, must-revalidate"),
@@ -177,6 +169,5 @@ pub async fn create_router(
         .with_state(app_state.clone())
         .layer(cache_control_layer)
         .route("/ping", get(ping))
-        .nest_service("/assets", serve_assets)
         .fallback(fallback)
 }
