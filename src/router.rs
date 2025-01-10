@@ -43,7 +43,7 @@ use deadpool_postgres::Pool;
 use redis::{aio::MultiplexedConnection, Client};
 use redis_pool::RedisPool;
 use rust_embed::Embed;
-use tower_http::{compression::CompressionLayer, set_header::SetResponseHeaderLayer};
+use tower_http::set_header::SetResponseHeaderLayer;
 
 #[derive(Embed, Clone)]
 #[folder = "assets"]
@@ -178,6 +178,5 @@ pub async fn create_router(
         .layer(cache_control_layer)
         .route("/ping", get(ping))
         .nest_service("/assets", serve_assets)
-        .layer(CompressionLayer::new())
         .fallback(fallback)
 }

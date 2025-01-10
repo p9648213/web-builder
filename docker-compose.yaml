@@ -29,7 +29,9 @@ services:
       - redisdata:/data
     command: ["redis-server", "--save", "600", "1"]
   nginx:
-    image: nginx:latest
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
       - 80:80
     volumes:
