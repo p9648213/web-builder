@@ -5,7 +5,7 @@ use crate::{
     views::real_estate::{head::render_main_head, home, property_details, search_result, shared},
 };
 
-pub fn render_home_page(header_theme: i32) -> Markup {
+pub fn render_home_page(header_theme: i32, footer_theme: i32) -> Markup {
     html! {
         (DOCTYPE)
         html lang="en" {
@@ -18,21 +18,11 @@ pub fn render_home_page(header_theme: i32) -> Markup {
                     <script>0</script>
                 "#))
                 @match header_theme {
-                    1 => {
-                        (shared::render_nav_bar_1())
-                    },
-                    2 => {
-                        (shared::render_nav_bar_2())
-                    },
-                    3 => {
-                        (shared::render_nav_bar_3())
-                    },
-                    4 => {
-                        (shared::render_nav_bar_4())
-                    },
-                    _ => {
-                        ""
-                    }
+                    1 => (shared::render_nav_bar_1()),
+                    2 => (shared::render_nav_bar_2()),
+                    3 => (shared::render_nav_bar_3()),
+                    4 => (shared::render_nav_bar_4()),
+                    _ => (shared::render_nav_bar_1())
                 }
                 main {
                     (home::render_home_banner())
@@ -42,7 +32,13 @@ pub fn render_home_page(header_theme: i32) -> Markup {
                     (home::render_testimonial())
                     (shared::render_contact())
                 }
-                (shared::render_footer())
+                @match footer_theme {
+                    1 => (shared::render_footer_1()),
+                    2 => (shared::render_footer_2()),
+                    3 => (shared::render_footer_3()),
+                    4 => (shared::render_footer_4()),
+                    _ => (shared::render_footer_1())
+                }
                 div id="toast" {}
             }
         }
@@ -67,7 +63,7 @@ pub fn render_search_result_page(search_query: SearchQuery) -> Markup {
                     (search_result::render_search_result(search_query.page))
                     (shared::render_contact())
                 }
-                (shared::render_footer())
+                (shared::render_footer_1())
                 div id="toast" {}
             }
         }
@@ -91,7 +87,7 @@ pub fn render_property_details_page(property_query: PropertyQuery) -> Markup {
                     (property_details::render_property_details(property_query))
                     (shared::render_contact())
                 }
-                (shared::render_footer())
+                (shared::render_footer_1())
                 div id="toast" {}
             }
         }

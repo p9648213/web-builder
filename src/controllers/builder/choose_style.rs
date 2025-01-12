@@ -10,7 +10,9 @@ use serde::Deserialize;
 
 use crate::{
     models::{error::AppError, website_setting::WebsiteSetting},
-    views::builder::edit::{render_preview_image, render_style_selection, HEADER_LAYOUT},
+    views::builder::edit::{
+        render_preview_image, render_style_selection, FOOTER_LAYOUT, HEADER_LAYOUT,
+    },
 };
 
 #[derive(Deserialize, Debug)]
@@ -64,8 +66,27 @@ pub async fn update_style(
             }
 
             let html = html! {
-              (render_style_selection(&HEADER_LAYOUT, theme, setting_id, user_id, authenticity_token))
+              (render_style_selection(&HEADER_LAYOUT, "header", theme, setting_id, user_id, authenticity_token))
               (render_preview_image(&HEADER_LAYOUT, theme, Some("outerHTML")))
+            };
+
+            Ok(Html(html.into_string()))
+        }
+        "footer" => {
+            let result =
+                WebsiteSetting::update_footer_theme_by_id(setting_id, theme, &pg_pool).await?;
+
+            if result == 0 {
+                tracing::error!("Error while updating footer theme. No rows were affected");
+                return Err(AppError::new(
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Server error",
+                ));
+            }
+
+            let html = html! {
+              (render_style_selection(&FOOTER_LAYOUT, "footer", theme, setting_id, user_id, authenticity_token))
+              (render_preview_image(&FOOTER_LAYOUT, theme, Some("outerHTML")))
             };
 
             Ok(Html(html.into_string()))

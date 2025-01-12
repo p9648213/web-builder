@@ -3,26 +3,27 @@ use maud::{html, Markup, PreEscaped};
 use crate::{
     models::rso_data::{SearchProperty, TextOrNum},
     views::icons::{
-        bath_icon, bed_icon, buit_size_icon, drop_down_icon, email_icon, hamburger_icon,
-        location_icon, mail_icon, phone_icon,
+        bath_icon, bed_icon, buit_size_icon, certificate_icon, drop_down_icon, email_icon,
+        facebook_icon_color, hamburger_icon, instagram_icon_color, linkedin_icon_color,
+        location_icon, mail_icon, phone_icon, twitter_icon_color, youtube_icon_color,
     },
 };
 
-//..............................................
-//.NNNN....NNN.....AAAA...AAAV.....VVVV....111..
-//.NNNN....NNN.....AAAAA...AAV.....VVVV...1111..
-//.NNNNN...NNN.....AAAAA...AAVV....VVV...11111..
-//.NNNNN...NNN....AAAAAA...AAVV...VVVV..V11111..
-//.NNNNNN..NNN....AAAAAAA...AVV...VVVV..V11111..
-//.NNNNNNN.NNN...AAAA.AAA...AVVV..VVV...V1.111..
-//.NNN.NNN.NNN...AAA..AAAA..AVVV.VVVV......111..
-//.NNN.NNNNNNN...AAAAAAAAA...VVV.VVVV......111..
-//.NNN..NNNNNN..AAAAAAAAAA...VVVVVVV.......111..
-//.NNN..NNNNNN..AAAAAAAAAAA..VVVVVVV.......111..
-//.NNN...NNNNN..AAA.....AAA...VVVVV........111..
-//.NNN....NNNN.NAAA.....AAAA..VVVVV........111..
-//.NNN....NNNN.NAA......AAAA..VVVVV........111..
-//..............................................
+//.............................................................................
+//.NNNN....NNN.....AAAA...AAAV.....VVVV.VBBBBBBBB.......AAAA......ARRRRRRRR....
+//.NNNN....NNN.....AAAAA...AAV.....VVVV.VBBBBBBBBB......AAAA......ARRRRRRRRR...
+//.NNNNN...NNN.....AAAAA...AAVV....VVV..VBBBBBBBBBB....AAAAAA.....ARRRRRRRRRR..
+//.NNNNN...NNN....AAAAAA...AAVV...VVVV..VBB....BBBB....AAAAAA.....ARR....RRRR..
+//.NNNNNN..NNN....AAAAAAA...AVV...VVVV..VBB....BBBB....AAAAAAA....ARR....RRRR..
+//.NNNNNNN.NNN...AAAA.AAA...AVVV..VVV...VBBBBBBBBB....AAAAAAAA....ARRRRRRRRRR..
+//.NNN.NNN.NNN...AAA..AAAA..AVVV.VVVV...VBBBBBBBBB....AAA..AAA....ARRRRRRRRR...
+//.NNN.NNNNNNN...AAAAAAAAA...VVV.VVVV...VBBBBBBBBBB..BAAAAAAAAA...ARRRRRRR.....
+//.NNN..NNNNNN..AAAAAAAAAA...VVVVVVV....VBB.....BBB..BAAAAAAAAA...ARR..RRRR....
+//.NNN..NNNNNN..AAAAAAAAAAA..VVVVVVV....VBB.....BBB..BAAAAAAAAAA..ARR...RRRR...
+//.NNN...NNNNN..AAA.....AAA...VVVVV.....VBBBBBBBBBB.BBAA....AAAA..ARR...RRRR...
+//.NNN....NNNN.NAAA.....AAAA..VVVVV.....VBBBBBBBBBB.BBA......AAA..ARR....RRRR..
+//.NNN....NNNN.NAA......AAAA..VVVVV.....VBBBBBBBBB..BBA......AAAA.ARR.....RRR..
+//.............................................................................
 
 pub fn render_nav_bar_1() -> Markup {
     html! {
@@ -60,22 +61,6 @@ pub fn render_nav_bar_1() -> Markup {
       }
     }
 }
-
-//................................................
-//.NNNN....NNN.....AAAA...AAAV.....VVVV..22222....
-//.NNNN....NNN.....AAAAA...AAV.....VVVV.V2222222..
-//.NNNNN...NNN.....AAAAA...AAVV....VVV.VV22..222..
-//.NNNNN...NNN....AAAAAA...AAVV...VVVV.VV2...222..
-//.NNNNNN..NNN....AAAAAAA...AVV...VVVV.......222..
-//.NNNNNNN.NNN...AAAA.AAA...AVVV..VVV.......2222..
-//.NNN.NNN.NNN...AAA..AAAA..AVVV.VVVV......2222...
-//.NNN.NNNNNNN...AAAAAAAAA...VVV.VVVV.....22222...
-//.NNN..NNNNNN..AAAAAAAAAA...VVVVVVV.....22222....
-//.NNN..NNNNNN..AAAAAAAAAAA..VVVVVVV....V2222.....
-//.NNN...NNNNN..AAA.....AAA...VVVVV.....V222......
-//.NNN....NNNN.NAAA.....AAAA..VVVVV....VV2222222..
-//.NNN....NNNN.NAA......AAAA..VVVVV....VV2222222..
-//................................................
 
 pub fn render_nav_bar_2() -> Markup {
     html! {
@@ -159,22 +144,6 @@ pub fn render_nav_bar_2() -> Markup {
     }
 }
 
-//................................................
-//.NNNN....NNN.....AAAA...AAAV.....VVVV..33333....
-//.NNNN....NNN.....AAAAA...AAV.....VVVV.V333333...
-//.NNNNN...NNN.....AAAAA...AAVV....VVV..V33.3333..
-//.NNNNN...NNN....AAAAAA...AAVV...VVVV.VV33.3333..
-//.NNNNNN..NNN....AAAAAAA...AVV...VVVV......3333..
-//.NNNNNNN.NNN...AAAA.AAA...AVVV..VVV......3333...
-//.NNN.NNN.NNN...AAA..AAAA..AVVV.VVVV......3333...
-//.NNN.NNNNNNN...AAAAAAAAA...VVV.VVVV........333..
-//.NNN..NNNNNN..AAAAAAAAAA...VVVVVVV.........333..
-//.NNN..NNNNNN..AAAAAAAAAAA..VVVVVVV...VV33..333..
-//.NNN...NNNNN..AAA.....AAA...VVVVV....VV33.3333..
-//.NNN....NNNN.NAAA.....AAAA..VVVVV.....V333333...
-//.NNN....NNNN.NAA......AAAA..VVVVV......33333....
-//................................................
-
 pub fn render_nav_bar_3() -> Markup {
     html! {
       (PreEscaped(r#"
@@ -241,22 +210,6 @@ pub fn render_nav_bar_3() -> Markup {
       }
     }
 }
-
-//................................................
-//.NNNN....NNN.....AAAA...AAAV.....VVVV.....444...
-//.NNNN....NNN.....AAAAA...AAV.....VVVV....4444...
-//.NNNNN...NNN.....AAAAA...AAVV....VVV....44444...
-//.NNNNN...NNN....AAAAAA...AAVV...VVVV....44444...
-//.NNNNNN..NNN....AAAAAAA...AVV...VVVV...444444...
-//.NNNNNNN.NNN...AAAA.AAA...AVVV..VVV...V444444...
-//.NNN.NNN.NNN...AAA..AAAA..AVVV.VVVV...V44.444...
-//.NNN.NNNNNNN...AAAAAAAAA...VVV.VVVV..VV4..444...
-//.NNN..NNNNNN..AAAAAAAAAA...VVVVVVV...VV4444444..
-//.NNN..NNNNNN..AAAAAAAAAAA..VVVVVVV...VV4444444..
-//.NNN...NNNNN..AAA.....AAA...VVVVV.........444...
-//.NNN....NNNN.NAAA.....AAAA..VVVVV.........444...
-//.NNN....NNNN.NAA......AAAA..VVVVV.........444...
-//................................................
 
 pub fn render_nav_bar_4() -> Markup {
     html! {
@@ -403,23 +356,23 @@ pub fn render_contact_input(label: &str) -> Markup {
     }
 }
 
-//............................................................................
-//.FFFFFFFFFF...OOOOOOOO......OOOOOOOO...OTTTTTTTTTT.EEEEEEEEEE..RRRRRRRRRR...
-//.FFFFFFFFFF..OOOOOOOOOO....OOOOOOOOOO..OTTTTTTTTTT.EEEEEEEEEE..RRRRRRRRRRR..
-//.FFFFFFFFFF.OOOOOOOOOOOO..OOOOOOOOOOOO.OTTTTTTTTTT.EEEEEEEEEE..RRRRRRRRRRR..
-//.FFF........OOOO....OOOO..OOOO....OOOO.....TTT.....EEE.........RRR.....RRR..
-//.FFF.......FOOO......OOOOOOOO......OOOO....TTT.....EEE.........RRR.....RRR..
-//.FFF.......FOOO......OOOOOOOO......OOOO....TTT.....EEEEEEEEEE..RRR...RRRRR..
-//.FFFFFFFFFFFOOO......OOOOOOOO......OOOO....TTT.....EEEEEEEEEE..RRRRRRRRRRR..
-//.FFFFFFFFFFFOOO......OOOOOOOO......OOOO....TTT.....EEEEEEEEEE..RRRRRRRRRR...
-//.FFFFFFFFFFFOOO......OOOOOOOO......OOOO....TTT.....EEE.........RRRRRRRRRR...
-//.FFF........OOOO....OOOO..OOOO....OOOO.....TTT.....EEE.........RRR...RRRR...
-//.FFF........OOOOOOOOOOOO..OOOOOOOOOOOO.....TTT.....EEEEEEEEEEE.RRR....RRRR..
-//.FFF.........OOOOOOOOOO....OOOOOOOOOO......TTT.....EEEEEEEEEEE.RRR....RRRR..
-//.FFF..........OOOOOOOO......OOOOOOOO.......TTT.....EEEEEEEEEEE.RRR.....RRR..
-//............................................................................
+//.............................................................................
+//.FFFFFFFFFF....OOOOOO........OOOOOO.....TTTTTTTTTTTEEEEEEEEEE..RRRRRRRRR.....
+//.FFFFFFFFFF..OOOOOOOOOO....OOOOOOOOOO...TTTTTTTTTTTEEEEEEEEEE..RRRRRRRRRRR...
+//.FFFFFFFFFF.OOOOOOOOOOOO..OOOOOOOOOOOO..TTTTTTTTTTTEEEEEEEEEE..RRRRRRRRRRR...
+//.FFF........OOOO....OOOO..OOOO....OOOO......TTT....EEE.........RRR.....RRR...
+//.FFF........OOO......OOO..OOO......OOO......TTT....EEE.........RRR.....RRR...
+//.FFFFFFFFF.FOOO......OOOOOOOO......OOOO.....TTT....EEEEEEEEEE..RRRRRRRRRRR...
+//.FFFFFFFFF.FOOO......OOOOOOOO......OOOO.....TTT....EEEEEEEEEE..RRRRRRRRRR....
+//.FFFFFFFFF.FOOO......OOOOOOOO......OOOO.....TTT....EEEEEEEEEE..RRRRRRRR......
+//.FFF........OOO......OOO..OOO......OOO......TTT....EEE.........RRR..RRRR.....
+//.FFF........OOOO....OOOO..OOOO....OOOO......TTT....EEE.........RRR...RRRR....
+//.FFF........OOOOOOOOOOOO..OOOOOOOOOOOO......TTT....EEEEEEEEEEE.RRR....RRRR...
+//.FFF.........OOOOOOOOOO....OOOOOOOOOO.......TTT....EEEEEEEEEEE.RRR....RRRR...
+//.FFF...........OOOOOO........OOOOOO.........TTT....EEEEEEEEEEE.RRR.....RRRR..
+//.............................................................................
 
-pub fn render_footer() -> Markup {
+pub fn render_footer_1() -> Markup {
     html! {
       div class="flex flex-col justify-center items-center bg-blue-500 w-full text-white" {
         div class="flex flex-col gap-5 px-15 py-15 w-ful w-full max-w-360" {
@@ -477,15 +430,310 @@ pub fn render_footer() -> Markup {
             }
           }
           div class="border-white border-b-1 w-full" {}
-          div class="flex flex-col gap-3" {
-            div {
-              "Copyright © 2023 - DEMO AGENCY. All Rights Reserved."
+          div class="flex justify-between" {
+            div class="flex flex-col gap-3" {
+              div { "Raicv: 123456789F" }
+              div {
+                "Copyright © 2023 - DEMO AGENCY. All Rights Reserved."
+              }
+              div class="flex divide-x divide-white text-sm" {
+                div class="pr-3 cursor-pointer" { "Terms and Conditions" }
+                div class="px-3 cursor-pointer" { "Privacy Policy" }
+                div class="px-3 cursor-pointer" { "Cookie Policy" }
+                div class="px-3 cursor-pointer" { "Cookie Settings" }
+              }
             }
-            div class="flex divide-x divide-white text-sm" {
-              div class="pr-3 cursor-pointer" { "Terms and Conditions" }
-              div class="px-3 cursor-pointer" { "Privacy Policy" }
-              div class="px-3 cursor-pointer" { "Cookie Policy" }
-              div class="px-3 cursor-pointer" { "Cookie Settings" }
+            div {
+              div class="flex items-center gap-3" {
+                (instagram_icon_color())
+                (twitter_icon_color())
+                (linkedin_icon_color())
+                (facebook_icon_color())
+                (youtube_icon_color())
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_footer_2() -> Markup {
+    html! {
+      div class="flex flex-col justify-center items-center bg-blue-500 w-full text-white" {
+        div class="flex flex-col gap-5 px-15 py-10 w-ful w-full max-w-360" {
+          div class="flex justify-between w-full" {
+            div class="flex flex-col justify-between" {
+                div class="flex flex-col gap-4"  {
+                  div class="rounded-sm max-w-60 overflow-hidden" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
+                    img class="h-full" src="https://cdn.resales-online.com/public/804pf2s7h1/agencies/3/3.jpg";
+                  }
+                  div class="max-w-85 text-justify" {
+                    div class="flex items-center gap-2" {
+                      (location_icon())
+                      "Testing Address 4"
+                    }
+                  }
+                }
+                div class="flex gap-3" {
+                  (certificate_icon())
+                  (certificate_icon())
+                  (certificate_icon())
+                  (certificate_icon())
+                }
+            }
+            div class="flex flex-col gap-7" {
+              div class="flex flex-col gap-4" {
+                div class="flex items-center gap-2" {
+                  div class="translate-y-0.5" {
+                    (email_icon())
+                  }
+                  "hanatest0102@gmail.com"
+                }
+                div class="flex items-center gap-2" {
+                  div class="translate-y-0.5" {
+                    (email_icon())
+                  }
+                  "nguyenhan0696@gmail.com"
+                }
+                div class="flex items-center gap-2" {
+                  (phone_icon())
+                  "Sale Manager +34 0973477994"
+                }
+                div class="flex items-center gap-2" {
+                  (phone_icon())
+                  "Sale Manager +34 39652874"
+                }
+              }
+              div {
+                div class="flex items-center gap-3" {
+                  (instagram_icon_color())
+                  (twitter_icon_color())
+                  (linkedin_icon_color())
+                  (facebook_icon_color())
+                  (youtube_icon_color())
+                }
+              }
+            }
+          }
+          div class="border-white border-b-1 w-full" {}
+          div class="flex justify-between" {
+            div class="flex flex-col gap-3" {
+              div { "Raicv: 123456789F" }
+              div {
+                "Copyright © 2023 - DEMO AGENCY. All Rights Reserved."
+              }
+            }
+            div class="flex items-end" {
+              div class="flex divide-x divide-white h-fit text-sm" {
+                div class="pr-3 cursor-pointer" { "Terms and Conditions" }
+                div class="px-3 cursor-pointer" { "Privacy Policy" }
+                div class="px-3 cursor-pointer" { "Cookie Policy" }
+                div class="px-3 cursor-pointer" { "Cookie Settings" }
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_footer_3() -> Markup {
+    html! {
+      div class="flex flex-col justify-center items-center bg-blue-500 w-full text-white" {
+        div class="flex flex-col gap-5 px-15 py-15 w-ful w-full max-w-360" {
+          div class="flex justify-between w-full" {
+            div class="flex flex-col gap-4"  {
+              div class="rounded-sm max-w-60 overflow-hidden" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
+                img class="h-full" src="https://cdn.resales-online.com/public/804pf2s7h1/agencies/3/3.jpg";
+              }
+              div {
+                "Copyright © 2023 - DEMO AGENCY. All Rights Reserved."
+              }
+              div { "Raicv: 123456789F" }
+              div {
+                div class="flex items-center gap-3" {
+                  (instagram_icon_color())
+                  (twitter_icon_color())
+                  (linkedin_icon_color())
+                  (facebook_icon_color())
+                  (youtube_icon_color())
+                }
+              }
+              div class="flex flex-col gap-3 text-sm" {
+                div class="cursor-pointer" { "Terms and Conditions" }
+                div class="cursor-pointer" { "Privacy Policy" }
+                div class="cursor-pointer" { "Cookie Policy" }
+                div class="cursor-pointer" { "Cookie Settings" }
+              }
+            }
+            div class="flex flex-col justify-between" {
+              div class="flex gap-7" {
+                div class="flex gap-3" {
+                  div class="font-bold text-sm translate-y-0.5" { "Company" }
+                  div class="flex flex-col gap-3" {
+                    span { "About us" }
+                    span { "Contact" }
+                    span { "Sell your property" }
+                    span { "Meet the team" }
+                  }
+                }
+                div class="flex gap-3" {
+                  div class="font-bold text-sm translate-y-0.5" { "Sale" }
+                  div class="flex flex-col gap-3" {
+                    span { "For sale" }
+                    span { "Nev Development" }
+                  }
+                }
+                div class="flex gap-3" {
+                  div class="font-bold text-sm translate-y-0.5" { "Rent" }
+                  div class="flex flex-col gap-3" {
+                    span { "Long term" }
+                    span { "Short term" }
+                  }
+                }
+              }
+              div class="flex gap-3" {
+                (certificate_icon())
+                (certificate_icon())
+                (certificate_icon())
+                (certificate_icon())
+              }
+            }
+            div class="flex flex-col gap-4" {
+              div class="flex items-center gap-2 text-white" {
+                div {
+                  img class="h-3.5 translate-y-0.5" src="/assets/images/real_estate/en-flag.webp";
+                }
+                span { "English" }
+                div class="translate-y-0.5 cursor-pointer" {
+                  (drop_down_icon())
+                }
+              }
+              div class="flex items-center gap-2" {
+                div class="translate-y-0.5" {
+                  (email_icon())
+                }
+                "hanatest0102@gmail.com"
+              }
+              div class="flex items-center gap-2" {
+                div class="translate-y-0.5" {
+                  (email_icon())
+                }
+                "nguyenhan0696@gmail.com"
+              }
+              div class="flex items-center gap-2" {
+                (phone_icon())
+                "Sale Manager +34 0973477994"
+              }
+              div class="flex items-center gap-2" {
+                (phone_icon())
+                "Sale Manager +34 39652874"
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_footer_4() -> Markup {
+    html! {
+      div class="flex flex-col justify-center items-center bg-blue-500 w-full text-white" {
+        div class="flex flex-col gap-5 px-15 py-15 w-ful w-full max-w-360" {
+          div class="flex justify-between w-full" {
+            div class="flex gap-30" {
+              div class="flex flex-col gap-4" {
+                div class="flex items-center gap-2" {
+                  div class="translate-y-0.5" {
+                    (email_icon())
+                  }
+                  "hanatest0102@gmail.com"
+                }
+                div class="flex items-center gap-2" {
+                  div class="translate-y-0.5" {
+                    (email_icon())
+                  }
+                  "nguyenhan0696@gmail.com"
+                }
+                div class="flex items-center gap-2" {
+                  (phone_icon())
+                  "Sale Manager +34 0973477994"
+                }
+                div class="flex items-center gap-2" {
+                  (phone_icon())
+                  "Sale Manager +34 39652874"
+                }
+                div class="flex items-center gap-2" {
+                  (location_icon())
+                  "Testing Address 4"
+                }
+              }
+              div class="flex gap-15" {
+                div class="flex flex-col gap-3" {
+                  div class="cursor-pointer" { "About us" }
+                  div class="cursor-pointer" { "Contact us" }
+                  div class="cursor-pointer" { "Sell your property" }
+                  div class="cursor-pointer" { "Meet the team" }
+                }
+                div class="flex flex-col gap-3" {
+                  div class="cursor-pointer" { "Resales" }
+                  div class="cursor-pointer" { "New development" }
+                }
+                div class="flex flex-col gap-3" {
+                  div class="cursor-pointer" { "Resales" }
+                  div class="cursor-pointer" { "New development" }
+                }
+              }
+            }
+            div class="flex gap-3" {
+              (certificate_icon())
+              (certificate_icon())
+              (certificate_icon())
+              (certificate_icon())
+            }
+            div {
+              div class="flex items-center gap-2 text-white" {
+                div {
+                  img class="h-3.5 translate-y-0.5" src="/assets/images/real_estate/en-flag.webp";
+                }
+                span { "English" }
+                div class="translate-y-0.5 cursor-pointer" {
+                  (drop_down_icon())
+                }
+              }
+            }
+          }
+          div class="border-white my-5 border-b-1 w-full" {}
+          div class="flex justify-between items-center" {
+            div class="flex flex-col gap-3" {
+              div class="flex gap-4"  {
+                div class="rounded-sm max-w-60 h-fit overflow-hidden" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
+                  img class="h-full" src="https://cdn.resales-online.com/public/804pf2s7h1/agencies/3/3.jpg";
+                }
+                div class="max-w-100 text-justify" {
+                  "Welcome to DEMO AGENCY, your trusted partner in the world of real estate. With years of experience and a passion for exceptional service, we specialize in helping clients buy, sell, and invest in properties. Our dedicated team of professionals is committed to delivering personalized solutions and exceeding your expectations every step of the way."
+                }
+              }
+              div { "Raicv: 123456789F" }
+              div {
+                "Copyright © 2023 - DEMO AGENCY. All Rights Reserved."
+              }
+            }
+            div class="flex flex-col gap-12" {
+              div class="flex justify-end items-center gap-3" {
+                (instagram_icon_color())
+                (twitter_icon_color())
+                (linkedin_icon_color())
+                (facebook_icon_color())
+                (youtube_icon_color())
+              }
+              div class="flex gap-4 text-sm" {
+                div class="cursor-pointer" { "Terms and Conditions" }
+                div class="cursor-pointer" { "Privacy Policy" }
+                div class="cursor-pointer" { "Cookie Policy" }
+                div class="cursor-pointer" { "Cookie Settings" }
+              }
             }
           }
         }
@@ -510,16 +758,35 @@ pub fn render_footer() -> Markup {
 //....................................................................................................
 
 pub fn render_property_card(property: &SearchProperty, listing_type: &str) -> Markup {
-    let total_pictures = *&property.pictures.count;
+    let mut total_pictures = 0;
+
+    let render_main_image = if let Some(main_image) = &property.main_image {
+        total_pictures = 1;
+        html! {
+          img class="w-full h-full pointer-events-none shrink-0" src=(main_image);
+        }
+    } else {
+        html! {}
+    };
+
+    let render_images = if let Some(images) = &property.pictures {
+        total_pictures = total_pictures + images.count;
+        html! {
+          @for picture in &images.picture {
+            img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
+          }
+        }
+    } else {
+        html! {}
+    };
 
     html! {
       div class="relative flex flex-col gap-2 shadow-md rounded-lg overflow-hidden picture-container" {
         div class="relative picture-slider-container" {
           div class="flex h-42 transition-transform duration-500 picture-slider" {
-            input type="hidden" value=(total_pictures) ;
-            @for picture in &property.pictures.picture {
-              img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
-            }
+            input type="hidden" value=(total_pictures);
+            (render_main_image)
+            (render_images)
           }
           div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
             @for i in 0..total_pictures as u8 {

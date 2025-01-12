@@ -107,13 +107,13 @@ pub async fn get_edit_page(
                         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                     })?;
 
-                    let id = website_setting.id.ok_or_else(|| {
+                    let setting_id = website_setting.id.ok_or_else(|| {
                         tracing::error!("No id column or value is null");
                         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                     })?;
 
                     html! {
-                        (render_edit_style_page(BuilderSection::ChooseStyle, BuilderStyle::Header, header_theme, id, user_id.0, authenticity_token))
+                        (render_edit_style_page(BuilderSection::ChooseStyle, BuilderStyle::Header, header_theme, setting_id, user_id.0, website_id, authenticity_token))
                     }
                 },
                 "footer" => {
@@ -142,13 +142,13 @@ pub async fn get_edit_page(
                         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                     })?;
 
-                    let id = website_setting.id.ok_or_else(|| {
+                    let setting_id = website_setting.id.ok_or_else(|| {
                         tracing::error!("No id column or value is null");
                         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                     })?;
 
                     html! {
-                        (render_edit_style_page(BuilderSection::ChooseStyle, BuilderStyle::Footer, footer_theme, id, user_id.0, authenticity_token))
+                        (render_edit_style_page(BuilderSection::ChooseStyle, BuilderStyle::Footer, footer_theme, setting_id, user_id.0, website_id, authenticity_token))
                     }
                 }
                 _ => html! {

@@ -58,7 +58,14 @@ pub async fn get_real_estate_home_page(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
         })?;
 
-        Ok(Html(render_home_page(header_theme).into_string()))
+        let footer_theme = website_setting.footer_theme.ok_or_else(|| {
+            tracing::error!("No footer_theme column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        Ok(Html(
+            render_home_page(header_theme, footer_theme).into_string(),
+        ))
     } else {
         Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
     }

@@ -14,15 +14,38 @@ pub struct LayoutItem<'a> {
     pub preview_img_url: &'a str,
 }
 
+pub struct SUBNAV<'a> {
+    title: &'a str,
+    path: &'a str,
+}
+
 const MAIN_NAV_ITEM: [&str; 4] = ["CHOOSE STYLE", "BRANDING", "CONTENT", "ADVANCED SETTINGS"];
 
-const CHOOSE_STYLE_NAV: [&str; 6] = [
-    "Header",
-    "Footer",
-    "Home",
-    "Search Result",
-    "Property Details",
-    "Contact",
+const CHOOSE_STYLE_NAV: [SUBNAV; 6] = [
+    SUBNAV {
+        title: "Header",
+        path: "header",
+    },
+    SUBNAV {
+        title: "Footer",
+        path: "footer",
+    },
+    SUBNAV {
+        title: "Home",
+        path: "home",
+    },
+    SUBNAV {
+        title: "Search Result",
+        path: "search-result",
+    },
+    SUBNAV {
+        title: "Property Details",
+        path: "property-details",
+    },
+    SUBNAV {
+        title: "Contact",
+        path: "contact",
+    },
 ];
 
 pub const HEADER_LAYOUT: [LayoutItem; 4] = [
@@ -48,12 +71,36 @@ pub const HEADER_LAYOUT: [LayoutItem; 4] = [
     },
 ];
 
+pub const FOOTER_LAYOUT: [LayoutItem; 4] = [
+    LayoutItem {
+        layout_no: 1,
+        layout_img_url: "/assets/images/real_estate/footer-layout-1.webp",
+        preview_img_url: "/assets/images/real_estate/footer-preview-1.webp",
+    },
+    LayoutItem {
+        layout_no: 2,
+        layout_img_url: "/assets/images/real_estate/footer-layout-2.webp",
+        preview_img_url: "/assets/images/real_estate/footer-preview-2.webp",
+    },
+    LayoutItem {
+        layout_no: 3,
+        layout_img_url: "/assets/images/real_estate/footer-layout-3.webp",
+        preview_img_url: "/assets/images/real_estate/footer-preview-3.webp",
+    },
+    LayoutItem {
+        layout_no: 4,
+        layout_img_url: "/assets/images/real_estate/footer-layout-4.webp",
+        preview_img_url: "/assets/images/real_estate/footer-preview-4.webp",
+    },
+];
+
 pub fn render_edit_style_page(
     section: BuilderSection,
     style: BuilderStyle,
-    header_theme: i32,
+    theme: i32,
     setting_id: i32,
     user_id: i32,
+    website_id: i32,
     authenticity_token: String,
 ) -> Markup {
     let highlight_nav_index = match section {
@@ -63,34 +110,51 @@ pub fn render_edit_style_page(
         BuilderSection::AdvancedSetting => 4,
     };
 
-    let (highlight_sub_nav_index, document_title, right_content_title, style_items) = match style {
-        BuilderStyle::Header => (1, "Edit Header", "Choose your Header layout", HEADER_LAYOUT),
-        BuilderStyle::Footer => (2, "Edit Footer", "Choose your Footer layout", HEADER_LAYOUT),
-        BuilderStyle::Home => (
-            3,
-            "Edit Home",
-            "Choose your Home page layout",
-            HEADER_LAYOUT,
-        ),
-        BuilderStyle::SearchResult => (
-            4,
-            "Edit Search Result",
-            "Choose your Search result layout",
-            HEADER_LAYOUT,
-        ),
-        BuilderStyle::PropertyDetail => (
-            5,
-            "Edit Property Detail",
-            "Choose your Property Detail layout",
-            HEADER_LAYOUT,
-        ),
-        BuilderStyle::Contact => (
-            6,
-            "Edit Contact",
-            "Choose your Contact us layout",
-            HEADER_LAYOUT,
-        ),
-    };
+    let (highlight_sub_nav_index, document_title, right_content_title, style_items, style_name) =
+        match style {
+            BuilderStyle::Header => (
+                1,
+                "Edit Header",
+                "Choose your Header layout",
+                HEADER_LAYOUT,
+                "header",
+            ),
+            BuilderStyle::Footer => (
+                2,
+                "Edit Footer",
+                "Choose your Footer layout",
+                FOOTER_LAYOUT,
+                "footer",
+            ),
+            BuilderStyle::Home => (
+                3,
+                "Edit Home",
+                "Choose your Home page layout",
+                HEADER_LAYOUT,
+                "home",
+            ),
+            BuilderStyle::SearchResult => (
+                4,
+                "Edit Search Result",
+                "Choose your Search result layout",
+                HEADER_LAYOUT,
+                "search-result",
+            ),
+            BuilderStyle::PropertyDetail => (
+                5,
+                "Edit Property Detail",
+                "Choose your Property Detail layout",
+                HEADER_LAYOUT,
+                "property-details",
+            ),
+            BuilderStyle::Contact => (
+                6,
+                "Edit Contact",
+                "Choose your Contact us layout",
+                HEADER_LAYOUT,
+                "contact",
+            ),
+        };
 
     html! {
         (DOCTYPE)
@@ -105,10 +169,10 @@ pub fn render_edit_style_page(
               (render_nav_bar(highlight_nav_index))
               main class="grid grid-cols-10 col-[1/4] grow" {
                 div class="col-span-7 bg-[#F3F3F3]" {
-                  (render_left_content(highlight_sub_nav_index, &style_items, header_theme))
+                  (render_left_content(highlight_sub_nav_index, &style_items, theme, website_id))
                 }
                 div class="col-span-3" {
-                  (render_right_content(right_content_title, &style_items, header_theme, setting_id, user_id, authenticity_token))
+                  (render_right_content(right_content_title, &style_items, style_name, theme, setting_id, user_id, authenticity_token))
                 }
               }
               (render_footer())
@@ -171,18 +235,20 @@ pub fn render_footer() -> Markup {
 pub fn render_left_content(
     hightlight_sub_nav_index: usize,
     style_items: &[LayoutItem; 4],
-    header_theme: i32,
+    theme: i32,
+    website_id: i32,
 ) -> Markup {
     html! {
-      (render_sub_nav(hightlight_sub_nav_index))
-      (render_preview_image(&style_items, header_theme, None))
+      (render_sub_nav(hightlight_sub_nav_index, website_id))
+      (render_preview_image(&style_items, theme, None))
     }
 }
 
 pub fn render_right_content(
     title: &str,
     style_items: &[LayoutItem; 4],
-    header_theme: i32,
+    style_name: &str,
+    theme: i32,
     setting_id: i32,
     user_id: i32,
     authenticity_token: String,
@@ -191,21 +257,24 @@ pub fn render_right_content(
       div class="flex items-center p-8 h-full" {
         div class="flex flex-col gap-10" {
           span class="text-3xl" { (title) }
-          (render_style_selection(&style_items, header_theme, setting_id, user_id, authenticity_token))
+          (render_style_selection(&style_items, style_name, theme, setting_id, user_id, authenticity_token))
         }
       }
     }
 }
 
-pub fn render_sub_nav(highlight_index: usize) -> Markup {
+pub fn render_sub_nav(highlight_index: usize, website_id: i32) -> Markup {
     html! {
       div class="flex justify-center p-8" {
         div class="flex gap-15 border-b border-b-gray-300 h-9 text-lg" {
           @for (index ,item) in CHOOSE_STYLE_NAV.into_iter().enumerate() {
             @if index + 1 == highlight_index {
-              div class="border-b-2 border-b-blue-500 text-blue-500 cursor-pointer" { (item) }
+              a class="border-b-2 border-b-blue-500 text-blue-500 cursor-pointer" { (item.title) }
             } @else {
-              div class="border-b-2 border-b-transparent hover:border-b-blue-500 hover:text-blue-500 transition-all duration-300 cursor-pointer" { (item) }
+              a
+                href=(format!("/builder/edit/{}/style/{}", website_id, item.path))
+                class="border-b-2 border-b-transparent hover:border-b-blue-500 hover:text-blue-500 transition-all duration-300 cursor-pointer"
+              { (item.title) }
             }
           }
         }
@@ -215,6 +284,7 @@ pub fn render_sub_nav(highlight_index: usize) -> Markup {
 
 pub fn render_style_selection(
     style_items: &[LayoutItem; 4],
+    style_name: &str,
     choosen_style: i32,
     setting_id: i32,
     user_id: i32,
@@ -229,7 +299,7 @@ pub fn render_style_selection(
             }
           } @else {
             form
-              hx-patch=(format!("/builder/edit/{}/{}/header/{}", user_id, setting_id, item.layout_no))
+              hx-patch=(format!("/builder/edit/{}/{}/{}/{}", user_id, setting_id, style_name, item.layout_no))
               hx-trigger="click"
               hx-target="#style-selection"
               hx-swap="outerHTML"

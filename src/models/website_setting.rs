@@ -136,4 +136,17 @@ impl WebsiteSetting {
         )
         .await
     }
+
+    pub async fn update_footer_theme_by_id(
+        id: i32,
+        footer_theme: i32,
+        pool: &deadpool_postgres::Pool,
+    ) -> Result<u64, AppError> {
+        excute(
+            "UPDATE website_settings SET footer_theme = $1 WHERE id = $2",
+            &[&footer_theme, &id],
+            pool,
+        )
+        .await
+    }
 }

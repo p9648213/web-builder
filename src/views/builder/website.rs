@@ -94,7 +94,7 @@ pub fn render_user_website(website: &Website, builder_link: String) -> Result<Ma
 
     let builder_link = format!("{}/builder/edit/{}/style/header", builder_link, website_id);
 
-    let website_domain = format!("http://{}", website_domain);
+    let website_domain = format!("http://{}:17001", website_domain);
 
     Ok(maud::html! {
         section id="create-website" {

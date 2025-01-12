@@ -730,7 +730,9 @@ pub struct SearchProperty {
     #[serde(rename = "PropertyFeatures")]
     pub property_features: PropertyFeatures,
     #[serde(rename = "Pictures")]
-    pub pictures: SearchPropertyPictures,
+    pub pictures: Option<SearchPropertyPictures>,
+    #[serde(rename = "MainImage")]
+    pub main_image: Option<String>,
 }
 
 #[derive(Debug, Serialize, Clone)]
