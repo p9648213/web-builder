@@ -94,6 +94,98 @@ pub const FOOTER_LAYOUT: [LayoutItem; 4] = [
     },
 ];
 
+pub const HOME_LAYOUT: [LayoutItem; 4] = [
+    LayoutItem {
+        layout_no: 1,
+        layout_img_url: "/assets/images/real_estate/home-layout-1.webp",
+        preview_img_url: "/assets/images/real_estate/home-preview-1.webp",
+    },
+    LayoutItem {
+        layout_no: 2,
+        layout_img_url: "/assets/images/real_estate/home-layout-2.webp",
+        preview_img_url: "/assets/images/real_estate/home-preview-2.webp",
+    },
+    LayoutItem {
+        layout_no: 3,
+        layout_img_url: "/assets/images/real_estate/home-layout-3.webp",
+        preview_img_url: "/assets/images/real_estate/home-preview-3.webp",
+    },
+    LayoutItem {
+        layout_no: 4,
+        layout_img_url: "/assets/images/real_estate/home-layout-4.webp",
+        preview_img_url: "/assets/images/real_estate/home-preview-4.webp",
+    },
+];
+
+pub const SEARCH_LAYOUT: [LayoutItem; 4] = [
+    LayoutItem {
+        layout_no: 1,
+        layout_img_url: "/assets/images/real_estate/search-layout-1.webp",
+        preview_img_url: "/assets/images/real_estate/search-preview-1.webp",
+    },
+    LayoutItem {
+        layout_no: 2,
+        layout_img_url: "/assets/images/real_estate/search-layout-2.webp",
+        preview_img_url: "/assets/images/real_estate/search-preview-2.webp",
+    },
+    LayoutItem {
+        layout_no: 3,
+        layout_img_url: "/assets/images/real_estate/search-layout-3.webp",
+        preview_img_url: "/assets/images/real_estate/search-preview-3.webp",
+    },
+    LayoutItem {
+        layout_no: 4,
+        layout_img_url: "/assets/images/real_estate/search-layout-4.webp",
+        preview_img_url: "/assets/images/real_estate/search-preview-4.webp",
+    },
+];
+
+pub const PROPERTY_LAYOUT: [LayoutItem; 4] = [
+    LayoutItem {
+        layout_no: 1,
+        layout_img_url: "/assets/images/real_estate/property-layout-1.webp",
+        preview_img_url: "/assets/images/real_estate/property-preview-1.webp",
+    },
+    LayoutItem {
+        layout_no: 2,
+        layout_img_url: "/assets/images/real_estate/property-layout-2.webp",
+        preview_img_url: "/assets/images/real_estate/property-preview-2.webp",
+    },
+    LayoutItem {
+        layout_no: 3,
+        layout_img_url: "/assets/images/real_estate/property-layout-3.webp",
+        preview_img_url: "/assets/images/real_estate/property-preview-3.webp",
+    },
+    LayoutItem {
+        layout_no: 4,
+        layout_img_url: "/assets/images/real_estate/property-layout-4.webp",
+        preview_img_url: "/assets/images/real_estate/property-preview-4.webp",
+    },
+];
+
+pub const CONTACT_LAYOUT: [LayoutItem; 4] = [
+    LayoutItem {
+        layout_no: 1,
+        layout_img_url: "/assets/images/real_estate/contact-layout-1.webp",
+        preview_img_url: "/assets/images/real_estate/contact-preview-1.webp",
+    },
+    LayoutItem {
+        layout_no: 2,
+        layout_img_url: "/assets/images/real_estate/contact-layout-2.webp",
+        preview_img_url: "/assets/images/real_estate/contact-preview-2.webp",
+    },
+    LayoutItem {
+        layout_no: 3,
+        layout_img_url: "/assets/images/real_estate/contact-layout-3.webp",
+        preview_img_url: "/assets/images/real_estate/contact-preview-3.webp",
+    },
+    LayoutItem {
+        layout_no: 4,
+        layout_img_url: "/assets/images/real_estate/contact-layout-4.webp",
+        preview_img_url: "/assets/images/real_estate/contact-preview-4.webp",
+    },
+];
+
 pub fn render_edit_style_page(
     section: BuilderSection,
     style: BuilderStyle,
@@ -130,28 +222,28 @@ pub fn render_edit_style_page(
                 3,
                 "Edit Home",
                 "Choose your Home page layout",
-                HEADER_LAYOUT,
+                HOME_LAYOUT,
                 "home",
             ),
             BuilderStyle::SearchResult => (
                 4,
                 "Edit Search Result",
                 "Choose your Search result layout",
-                HEADER_LAYOUT,
+                SEARCH_LAYOUT,
                 "search-result",
             ),
             BuilderStyle::PropertyDetail => (
                 5,
                 "Edit Property Detail",
                 "Choose your Property Detail layout",
-                HEADER_LAYOUT,
+                PROPERTY_LAYOUT,
                 "property-details",
             ),
             BuilderStyle::Contact => (
                 6,
                 "Edit Contact",
                 "Choose your Contact us layout",
-                HEADER_LAYOUT,
+                CONTACT_LAYOUT,
                 "contact",
             ),
         };
@@ -294,8 +386,8 @@ pub fn render_style_selection(
       div id="style-selection" class="gap-5 grid grid-cols-2" {
         @for item in style_items {
           @if choosen_style == item.layout_no {
-            div class="border-3 border-blue-500 cursor-pointer" {
-              img src=(item.layout_img_url) alt=(format!("header-layout-{}", item.layout_no));
+            div class="border-3 border-blue-500 h-auto cursor-pointer" {
+              img src=(item.layout_img_url) alt=(format!("{}-layout-{}", style_name, item.layout_no));
             }
           } @else {
             form
@@ -305,7 +397,7 @@ pub fn render_style_selection(
               hx-swap="outerHTML"
             {
               div class="border-3 border-transparent hover:border-blue-500 cursor-pointer" {
-                img src=(item.layout_img_url) alt=(format!("header-layout-{}", item.layout_no));
+                img src=(item.layout_img_url) alt=(format!("{}-layout-{}", style_name, item.layout_no));
               }
               input type="hidden" name="authenticity_token" value=(authenticity_token);
             }

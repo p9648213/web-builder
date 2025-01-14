@@ -149,4 +149,56 @@ impl WebsiteSetting {
         )
         .await
     }
+
+    pub async fn update_home_theme_by_id(
+        id: i32,
+        home_theme: i32,
+        pool: &deadpool_postgres::Pool,
+    ) -> Result<u64, AppError> {
+        excute(
+            "UPDATE website_settings SET home_theme = $1 WHERE id = $2",
+            &[&home_theme, &id],
+            pool,
+        )
+        .await
+    }
+
+    pub async fn update_search_theme_by_id(
+        id: i32,
+        search_theme: i32,
+        pool: &deadpool_postgres::Pool,
+    ) -> Result<u64, AppError> {
+        excute(
+            "UPDATE website_settings SET search_theme = $1 WHERE id = $2",
+            &[&search_theme, &id],
+            pool,
+        )
+        .await
+    }
+
+    pub async fn update_property_theme_by_id(
+        id: i32,
+        property_theme: i32,
+        pool: &deadpool_postgres::Pool,
+    ) -> Result<u64, AppError> {
+        excute(
+            "UPDATE website_settings SET property_theme = $1 WHERE id = $2",
+            &[&property_theme, &id],
+            pool,
+        )
+        .await
+    }
+
+    pub async fn update_contact_theme_by_id(
+        id: i32,
+        contact_theme: i32,
+        pool: &deadpool_postgres::Pool,
+    ) -> Result<u64, AppError> {
+        excute(
+            "UPDATE website_settings SET contact_theme = $1 WHERE id = $2",
+            &[&contact_theme, &id],
+            pool,
+        )
+        .await
+    }
 }
