@@ -2,10 +2,12 @@ use maud::{html, Markup, PreEscaped};
 use tailwind_fuse::tw_merge;
 
 use crate::{
-    models::rso_data::{LocationDynamic, PropertyType, ProvinceAreaDynamic, SearchProperty},
-    views::{
-        icons::{check_icon, drop_down_icon, next_icon, previous_icon, star_icon},
-        real_estate::shared::render_property_card,
+    models::rso_data::{
+        LocationDynamic, PropertyType, ProvinceAreaDynamic, SearchProperty, TextOrNum,
+    },
+    views::icons::{
+        bath_icon, bed_icon, buit_size_icon, check_icon, drop_down_icon, next_icon, previous_icon,
+        star_icon,
     },
 };
 
@@ -284,7 +286,7 @@ pub fn render_home_search_box() -> Markup {
     html! {
       (PreEscaped(r#"
         <script type="module">
-            import {setupDropdown, setupPriceInput} from "/assets/js/app/searchbox.js";
+            import {setupDropdown} from "/assets/js/app/searchbox.js";
             setupDropdown();
         </script>
       "#))
@@ -405,7 +407,7 @@ pub fn render_hot_properties_slider(hot_properties: Vec<SearchProperty>) -> Mark
           @for property_chunk in &properties_chunks {
             div class="gap-10 grid grid-cols-[292px_292px_292px] pl-12" {
               @for property in property_chunk {
-                (render_property_card(property, "sale"))
+                (render_hot_property_card(property, "sale"))
               }
             }
           }
@@ -417,6 +419,94 @@ pub fn render_hot_properties_slider(hot_properties: Vec<SearchProperty>) -> Mark
             div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
           } @else {
             div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+          }
+        }
+      }
+    }
+}
+
+pub fn render_hot_property_card(property: &SearchProperty, listing_type: &str) -> Markup {
+    let mut total_pictures = 0;
+
+    let render_main_image = if let Some(main_image) = &property.main_image {
+        total_pictures = 1;
+        html! {
+          img class="w-full h-full pointer-events-none shrink-0" src=(main_image);
+        }
+    } else {
+        html! {}
+    };
+
+    let render_images = if let Some(images) = &property.pictures {
+        total_pictures = total_pictures + images.count;
+        html! {
+          @for picture in &images.picture {
+            img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
+          }
+        }
+    } else {
+        html! {}
+    };
+
+    html! {
+      div class="relative flex flex-col gap-2 shadow-md rounded-lg overflow-hidden picture-container" {
+        div class="relative picture-slider-container" {
+          div class="flex h-42 transition-transform duration-500 picture-slider" {
+            input type="hidden" value=(total_pictures);
+            (render_main_image)
+            (render_images)
+          }
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+            @for i in 0..total_pictures as u8 {
+              @if i == 0 {
+                div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+              } @else {
+                div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+              }
+            }
+          }
+        }
+        div
+          hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, listing_type))
+          hx-push-url=(format!("/property?id={}&type={}", property.reference, listing_type))
+          hx-trigger="click"
+          hx-target="main"
+          class="flex flex-col justify-between gap-2 px-3 py-2 h-full cursor-pointer"
+        {
+          div class="font-bold" {
+            @if property.newdev_name == "" {
+              (property.property_type.name_type)
+            }@else {
+              (property.newdev_name)
+            }
+          }
+          div class="flex flex-col gap-2" {
+            div class="font-bold text-blue-500 text-lg" {
+              (property.price) " €"
+            }
+            div class="text-sm" {
+              (property.location)
+            }
+            div class="flex gap-4 text-sm" {
+              div class="flex items-center gap-2" {
+                (bed_icon())
+                (property.bedrooms)
+              }
+              div class="flex items-center gap-2" {
+                (bath_icon())
+                (property.bathrooms)
+              }
+              div class="flex items-center gap-2" {
+                (buit_size_icon())
+                @match &property.built {
+                    TextOrNum::Text(built) => (built),
+                    TextOrNum::Num(built) => (built),
+                }
+                @if property.dimensions == "Metres" {
+                  "m²"
+                }
+              }
+            }
           }
         }
       }

@@ -18,6 +18,7 @@ use crate::{
 pub struct SearchQuery {
     pub page: Option<u32>,
     pub listing_type: Option<String>,
+    pub theme: Option<i32>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -71,10 +72,99 @@ pub async fn get_real_estate_home_page(
     }
 }
 
-pub async fn get_real_estate_search_result_page(search_query: Query<SearchQuery>) -> Html<String> {
-    Html(render_search_result_page(search_query.0).into_string())
+pub async fn get_real_estate_search_result_page(
+    search_query: Query<SearchQuery>,
+    State(pg_pool): State<Pool>,
+    request: Request,
+) -> Result<Html<String>, AppError> {
+    let default_host = HeaderValue::from_static("");
+
+    let host = request
+        .headers()
+        .get("host")
+        .unwrap_or(&default_host)
+        .to_str()
+        .map_err(|error| {
+            tracing::error!("Failed to convert host header to string: {}", error);
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+    let row = WebsiteSettingWebsite::get_website_setting_by_domain(
+        host,
+        &pg_pool,
+        vec!["header_theme", "footer_theme", "search_theme"],
+    )
+    .await?;
+
+    if let Some(row) = row {
+        let website_setting = WebsiteSettingWebsite::try_from(row);
+
+        let header_theme = website_setting.header_theme.ok_or_else(|| {
+            tracing::error!("No header_theme column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        let footer_theme = website_setting.footer_theme.ok_or_else(|| {
+            tracing::error!("No footer_theme column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        let search_theme = website_setting.search_theme.ok_or_else(|| {
+            tracing::error!("No search_theme column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        Ok(Html(
+            render_search_result_page(search_query.0, header_theme, footer_theme, search_theme)
+                .into_string(),
+        ))
+    } else {
+        Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
+    }
 }
 
-pub async fn get_real_estate_property_page(property_query: Query<PropertyQuery>) -> Html<String> {
-    Html(render_property_details_page(property_query.0).into_string())
+pub async fn get_real_estate_property_page(
+    property_query: Query<PropertyQuery>,
+    State(pg_pool): State<Pool>,
+    request: Request,
+) -> Result<Html<String>, AppError> {
+    let default_host = HeaderValue::from_static("");
+
+    let host = request
+        .headers()
+        .get("host")
+        .unwrap_or(&default_host)
+        .to_str()
+        .map_err(|error| {
+            tracing::error!("Failed to convert host header to string: {}", error);
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+        })?;
+
+    let row = WebsiteSettingWebsite::get_website_setting_by_domain(
+        host,
+        &pg_pool,
+        vec!["header_theme", "footer_theme", "property_theme"],
+    )
+    .await?;
+
+    if let Some(row) = row {
+        let website_setting = WebsiteSettingWebsite::try_from(row);
+
+        let header_theme = website_setting.header_theme.ok_or_else(|| {
+            tracing::error!("No header_theme column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        let footer_theme = website_setting.footer_theme.ok_or_else(|| {
+            tracing::error!("No footer_theme column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
+        Ok(Html(
+            render_property_details_page(property_query.0, header_theme, footer_theme)
+                .into_string(),
+        ))
+    } else {
+        Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
+    }
 }
