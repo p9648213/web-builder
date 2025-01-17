@@ -269,9 +269,9 @@ dependencies = [
 
 [[package]]
 name = "axum_session"
-version = "0.15.0"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9bcd5d9395b53d6a7054f599f4fe6f519d374a5b84fa758d1163af0d278b9213"
+checksum = "9cbd59ac11f92412bd86308ce6c9d579e4a6ab627a2c7074afa5e4ef7144900d"
 dependencies = [
  "aes-gcm",
  "async-trait",
@@ -300,9 +300,9 @@ dependencies = [
 
 [[package]]
 name = "axum_session_redispool"
-version = "0.4.1"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95ceded264400251534f441cb2a72ad54b1ece5e0019ff85d5e85dec9e5a5522"
+checksum = "1a511e5838ad53035fa63dff6a3ba8ae0edb5eb398df0ef0880d27221b4636a8"
 dependencies = [
  "async-trait",
  "axum_session",
@@ -629,12 +629,6 @@ name = "dotenvy"
 version = "0.15.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1aaf95b3e5c8f23aa320147307562d361db0ae0d51242340f558153b4eb2439b"
-
-[[package]]
-name = "either"
-version = "1.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "60b1af1c220855b6ceac025d3f6ecdd2b7c4894bfe9cd9bda4fbb4bc7c0d4cf0"
 
 [[package]]
 name = "encoding_rs"
@@ -1090,15 +1084,6 @@ name = "is_terminal_polyfill"
 version = "1.70.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf"
-
-[[package]]
-name = "itertools"
-version = "0.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
-dependencies = [
- "either",
-]
 
 [[package]]
 name = "itoa"
@@ -1629,16 +1614,14 @@ dependencies = [
 
 [[package]]
 name = "redis"
-version = "0.27.6"
+version = "0.28.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09d8f99a4090c89cc489a94833c901ead69bfbf3877b4867d5482e321ee875bc"
+checksum = "9f89727cba9cec05cc579942321ff6dd09fe57a8b3217f52f952301efa010da5"
 dependencies = [
  "arc-swap",
- "async-trait",
  "bytes",
  "combine",
  "futures-util",
- "itertools",
  "itoa",
  "num-bigint",
  "percent-encoding",
@@ -1653,14 +1636,15 @@ dependencies = [
 
 [[package]]
 name = "redis_pool"
-version = "0.6.0"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4c68892c3833afeba239a029bedd72857549cc78c2bfc5f24d5e81486f2ce0e6"
+checksum = "0dac4f10f2f7dff0eab8736670f015f57becf9752400c2448df42386a1b82d2d"
 dependencies = [
  "async-trait",
  "crossbeam-queue",
+ "parking_lot",
  "redis",
- "thiserror 1.0.65",
+ "thiserror 2.0.11",
  "tokio",
  "tracing",
 ]
