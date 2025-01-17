@@ -64,7 +64,9 @@ pub fn render_search_box_2() -> Markup {
             setupMarginNavbar();
         </script>
       "#))
-      "search box 2"
+      div class="bg-blue-400 w-90 shrink-0" {
+        "search 2"
+      }
     }
 }
 
@@ -78,7 +80,56 @@ pub fn render_search_box_3() -> Markup {
             setupMarginNavbar();
         </script>
       "#))
-      "search box 3"
+      div class="flex flex-col justify-center items-center gap-6 shadow-lg py-8 p-6 rounded-3xl w-full" {
+        div class="flex justify-center gap-7 w-full max-w-360" {
+          div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
+            "Listing Type"
+            div class="translate-y-0.5" {
+              (drop_down_icon())
+            }
+          }
+          div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
+            "Location"
+            div class="translate-y-0.5" {
+              (drop_down_icon())
+            }
+          }
+          div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
+            "Property Type"
+            div class="translate-y-0.5" {
+              (drop_down_icon())
+            }
+          }
+          div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
+            "Price"
+            div class="translate-y-0.5" {
+              (drop_down_icon())
+            }
+          }
+          div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
+            "Bed"
+            div class="translate-y-0.5" {
+              (drop_down_icon())
+            }
+          }
+          div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
+            "Bath"
+            div class="translate-y-0.5" {
+              (drop_down_icon())
+            }
+          }
+          div class="flex justify-center items-center" {
+            input class="border-slate-800 rounded-md h-12 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
+          }
+
+          button
+            class="bg-blue-500 hover:bg-blue-400 px-13 py-3 rounded-md font-semibold text-white cursor-pointer"
+          {
+            "Search"
+          }
+
+        }
+      }
     }
 }
 
@@ -165,14 +216,44 @@ pub fn render_search_result_1(page: Option<u32>) -> Markup {
 }
 
 pub fn render_search_result_2(page: Option<u32>) -> Markup {
+    let hx_get = if let Some(page) = page {
+        format!("/rso/search-results?page={}&theme=2", page)
+    } else {
+        "/rso/search-results?theme=2".to_string()
+    };
+
     html! {
-      "search result 2"
+      div
+        hx-get=(hx_get)
+        hx-target="#search-results"
+        hx-trigger="load"
+        class="flex justify-center items-center"
+      {
+        div id="search-results" class="flex flex-col justify-center items-center gap-10 w-full" {
+          "Loading..."
+        }
+      }
     }
 }
 
 pub fn render_search_result_3(page: Option<u32>) -> Markup {
+    let hx_get = if let Some(page) = page {
+        format!("/rso/search-results?page={}&theme=3", page)
+    } else {
+        "/rso/search-results?theme=3".to_string()
+    };
+
     html! {
-      "search result 3"
+      div
+        hx-get=(hx_get)
+        hx-target="#search-results"
+        hx-trigger="load"
+        class="flex justify-center items-center my-15"
+      {
+        div id="search-results" class="flex flex-col justify-center items-center gap-10 px-15 w-full max-w-360" {
+          "Loading..."
+        }
+      }
     }
 }
 
@@ -246,12 +327,70 @@ pub fn render_property_grids_1(
     }
 }
 
-pub fn render_property_grids_2() -> Markup {
-    html! {}
+pub fn render_property_grids_2(
+    properties: &Vec<SearchProperty>,
+    property_count: u32,
+    properties_per_page: u32,
+    page_no: u32,
+    listing_type: &str,
+) -> Markup {
+    let page_size = (property_count as f64 / properties_per_page as f64).ceil();
+
+    html! {
+      (PreEscaped(r#"
+        <script type="module">
+            import {scrollToTop} from "/assets/js/main.js";
+            import {setupPropertyPictureSlider} from "/assets/js/app/slider.js";
+            setupPropertyPictureSlider();
+            scrollToTop();
+        </script>
+      "#))
+      div class="flex justify-end w-full" {
+        div class="text-xl" { (property_count) " properties" }
+      }
+
+      div class="gap-9 grid grid-cols-2" {
+        @for property in properties {
+          (render_property_card_2(property, listing_type))
+        }
+      }
+      div class="right-0 bottom-7 left-0 absolute flex justify-center bg-white m-auto p-2 rounded-full w-fit" {
+        (render_pagination(page_size as u32, page_no, 2))
+      }
+    }
 }
 
-pub fn render_property_grids_3() -> Markup {
-    html! {}
+pub fn render_property_grids_3(
+    properties: &Vec<SearchProperty>,
+    property_count: u32,
+    properties_per_page: u32,
+    page_no: u32,
+    listing_type: &str,
+) -> Markup {
+    let page_size = (property_count as f64 / properties_per_page as f64).ceil();
+
+    html! {
+      (PreEscaped(r#"
+      <script type="module">
+          import {scrollToTop} from "/assets/js/main.js";
+          import {setupPropertyPictureSlider} from "/assets/js/app/slider.js";
+          setupPropertyPictureSlider();
+          scrollToTop();
+      </script>
+    "#))
+      div class="flex justify-end w-full" {
+        div class="text-xl" { (property_count) " properties" }
+      }
+
+      div class="gap-15 grid grid-cols-2" {
+        @for property in properties {
+          (render_property_card_3(property, listing_type))
+        }
+      }
+      div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
+        (render_pagination(page_size as u32, page_no, 3))
+      }
+    }
 }
 
 pub fn render_property_grids_4(
@@ -446,7 +585,7 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
     };
 
     html! {
-      div class="relative flex flex-col gap-2 shadow-md rounded-lg overflow-hidden picture-container" {
+      div class="relative flex flex-col flex-1 gap-2 shadow-md rounded-lg overflow-hidden picture-container" {
         div class="relative picture-slider-container" {
           div class="flex h-42 transition-transform duration-500 picture-slider" {
             input type="hidden" value=(total_pictures);
@@ -512,13 +651,177 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
     }
 }
 
-pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> Markup {
+pub fn render_property_card_2(property: &SearchProperty, listing_type: &str) -> Markup {
     let mut total_pictures = 0;
 
     let render_main_image = if let Some(main_image) = &property.main_image {
         total_pictures = 1;
         html! {
           img class="w-full h-full pointer-events-none shrink-0" src=(main_image);
+        }
+    } else {
+        html! {}
+    };
+
+    let render_images = if let Some(images) = &property.pictures {
+        total_pictures = total_pictures + images.count;
+        html! {
+          @for picture in &images.picture {
+            img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
+          }
+        }
+    } else {
+        html! {}
+    };
+
+    html! {
+      div class="relative flex rounded-lg overflow-hidden picture-container" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
+        div class="relative flex-1 overflow-hidden picture-slider-container" {
+          div class="flex h-55 transition-transform duration-500 picture-slider" {
+            input type="hidden" value=(total_pictures);
+            (render_main_image)
+            (render_images)
+          }
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+            @for i in 0..total_pictures as u8 {
+              @if i == 0 {
+                div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+              } @else {
+                div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+              }
+            }
+          }
+        }
+        div class="flex-1" {
+          div
+          hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, listing_type))
+          hx-push-url=(format!("/property?id={}&type={}", property.reference, listing_type))
+          hx-trigger="click"
+          hx-target="main"
+          class="flex flex-col justify-between gap-2 px-3 py-2 h-full cursor-pointer"
+          {
+            div class="flex flex-col gap-2" {
+              div class="font-bold" {
+                @if property.newdev_name == "" {
+                  (property.property_type.name_type)
+                }@else {
+                  (property.newdev_name)
+                }
+              }
+              div class="font-bold text-blue-500 text-lg" {
+                (property.price) " €"
+              }
+              div class="text-sm" {
+                (property.location)
+              }
+            }
+            div class="flex flex-col gap-2" {
+              div class="flex gap-4 divide-x divide-black text-sm" {
+                div class="flex flex-1 items-center gap-2" {
+                  (bed_icon())
+                  (property.bedrooms) " Beds"
+                }
+                div class="flex flex-1 items-center gap-2" {
+                  (bath_icon())
+                  (property.bathrooms) " Baths"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_property_card_3(property: &SearchProperty, listing_type: &str) -> Markup {
+    let mut total_pictures = 0;
+
+    let render_main_image = if let Some(main_image) = &property.main_image {
+        total_pictures = 1;
+        html! {
+          img class="w-full h-full pointer-events-none shrink-0" src=(main_image);
+        }
+    } else {
+        html! {}
+    };
+
+    let render_images = if let Some(images) = &property.pictures {
+        total_pictures = total_pictures + images.count;
+        html! {
+          @for picture in &images.picture {
+            img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
+          }
+        }
+    } else {
+        html! {}
+    };
+
+    html! {
+      div class="relative flex rounded-lg overflow-hidden picture-container" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
+        div class="relative flex-1 overflow-hidden picture-slider-container" {
+          div class="flex h-60 transition-transform duration-500 picture-slider" {
+            input type="hidden" value=(total_pictures);
+            (render_main_image)
+            (render_images)
+          }
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+            @for i in 0..total_pictures as u8 {
+              @if i == 0 {
+                div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+              } @else {
+                div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+              }
+            }
+          }
+        }
+        div class="flex-1" {
+          div
+          hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, listing_type))
+          hx-push-url=(format!("/property?id={}&type={}", property.reference, listing_type))
+          hx-trigger="click"
+          hx-target="main"
+          class="flex flex-col justify-between gap-2 px-3 py-2 h-full cursor-pointer"
+          {
+            div class="flex flex-col gap-2" {
+              div class="font-bold" {
+                @if property.newdev_name == "" {
+                  (property.property_type.name_type)
+                }@else {
+                  (property.newdev_name)
+                }
+              }
+              div class="font-bold text-blue-500 text-lg" {
+                (property.price) " €"
+              }
+              div class="text-sm" {
+                (property.location)
+              }
+            }
+            div class="flex flex-col gap-2" {
+              div class="flex gap-4 divide-x divide-black text-sm" {
+                div class="flex flex-1 items-center gap-2" {
+                  (bed_icon())
+                  (property.bedrooms) " Beds"
+                }
+                div class="flex flex-1 items-center gap-2" {
+                  (bath_icon())
+                  (property.bathrooms) " Baths"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> Markup {
+    let mut total_pictures = 0;
+
+    let render_main_image = if let Some(main_image) = &property.main_image {
+        total_pictures = 1;
+        html! {
+          img class="h-full pointer-events-none shrink-0" src=(main_image);
         }
     } else {
         html! {}

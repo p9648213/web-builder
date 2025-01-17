@@ -366,10 +366,10 @@ pub async fn get_search_result(
                     (search_result::render_property_grids_1(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type))
                 }
                 2 => {
-                    (search_result::render_property_grids_2())
+                    (search_result::render_property_grids_2(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type))
                 }
                 3 => {
-                    (search_result::render_property_grids_3())
+                    (search_result::render_property_grids_3(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type))
                 }
                 4 => {
                     (search_result::render_property_grids_4(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type))

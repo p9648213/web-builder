@@ -39,8 +39,7 @@ use axum_csrf::{CsrfConfig, CsrfLayer};
 use axum_session::{SessionConfig, SessionLayer, SessionStore};
 use axum_session_redispool::SessionRedisPool;
 use deadpool_postgres::Pool;
-use redis::{aio::MultiplexedConnection, Client};
-use redis_pool::RedisPool;
+use redis_pool::SingleRedisPool;
 use tower_http::set_header::SetResponseHeaderLayer;
 
 async fn ping() -> &'static str {
@@ -61,7 +60,7 @@ async fn builder_fallback() -> impl IntoResponse {
 
 pub async fn create_router(
     pg_pool: Pool,
-    redis_pool: RedisPool<Client, MultiplexedConnection>,
+    redis_pool: SingleRedisPool,
     config: EnvConfig,
 ) -> Router {
     let cache_control_layer = SetResponseHeaderLayer::if_not_present(

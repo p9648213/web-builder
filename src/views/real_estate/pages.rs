@@ -70,15 +70,17 @@ pub fn render_search_result_page(
                     _ => (shared::render_nav_bar_1())
                 }
                 main {
-                    div id="search-section" class="min-h-screen invisible" {
+                    div id="search-section" class="flex flex-col items-center min-h-screen invisible" {
                         @match search_theme {
                             1 => {
                                 (search_result::render_search_box_1())
                                 (search_result::render_search_result_1(search_query.page))
                             }
                             2 => {
-                                (search_result::render_search_box_2())
-                                (search_result::render_search_result_2(search_query.page))
+                                div class="relative flex justify-between gap-10 mt-15 px-5 pb-30 max-w-360" {
+                                    (search_result::render_search_box_2())
+                                    (search_result::render_search_result_2(search_query.page))
+                                }
                             }
                             3 => {
                                 (search_result::render_search_box_3())
