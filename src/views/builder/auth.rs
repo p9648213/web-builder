@@ -55,7 +55,7 @@ pub fn render_login_page(authenticity_token: String) -> maud::Markup {
                             }
                         }
                         div {
-                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" type="submit" {
+                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" {
                                 "Sign in"
                             }
                         }
@@ -134,7 +134,7 @@ pub fn render_register_page(authenticity_token: String) -> maud::Markup {
                             }
                         }
                         div {
-                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" type="submit" {
+                            button class="flex justify-center bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-md w-full font-semibold text-sm text-white leading-6 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" {
                                 "Register"
                             }
                         }

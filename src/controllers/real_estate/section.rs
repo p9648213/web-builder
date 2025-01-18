@@ -23,6 +23,9 @@ pub async fn get_section(
     match section.as_str() {
         "home" => {
             let html = html! {
+                title {
+                    "Home"
+                }
                 (home::render_home_banner())
                 (home::render_home_search_box())
                 (home::render_hot_properties())
@@ -62,15 +65,20 @@ pub async fn get_section(
                 })?;
 
                 let html = html! {
-                    div id="search-section" class="min-h-screen invisible" {
+                    title {
+                        "Search Result"
+                    }
+                    div id="search-section" class="flex flex-col items-center min-h-screen invisible" {
                         @match search_theme {
                             1 => {
                                 (search_result::render_search_box_1())
                                 (search_result::render_search_result_1(None))
                             }
                             2 => {
-                                (search_result::render_search_box_2())
-                                (search_result::render_search_result_2(None))
+                                div class="relative flex justify-between gap-10 mt-15 px-5 pb-30 w-full max-w-360" {
+                                    (search_result::render_search_box_2())
+                                    (search_result::render_search_result_2(None))
+                                }
                             }
                             3 => {
                                 (search_result::render_search_box_3())
@@ -96,6 +104,9 @@ pub async fn get_section(
         }
         "property" => {
             let html = html! {
+                title {
+                    "Property Details"
+                }
                 (property_details::render_property_details(property_query.0))
                 (shared::render_contact())
             };

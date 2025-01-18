@@ -77,7 +77,7 @@ pub fn render_search_result_page(
                                 (search_result::render_search_result_1(search_query.page))
                             }
                             2 => {
-                                div class="relative flex justify-between gap-10 mt-15 px-5 pb-30 max-w-360" {
+                                div class="relative flex justify-between gap-10 mt-15 px-5 pb-30 w-full max-w-360" {
                                     (search_result::render_search_box_2())
                                     (search_result::render_search_result_2(search_query.page))
                                 }

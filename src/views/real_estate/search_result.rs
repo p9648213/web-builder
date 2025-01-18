@@ -64,8 +64,54 @@ pub fn render_search_box_2() -> Markup {
             setupMarginNavbar();
         </script>
       "#))
-      div class="bg-blue-400 w-90 shrink-0" {
-        "search 2"
+      div class="w-80 text-sm shrink-0" {
+        div class="flex flex-col gap-3" {
+          div class="flex justify-center items-center" {
+            input class="border-slate-800 py-2 rounded-md w-full placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
+          }
+          div class="flex justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+            span { "For Sales" }
+            (drop_down_icon())
+          }
+          div class="flex gap-3" {
+            div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+              span { "Check in" }
+              (drop_down_icon())
+            }
+            div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+              span { "Check out" }
+              (drop_down_icon())
+            }
+          }
+          div class="flex gap-3" {
+            div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+              span { "Beds" }
+              (drop_down_icon())
+            }
+            div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+              span { "Baths" }
+              (drop_down_icon())
+            }
+          }
+          div class="flex justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+            span { "All locations" }
+            (drop_down_icon())
+          }
+          div class="flex justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+            span { "All property types" }
+            (drop_down_icon())
+          }
+          div class="flex gap-3" {
+            div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+              span { "Min" }
+              span { "€" }
+            }
+            div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
+              span { "Max" }
+              span { "€" }
+            }
+          }
+        }
       }
     }
 }
@@ -143,11 +189,11 @@ pub fn render_search_box_4() -> Markup {
             setupMarginNavbar();
         </script>
       "#))
-      div class="flex justify-center items-center" {
-        div class="flex justify-center px-15 py-15 w-full max-w-360" {
-          div class="gap-4 grid grid-cols-[4fr_4fr_3fr_3fr] grid-rows-[1fr_1fr] text-sm" {
+      div class="flex justify-center items-center w-full max-w-360" {
+        div class="flex justify-center px-15 py-15 w-full" {
+          div class="gap-4 grid grid-cols-[4fr_4fr_3fr_3fr] grid-rows-[1fr_1fr] w-full text-sm" {
             div class="flex items-center" {
-              input class="border-slate-800 rounded-md placeholder:text-sm" type="search" placeholder="Search Ref ID";
+              input class="border-slate-800 rounded-md w-full placeholder:text-sm" type="search" placeholder="Search Ref ID";
             }
             (render_selection_box_4("All Locations", Some(location_icon())))
             (render_selection_box_4("Any", Some(bed_icon_light())))
@@ -227,7 +273,7 @@ pub fn render_search_result_2(page: Option<u32>) -> Markup {
         hx-get=(hx_get)
         hx-target="#search-results"
         hx-trigger="load"
-        class="flex justify-center items-center"
+        class="flex justify-center items-center w-full"
       {
         div id="search-results" class="flex flex-col justify-center items-center gap-10 w-full" {
           "Loading..."

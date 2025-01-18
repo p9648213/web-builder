@@ -170,5 +170,6 @@ window.addEventListener("htmx:afterSettle", function () {
 });
 
 window.addEventListener("htmx:historyRestore", (_) => {
+  document.body.style.visibility = "hidden";
   window.location.reload();
 });
