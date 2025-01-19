@@ -2,17 +2,44 @@ use maud::{html, Markup, PreEscaped};
 
 use crate::{
     controllers::real_estate::pages::PropertyQuery,
-    models::rso_data::{Property, TextOrNum},
+    models::rso_data::{Property, PropertyPicture, TextOrNum},
     views::icons::{
         basura_tax_gray_icon, bathroom_gray_icon, bedroom_gray_icon, buit_size_gray_icon,
-        community_fee_gray_icon, ibi_tax_gray_icon, plot_size_gray_icon, terrace_size_gray_icon,
-        useful_size_gray_icon,
+        community_fee_gray_icon, feature_category_icon, feature_climate_control_icon,
+        feature_condition_icon, feature_features_icon, feature_furniture_icon, feature_garden_icon,
+        feature_kitchen_icon, feature_orientation_icon, feature_parking_icon, feature_pool_icon,
+        feature_security_icon, feature_setting_icon, feature_utilities_icon, feature_view_icon,
+        ibi_tax_gray_icon, plot_size_gray_icon, terrace_size_gray_icon, useful_size_gray_icon,
     },
 };
 
-pub fn render_pictures_slider() -> Markup {
+pub fn render_pictures_slider(pictures: &Vec<PropertyPicture>) -> Markup {
     html! {
-      "Picture"
+      (PreEscaped(r#"
+        <script type="module">
+            import {setupPropertyPictureSlider} from "/assets/js/app/slider.js";
+            setupPropertyPictureSlider();
+        </script>
+      "#))
+      div class="flex justify-center bg-black rounded-lg w-full max-w-300 h-110 picture-container" {
+        div class="relative w-200 h-full overflow-hidden picture-slider-container" {
+          div class="flex w-full h-full transition-transform duration-500 picture-slider" {
+            input type="hidden" value=(pictures.len());
+            @for picture in pictures {
+              img class="w-full h-full pointer-events-none object-contain shrink-0" src=(picture.picture_url);
+            }
+          }
+          div class="bottom-2 left-[50%] absolute flex gap-2 -translate-x-[50%] overflow-hidden pictures-dots" {
+            @for i in 0..pictures.len() as u8 {
+              @if i == 0 {
+                div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+              } @else {
+                div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+              }
+            }
+          }
+        }
+      }
     }
 }
 
@@ -43,7 +70,7 @@ pub fn render_property_details(property_query: PropertyQuery) -> Markup {
           hx-get=(format!("/rso/property?id={}&type={}", property_id, listing_type))
           hx-target="#property-detail"
           hx-trigger="load"
-          class="flex justify-center w-full max-w-360"
+          class="flex flex-col justify-center items-center gap-10 w-full max-w-360"
         {
           "Loading..."
         }
@@ -84,16 +111,17 @@ pub fn render_detail(property: &Property) -> Markup {
     };
 
     html! {
-      div class="flex flex-col gap-12" {
+      (render_pictures_slider(&property.pictures.picture))
+      div class="flex flex-col gap-12 w-fit max-w-285" {
         div class="flex justify-between font-bold text-xl" {
           div { (name.to_uppercase()) }
           div { (property.location) }
           div { (property.reference) }
         }
-        div class="flex gap-15 border-slate-200 shadow-xs px-10 py-8 border rounded-lg" {
+        div class="flex justify-between gap-15 border-slate-200 shadow-xs px-10 py-8 border rounded-lg" {
           div class="flex flex-col gap-4 max-w-130" {
             div class="font-bold text-lg" { "Description" }
-            div class="text-[#868d9b] text-justify whitespace-pre-line" { 
+            div class="text-[#868d9b] text-justify whitespace-pre-line" {
               (PreEscaped(html_escape::decode_html_entities(&property.description).replace("[IW]", "")))
             }
           }
@@ -156,11 +184,56 @@ pub fn render_detail(property: &Property) -> Markup {
             }
           }
         }
+        div class="flex flex-col gap-10 border-slate-200 shadow-xs px-10 py-8 border rounded-lg" {
+          div class="font-bold text-lg" { "Features" }
+          div class="flex flex-col gap-8" {
+            @for category in &property.property_features.category {
+              div class="grid grid-cols-[11rem_1fr]" {
+                div {
+                  div class="flex items-center gap-3 font-bold" {
+                    @match category.category_type.as_str() {
+                      "Setting" => (feature_setting_icon()),
+                      "Orientation" => (feature_orientation_icon()),
+                      "Condition" => (feature_condition_icon()),
+                      "Pool" => (feature_pool_icon()),
+                      "Climate Control" => (feature_climate_control_icon()),
+                      "Views" => (feature_view_icon()),
+                      "Features" => (feature_features_icon()),
+                      "Furniture" => (feature_furniture_icon()),
+                      "Kitchen" => (feature_kitchen_icon()),
+                      "Garden" => (feature_garden_icon()),
+                      "Security" => (feature_security_icon()),
+                      "Parking" => (feature_parking_icon()),
+                      "Utilities" => (feature_utilities_icon()),
+                      "Category" => (feature_category_icon()),
+                      _ => ""
+                    }
+                    div class="font-bold" {
+                      (category.category_type) " :"
+                    }
+                  }
+                }
+                div class="flex flex-wrap gap-4 text-wrap" {
+                  @for value in &category.category_value {
+                    div {
+                      "- " span { (value) }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
 }
 
-pub fn render_grid_item(label: &str, value: &str, dimension: Option<&str>, icon: Option<Markup>) -> Markup {
+pub fn render_grid_item(
+    label: &str,
+    value: &str,
+    dimension: Option<&str>,
+    icon: Option<Markup>,
+) -> Markup {
     html! {
       div class="flex flex-col gap-2" {
         div class="flex items-end gap-2" {

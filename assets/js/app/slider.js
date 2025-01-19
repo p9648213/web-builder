@@ -45,19 +45,18 @@ export function setupHotPropertySlider() {
 }
 
 export function setupPropertyPictureSlider() {
-  let hotPropsPictureContainerEl =
-    document.querySelectorAll(".picture-container");
+  let pictureContainerEl = document.querySelectorAll(".picture-container");
 
-  hotPropsPictureContainerEl.forEach((element) => {
+  pictureContainerEl.forEach((element) => {
     let currentPictureIndex = 0;
 
-    let sliderContainerEl = element.querySelector(".picture-slider-container");
-
-    let hotPropsPictureSliderEl = element.querySelector(".picture-slider");
-
-    let total_picture = parseInt(
-      hotPropsPictureSliderEl.querySelector("input").value
+    let pictureSliderContainerEl = element.querySelector(
+      ".picture-slider-container"
     );
+
+    let pictureSliderEl = element.querySelector(".picture-slider");
+
+    let total_picture = parseInt(pictureSliderEl.querySelector("input").value);
 
     let pictureDots = element.querySelector(".pictures-dots");
 
@@ -66,37 +65,37 @@ export function setupPropertyPictureSlider() {
     for (let i = 0; i < dotChilds.length; i++) {
       dotChilds[i].addEventListener("click", (_) => {
         currentPictureIndex = i;
-        hotPropsPictureSliderEl.style.transform = `translateX(-${
+        pictureSliderEl.style.transform = `translateX(-${
           currentPictureIndex * 100
         }%)`;
         updateDotsColor(dotChilds, currentPictureIndex);
       });
     }
 
-    new SwipeContent(sliderContainerEl);
+    new SwipeContent(pictureSliderContainerEl);
 
-    sliderContainerEl.addEventListener("swipeLeft", function () {
+    pictureSliderContainerEl.addEventListener("swipeLeft", function () {
       currentPictureIndex++;
 
       if (currentPictureIndex > total_picture - 1) {
         currentPictureIndex = 0;
       }
 
-      hotPropsPictureSliderEl.style.transform = `translateX(-${
+      pictureSliderEl.style.transform = `translateX(-${
         currentPictureIndex * 100
       }%)`;
 
       updateDotsColor(dotChilds, currentPictureIndex);
     });
 
-    sliderContainerEl.addEventListener("swipeRight", function () {
+    pictureSliderContainerEl.addEventListener("swipeRight", function () {
       currentPictureIndex--;
 
       if (currentPictureIndex < 0) {
         currentPictureIndex = total_picture - 1;
       }
 
-      hotPropsPictureSliderEl.style.transform = `translateX(-${
+      pictureSliderEl.style.transform = `translateX(-${
         currentPictureIndex * 100
       }%)`;
 
