@@ -7,12 +7,9 @@ use crate::{
         template::{Template, TemplateType},
         website::Website,
     },
-    views::{
-        builder::{
-            head::render_main_builder_header,
-            shared::{render_main_nav, render_sub_nav, MAIN_NAV, SUB_NAV},
-        },
-        icons::arrow_next_icon,
+    views::builder::{
+        head::render_main_builder_header,
+        shared::{render_main_nav, render_sub_nav, MAIN_NAV, SUB_NAV},
     },
 };
 
@@ -30,7 +27,7 @@ pub fn render_website_template_page() -> maud::Markup {
                 div class="xl:z-50 xl:fixed xl:inset-y-0 xl:flex xl:flex-col border-gray-200 border-r xl:w-72" {
                     div class="flex flex-col gap-y-5 px-6 ring-1 ring-white/5 overflow-y-auto grow" {
                         div class="flex items-center h-16 shrink-0" {
-                            img class="w-auto h-12" src="/assets/images/builder-logo.svg" alt="Your Company";
+                            img class="w-auto h-12" src="/assets/images/builder/builder-logo.svg" alt="Your Company";
                         }
                         (render_main_nav(MAIN_NAV, "Basic Setup", None))
                     }
@@ -125,7 +122,7 @@ pub fn render_choose_template(
                                     div class="group" {
                                         "Preview"
                                     }
-                                    (arrow_next_icon())
+                                    img class="w-4 h-4" src="/assets/images/icon/arrow-next.svg" alt="next";
                                 }
                             }
                         }

@@ -4,8 +4,7 @@ use crate::{
     models::rso_data::{SearchProperty, TextOrNum},
     views::{
         icons::{
-            bath_icon, bath_icon_light, bed_icon, bed_icon_light, buit_size_icon, drop_down_icon,
-            location_icon,
+            bath_icon, bath_icon_light, bed_icon, bed_icon_light, buit_size_icon, location_icon,
         },
         real_estate::home,
     },
@@ -71,35 +70,35 @@ pub fn render_search_box_2() -> Markup {
           }
           div class="flex justify-between items-center px-3 py-2.5 border border-black rounded-md" {
             span { "For Sales" }
-            (drop_down_icon())
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
           }
           div class="flex gap-3" {
             div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
               span { "Check in" }
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
             div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
               span { "Check out" }
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
           }
           div class="flex gap-3" {
             div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
               span { "Beds" }
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
             div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
               span { "Baths" }
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
           }
           div class="flex justify-between items-center px-3 py-2.5 border border-black rounded-md" {
             span { "All locations" }
-            (drop_down_icon())
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
           }
           div class="flex justify-between items-center px-3 py-2.5 border border-black rounded-md" {
             span { "All property types" }
-            (drop_down_icon())
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
           }
           div class="flex gap-3" {
             div class="flex flex-1 justify-between items-center px-3 py-2.5 border border-black rounded-md" {
@@ -131,37 +130,37 @@ pub fn render_search_box_3() -> Markup {
           div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
             "Listing Type"
             div class="translate-y-0.5" {
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
           }
           div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
             "Location"
             div class="translate-y-0.5" {
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
           }
           div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
             "Property Type"
             div class="translate-y-0.5" {
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
           }
           div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
             "Price"
             div class="translate-y-0.5" {
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
           }
           div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
             "Bed"
             div class="translate-y-0.5" {
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
           }
           div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
             "Bath"
             div class="translate-y-0.5" {
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
             }
           }
           div class="flex justify-center items-center" {
@@ -219,7 +218,7 @@ pub fn render_selection_box_4(label: &str, icon: Option<Markup>) -> Markup {
             (label)
           }
         }
-        (drop_down_icon())
+        img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
       }
     }
 }

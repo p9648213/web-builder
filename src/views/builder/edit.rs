@@ -51,138 +51,138 @@ const CHOOSE_STYLE_NAV: [SUBNAV; 6] = [
 pub const HEADER_LAYOUT: [LayoutItem; 4] = [
     LayoutItem {
         layout_no: 1,
-        layout_img_url: "/assets/images/real_estate/header-layout-1.webp",
-        preview_img_url: "/assets/images/real_estate/header-preview-1.webp",
+        layout_img_url: "/assets/images/builder/header-layout-1.webp",
+        preview_img_url: "/assets/images/builder/header-preview-1.webp",
     },
     LayoutItem {
         layout_no: 2,
-        layout_img_url: "/assets/images/real_estate/header-layout-2.webp",
-        preview_img_url: "/assets/images/real_estate/header-preview-2.webp",
+        layout_img_url: "/assets/images/builder/header-layout-2.webp",
+        preview_img_url: "/assets/images/builder/header-preview-2.webp",
     },
     LayoutItem {
         layout_no: 3,
-        layout_img_url: "/assets/images/real_estate/header-layout-3.webp",
-        preview_img_url: "/assets/images/real_estate/header-preview-3.webp",
+        layout_img_url: "/assets/images/builder/header-layout-3.webp",
+        preview_img_url: "/assets/images/builder/header-preview-3.webp",
     },
     LayoutItem {
         layout_no: 4,
-        layout_img_url: "/assets/images/real_estate/header-layout-4.webp",
-        preview_img_url: "/assets/images/real_estate/header-preview-4.webp",
+        layout_img_url: "/assets/images/builder/header-layout-4.webp",
+        preview_img_url: "/assets/images/builder/header-preview-4.webp",
     },
 ];
 
 pub const FOOTER_LAYOUT: [LayoutItem; 4] = [
     LayoutItem {
         layout_no: 1,
-        layout_img_url: "/assets/images/real_estate/footer-layout-1.webp",
-        preview_img_url: "/assets/images/real_estate/footer-preview-1.webp",
+        layout_img_url: "/assets/images/builder/footer-layout-1.webp",
+        preview_img_url: "/assets/images/builder/footer-preview-1.webp",
     },
     LayoutItem {
         layout_no: 2,
-        layout_img_url: "/assets/images/real_estate/footer-layout-2.webp",
-        preview_img_url: "/assets/images/real_estate/footer-preview-2.webp",
+        layout_img_url: "/assets/images/builder/footer-layout-2.webp",
+        preview_img_url: "/assets/images/builder/footer-preview-2.webp",
     },
     LayoutItem {
         layout_no: 3,
-        layout_img_url: "/assets/images/real_estate/footer-layout-3.webp",
-        preview_img_url: "/assets/images/real_estate/footer-preview-3.webp",
+        layout_img_url: "/assets/images/builder/footer-layout-3.webp",
+        preview_img_url: "/assets/images/builder/footer-preview-3.webp",
     },
     LayoutItem {
         layout_no: 4,
-        layout_img_url: "/assets/images/real_estate/footer-layout-4.webp",
-        preview_img_url: "/assets/images/real_estate/footer-preview-4.webp",
+        layout_img_url: "/assets/images/builder/footer-layout-4.webp",
+        preview_img_url: "/assets/images/builder/footer-preview-4.webp",
     },
 ];
 
 pub const HOME_LAYOUT: [LayoutItem; 4] = [
     LayoutItem {
         layout_no: 1,
-        layout_img_url: "/assets/images/real_estate/home-layout-1.webp",
-        preview_img_url: "/assets/images/real_estate/home-preview-1.webp",
+        layout_img_url: "/assets/images/builder/home-layout-1.webp",
+        preview_img_url: "/assets/images/builder/home-preview-1.webp",
     },
     LayoutItem {
         layout_no: 2,
-        layout_img_url: "/assets/images/real_estate/home-layout-2.webp",
-        preview_img_url: "/assets/images/real_estate/home-preview-2.webp",
+        layout_img_url: "/assets/images/builder/home-layout-2.webp",
+        preview_img_url: "/assets/images/builder/home-preview-2.webp",
     },
     LayoutItem {
         layout_no: 3,
-        layout_img_url: "/assets/images/real_estate/home-layout-3.webp",
-        preview_img_url: "/assets/images/real_estate/home-preview-3.webp",
+        layout_img_url: "/assets/images/builder/home-layout-3.webp",
+        preview_img_url: "/assets/images/builder/home-preview-3.webp",
     },
     LayoutItem {
         layout_no: 4,
-        layout_img_url: "/assets/images/real_estate/home-layout-4.webp",
-        preview_img_url: "/assets/images/real_estate/home-preview-4.webp",
+        layout_img_url: "/assets/images/builder/home-layout-4.webp",
+        preview_img_url: "/assets/images/builder/home-preview-4.webp",
     },
 ];
 
 pub const SEARCH_LAYOUT: [LayoutItem; 4] = [
     LayoutItem {
         layout_no: 1,
-        layout_img_url: "/assets/images/real_estate/search-layout-1.webp",
-        preview_img_url: "/assets/images/real_estate/search-preview-1.webp",
+        layout_img_url: "/assets/images/builder/search-layout-1.webp",
+        preview_img_url: "/assets/images/builder/search-preview-1.webp",
     },
     LayoutItem {
         layout_no: 2,
-        layout_img_url: "/assets/images/real_estate/search-layout-2.webp",
-        preview_img_url: "/assets/images/real_estate/search-preview-2.webp",
+        layout_img_url: "/assets/images/builder/search-layout-2.webp",
+        preview_img_url: "/assets/images/builder/search-preview-2.webp",
     },
     LayoutItem {
         layout_no: 3,
-        layout_img_url: "/assets/images/real_estate/search-layout-3.webp",
-        preview_img_url: "/assets/images/real_estate/search-preview-3.webp",
+        layout_img_url: "/assets/images/builder/search-layout-3.webp",
+        preview_img_url: "/assets/images/builder/search-preview-3.webp",
     },
     LayoutItem {
         layout_no: 4,
-        layout_img_url: "/assets/images/real_estate/search-layout-4.webp",
-        preview_img_url: "/assets/images/real_estate/search-preview-4.webp",
+        layout_img_url: "/assets/images/builder/search-layout-4.webp",
+        preview_img_url: "/assets/images/builder/search-preview-4.webp",
     },
 ];
 
 pub const PROPERTY_LAYOUT: [LayoutItem; 4] = [
     LayoutItem {
         layout_no: 1,
-        layout_img_url: "/assets/images/real_estate/property-layout-1.webp",
-        preview_img_url: "/assets/images/real_estate/property-preview-1.webp",
+        layout_img_url: "/assets/images/builder/property-layout-1.webp",
+        preview_img_url: "/assets/images/builder/property-preview-1.webp",
     },
     LayoutItem {
         layout_no: 2,
-        layout_img_url: "/assets/images/real_estate/property-layout-2.webp",
-        preview_img_url: "/assets/images/real_estate/property-preview-2.webp",
+        layout_img_url: "/assets/images/builder/property-layout-2.webp",
+        preview_img_url: "/assets/images/builder/property-preview-2.webp",
     },
     LayoutItem {
         layout_no: 3,
-        layout_img_url: "/assets/images/real_estate/property-layout-3.webp",
-        preview_img_url: "/assets/images/real_estate/property-preview-3.webp",
+        layout_img_url: "/assets/images/builder/property-layout-3.webp",
+        preview_img_url: "/assets/images/builder/property-preview-3.webp",
     },
     LayoutItem {
         layout_no: 4,
-        layout_img_url: "/assets/images/real_estate/property-layout-4.webp",
-        preview_img_url: "/assets/images/real_estate/property-preview-4.webp",
+        layout_img_url: "/assets/images/builder/property-layout-4.webp",
+        preview_img_url: "/assets/images/builder/property-preview-4.webp",
     },
 ];
 
 pub const CONTACT_LAYOUT: [LayoutItem; 4] = [
     LayoutItem {
         layout_no: 1,
-        layout_img_url: "/assets/images/real_estate/contact-layout-1.webp",
-        preview_img_url: "/assets/images/real_estate/contact-preview-1.webp",
+        layout_img_url: "/assets/images/builder/contact-layout-1.webp",
+        preview_img_url: "/assets/images/builder/contact-preview-1.webp",
     },
     LayoutItem {
         layout_no: 2,
-        layout_img_url: "/assets/images/real_estate/contact-layout-2.webp",
-        preview_img_url: "/assets/images/real_estate/contact-preview-2.webp",
+        layout_img_url: "/assets/images/builder/contact-layout-2.webp",
+        preview_img_url: "/assets/images/builder/contact-preview-2.webp",
     },
     LayoutItem {
         layout_no: 3,
-        layout_img_url: "/assets/images/real_estate/contact-layout-3.webp",
-        preview_img_url: "/assets/images/real_estate/contact-preview-3.webp",
+        layout_img_url: "/assets/images/builder/contact-layout-3.webp",
+        preview_img_url: "/assets/images/builder/contact-preview-3.webp",
     },
     LayoutItem {
         layout_no: 4,
-        layout_img_url: "/assets/images/real_estate/contact-layout-4.webp",
-        preview_img_url: "/assets/images/real_estate/contact-preview-4.webp",
+        layout_img_url: "/assets/images/builder/contact-layout-4.webp",
+        preview_img_url: "/assets/images/builder/contact-preview-4.webp",
     },
 ];
 
@@ -279,7 +279,7 @@ pub fn render_nav_bar(highlight_index: usize) -> Markup {
       nav class="z-10 shadow-md col-[1/4]" {
         div class="flex p-6" {
           div class="w-fit h-8" {
-            img class="h-full" src="/assets/images/builder-logo.svg" alt="logo" ;
+            img class="h-full" src="/assets/images/builder/builder-logo.svg" alt="logo" ;
           }
           div class="flex justify-center items-center w-full" {
             ul class="flex gap-36 font-bold" {
@@ -317,8 +317,9 @@ pub fn render_footer() -> Markup {
           div class="flex gap-2" {
             button class="flex items-center gap-2 bg-blue-500 hover:bg-white px-8 py-2 border border-transparent hover:border-blue-500 rounded-4xl text-lg text-white hover:text-blue-500 transition-all duration-300 cursor-pointer"
             {
-              "Next" (footer_next_icon())}
+              "Next" (footer_next_icon())
             }
+          }
         }
       }
     }

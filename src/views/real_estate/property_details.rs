@@ -5,11 +5,8 @@ use crate::{
     models::rso_data::{Property, PropertyPicture, TextOrNum},
     views::icons::{
         basura_tax_gray_icon, bathroom_gray_icon, bedroom_gray_icon, buit_size_gray_icon,
-        community_fee_gray_icon, feature_category_icon, feature_climate_control_icon,
-        feature_condition_icon, feature_features_icon, feature_furniture_icon, feature_garden_icon,
-        feature_kitchen_icon, feature_orientation_icon, feature_parking_icon, feature_pool_icon,
-        feature_security_icon, feature_setting_icon, feature_utilities_icon, feature_view_icon,
-        ibi_tax_gray_icon, plot_size_gray_icon, terrace_size_gray_icon, useful_size_gray_icon,
+        community_fee_gray_icon, ibi_tax_gray_icon, plot_size_gray_icon, terrace_size_gray_icon,
+        useful_size_gray_icon,
     },
 };
 
@@ -192,20 +189,48 @@ pub fn render_detail(property: &Property) -> Markup {
                 div {
                   div class="flex items-center gap-3 font-bold" {
                     @match category.category_type.as_str() {
-                      "Setting" => (feature_setting_icon()),
-                      "Orientation" => (feature_orientation_icon()),
-                      "Condition" => (feature_condition_icon()),
-                      "Pool" => (feature_pool_icon()),
-                      "Climate Control" => (feature_climate_control_icon()),
-                      "Views" => (feature_view_icon()),
-                      "Features" => (feature_features_icon()),
-                      "Furniture" => (feature_furniture_icon()),
-                      "Kitchen" => (feature_kitchen_icon()),
-                      "Garden" => (feature_garden_icon()),
-                      "Security" => (feature_security_icon()),
-                      "Parking" => (feature_parking_icon()),
-                      "Utilities" => (feature_utilities_icon()),
-                      "Category" => (feature_category_icon()),
+                      "Setting" => {
+                        img class="w-6 h-6" src="/assets/images/icon/setting.svg" alt="setting";
+                      },
+                      "Orientation" => {
+                        img class="w-6 h-6" src="/assets/images/icon/orientation.svg" alt="orientation";
+                      },
+                      "Condition" => {
+                        img class="w-6 h-6" src="/assets/images/icon/condition.svg" alt="condition";
+                      },
+                      "Pool" => {
+                        img class="w-6 h-6" src="/assets/images/icon/pool.svg" alt="pool";
+                      },
+                      "Climate Control" => {
+                        img class="w-6 h-6" src="/assets/images/icon/climate.svg" alt="climate";
+                      },
+                      "Views" => {
+                        img class="w-6 h-6" src="/assets/images/icon/view.svg" alt="view";
+                      },
+                      "Features" => {
+                        img class="w-6 h-6" src="/assets/images/icon/feature.svg" alt="feature";
+                      },
+                      "Furniture" => {
+                        img class="w-6 h-6" src="/assets/images/icon/furniture.svg" alt="furniture";
+                      },
+                      "Kitchen" => {
+                        img class="w-6 h-6" src="/assets/images/icon/kitchen.svg" alt="kitchen";
+                      },
+                      "Garden" => {
+                        img class="w-6 h-6" src="/assets/images/icon/garden.svg" alt="garden";
+                      },
+                      "Security" => {
+                        img class="w-6 h-6" src="/assets/images/icon/security.svg" alt="security";
+                      },
+                      "Parking" => {
+                        img class="w-6 h-6" src="/assets/images/icon/parking.svg" alt="parking";
+                      },
+                      "Utilities" => {
+                        img class="w-6 h-6" src="/assets/images/icon/utilities.svg" alt="utilities";
+                      },
+                      "Category" => {
+                        img class="w-6 h-6" src="/assets/images/icon/category.svg" alt="category";
+                      },
                       _ => ""
                     }
                     div class="font-bold" {

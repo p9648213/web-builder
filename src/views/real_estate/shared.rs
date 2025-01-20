@@ -1,9 +1,8 @@
 use maud::{html, Markup, PreEscaped};
 
 use crate::views::icons::{
-    certificate_icon, drop_down_icon, email_icon, facebook_icon_color, hamburger_icon,
-    instagram_icon_color, linkedin_icon_color, location_icon, mail_icon, phone_icon,
-    twitter_icon_color, youtube_icon_color,
+    certificate_icon, email_icon, facebook_icon_color, hamburger_icon, instagram_icon_color,
+    linkedin_icon_color, location_icon, twitter_icon_color, youtube_icon_color,
 };
 
 //.............................................................................
@@ -51,7 +50,7 @@ pub fn render_nav_bar_1() -> Markup {
             }
             span { "English" }
             div class="translate-y-0.5 cursor-pointer" {
-              (drop_down_icon())
+              img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
             }
           }
         }
@@ -70,7 +69,7 @@ pub fn render_nav_bar_2() -> Markup {
       header id="navbar" class="top-0 right-0 left-0 z-50 fixed transition-all duration-500" {
         div class="flex justify-end gap-6 bg-white px-4 py-2 font-semibold text-sm" {
           div class="flex items-center gap-2" {
-            (mail_icon())
+            img class="w-4.5 h-4.5" src="/assets/images/icon/email.svg" alt="email";
             div class="flex gap-2" {
               span {"hanatest0102@gmail.com"}
               span {"|"}
@@ -78,7 +77,7 @@ pub fn render_nav_bar_2() -> Markup {
             }
           }
           div class="flex items-center gap-2" {
-            (phone_icon())
+            img class="w-5 h-5" src="/assets/images/icon/phone.svg" alt="phone";
             div class="flex gap-2" {
               span {"+34 0973477994"}
               span {"|"}
@@ -101,7 +100,7 @@ pub fn render_nav_bar_2() -> Markup {
               div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"About us"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-30 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
@@ -115,7 +114,7 @@ pub fn render_nav_bar_2() -> Markup {
               div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"For sale"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
@@ -127,7 +126,7 @@ pub fn render_nav_bar_2() -> Markup {
               div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"For rent"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
@@ -165,7 +164,7 @@ pub fn render_nav_bar_3() -> Markup {
               div class="flex items-center gap-1 hover:opacity-50 cursor-pointer" {
                 span {"About us"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-30 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" style="background-color: rgba(128,128,128,0.5)" {
@@ -179,7 +178,7 @@ pub fn render_nav_bar_3() -> Markup {
               div class="flex items-center gap-1 hover:opacity-50 cursor-pointer" {
                 span {"For sale"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" style="background-color: rgba(128,128,128,0.5)" {
@@ -191,7 +190,7 @@ pub fn render_nav_bar_3() -> Markup {
               div class="flex items-center gap-1 hover:opacity-50 cursor-pointer" {
                 span {"For rent"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" style="background-color: rgba(128,128,128,0.5)" {
@@ -224,7 +223,7 @@ pub fn render_nav_bar_4() -> Markup {
               div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"About us"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-30 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
@@ -246,7 +245,7 @@ pub fn render_nav_bar_4() -> Markup {
               div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"For sale"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
@@ -258,7 +257,7 @@ pub fn render_nav_bar_4() -> Markup {
               div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"For rent"}
                 div class="translate-y-0.5" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-24 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
@@ -272,7 +271,7 @@ pub fn render_nav_bar_4() -> Markup {
               }
               span { "English" }
               div class="translate-y-0.5 cursor-pointer" {
-                (drop_down_icon())
+                img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
               }
             }
           }
@@ -413,11 +412,11 @@ pub fn render_footer_1() -> Markup {
                 "nguyenhan0696@gmail.com"
               }
               div class="flex items-center gap-2" {
-                (phone_icon())
+                img class="w-6 h-6" src="/assets/images/icon/phone-white.svg" alt="phone";
                 "Sale Manager +34 0973477994"
               }
               div class="flex items-center gap-2" {
-                (phone_icon())
+                img class="w-6 h-6" src="/assets/images/icon/phone-white.svg" alt="phone";
                 "Sale Manager +34 39652874"
               }
               div class="flex items-center gap-2" {
@@ -494,11 +493,11 @@ pub fn render_footer_2() -> Markup {
                   "nguyenhan0696@gmail.com"
                 }
                 div class="flex items-center gap-2" {
-                  (phone_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/phone-white.svg" alt="phone";
                   "Sale Manager +34 0973477994"
                 }
                 div class="flex items-center gap-2" {
-                  (phone_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/phone-white.svg" alt="phone";
                   "Sale Manager +34 39652874"
                 }
               }
@@ -604,7 +603,7 @@ pub fn render_footer_3() -> Markup {
                 }
                 span { "English" }
                 div class="translate-y-0.5 cursor-pointer" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
               div class="flex items-center gap-2" {
@@ -620,11 +619,11 @@ pub fn render_footer_3() -> Markup {
                 "nguyenhan0696@gmail.com"
               }
               div class="flex items-center gap-2" {
-                (phone_icon())
+                img class="w-6 h-6" src="/assets/images/icon/phone-white.svg" alt="phone";
                 "Sale Manager +34 0973477994"
               }
               div class="flex items-center gap-2" {
-                (phone_icon())
+                img class="w-6 h-6" src="/assets/images/icon/phone-white.svg" alt="phone";
                 "Sale Manager +34 39652874"
               }
             }
@@ -654,11 +653,11 @@ pub fn render_footer_4() -> Markup {
                   "nguyenhan0696@gmail.com"
                 }
                 div class="flex items-center gap-2" {
-                  (phone_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/phone-white.svg" alt="phone";
                   "Sale Manager +34 0973477994"
                 }
                 div class="flex items-center gap-2" {
-                  (phone_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/phone-white.svg" alt="phone";
                   "Sale Manager +34 39652874"
                 }
                 div class="flex items-center gap-2" {
@@ -696,7 +695,7 @@ pub fn render_footer_4() -> Markup {
                 }
                 span { "English" }
                 div class="translate-y-0.5 cursor-pointer" {
-                  (drop_down_icon())
+                  img class="w-4 h-4" src="/assets/images/icon/dropdown-white.svg" alt="dropdown";
                 }
               }
             }

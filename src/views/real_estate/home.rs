@@ -6,8 +6,7 @@ use crate::{
         LocationDynamic, PropertyType, ProvinceAreaDynamic, SearchProperty, TextOrNum,
     },
     views::icons::{
-        bath_icon, bed_icon, buit_size_icon, check_icon, drop_down_icon, next_icon, previous_icon,
-        star_icon,
+        bath_icon, bed_icon, buit_size_icon, check_icon, next_icon, previous_icon, star_icon,
     },
 };
 
@@ -267,7 +266,7 @@ pub fn render_search_box_selection(
             div id=(dropdown_id) class=(title_container_class) {
               span class="font-semibold" {(title)}
               @if title != "Price" {
-                (drop_down_icon())
+                img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
               }
             }
             div id=(format!("{}-items", dropdown_id)) class=(dropdown_items_class) {
