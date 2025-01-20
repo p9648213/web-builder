@@ -3,11 +3,6 @@ use maud::{html, Markup, PreEscaped};
 use crate::{
     controllers::real_estate::pages::PropertyQuery,
     models::rso_data::{Property, PropertyPicture, TextOrNum},
-    views::icons::{
-        basura_tax_gray_icon, bathroom_gray_icon, bedroom_gray_icon, buit_size_gray_icon,
-        community_fee_gray_icon, ibi_tax_gray_icon, plot_size_gray_icon, terrace_size_gray_icon,
-        useful_size_gray_icon,
-    },
 };
 
 pub fn render_pictures_slider(pictures: &Vec<PropertyPicture>) -> Markup {
@@ -107,9 +102,45 @@ pub fn render_detail(property: &Property) -> Markup {
         TextOrNum::Num(terrace) => terrace.to_string(),
     };
 
+    let built_size_gray_icon = html! {
+        img class="h-5 w-5" alt="built size" src="/assets/images/icon/built-size-gray.svg";
+    };
+
+    let plot_size_gray_icon = html! {
+        img class="h-5 w-5" alt="plot size" src="/assets/images/icon/plot-size-gray.svg";
+    };
+
+    let usefull_size_gray_icon = html! {
+        img class="h-5 w-5" alt="usefull size" src="/assets/images/icon/usefull-size-gray.svg";
+    };
+
+    let terrace_size_gray_icon = html! {
+        img class="h-5 w-5" alt="terrace size" src="/assets/images/icon/terrace-size-gray.svg";
+    };
+
+    let bedroom_gray_icon = html! {
+        img class="h-5 w-5" alt="bedroom" src="/assets/images/icon/bed-gray.svg";
+    };
+
+    let bathroom_gray_icon = html! {
+        img class="h-5 w-5" alt="bathroom" src="/assets/images/icon/bath-gray.svg";
+    };
+
+    let ibi_tax_gray_icon = html! {
+        img class="h-5 w-5" alt="ibi_tax" src="/assets/images/icon/ibi-gray.svg";
+    };
+
+    let basura_tax_gray_icon = html! {
+        img class="h-5 w-5" alt="basura_tax" src="/assets/images/icon/basura-gray.svg";
+    };
+
+    let community_fee_gray_icon = html! {
+        img class="h-5 w-5" alt="community_fee" src="/assets/images/icon/community-gray.svg";
+    };
+
     html! {
       (render_pictures_slider(&property.pictures.picture))
-      div class="flex flex-col gap-12 w-fit max-w-285" {
+      div class="flex flex-col gap-12 w-fit max-w-290" {
         div class="flex justify-between font-bold text-xl" {
           div { (name.to_uppercase()) }
           div { (property.location) }
@@ -133,37 +164,37 @@ pub fn render_detail(property: &Property) -> Markup {
               div class="font-bold text-lg" { "Basic characteristics" }
               div class="gap-6 grid grid-cols-4" {
                 @if built_size != "0" {
-                  (render_grid_item("Built Size", built_size.as_str(), Some("m²") , Some(buit_size_gray_icon())))
+                  (render_grid_item("Built Size", built_size.as_str(), Some("m²") , Some(built_size_gray_icon)))
                 }
                 @if plot_size != "0" {
-                  (render_grid_item("Plot Size", plot_size.as_str(), Some("m²") , Some(plot_size_gray_icon())))
+                  (render_grid_item("Plot Size", plot_size.as_str(), Some("m²") , Some(plot_size_gray_icon)))
                 }
                 @if usefull_size != "0" {
-                  (render_grid_item("Useful Size", usefull_size.as_str(), Some("m²") , Some(useful_size_gray_icon())))
+                  (render_grid_item("Useful Size", usefull_size.as_str(), Some("m²") , Some(usefull_size_gray_icon)))
                 }
                 @if terrace_size != "0" {
-                  (render_grid_item("Terrace Size", terrace_size.as_str(), Some("m²") , Some(terrace_size_gray_icon())))
+                  (render_grid_item("Terrace Size", terrace_size.as_str(), Some("m²") , Some(terrace_size_gray_icon)))
                 }
                 @if property.bedrooms != "0" {
-                  (render_grid_item("Bedrooms", property.bedrooms.as_str(), None , Some(bedroom_gray_icon())))
+                  (render_grid_item("Bedrooms", property.bedrooms.as_str(), None , Some(bedroom_gray_icon)))
                 }
                 @if property.bathrooms != "0" {
-                  (render_grid_item("Bathrooms", property.bathrooms.as_str(), None , Some(bathroom_gray_icon())))
+                  (render_grid_item("Bathrooms", property.bathrooms.as_str(), None , Some(bathroom_gray_icon)))
                 }
               }
             }
             @if property.ibi_fee_year != "0" || property.basura_tax_year != "0" || property.community_fee_year != "0" {
               div class="flex flex-col gap-4" {
                 div class="font-bold text-lg" { "Taxes" }
-                div class="gap-6 grid grid-cols-4" {
+                div class="gap-6 grid grid-cols-4 items-start" {
                   @if property.ibi_fee_year != "0" {
-                    (render_grid_item("IBI", property.ibi_fee_year.as_str(), Some("€/year") , Some(ibi_tax_gray_icon())))
+                    (render_grid_item("IBI", property.ibi_fee_year.as_str(), Some("€/year") , Some(ibi_tax_gray_icon)))
                   }
                   @if property.basura_tax_year != "0" {
-                    (render_grid_item("Basura Tax", property.basura_tax_year.as_str(), Some("€/year") , Some(basura_tax_gray_icon())))
+                    (render_grid_item("Basura Tax", property.basura_tax_year.as_str(), Some("€/year") , Some(basura_tax_gray_icon)))
                   }
                   @if property.community_fee_year != "0" {
-                    (render_grid_item("Community Fee", property.community_fee_year.as_str(), Some("€/year") , Some(community_fee_gray_icon())))
+                    (render_grid_item("Community Fee", property.community_fee_year.as_str(), Some("€/year") , Some(community_fee_gray_icon)))
                   }
                 }
               }
@@ -259,8 +290,14 @@ pub fn render_grid_item(
     dimension: Option<&str>,
     icon: Option<Markup>,
 ) -> Markup {
+    let grid_item_class = if label == "Community Fee" {
+      "flex flex-col gap-2 col-span-2"
+    }else {
+      "flex flex-col gap-2"
+    };
+
     html! {
-      div class="flex flex-col gap-2" {
+      div class=(grid_item_class) {
         div class="flex items-end gap-2" {
           @if let Some(icon) = icon {
             (icon)

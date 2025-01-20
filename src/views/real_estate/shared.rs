@@ -1,10 +1,5 @@
 use maud::{html, Markup, PreEscaped};
 
-use crate::views::icons::{
-    certificate_icon, email_icon, facebook_icon_color, hamburger_icon, instagram_icon_color,
-    linkedin_icon_color, location_icon, twitter_icon_color, youtube_icon_color,
-};
-
 //.............................................................................
 //.NNNN....NNN.....AAAA...AAAV.....VVVV.VBBBBBBBB.......AAAA......ARRRRRRRR....
 //.NNNN....NNN.....AAAAA...AAV.....VVVV.VBBBBBBBBB......AAAA......ARRRRRRRRR...
@@ -33,7 +28,7 @@ pub fn render_nav_bar_1() -> Markup {
         div class="flex justify-between items-center w-full max-w-360 h-full" {
           div class="flex items-center gap-7" {
             div class="text-white cursor-pointer" {
-              (hamburger_icon())
+              img class="w-6 h-6" src="/assets/images/icon/hamburger-light.svg" alt="hamburger";
             }
             div
               hx-get="/section/real-estate/contents/home"
@@ -401,13 +396,13 @@ pub fn render_footer_1() -> Markup {
             div class="flex flex-col gap-4" {
               div class="flex items-center gap-2" {
                 div class="translate-y-0.5" {
-                  (email_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/email-light-white.svg" alt="email";
                 }
                 "hanatest0102@gmail.com"
               }
               div class="flex items-center gap-2" {
                 div class="translate-y-0.5" {
-                  (email_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/email-light-white.svg" alt="email";
                 }
                 "nguyenhan0696@gmail.com"
               }
@@ -420,7 +415,7 @@ pub fn render_footer_1() -> Markup {
                 "Sale Manager +34 39652874"
               }
               div class="flex items-center gap-2" {
-                (location_icon())
+                img class="w-6 h-6" src="/assets/images/icon/location-white.svg" alt="location";
                 "Testing Address 4"
               }
             }
@@ -441,11 +436,11 @@ pub fn render_footer_1() -> Markup {
             }
             div {
               div class="flex items-center gap-3" {
-                (instagram_icon_color())
-                (twitter_icon_color())
-                (linkedin_icon_color())
-                (facebook_icon_color())
-                (youtube_icon_color())
+                img class="w-8.5 h-8.5" src="/assets/images/icon/instagram-color.svg" alt="instagram";
+                img class="w-7 h-7" src="/assets/images/icon/twitter-color.svg" alt="twitter";
+                img class="w-9 h-9" src="/assets/images/icon/linkedin-color.svg" alt="linkedin";
+                img class="w-7 h-7" src="/assets/images/icon/facebook-color.svg" alt="facebook";
+                img class="w-7.5 h-7.5" src="/assets/images/icon/youtube-color.svg" alt="youtube";
               }
             }
           }
@@ -466,29 +461,29 @@ pub fn render_footer_2() -> Markup {
                   }
                   div class="max-w-85 text-justify" {
                     div class="flex items-center gap-2" {
-                      (location_icon())
+                      img class="w-6 h-6" src="/assets/images/icon/location-white.svg" alt="location";
                       "Testing Address 4"
                     }
                   }
                 }
                 div class="flex gap-3" {
-                  (certificate_icon())
-                  (certificate_icon())
-                  (certificate_icon())
-                  (certificate_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+                  img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+                  img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+                  img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
                 }
             }
             div class="flex flex-col gap-7" {
               div class="flex flex-col gap-4" {
                 div class="flex items-center gap-2" {
                   div class="translate-y-0.5" {
-                    (email_icon())
+                    img class="w-6 h-6" src="/assets/images/icon/email-light-white.svg" alt="email";
                   }
                   "hanatest0102@gmail.com"
                 }
                 div class="flex items-center gap-2" {
                   div class="translate-y-0.5" {
-                    (email_icon())
+                    img class="w-6 h-6" src="/assets/images/icon/email-light-white.svg" alt="email";
                   }
                   "nguyenhan0696@gmail.com"
                 }
@@ -503,11 +498,11 @@ pub fn render_footer_2() -> Markup {
               }
               div {
                 div class="flex items-center gap-3" {
-                  (instagram_icon_color())
-                  (twitter_icon_color())
-                  (linkedin_icon_color())
-                  (facebook_icon_color())
-                  (youtube_icon_color())
+                  img class="w-8.5 h-8.5" src="/assets/images/icon/instagram-color.svg" alt="instagram";
+                  img class="w-7 h-7" src="/assets/images/icon/twitter-color.svg" alt="twitter";
+                  img class="w-9 h-9" src="/assets/images/icon/linkedin-color.svg" alt="linkedin";
+                  img class="w-7 h-7" src="/assets/images/icon/facebook-color.svg" alt="facebook";
+                  img class="w-7.5 h-7.5" src="/assets/images/icon/youtube-color.svg" alt="youtube";
                 }
               }
             }
@@ -549,11 +544,11 @@ pub fn render_footer_3() -> Markup {
               div { "Raicv: 123456789F" }
               div {
                 div class="flex items-center gap-3" {
-                  (instagram_icon_color())
-                  (twitter_icon_color())
-                  (linkedin_icon_color())
-                  (facebook_icon_color())
-                  (youtube_icon_color())
+                  img class="w-8.5 h-8.5" src="/assets/images/icon/instagram-color.svg" alt="instagram";
+                  img class="w-7 h-7" src="/assets/images/icon/twitter-color.svg" alt="twitter";
+                  img class="w-9 h-9" src="/assets/images/icon/linkedin-color.svg" alt="linkedin";
+                  img class="w-7 h-7" src="/assets/images/icon/facebook-color.svg" alt="facebook";
+                  img class="w-7.5 h-7.5" src="/assets/images/icon/youtube-color.svg" alt="youtube";
                 }
               }
               div class="flex flex-col gap-3 text-sm" {
@@ -590,10 +585,10 @@ pub fn render_footer_3() -> Markup {
                 }
               }
               div class="flex gap-3" {
-                (certificate_icon())
-                (certificate_icon())
-                (certificate_icon())
-                (certificate_icon())
+                img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+                img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+                img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+                img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
               }
             }
             div class="flex flex-col gap-4" {
@@ -608,13 +603,13 @@ pub fn render_footer_3() -> Markup {
               }
               div class="flex items-center gap-2" {
                 div class="translate-y-0.5" {
-                  (email_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/email-light-white.svg" alt="email";
                 }
                 "hanatest0102@gmail.com"
               }
               div class="flex items-center gap-2" {
                 div class="translate-y-0.5" {
-                  (email_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/email-light-white.svg" alt="email";
                 }
                 "nguyenhan0696@gmail.com"
               }
@@ -642,13 +637,13 @@ pub fn render_footer_4() -> Markup {
               div class="flex flex-col gap-4" {
                 div class="flex items-center gap-2" {
                   div class="translate-y-0.5" {
-                    (email_icon())
+                    img class="w-6 h-6" src="/assets/images/icon/email-light-white.svg" alt="email";
                   }
                   "hanatest0102@gmail.com"
                 }
                 div class="flex items-center gap-2" {
                   div class="translate-y-0.5" {
-                    (email_icon())
+                    img class="w-6 h-6" src="/assets/images/icon/email-light-white.svg" alt="email";
                   }
                   "nguyenhan0696@gmail.com"
                 }
@@ -661,7 +656,7 @@ pub fn render_footer_4() -> Markup {
                   "Sale Manager +34 39652874"
                 }
                 div class="flex items-center gap-2" {
-                  (location_icon())
+                  img class="w-6 h-6" src="/assets/images/icon/location-white.svg" alt="location";
                   "Testing Address 4"
                 }
               }
@@ -683,10 +678,10 @@ pub fn render_footer_4() -> Markup {
               }
             }
             div class="flex gap-3" {
-              (certificate_icon())
-              (certificate_icon())
-              (certificate_icon())
-              (certificate_icon())
+              img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+              img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+              img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
+              img class="w-6 h-6" src="/assets/images/icon/certificate.svg" alt="certificate";
             }
             div {
               div class="flex items-center gap-2 text-white" {
@@ -718,11 +713,11 @@ pub fn render_footer_4() -> Markup {
             }
             div class="flex flex-col gap-12" {
               div class="flex justify-end items-center gap-3" {
-                (instagram_icon_color())
-                (twitter_icon_color())
-                (linkedin_icon_color())
-                (facebook_icon_color())
-                (youtube_icon_color())
+                img class="w-8.5 h-8.5" src="/assets/images/icon/instagram-color.svg" alt="instagram";
+                img class="w-7 h-7" src="/assets/images/icon/twitter-color.svg" alt="twitter";
+                img class="w-9 h-9" src="/assets/images/icon/linkedin-color.svg" alt="linkedin";
+                img class="w-7 h-7" src="/assets/images/icon/facebook-color.svg" alt="facebook";
+                img class="w-7.5 h-7.5" src="/assets/images/icon/youtube-color.svg" alt="youtube";
               }
               div class="flex gap-4 text-sm" {
                 div class="cursor-pointer" { "Terms and Conditions" }

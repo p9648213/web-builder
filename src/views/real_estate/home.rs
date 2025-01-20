@@ -6,7 +6,7 @@ use crate::{
         LocationDynamic, PropertyType, ProvinceAreaDynamic, SearchProperty, TextOrNum,
     },
     views::icons::{
-        bath_icon, bed_icon, buit_size_icon, check_icon, next_icon, previous_icon, star_icon,
+        next_icon, previous_icon
     },
 };
 
@@ -488,15 +488,15 @@ pub fn render_hot_property_card(property: &SearchProperty, listing_type: &str) -
             }
             div class="flex gap-4 text-sm" {
               div class="flex items-center gap-2" {
-                (bed_icon())
+                img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
                 (property.bedrooms)
               }
               div class="flex items-center gap-2" {
-                (bath_icon())
+                img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath.svg";
                 (property.bathrooms)
               }
               div class="flex items-center gap-2" {
-                (buit_size_icon())
+                img class="h-5 w-5" alt="buit size" src="/assets/images/icon/built-size.svg";
                 @match &property.built {
                     TextOrNum::Text(built) => (built),
                     TextOrNum::Num(built) => (built),
@@ -558,7 +558,7 @@ pub fn render_services_box(title: &str, description: &str) -> Markup {
             }
           }
           div {
-            (check_icon())
+            img class="h-20 w-20" alt="check" src="/assets/images/icon/check.svg";
           }
         }
       }
@@ -633,7 +633,7 @@ pub fn render_testimonial_card() -> Markup {
 
           div class="flex gap-2" {
             @for _ in 0..5 {
-              (star_icon())
+              img class="h-6 w-6" alt="star" src="/assets/images/icon/star.svg";
             }
           }
 

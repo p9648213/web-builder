@@ -2,12 +2,7 @@ use maud::{html, Markup, PreEscaped};
 
 use crate::{
     models::rso_data::{SearchProperty, TextOrNum},
-    views::{
-        icons::{
-            bath_icon, bath_icon_light, bed_icon, bed_icon_light, buit_size_icon, location_icon,
-        },
-        real_estate::home,
-    },
+    views::real_estate::home
 };
 
 //..............................................................................
@@ -179,6 +174,18 @@ pub fn render_search_box_3() -> Markup {
 }
 
 pub fn render_search_box_4() -> Markup {
+    let bed_icon_light = html! {
+        img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed-light.svg";
+    };
+
+    let bath_icon_light = html! {
+        img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath-light.svg";
+    };
+
+    let location_icon = html! {
+        img class="h-5 w-5" alt="location" src="/assets/images/icon/location.svg";
+    };
+
     html! {
       (PreEscaped(r#"
         <script type="module">
@@ -194,9 +201,9 @@ pub fn render_search_box_4() -> Markup {
             div class="flex items-center" {
               input class="border-slate-800 rounded-md w-full placeholder:text-sm" type="search" placeholder="Search Ref ID";
             }
-            (render_selection_box_4("All Locations", Some(location_icon())))
-            (render_selection_box_4("Any", Some(bed_icon_light())))
-            (render_selection_box_4("Any", Some(bath_icon_light())))
+            (render_selection_box_4("All Locations", Some(location_icon)))
+            (render_selection_box_4("Any", Some(bed_icon_light)))
+            (render_selection_box_4("Any", Some(bath_icon_light)))
             (render_selection_box_4("Resales", None))
             (render_selection_box_4("All Property Type", None))
             (render_selection_box_4("Min €", None))
@@ -672,15 +679,15 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
             }
             div class="flex gap-4 text-sm" {
               div class="flex items-center gap-2" {
-                (bed_icon())
+                img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
                 (property.bedrooms)
               }
               div class="flex items-center gap-2" {
-                (bath_icon())
+                img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath.svg";
                 (property.bathrooms)
               }
               div class="flex items-center gap-2" {
-                (buit_size_icon())
+                img class="h-5 w-5" alt="buit size" src="/assets/images/icon/built-size.svg";
                 @match &property.built {
                     TextOrNum::Text(built) => (built),
                     TextOrNum::Num(built) => (built),
@@ -763,11 +770,11 @@ pub fn render_property_card_2(property: &SearchProperty, listing_type: &str) -> 
             div class="flex flex-col gap-2" {
               div class="flex gap-4 divide-x divide-black text-sm" {
                 div class="flex flex-1 items-center gap-2" {
-                  (bed_icon())
+                  img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
                   (property.bedrooms) " Beds"
                 }
                 div class="flex flex-1 items-center gap-2" {
-                  (bath_icon())
+                  img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath.svg";
                   (property.bathrooms) " Baths"
                 }
               }
@@ -845,11 +852,11 @@ pub fn render_property_card_3(property: &SearchProperty, listing_type: &str) -> 
             div class="flex flex-col gap-2" {
               div class="flex gap-4 divide-x divide-black text-sm" {
                 div class="flex flex-1 items-center gap-2" {
-                  (bed_icon())
+                  img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
                   (property.bedrooms) " Beds"
                 }
                 div class="flex flex-1 items-center gap-2" {
-                  (bath_icon())
+                  img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
                   (property.bathrooms) " Baths"
                 }
               }
@@ -926,11 +933,11 @@ pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> 
             }
             div class="flex gap-4 divide-x divide-black text-sm" {
               div class="flex flex-1 items-center gap-2" {
-                (bed_icon())
+                img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
                 (property.bedrooms) " Beds"
               }
               div class="flex flex-1 items-center gap-2" {
-                (bath_icon())
+                img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath.svg";
                 (property.bathrooms) " Baths"
               }
             }
