@@ -3,97 +3,81 @@ use tokio_postgres::Row;
 
 use crate::utilities::db::query_optional;
 
-use super::error::AppError;
+use super::{error::AppError, website::Website, website_setting::WebsiteSetting};
 
-#[derive(Debug)]
-pub struct WebsiteSettingWebsite {
-    pub id: Option<i32>,
-    pub website_id: Option<i32>,
-    pub user_id: Option<i32>,
-    pub header_theme: Option<i32>,
-    pub footer_theme: Option<i32>,
-    pub home_theme: Option<i32>,
-    pub search_theme: Option<i32>,
-    pub property_theme: Option<i32>,
-    pub contact_theme: Option<i32>,
-    pub name: Option<String>,
-    pub domain: Option<String>,
-    pub template_id: Option<i32>,
+pub struct WebsiteJoinWebsiteSetting {
+    pub website: Website,
+    pub website_setting: WebsiteSetting,
 }
 
-impl WebsiteSettingWebsite {
-    pub fn new(
-        id: Option<i32>,
-        website_id: Option<i32>,
-        user_id: Option<i32>,
-        header_theme: Option<i32>,
-        footer_theme: Option<i32>,
-        home_theme: Option<i32>,
-        search_theme: Option<i32>,
-        property_theme: Option<i32>,
-        contact_theme: Option<i32>,
-        name: Option<String>,
-        domain: Option<String>,
-        template_id: Option<i32>,
-    ) -> Self {
+impl WebsiteJoinWebsiteSetting {
+    pub fn try_from(row: &Row, website_prefix: &str, website_settings_prefix: &str) -> Self {
         Self {
-            id,
-            website_id,
-            user_id,
-            header_theme,
-            footer_theme,
-            home_theme,
-            search_theme,
-            property_theme,
-            contact_theme,
-            name,
-            domain,
-            template_id,
-        }
-    }
-
-    pub fn try_from(row: &Row) -> Self {
-        let id: Option<i32> = row.try_get("id").unwrap_or(None);
-        let website_id: Option<i32> = row.try_get("website_id").unwrap_or(None);
-        let user_id: Option<i32> = row.try_get("user_id").unwrap_or(None);
-        let header_theme: Option<i32> = row.try_get("header_theme").unwrap_or(None);
-        let footer_theme: Option<i32> = row.try_get("footer_theme").unwrap_or(None);
-        let home_theme: Option<i32> = row.try_get("home_theme").unwrap_or(None);
-        let search_theme: Option<i32> = row.try_get("search_theme").unwrap_or(None);
-        let property_theme: Option<i32> = row.try_get("property_theme").unwrap_or(None);
-        let contact_theme: Option<i32> = row.try_get("contact_theme").unwrap_or(None);
-        let name: Option<String> = row.try_get("name").unwrap_or(None);
-        let domain: Option<String> = row.try_get("domain").unwrap_or(None);
-        let template_id: Option<i32> = row.try_get("template_id").unwrap_or(None);
-
-        Self {
-            id,
-            website_id,
-            user_id,
-            header_theme,
-            footer_theme,
-            home_theme,
-            search_theme,
-            property_theme,
-            contact_theme,
-            name,
-            domain,
-            template_id,
+            website: Website::try_from(&row, Some(website_prefix)),
+            website_setting: WebsiteSetting::try_from(&row, Some(website_settings_prefix)),
         }
     }
 
     pub async fn get_website_setting_by_domain(
         domain: &str,
         pool: &Pool,
-        columns: Vec<&str>,
+        website_columns: Option<Vec<&str>>,
+        website_settings_columns: Option<Vec<&str>>,
+        website_prefix: Option<&str>,
+        website_settings_prefix: Option<&str>,
     ) -> Result<Option<Row>, AppError> {
-        let columns = columns.join(",");
+        let mut website_query_columns = vec![];
+        let mut website_settings_query_columns = vec![];
+
+        if website_columns.is_some() && website_prefix.is_some() {
+            let website_columns = website_columns.unwrap();
+            let website_prefix = website_prefix.unwrap();
+
+            let column_with_prefix: Vec<String> = website_columns
+                .iter()
+                .map(|value| {
+                    format!(
+                        "{}.{} as {}_{}",
+                        website_prefix, value, website_prefix, value
+                    )
+                })
+                .collect();
+
+            website_query_columns = column_with_prefix;
+        }
+
+        if website_settings_columns.is_some() && website_settings_prefix.is_some() {
+            let website_settings_columns = website_settings_columns.unwrap();
+            let website_settings_prefix = website_settings_prefix.unwrap();
+
+            let column_with_prefix: Vec<String> = website_settings_columns
+                .iter()
+                .map(|value| {
+                    format!(
+                        "{}.{} as {}_{}",
+                        website_settings_prefix, value, website_settings_prefix, value
+                    )
+                })
+                .collect();
+
+            website_settings_query_columns = column_with_prefix;
+        }
+
+        let website_prefix = website_prefix.unwrap_or("websites");
+        let website_settings_prefix = website_settings_prefix.unwrap_or("website_settings");
+
+        website_query_columns.extend(website_settings_query_columns);
 
         query_optional(
             &format!(
-                "SELECT {} FROM websites JOIN website_settings 
-                ON website_settings.website_id = websites.id WHERE domain = $1",
-                columns,
+                "SELECT {} FROM websites {} JOIN website_settings {}
+                ON {}.website_id = {}.id WHERE {}.domain = $1",
+                website_query_columns.join(","),
+                website_prefix,
+                website_settings_prefix,
+                website_settings_prefix,
+                website_prefix,
+                website_prefix
             ),
             &[&domain],
             pool,

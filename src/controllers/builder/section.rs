@@ -11,11 +11,8 @@ use crate::{
     config::EnvConfig,
     middlewares::auth::UserId,
     models::{
-        error::AppError,
-        rso_data::RsoData,
-        template::Template,
-        website::Website,
-        website_template::{WebsiteJoinTemplate, WebsiteTemplate},
+        error::AppError, rso_data::RsoData, template::Template, website::Website,
+        website_template::WebsiteJoinTemplate,
     },
     views::builder::{
         data::render_setup_data,
@@ -55,15 +52,15 @@ pub async fn get_section(
                         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                     })?;
 
-                    let test_row =
+                    let row =
                         WebsiteJoinTemplate::get_website_template_by_template_id_and_website_id(
                             website_id,
                             template_id,
                             &pg_pool,
-                            vec!["id"],
-                            vec!["id"],
-                            "w",
-                            "t",
+                            None,
+                            Some(vec!["template_type"]),
+                            Some("w"),
+                            Some("t"),
                         )
                         .await?
                         .ok_or_else(|| {
@@ -73,28 +70,13 @@ pub async fn get_section(
                             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                         })?;
 
-                    println!("{:#?}", test_row);
+                    let website_template = WebsiteJoinTemplate::try_from(&row, "w_", "t_");
 
-                    let row = WebsiteTemplate::get_website_template_by_template_id_and_website_id(
-                        website_id,
-                        template_id,
-                        &pg_pool,
-                        vec!["*"],
-                    )
-                    .await?
-                    .ok_or_else(|| {
-                        tracing::error!(
-                            "The template with id {template_id} is not exit in table templates"
-                        );
-                        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
-                    })?;
-
-                    let website_template = WebsiteTemplate::try_from(row);
-
-                    let template_type = website_template.template_type.ok_or_else(|| {
-                        tracing::error!("No template_type column or value is null");
-                        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
-                    })?;
+                    let template_type =
+                        website_template.template.template_type.ok_or_else(|| {
+                            tracing::error!("No template_type column or value is null");
+                            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+                        })?;
 
                     Ok(Html(render_website_template(template_type).into_string()).into_response())
                 } else {

@@ -8,7 +8,7 @@ use maud::html;
 use reqwest::StatusCode;
 
 use crate::{
-    models::{error::AppError, website_setting_website::WebsiteSettingWebsite},
+    models::{error::AppError, website_setting_website::WebsiteJoinWebsiteSetting},
     views::real_estate::{home, property_details, search_result, shared},
 };
 
@@ -49,20 +49,26 @@ pub async fn get_section(
                     AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                 })?;
 
-            let row = WebsiteSettingWebsite::get_website_setting_by_domain(
+            let row = WebsiteJoinWebsiteSetting::get_website_setting_by_domain(
                 host,
                 &pg_pool,
-                vec!["search_theme"],
+                None,
+                Some(vec!["search_theme"]),
+                Some("w"),
+                Some("s"),
             )
             .await?;
 
             if let Some(row) = row {
-                let website_setting = WebsiteSettingWebsite::try_from(&row);
+                let website_setting_website = WebsiteJoinWebsiteSetting::try_from(&row, "w_", "s_");
 
-                let search_theme = website_setting.search_theme.ok_or_else(|| {
-                    tracing::error!("No search_theme column or value is null");
-                    AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
-                })?;
+                let search_theme = website_setting_website
+                    .website_setting
+                    .search_theme
+                    .ok_or_else(|| {
+                        tracing::error!("No search_theme column or value is null");
+                        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+                    })?;
 
                 let html = html! {
                     title {
@@ -115,20 +121,26 @@ pub async fn get_section(
                     AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                 })?;
 
-            let row = WebsiteSettingWebsite::get_website_setting_by_domain(
+            let row = WebsiteJoinWebsiteSetting::get_website_setting_by_domain(
                 host,
                 &pg_pool,
-                vec!["property_theme"],
+                None,
+                Some(vec!["property_theme"]),
+                Some("w"),
+                Some("s"),
             )
             .await?;
 
             if let Some(row) = row {
-                let website_setting = WebsiteSettingWebsite::try_from(&row);
+                let website_setting_website = WebsiteJoinWebsiteSetting::try_from(&row, "w_", "s_");
 
-                let property_theme = website_setting.property_theme.ok_or_else(|| {
-                    tracing::error!("No property_theme column or value is null");
-                    AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
-                })?;
+                let property_theme = website_setting_website
+                    .website_setting
+                    .property_theme
+                    .ok_or_else(|| {
+                        tracing::error!("No property_theme column or value is null");
+                        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+                    })?;
 
                 let html = html! {
                     title {
