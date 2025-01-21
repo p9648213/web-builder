@@ -583,7 +583,14 @@ pub fn render_detail_2(property: &Property) -> Markup {
               div class="flex gap-2" {
                 img class="w-6 h-6" src="/assets/images/icon/check.svg" alt="check";
                 span class="font-bold text-[#868d9b] whitespace-nowrap" { (category.category_type) ":" }
-                span { (category.category_value.join(", ")) }
+                div {
+                  @for (index, value) in category.category_value.iter().enumerate() {
+                    span class="inline-block whitespace-pre-line" { (value) }
+                    @if index < category.category_value.len() - 1 {
+                      span {", "}
+                    }
+                  }
+                }
               }
             }
           }
