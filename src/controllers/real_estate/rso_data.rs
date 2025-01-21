@@ -27,7 +27,7 @@ pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, 
     .await?;
 
     if let Some(row) = row {
-        let rso_data = RsoData::try_from(row);
+        let rso_data = RsoData::try_from(&row, None);
 
         let p_agency_filterid = rso_data.filter_id_sale.ok_or_else(|| {
             tracing::error!("No filter_id_sale column or value is null");
@@ -82,7 +82,7 @@ pub async fn get_property_types(State(pg_pool): State<Pool>) -> Result<Html<Stri
     .await?;
 
     if let Some(row) = row {
-        let rso_data = RsoData::try_from(row);
+        let rso_data = RsoData::try_from(&row, None);
 
         let p_agency_filterid = rso_data.filter_id_sale.ok_or_else(|| {
             tracing::error!("No filter_id_sale column or value is null");
@@ -138,7 +138,7 @@ pub async fn get_hot_properties(State(pg_pool): State<Pool>) -> Result<Html<Stri
     .await?;
 
     if let Some(row) = row {
-        let rso_data = RsoData::try_from(row);
+        let rso_data = RsoData::try_from(&row, None);
 
         let p_agency_filterid = rso_data.filter_id_featured.ok_or_else(|| {
             tracing::error!("No filter_id_featured column or value is null");
@@ -211,7 +211,7 @@ pub async fn get_property(
     .await?;
 
     if let Some(row) = row {
-        let rso_data = RsoData::try_from(row);
+        let rso_data = RsoData::try_from(&row, None);
 
         let p1 = rso_data.identifier_id.ok_or_else(|| {
             tracing::error!("No identifier_id column or value is null");
@@ -305,7 +305,7 @@ pub async fn get_search_result(
     .await?;
 
     if let Some(row) = row {
-        let rso_data = RsoData::try_from(row);
+        let rso_data = RsoData::try_from(&row, None);
 
         let p1 = rso_data.identifier_id.ok_or_else(|| {
             tracing::error!("No identifier_id column or value is null");

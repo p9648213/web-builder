@@ -61,7 +61,7 @@ pub async fn create_website(
     .await?;
 
     if let Some(row) = row {
-        let created_website = Website::try_from(row);
+        let created_website = Website::try_from(&row, None);
 
         let website_id = created_website.id.ok_or_else(|| {
             tracing::error!("No id column or value is null");
@@ -130,7 +130,7 @@ pub async fn select_template_for_webiste(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
-    let template = Template::try_from(row);
+    let template = Template::try_from(&row, None);
 
     let template_type = template.template_type.ok_or_else(|| {
         tracing::error!("No template_type column or value is null");

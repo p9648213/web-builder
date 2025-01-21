@@ -30,12 +30,14 @@ impl Website {
         }
     }
 
-    pub fn try_from(row: Row) -> Self {
-        let id: Option<i32> = row.try_get("id").unwrap_or(None);
-        let name: Option<String> = row.try_get("name").unwrap_or(None);
-        let domain: Option<String> = row.try_get("domain").unwrap_or(None);
-        let template_id: Option<i32> = row.try_get("template_id").unwrap_or(None);
-        let user_id: Option<i32> = row.try_get("user_id").unwrap_or(None);
+    pub fn try_from(row: &Row, prefix: Option<&str>) -> Self {
+        let prefix = prefix.unwrap_or("");
+
+        let id: Option<i32> = row.try_get(format!("{}id", prefix).as_str()).unwrap_or(None);
+        let name: Option<String> = row.try_get(format!("{}name", prefix).as_str()).unwrap_or(None);
+        let domain: Option<String> = row.try_get(format!("{}domain", prefix).as_str()).unwrap_or(None);
+        let template_id: Option<i32> = row.try_get(format!("{}template_id", prefix).as_str()).unwrap_or(None);
+        let user_id: Option<i32> = row.try_get(format!("{}user_id", prefix).as_str()).unwrap_or(None);
 
         Self {
             id,

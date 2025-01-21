@@ -53,7 +53,7 @@ pub async fn get_real_estate_home_page(
     .await?;
 
     if let Some(row) = row {
-        let website_setting = WebsiteSettingWebsite::try_from(row);
+        let website_setting = WebsiteSettingWebsite::try_from(&row);
 
         let header_theme = website_setting.header_theme.ok_or_else(|| {
             tracing::error!("No header_theme column or value is null");
@@ -98,7 +98,7 @@ pub async fn get_real_estate_search_result_page(
     .await?;
 
     if let Some(row) = row {
-        let website_setting = WebsiteSettingWebsite::try_from(row);
+        let website_setting = WebsiteSettingWebsite::try_from(&row);
 
         let header_theme = website_setting.header_theme.ok_or_else(|| {
             tracing::error!("No header_theme column or value is null");
@@ -149,7 +149,7 @@ pub async fn get_real_estate_property_page(
     .await?;
 
     if let Some(row) = row {
-        let website_setting = WebsiteSettingWebsite::try_from(row);
+        let website_setting = WebsiteSettingWebsite::try_from(&row);
 
         let header_theme = website_setting.header_theme.ok_or_else(|| {
             tracing::error!("No header_theme column or value is null");

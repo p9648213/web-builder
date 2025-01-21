@@ -52,7 +52,7 @@ impl WebsiteSettingWebsite {
         }
     }
 
-    pub fn try_from(row: tokio_postgres::Row) -> Self {
+    pub fn try_from(row: &Row) -> Self {
         let id: Option<i32> = row.try_get("id").unwrap_or(None);
         let website_id: Option<i32> = row.try_get("website_id").unwrap_or(None);
         let user_id: Option<i32> = row.try_get("user_id").unwrap_or(None);

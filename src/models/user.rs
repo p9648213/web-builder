@@ -35,12 +35,14 @@ impl User {
         }
     }
 
-    pub fn try_from(row: Row) -> Self {
-        let id: Option<i32> = row.try_get("id").unwrap_or(None);
-        let username: Option<String> = row.try_get("username").unwrap_or(None);
-        let password: Option<String> = row.try_get("password").unwrap_or(None);
-        let email: Option<String> = row.try_get("email").unwrap_or(None);
-        let role: Option<Role> = row.try_get("role").unwrap_or(None);
+    pub fn try_from(row: &Row, prefix: Option<&str>) -> Self {
+        let prefix = prefix.unwrap_or("");
+
+        let id: Option<i32> = row.try_get(format!("{}id", prefix).as_str()).unwrap_or(None);
+        let username: Option<String> = row.try_get(format!("{}username", prefix).as_str()).unwrap_or(None);
+        let password: Option<String> = row.try_get(format!("{}password", prefix).as_str()).unwrap_or(None);
+        let email: Option<String> = row.try_get(format!("{}email", prefix).as_str()).unwrap_or(None);
+        let role: Option<Role> = row.try_get(format!("{}role", prefix).as_str()).unwrap_or(None);
 
         Self {
             id,

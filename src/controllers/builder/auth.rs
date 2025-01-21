@@ -52,7 +52,7 @@ pub async fn login(
     let row = User::get_user_by_email(&login_form.email, &pg_pool, vec!["id", "password"]).await?;
 
     if let Some(row) = row {
-        let user = User::try_from(row);
+        let user = User::try_from(&row, None);
 
         let user_password = user.password.ok_or_else(|| {
             tracing::error!("No password column or value is null");

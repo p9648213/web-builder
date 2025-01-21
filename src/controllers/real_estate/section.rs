@@ -57,7 +57,7 @@ pub async fn get_section(
             .await?;
 
             if let Some(row) = row {
-                let website_setting = WebsiteSettingWebsite::try_from(row);
+                let website_setting = WebsiteSettingWebsite::try_from(&row);
 
                 let search_theme = website_setting.search_theme.ok_or_else(|| {
                     tracing::error!("No search_theme column or value is null");
@@ -123,7 +123,7 @@ pub async fn get_section(
             .await?;
 
             if let Some(row) = row {
-                let website_setting = WebsiteSettingWebsite::try_from(row);
+                let website_setting = WebsiteSettingWebsite::try_from(&row);
 
                 let property_theme = website_setting.property_theme.ok_or_else(|| {
                     tracing::error!("No property_theme column or value is null");

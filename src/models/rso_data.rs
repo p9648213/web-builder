@@ -62,15 +62,17 @@ impl RsoData {
         }
     }
 
-    pub fn try_from(row: Row) -> Self {
-        let id: Option<i32> = row.try_get("id").unwrap_or(None);
-        let user_id: Option<i32> = row.try_get("user_id").unwrap_or(None);
-        let identifier_id: Option<i32> = row.try_get("identifier_id").unwrap_or(None);
-        let api_key: Option<String> = row.try_get("api_key").unwrap_or(None);
-        let filter_id_sale: Option<i32> = row.try_get("filter_id_sale").unwrap_or(None);
-        let filter_id_long: Option<i32> = row.try_get("filter_id_long").unwrap_or(None);
-        let filter_id_short: Option<i32> = row.try_get("filter_id_short").unwrap_or(None);
-        let filter_id_featured: Option<i32> = row.try_get("filter_id_featured").unwrap_or(None);
+    pub fn try_from(row: &Row, prefix: Option<&str>) -> Self {
+        let prefix = prefix.unwrap_or("");
+
+        let id: Option<i32> = row.try_get(format!("{}id", prefix).as_str()).unwrap_or(None);
+        let user_id: Option<i32> = row.try_get(format!("{}user_id", prefix).as_str()).unwrap_or(None);
+        let identifier_id: Option<i32> = row.try_get(format!("{}identifier_id", prefix).as_str()).unwrap_or(None);
+        let api_key: Option<String> = row.try_get(format!("{}api_key", prefix).as_str()).unwrap_or(None);
+        let filter_id_sale: Option<i32> = row.try_get(format!("{}filter_id_sale", prefix).as_str()).unwrap_or(None);
+        let filter_id_long: Option<i32> = row.try_get(format!("{}filter_id_long", prefix).as_str()).unwrap_or(None);
+        let filter_id_short: Option<i32> = row.try_get(format!("{}filter_id_short", prefix).as_str()).unwrap_or(None);
+        let filter_id_featured: Option<i32> = row.try_get(format!("{}filter_id_featured", prefix).as_str()).unwrap_or(None);
 
         Self {
             id,

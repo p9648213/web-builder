@@ -31,10 +31,12 @@ impl Template {
         }
     }
 
-    pub fn try_from(row: Row) -> Self {
-        let id: Option<i32> = row.try_get("id").unwrap_or(None);
-        let template_type: Option<TemplateType> = row.try_get("template_type").unwrap_or(None);
-        let description: Option<String> = row.try_get("description").unwrap_or(None);
+    pub fn try_from(row: &Row, prefix: Option<&str>) -> Self {
+        let prefix = prefix.unwrap_or("");
+
+        let id: Option<i32> = row.try_get(format!("{}id", prefix).as_str()).unwrap_or(None);
+        let template_type: Option<TemplateType> = row.try_get(format!("{}template_type", prefix).as_str()).unwrap_or(None);
+        let description: Option<String> = row.try_get(format!("{}description", prefix).as_str()).unwrap_or(None);
 
         Self {
             id,

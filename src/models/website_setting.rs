@@ -41,16 +41,18 @@ impl WebsiteSetting {
         }
     }
 
-    pub fn try_from(row: Row) -> Self {
-        let id: Option<i32> = row.try_get("id").unwrap_or(None);
-        let website_id: Option<i32> = row.try_get("webiste_id").unwrap_or(None);
-        let user_id: Option<i32> = row.try_get("user_id").unwrap_or(None);
-        let header_theme: Option<i32> = row.try_get("header_theme").unwrap_or(None);
-        let footer_theme: Option<i32> = row.try_get("footer_theme").unwrap_or(None);
-        let home_theme: Option<i32> = row.try_get("home_theme").unwrap_or(None);
-        let search_theme: Option<i32> = row.try_get("search_theme").unwrap_or(None);
-        let property_theme: Option<i32> = row.try_get("property_theme").unwrap_or(None);
-        let contact_theme: Option<i32> = row.try_get("contact_theme").unwrap_or(None);
+    pub fn try_from(row: &Row, prefix: Option<&str>) -> Self {
+        let prefix = prefix.unwrap_or("");
+
+        let id: Option<i32> = row.try_get(format!("{}id", prefix).as_str()).unwrap_or(None);
+        let website_id: Option<i32> = row.try_get(format!("{}webiste_id", prefix).as_str()).unwrap_or(None);
+        let user_id: Option<i32> = row.try_get(format!("{}user_id", prefix).as_str()).unwrap_or(None);
+        let header_theme: Option<i32> = row.try_get(format!("{}header_theme", prefix).as_str()).unwrap_or(None);
+        let footer_theme: Option<i32> = row.try_get(format!("{}footer_theme", prefix).as_str()).unwrap_or(None);
+        let home_theme: Option<i32> = row.try_get(format!("{}home_theme", prefix).as_str()).unwrap_or(None);
+        let search_theme: Option<i32> = row.try_get(format!("{}search_theme", prefix).as_str()).unwrap_or(None);
+        let property_theme: Option<i32> = row.try_get(format!("{}property_theme", prefix).as_str()).unwrap_or(None);
+        let contact_theme: Option<i32> = row.try_get(format!("{}contact_theme", prefix).as_str()).unwrap_or(None);
 
         Self {
             id,

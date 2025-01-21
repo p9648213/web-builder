@@ -90,7 +90,7 @@ pub async fn get_edit_page(
                     .await?;
 
                     let website_setting = if let Some(row) = row {
-                        WebsiteSetting::try_from(row)
+                        WebsiteSetting::try_from(&row, None)
                     } else {
                         tracing::error!(
                             "No website_setting with website_id {} is found",
@@ -125,7 +125,7 @@ pub async fn get_edit_page(
                     .await?;
 
                     let website_setting = if let Some(row) = row {
-                        WebsiteSetting::try_from(row)
+                        WebsiteSetting::try_from(&row, None)
                     } else {
                         tracing::error!(
                             "No website_setting with website_id {} is found",
@@ -160,7 +160,7 @@ pub async fn get_edit_page(
                     .await?;
 
                     let website_setting = if let Some(row) = row {
-                        WebsiteSetting::try_from(row)
+                        WebsiteSetting::try_from(&row, None)
                     } else {
                         tracing::error!(
                             "No website_setting with website_id {} is found",
@@ -195,7 +195,7 @@ pub async fn get_edit_page(
                     .await?;
 
                     let website_setting = if let Some(row) = row {
-                        WebsiteSetting::try_from(row)
+                        WebsiteSetting::try_from(&row, None)
                     } else {
                         tracing::error!(
                             "No website_setting with website_id {} is found",
@@ -230,7 +230,7 @@ pub async fn get_edit_page(
                     .await?;
 
                     let website_setting = if let Some(row) = row {
-                        WebsiteSetting::try_from(row)
+                        WebsiteSetting::try_from(&row, None)
                     } else {
                         tracing::error!(
                             "No website_setting with website_id {} is found",
@@ -265,7 +265,7 @@ pub async fn get_edit_page(
                     .await?;
 
                     let website_setting = if let Some(row) = row {
-                        WebsiteSetting::try_from(row)
+                        WebsiteSetting::try_from(&row, None)
                     } else {
                         tracing::error!(
                             "No website_setting with website_id {} is found",

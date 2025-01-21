@@ -11,8 +11,11 @@ use crate::{
     config::EnvConfig,
     middlewares::auth::UserId,
     models::{
-        error::AppError, rso_data::RsoData, template::Template, website::Website,
-        website_template::WebsiteTemplate,
+        error::AppError,
+        rso_data::RsoData,
+        template::Template,
+        website::Website,
+        website_template::{WebsiteJoinTemplate, WebsiteTemplate},
     },
     views::builder::{
         data::render_setup_data,
@@ -40,7 +43,7 @@ pub async fn get_section(
             .await?;
 
             let website: Option<Website> = if let Some(row) = row {
-                Some(Website::try_from(row))
+                Some(Website::try_from(&row, None))
             } else {
                 None
             };
@@ -52,11 +55,31 @@ pub async fn get_section(
                         AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                     })?;
 
+                    let test_row =
+                        WebsiteJoinTemplate::get_website_template_by_template_id_and_website_id(
+                            website_id,
+                            template_id,
+                            &pg_pool,
+                            vec!["id"],
+                            vec!["id"],
+                            "w",
+                            "t",
+                        )
+                        .await?
+                        .ok_or_else(|| {
+                            tracing::error!(
+                                "The template with id {template_id} is not exit in table templates"
+                            );
+                            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+                        })?;
+
+                    println!("{:#?}", test_row);
+
                     let row = WebsiteTemplate::get_website_template_by_template_id_and_website_id(
                         website_id,
                         template_id,
                         &pg_pool,
-                        vec!["template_type"],
+                        vec!["*"],
                     )
                     .await?
                     .ok_or_else(|| {
@@ -108,7 +131,7 @@ pub async fn get_section(
             .await?;
 
             let rso_data = if let Some(row) = row {
-                Some(RsoData::try_from(row))
+                Some(RsoData::try_from(&row, None))
             } else {
                 None
             };
@@ -125,7 +148,7 @@ pub async fn get_section(
                     .await?;
 
             let website: Option<Website> = if let Some(row) = row {
-                Some(Website::try_from(row))
+                Some(Website::try_from(&row, None))
             } else {
                 None
             };
