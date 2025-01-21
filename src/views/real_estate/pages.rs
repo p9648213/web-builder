@@ -116,6 +116,7 @@ pub fn render_property_details_page(
     property_query: PropertyQuery,
     header_theme: i32,
     footer_theme: i32,
+    property_theme: i32,
 ) -> Markup {
     html! {
         (DOCTYPE)
@@ -136,7 +137,13 @@ pub fn render_property_details_page(
                     _ => (shared::render_nav_bar_1())
                 }
                 main {
-                    (property_details::render_property_details(property_query))
+                    @match property_theme {
+                        1 => (property_details::render_property_details_1(&property_query)),
+                        2 => (property_details::render_property_details_2(&property_query)),
+                        3 => (property_details::render_property_details_3(&property_query)),
+                        4 => (property_details::render_property_details_4(&property_query)),
+                        _ => (property_details::render_property_details_1(&property_query))
+                    }
                     (shared::render_contact())
                 }
                 @match footer_theme {

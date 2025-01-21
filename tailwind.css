@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@source "./safelist.txt";
+
 @plugin '@tailwindcss/forms';
 
 @variant dark (&:is(.dark *));

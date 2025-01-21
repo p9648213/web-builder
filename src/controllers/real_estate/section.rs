@@ -103,15 +103,51 @@ pub async fn get_section(
             }
         }
         "property" => {
-            let html = html! {
-                title {
-                    "Property Details"
-                }
-                (property_details::render_property_details(property_query.0))
-                (shared::render_contact())
-            };
+            let default_host = HeaderValue::from_static("");
 
-            Ok(Html(html.into_string()))
+            let host = request
+                .headers()
+                .get("host")
+                .unwrap_or(&default_host)
+                .to_str()
+                .map_err(|error| {
+                    tracing::error!("Failed to convert host header to string: {}", error);
+                    AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+                })?;
+
+            let row = WebsiteSettingWebsite::get_website_setting_by_domain(
+                host,
+                &pg_pool,
+                vec!["property_theme"],
+            )
+            .await?;
+
+            if let Some(row) = row {
+                let website_setting = WebsiteSettingWebsite::try_from(row);
+
+                let property_theme = website_setting.property_theme.ok_or_else(|| {
+                    tracing::error!("No property_theme column or value is null");
+                    AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+                })?;
+
+                let html = html! {
+                    title {
+                        "Property Details"
+                    }
+                    @match property_theme {
+                        1 => (property_details::render_property_details_1(&property_query.0)),
+                        2 => (property_details::render_property_details_2(&property_query.0)),
+                        3 => (property_details::render_property_details_3(&property_query.0)),
+                        4 => (property_details::render_property_details_4(&property_query.0)),
+                        _ => (property_details::render_property_details_1(&property_query.0))
+                    }
+                    (shared::render_contact())
+                };
+
+                Ok(Html(html.into_string()))
+            } else {
+                Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
+            }
         }
         _ => Ok(Html("Not found".to_owned())),
     }

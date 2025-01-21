@@ -13,7 +13,7 @@ use crate::views::real_estate::home::{
     render_hot_properties_slider, render_location_selection_drop_down,
     render_property_types_selection_drop_down, render_selection_label,
 };
-use crate::views::real_estate::property_details::render_detail;
+use crate::views::real_estate::property_details;
 use crate::views::real_estate::search_result;
 
 use super::pages::{PropertyQuery, SearchQuery};
@@ -195,6 +195,8 @@ pub async fn get_property(
         return Ok(Html("Property not found".to_string()));
     }
 
+    let theme = property_query.0.theme.unwrap_or(1);
+
     let row = RsoData::get_rso_data_by_user_id(
         1,
         &pg_pool,
@@ -265,7 +267,13 @@ pub async fn get_property(
         let property_response = RsoData::get_rso_property(property_params).await?;
 
         let html = html! {
-            (render_detail(&property_response.property))
+            @match theme {
+                1 => (property_details::render_detail_1(&property_response.property)),
+                2 => (property_details::render_detail_2(&property_response.property)),
+                3 => (property_details::render_detail_3(&property_response.property)),
+                4 => (property_details::render_detail_4(&property_response.property)),
+                _ => (property_details::render_detail_1(&property_response.property))
+            }
         }
         .into_string();
 

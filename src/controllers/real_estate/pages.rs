@@ -26,6 +26,7 @@ pub struct PropertyQuery {
     pub id: Option<String>,
     #[serde(rename = "type")]
     pub listing_type: Option<String>,
+    pub theme: Option<i32>,
 }
 
 pub async fn get_real_estate_home_page(
@@ -160,9 +161,19 @@ pub async fn get_real_estate_property_page(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
         })?;
 
+        let property_theme = website_setting.property_theme.ok_or_else(|| {
+            tracing::error!("No property_theme column or value is null");
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+        })?;
+
         Ok(Html(
-            render_property_details_page(property_query.0, header_theme, footer_theme)
-                .into_string(),
+            render_property_details_page(
+                property_query.0,
+                header_theme,
+                footer_theme,
+                property_theme,
+            )
+            .into_string(),
         ))
     } else {
         Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))

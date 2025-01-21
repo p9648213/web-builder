@@ -60,16 +60,20 @@ export function setupPropertyPictureSlider() {
 
     let pictureDots = element.querySelector(".pictures-dots");
 
-    let dotChilds = pictureDots.childNodes;
+    let dotChilds = null;
 
-    for (let i = 0; i < dotChilds.length; i++) {
-      dotChilds[i].addEventListener("click", (_) => {
-        currentPictureIndex = i;
-        pictureSliderEl.style.transform = `translateX(-${
-          currentPictureIndex * 100
-        }%)`;
-        updateDotsColor(dotChilds, currentPictureIndex);
-      });
+    if (pictureDots) {
+      dotChilds = pictureDots.childNodes;
+
+      for (let i = 0; i < dotChilds.length; i++) {
+        dotChilds[i].addEventListener("click", (_) => {
+          currentPictureIndex = i;
+          pictureSliderEl.style.transform = `translateX(-${
+            currentPictureIndex * 100
+          }%)`;
+          updateDotsColor(dotChilds, currentPictureIndex);
+        });
+      }
     }
 
     new SwipeContent(pictureSliderContainerEl);
@@ -85,7 +89,9 @@ export function setupPropertyPictureSlider() {
         currentPictureIndex * 100
       }%)`;
 
-      updateDotsColor(dotChilds, currentPictureIndex);
+      if (pictureDots) {
+        updateDotsColor(dotChilds, currentPictureIndex);
+      }
     });
 
     pictureSliderContainerEl.addEventListener("swipeRight", function () {
@@ -99,7 +105,9 @@ export function setupPropertyPictureSlider() {
         currentPictureIndex * 100
       }%)`;
 
-      updateDotsColor(dotChilds, currentPictureIndex);
+      if (pictureDots) {
+        updateDotsColor(dotChilds, currentPictureIndex);
+      }
     });
   });
 }
