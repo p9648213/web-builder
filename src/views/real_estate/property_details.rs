@@ -472,98 +472,118 @@ pub fn render_detail_2(property: &Property) -> Markup {
     };
 
     html! {
-      div class="flex justify-between gap-10 w-full max-w-340" {
-        (render_pictures_slider_2(&property.pictures.picture))
-        div class="flex flex-col flex-2 justify-center gap-6" {
-          div class="flex justify-between gap-5 w-full" {
-            span class="font-bold text-xl" { "Ref: " (property.reference) }
-            button class="bg-blue-500 hover:bg-blue-400 px-4 py-3 rounded-md h-fit font-bold text-white cursor-pointer" {
-              "GET IN TOUCH"
-            }
-          }
-          div class="flex flex-col gap-2.5" {
-            span class="font-bold text-lg" { (property.location) }
-            span { (name) }
-            span class="font-bold text-3xl text-blue-500" { (price) " €" }
-          }
-          div class="flex flex-col gap-3" {
-            span class="font-bold text-lg" { "Basic characteristics" }
-            div class=(characteristics_grid_class) {
-              @if built_size != "0" {
-                div {
-                  span class="text-[#868D9B]" {"Built Size: "}
-                  (built_size) "m²"
-                }
-              }
-              @if plot_size != "0" {
-                div {
-                  span class="text-[#868D9B]" {"Plot Size: "}
-                  (plot_size) "m²"
-                }
-              }
-              @if usefull_size != "0" {
-                div {
-                  span class="text-[#868D9B]" {"Useful Size: "}
-                  (usefull_size) "m²"
-                }
-              }
-              @if terrace_size != "0" {
-                div {
-                  span class="text-[#868D9B]" {"Terrace Size: "}
-                  (terrace_size) "m²"
-                }
-              }
-              @if property.bedrooms != "0" {
-                div {
-                  span class="text-[#868D9B]" {"Bedrooms: "}
-                  (property.bedrooms)
-                }
-              }
-              @if property.bathrooms != "0" {
-                div {
-                  span class="text-[#868D9B]" {"Bathrooms: "}
-                  (property.bathrooms)
-                }
+      div class="flex flex-col gap-15 w-full max-w-340" {
+        div class="flex justify-between gap-10" {
+          (render_pictures_slider_2(&property.pictures.picture))
+          div class="flex flex-col flex-2 justify-center gap-6" {
+            div class="flex justify-between gap-5 w-full" {
+              span class="font-bold text-xl" { "Ref: " (property.reference) }
+              button class="bg-blue-500 hover:bg-blue-400 px-4 py-3 rounded-md h-fit font-bold text-white cursor-pointer" {
+                "GET IN TOUCH"
               }
             }
-          }
-          @if taxes_count > 0 {
+            div class="flex flex-col gap-2.5" {
+              span class="font-bold text-lg" { (property.location) }
+              span { (name) }
+              span class="font-bold text-3xl text-blue-500" { (price) " €" }
+            }
             div class="flex flex-col gap-3" {
-              span class="font-bold text-lg" { "Taxes" }
-              div class=(taxes_grid_class) {
-                @if property.ibi_fee_year != "0"{
+              span class="font-bold text-lg" { "Basic characteristics" }
+              div class=(characteristics_grid_class) {
+                @if built_size != "0" {
                   div {
-                    span class="text-[#868D9B]" {"IBI: "}
-                    (property.ibi_fee_year) "€/year"
+                    span class="text-[#868D9B]" {"Built Size: "}
+                    (built_size) "m²"
                   }
                 }
-                @if property.basura_tax_year != "0" {
+                @if plot_size != "0" {
                   div {
-                    span class="text-[#868D9B]" {"Basura Tax: "}
-                    (property.basura_tax_year) "€/year"
+                    span class="text-[#868D9B]" {"Plot Size: "}
+                    (plot_size) "m²"
                   }
                 }
-                @if property.community_fee_year != "0" {
+                @if usefull_size != "0" {
                   div {
-                    span class="text-[#868D9B]" {"Community Fee: "}
-                    (property.community_fee_year) "€/year"
+                    span class="text-[#868D9B]" {"Useful Size: "}
+                    (usefull_size) "m²"
+                  }
+                }
+                @if terrace_size != "0" {
+                  div {
+                    span class="text-[#868D9B]" {"Terrace Size: "}
+                    (terrace_size) "m²"
+                  }
+                }
+                @if property.bedrooms != "0" {
+                  div {
+                    span class="text-[#868D9B]" {"Bedrooms: "}
+                    (property.bedrooms)
+                  }
+                }
+                @if property.bathrooms != "0" {
+                  div {
+                    span class="text-[#868D9B]" {"Bathrooms: "}
+                    (property.bathrooms)
                   }
                 }
               }
             }
-          }
-          div class="flex flex-col gap-3" {
-            span class="font-bold text-lg" { "Energy Certificate" }
-            @if property.energy_rating.co2_value == "" && property.energy_rating.energy_value == ""  {
-              div class="text-[#868d9b]" { "Under valuation" }
-            } @else {
-              div {
-                span class="text-[#868D9B]" {"Consumption: "}
-                (property.energy_rating.energy_value) " kg CO₂/m² per year"
+            @if taxes_count > 0 {
+              div class="flex flex-col gap-3" {
+                span class="font-bold text-lg" { "Taxes" }
+                div class=(taxes_grid_class) {
+                  @if property.ibi_fee_year != "0"{
+                    div {
+                      span class="text-[#868D9B]" {"IBI: "}
+                      (property.ibi_fee_year) "€/year"
+                    }
+                  }
+                  @if property.basura_tax_year != "0" {
+                    div {
+                      span class="text-[#868D9B]" {"Basura Tax: "}
+                      (property.basura_tax_year) "€/year"
+                    }
+                  }
+                  @if property.community_fee_year != "0" {
+                    div {
+                      span class="text-[#868D9B]" {"Community Fee: "}
+                      (property.community_fee_year) "€/year"
+                    }
+                  }
+                }
               }
-              div {
-                span class="text-[#868D9B]" {"Emissions: "}
-                (property.energy_rating.co2_value) " kg CO₂/m² per year"
+            }
+            div class="flex flex-col gap-3" {
+              span class="font-bold text-lg" { "Energy Certificate" }
+              @if property.energy_rating.co2_value == "" && property.energy_rating.energy_value == ""  {
+                div class="text-[#868d9b]" { "Under valuation" }
+              } @else {
+                div {
+                  span class="text-[#868D9B]" {"Consumption: "}
+                  (property.energy_rating.energy_value) " kg CO₂/m² per year"
+                }
+                div {
+                  span class="text-[#868D9B]" {"Emissions: "}
+                  (property.energy_rating.co2_value) " kg CO₂/m² per year"
+                }
+              }
+            }
+          }
+        }
+        div class="flex flex-col gap-5" {
+          span class="font-bold text-lg" { "Description" }
+          p class="text-[#868d9b] text-justify whitespace-pre-line" {
+            (PreEscaped(html_escape::decode_html_entities(&property.description).replace("[IW]", "")))
+          }
+        }
+        div class="flex flex-col gap-5" {
+          span class="font-bold text-lg" { "Features" }
+          div class="gap-x-15 gap-y-5 grid grid-cols-3" {
+            @for category in &property.property_features.category {
+              div class="flex gap-2" {
+                img class="w-6 h-6" src="/assets/images/icon/check.svg" alt="check";
+                span class="font-bold text-[#868d9b] whitespace-nowrap" { (category.category_type) ":" }
+                span { (category.category_value.join(", ")) }
               }
             }
           }
