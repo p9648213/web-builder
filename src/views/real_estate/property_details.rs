@@ -657,13 +657,13 @@ pub fn render_property_details_3(property_query: &PropertyQuery) -> Markup {
             scrollToTop();
         </script>
       "#))
-      div class="flex justify-center items-center mt-25 py-15" {
+      div class="flex justify-center items-center mt-24 py-15" {
         div
           id="property-detail"
           hx-get=(format!("/rso/property?id={}&type={}&theme=3", property_id, listing_type))
           hx-target="#property-detail"
           hx-trigger="load"
-          class="flex flex-col justify-center items-center gap-10 w-full max-w-360"
+          class="flex flex-col justify-center items-center gap-10 px-15 w-full max-w-360"
         {
           "Loading..."
         }
@@ -671,9 +671,297 @@ pub fn render_property_details_3(property_query: &PropertyQuery) -> Markup {
     }
 }
 
-pub fn render_detail_3(property: &Property) -> Markup {
+pub fn render_pictures_slider_3(pictures: &Vec<PropertyPicture>) -> Markup {
     html! {
-      "Detail 3"
+      (PreEscaped(r#"
+        <script type="module">
+            import {setupPropertyPictureSlider} from "/assets/js/app/slider.js";
+            setupPropertyPictureSlider();
+        </script>
+      "#))
+      div class="flex gap-2 rounded-lg h-122 overflow-hidden" {
+        div class="flex justify-center items-center bg-black picture-container" {
+          div class="relative overflow-hidden picture-slider-container" {
+            div class="flex items-center w-250 h-122 transition-transform duration-500 picture-slider" {
+              input type="hidden" value=(pictures.len());
+              @for picture in pictures {
+                img class="w-full h-full pointer-events-none object-contain shrink-0" src=(picture.picture_url);
+              }
+            }
+          }
+        }
+        div class="flex flex-col gap-2 w-full -translate-y-42" {
+          @for picture in pictures {
+            div class="w-75 h-40 shrink-0" {
+              img class="w-full h-full pointer-events-none object-cover shrink-0" src=(picture.picture_url);
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_detail_3(property: &Property) -> Markup {
+    let name = if property.newdev_name == "" {
+        &property.property_type.name_type
+    } else {
+        &property.newdev_name
+    };
+
+    let price = match &property.price {
+        TextOrNum::Text(price) => price,
+        TextOrNum::Num(price) => &price.to_string(),
+    };
+
+    let built_size = match &property.built {
+        TextOrNum::Text(built) => built.to_string(),
+        TextOrNum::Num(built) => built.to_string(),
+    };
+
+    let plot_size = match &property.garden_plot {
+        TextOrNum::Text(plot) => plot.to_string(),
+        TextOrNum::Num(plot) => plot.to_string(),
+    };
+
+    let usefull_size = match &property.int_floor_space {
+        TextOrNum::Text(usefull) => usefull.to_string(),
+        TextOrNum::Num(usefull) => usefull.to_string(),
+    };
+
+    let terrace_size = match &property.terrace {
+        TextOrNum::Text(terrace) => terrace.to_string(),
+        TextOrNum::Num(terrace) => terrace.to_string(),
+    };
+
+    let mut table = vec![];
+
+    if built_size != "0" {
+        table.push(("Built Size", format!("{} m²", &built_size)));
+    }
+
+    if plot_size != "0" {
+        table.push(("Plot Size", format!("{} m²", &plot_size)));
+    }
+
+    if usefull_size != "0" {
+        table.push(("Useful Size", format!("{} m²", &usefull_size)));
+    }
+
+    if terrace_size != "0" {
+        table.push(("Terrace Size", format!("{} m²", &terrace_size)));
+    }
+
+    if property.ibi_fee_year != "0" {
+        table.push(("IBI", format!("{} €/year", &property.ibi_fee_year)));
+    }
+
+    if property.basura_tax_year != "0" {
+        table.push((
+            "Basura Tax",
+            format!("{} €/year", &property.basura_tax_year),
+        ));
+    }
+
+    if property.community_fee_year != "0" {
+        table.push((
+            "Community Fee",
+            format!("{} €/year", &property.community_fee_year),
+        ));
+    }
+
+    if property.bedrooms != "0" {
+        table.push(("Bedrooms", String::from(&property.bedrooms)));
+    }
+
+    if property.bathrooms != "0" {
+        table.push(("Bathrooms", String::from(&property.bathrooms)));
+    }
+
+    let mut row_item = vec![];
+    let mut temp_vec = vec![];
+
+    for (index, item) in table.iter().enumerate() {
+        temp_vec.push(item.clone());
+        if temp_vec.len() == 2 {
+            row_item.push(temp_vec.clone());
+            temp_vec.clear();
+        }
+        if index == table.len() - 1 && temp_vec.len() == 1 {
+            row_item.push(temp_vec.clone());
+        }
+    }
+
+    html! {
+      (render_pictures_slider_3(&property.pictures.picture))
+      div class="flex flex-col gap-15 w-full max-w-300" {
+        div class="flex justify-between items-center gap-5 w-full" {
+          div class="flex flex-col gap-2" {
+            span class="font-bold text-lg" { (property.location) }
+            span class="text-2xl" { (name) }
+          }
+          button class="bg-blue-500 hover:bg-blue-400 px-4 py-3 rounded-md h-fit font-bold text-white cursor-pointer" {
+            "GET IN TOUCH"
+          }
+        }
+        div class="flex justify-between gap-30" {
+          p class="flex-1 text-justify whitespace-pre-line" {
+            (PreEscaped(html_escape::decode_html_entities(&property.description).replace("[IW]", "")))
+          }
+          div class="flex flex-1 justify-end border border-solid rounded-2xl h-fit overflow-hidden" style="box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;" {
+            table class="border-collapse shadow-md w-full text-sm" {
+              tbody {
+                tr {
+                  td colspan="2" class="p-5 border-b border-solid" {
+                    div class="flex flex-col gap-4" {
+                      span class="text-[#868d9b]" { "Price" }
+                      span class="font-bold text-2xl text-blue-500" { (price) " €" }
+                    }
+                  }
+                }
+
+                @for (row_index, row) in row_item.iter().enumerate() {
+                  @if row_index == row_item.len() - 1 {
+                    tr {
+                      @if row.len() == 1 {
+                        @for item in row {
+                          td colspan="2" class="p-5 border-r text-center" {
+                            div class="flex justify-center gap-1" {
+                              span class="text-[#868d9b]" { (item.0) ":" }
+                              span { (item.1) }
+                            }
+                          }
+                        }
+                      } @else {
+                        @for (item_index,item) in row.iter().enumerate() {
+                          @if item_index == 0 {
+                            td class="p-5 border-r border-solid w-[50%]" {
+                              div class="flex gap-1" {
+                                span class="text-[#868d9b]" { (item.0) ":" }
+                                span { (item.1) }
+                              }
+                            }
+                          } @else {
+                            td class="p-5 border-solid w-[50%]" {
+                              div class="flex gap-1" {
+                                span class="text-[#868d9b]" { (item.0) ":" }
+                                span { (item.1) }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  } @else {
+                    tr {
+                      @for (item_index, item) in row.iter().enumerate() {
+                        @if item_index == 0 {
+                          td class="p-5 border-r border-b border-solid w-[50%]" {
+                            div class="flex gap-1" {
+                              span class="text-[#868d9b]" { (item.0) ":" }
+                              span { (item.1) }
+                            }
+                          }
+                        } @else {
+                          td class="p-5 border-b border-solid w-[50%]" {
+                            div class="flex gap-1" {
+                              span class="text-[#868d9b]" { (item.0) ":" }
+                              span { (item.1) }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        @if property.energy_rating.co2_value == "" && property.energy_rating.energy_value == ""  {
+          div class="flex flex-col gap-3" {
+            span class="font-bold text-lg" { "Energy Certificate" }
+            div class="text-[#868d9b] text-justify whitespace-pre-line" {
+              "Under valuation"
+            }
+          }
+        } @else {
+          div class="flex flex-col gap-3" {
+            span class="font-bold text-lg" { "Energy Certificate" }
+            div class="flex gap-1" {
+              span class="text-[#868d9b]"  { "Consumption: " }
+              span { (property.energy_rating.energy_value) " kg CO₂/m² per year" }
+            }
+            div class="flex gap-2" {
+              span class="text-[#868d9b]" { "Emissions: " }
+              span { (property.energy_rating.co2_value) " kg CO₂/m² per year" }
+            }
+          }
+        }
+        div class="flex flex-col gap-7" {
+          span class="font-bold text-lg" { "Features" }
+          div class="border-slate-200 border-t-1 border-solid w-full" {}
+          div class="gap-x-15 gap-y-10 grid grid-cols-2" {
+            @for category in &property.property_features.category {
+              div class="flex gap-2" {
+                @match category.category_type.as_str() {
+                  "Setting" => {
+                    img class="w-6 h-6" src="/assets/images/icon/setting.svg" alt="setting";
+                  },
+                  "Orientation" => {
+                    img class="w-6 h-6" src="/assets/images/icon/orientation.svg" alt="orientation";
+                  },
+                  "Condition" => {
+                    img class="w-6 h-6" src="/assets/images/icon/condition.svg" alt="condition";
+                  },
+                  "Pool" => {
+                    img class="w-6 h-6" src="/assets/images/icon/pool.svg" alt="pool";
+                  },
+                  "Climate Control" => {
+                    img class="w-6 h-6" src="/assets/images/icon/climate.svg" alt="climate";
+                  },
+                  "Views" => {
+                    img class="w-6 h-6" src="/assets/images/icon/view.svg" alt="view";
+                  },
+                  "Features" => {
+                    img class="w-6 h-6" src="/assets/images/icon/feature.svg" alt="feature";
+                  },
+                  "Furniture" => {
+                    img class="w-6 h-6" src="/assets/images/icon/furniture.svg" alt="furniture";
+                  },
+                  "Kitchen" => {
+                    img class="w-6 h-6" src="/assets/images/icon/kitchen.svg" alt="kitchen";
+                  },
+                  "Garden" => {
+                    img class="w-6 h-6" src="/assets/images/icon/garden.svg" alt="garden";
+                  },
+                  "Security" => {
+                    img class="w-6 h-6" src="/assets/images/icon/security.svg" alt="security";
+                  },
+                  "Parking" => {
+                    img class="w-6 h-6" src="/assets/images/icon/parking.svg" alt="parking";
+                  },
+                  "Utilities" => {
+                    img class="w-6 h-6" src="/assets/images/icon/utilities.svg" alt="utilities";
+                  },
+                  "Category" => {
+                    img class="w-6 h-6" src="/assets/images/icon/category.svg" alt="category";
+                  },
+                  _ => ""
+                }
+                span class="font-bold text-[#868d9b] whitespace-nowrap" { (category.category_type) ":" }
+                div {
+                  @for (index, value) in category.category_value.iter().enumerate() {
+                    span class="inline-block whitespace-pre-line" { (value) }
+                    @if index < category.category_value.len() - 1 {
+                      span {", "}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
 }
 
