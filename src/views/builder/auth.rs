@@ -45,13 +45,13 @@ pub fn render_login_page(authenticity_token: String) -> maud::Markup {
                                 label class="sr-only" for="email-address" {
                                     "Email address"
                                 }
-                                input id="email-address" class="block relative focus:z-10 border-0 py-1.5 rounded-t-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="email" type="email" autocomplete="email" placeholder="Email address";
+                                input id="email-address" class="block relative focus:z-10 border-0 py-1.5 rounded-t-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="email" type="email" autocomplete="email" placeholder="Email address" value="admin@gmail.com";
                             }
                             div {
                                 label class="sr-only" for="password" {
                                     "Password"
                                 }
-                                input id="password" class="block relative focus:z-10 border-0 py-1.5 rounded-b-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="password" type="password" autocomplete="current-password" placeholder="Password";
+                                input id="password" class="block relative focus:z-10 border-0 py-1.5 rounded-b-md ring-1 ring-gray-100 focus:ring-2 focus:ring-indigo-600 ring-inset focus:ring-inset w-full text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" name="password" type="password" autocomplete="current-password" placeholder="Password" value="12345";
                             }
                         }
                         div {

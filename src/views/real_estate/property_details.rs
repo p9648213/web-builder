@@ -1008,7 +1008,7 @@ pub fn render_property_details_4(property_query: &PropertyQuery) -> Markup {
           hx-get=(format!("/rso/property?id={}&type={}&theme=4", property_id, listing_type))
           hx-target="#property-detail"
           hx-trigger="load"
-          class="flex flex-col justify-center items-center gap-10 w-full max-w-360"
+          class="flex flex-col justify-center items-center gap-10 px-15 w-full max-w-360"
         {
           "Loading..."
         }
@@ -1016,8 +1016,336 @@ pub fn render_property_details_4(property_query: &PropertyQuery) -> Markup {
     }
 }
 
-pub fn render_detail_4(property: &Property) -> Markup {
+pub fn render_pictures_slider_4(pictures: &Vec<PropertyPicture>) -> Markup {
     html! {
-      "Detail 4"
+      (PreEscaped(r#"
+      <script type="module">
+          import {setupPropertyPictureSlider} from "/assets/js/app/slider.js";
+          setupPropertyPictureSlider();
+      </script>
+    "#))
+      div class="flex justify-center bg-black rounded-lg w-full max-w-300 h-125 picture-container" {
+        div class="relative w-200 h-full overflow-hidden picture-slider-container" {
+          div class="flex w-full h-full transition-transform duration-500 picture-slider" {
+            input type="hidden" value=(pictures.len());
+            @for picture in pictures {
+              img class="w-full h-full pointer-events-none object-contain shrink-0" src=(picture.picture_url);
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_detail_4(property: &Property) -> Markup {
+    let name = if property.newdev_name == "" {
+        &property.property_type.name_type
+    } else {
+        &property.newdev_name
+    };
+
+    let price = match &property.price {
+        TextOrNum::Text(price) => price,
+        TextOrNum::Num(price) => &price.to_string(),
+    };
+
+    let built_size = match &property.built {
+        TextOrNum::Text(built) => built.to_string(),
+        TextOrNum::Num(built) => built.to_string(),
+    };
+
+    let plot_size = match &property.garden_plot {
+        TextOrNum::Text(plot) => plot.to_string(),
+        TextOrNum::Num(plot) => plot.to_string(),
+    };
+
+    let usefull_size = match &property.int_floor_space {
+        TextOrNum::Text(usefull) => usefull.to_string(),
+        TextOrNum::Num(usefull) => usefull.to_string(),
+    };
+
+    let terrace_size = match &property.terrace {
+        TextOrNum::Text(terrace) => terrace.to_string(),
+        TextOrNum::Num(terrace) => terrace.to_string(),
+    };
+
+    let mut table = vec![];
+
+    if built_size != "0" {
+        table.push((
+            "Built Size",
+            format!("{} m²", &built_size),
+            "/assets/images/icon/built-size.svg",
+        ));
+    }
+
+    if plot_size != "0" {
+        table.push((
+            "Plot Size",
+            format!("{} m²", &plot_size),
+            "/assets/images/icon/plot-size.svg",
+        ));
+    }
+
+    if usefull_size != "0" {
+        table.push((
+            "Useful Size",
+            format!("{} m²", &usefull_size,),
+            "/assets/images/icon/usefull-size.svg",
+        ));
+    }
+
+    if terrace_size != "0" {
+        table.push((
+            "Terrace Size",
+            format!("{} m²", &terrace_size,),
+            "/assets/images/icon/terrace-size.svg",
+        ));
+    }
+
+    if property.ibi_fee_year != "0" {
+        table.push((
+            "IBI",
+            format!("{} €/year", &property.ibi_fee_year),
+            "/assets/images/icon/ibi.svg",
+        ));
+    }
+
+    if property.basura_tax_year != "0" {
+        table.push((
+            "Basura Tax",
+            format!("{} €/year", &property.basura_tax_year),
+            "/assets/images/icon/basura.svg",
+        ));
+    }
+
+    if property.community_fee_year != "0" {
+        table.push((
+            "Community Fee",
+            format!("{} €/year", &property.community_fee_year),
+            "/assets/images/icon/community.svg",
+        ));
+    }
+
+    if property.bedrooms != "0" {
+        table.push((
+            "Bedrooms",
+            String::from(&property.bedrooms),
+            "/assets/images/icon/bed.svg",
+        ));
+    }
+
+    if property.bathrooms != "0" {
+        table.push((
+            "Bathrooms",
+            String::from(&property.bathrooms),
+            "/assets/images/icon/bath.svg",
+        ));
+    }
+
+    let mut row_item = vec![];
+    let mut temp_vec = vec![];
+
+    for (index, item) in table.iter().enumerate() {
+        temp_vec.push(item.clone());
+        if temp_vec.len() == 2 {
+            row_item.push(temp_vec.clone());
+            temp_vec.clear();
+        }
+        if index == table.len() - 1 && temp_vec.len() == 1 {
+            row_item.push(temp_vec.clone());
+        }
+    }
+
+    html! {
+      div class="flex flex-col items-center gap-15 w-full" {
+        div class="flex justify-between items-center w-full" {
+          div class="flex flex-col gap-3" {
+            div class="font-bold text-lg" { (property.location) }
+            div class="text-xl" { (name.to_uppercase()) }
+          }
+          div class="flex items-center gap-7" {
+            div class="flex flex-col gap-3" {
+              div class="font-bold text-2xl text-blue-500" { (price) " €" }
+              div class="flex gap-2" {
+                span class="text-[#868d9b]" { "Reference: " }
+                span class="font-bold" { (property.reference) }
+              }
+            }
+            button class="bg-blue-500 hover:bg-blue-400 px-4 py-4 rounded-md h-fit font-bold text-white cursor-pointer" {
+              "GET IN TOUCH"
+            }
+          }
+        }
+        (render_pictures_slider_4(&property.pictures.picture))
+        div class="flex justify-between gap-30" {
+          div class="flex flex-col gap-10" {
+            div class="flex flex-col gap-4" {
+              span class="font-bold" { "Description" }
+              p class="text-[#868d9b] text-justify whitespace-pre-line" {
+                (PreEscaped(html_escape::decode_html_entities(&property.description).replace("[IW]", "")))
+              }
+            }
+            @if property.energy_rating.co2_value == "" && property.energy_rating.energy_value == ""  {
+              div class="flex flex-col gap-3" {
+                span class="font-bold" { "Energy Certificate" }
+                div class="text-[#868d9b] text-justify whitespace-pre-line" {
+                  "Under valuation"
+                }
+              }
+            } @else {
+              div class="flex flex-col gap-3" {
+                span class="font-bold" { "Energy Certificate" }
+                div class="flex gap-1" {
+                  span class="text-[#868d9b]"  { "Consumption: " }
+                  span { (property.energy_rating.energy_value) " kg CO₂/m² per year" }
+                }
+                div class="flex gap-2" {
+                  span class="text-[#868d9b]" { "Emissions: " }
+                  span { (property.energy_rating.co2_value) " kg CO₂/m² per year" }
+                }
+              }
+            }
+          }
+          div class="flex justify-end border border-solid rounded-2xl min-w-115 h-fit overflow-hidden" style="box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;" {
+            table class="border-collapse shadow-md w-full text-sm" {
+              tbody {
+                @for (row_index, row) in row_item.iter().enumerate() {
+                  @if row_index == row_item.len() - 1 {
+                    tr {
+                      @if row.len() == 1 {
+                        @for item in row {
+                          td colspan="2" class="px-5 py-7 border-r text-center" {
+                            div class="flex flex-col items-center gap-2" {
+                              img class="w-7 h-7" src=(item.2);
+                              div class="flex flex-wrap justify-center gap-1" {
+                                span class="text-[#868d9b]" { (item.0) ":" }
+                                span { (item.1) }
+                              }
+                            }
+                          }
+                        }
+                      } @else {
+                        @for (item_index,item) in row.iter().enumerate() {
+                          @if item_index == 0 {
+                            td class="px-5 py-7 border-r border-solid w-[50%]" {
+                              div class="flex flex-col items-center gap-2" {
+                                img class="w-7 h-7" src=(item.2);
+                                div class="flex flex-wrap justify-center gap-1" {
+                                  span class="text-[#868d9b]" { (item.0) ":" }
+                                  span { (item.1) }
+                                }
+                              }
+                            }
+                          } @else {
+                            td class="px-5 py-7 border-solid w-[50%]" {
+                              div class="flex flex-col items-center gap-2" {
+                                img class="w-7 h-7" src=(item.2);
+                                div class="flex flex-wrap justify-center gap-1" {
+                                  span class="text-[#868d9b]" { (item.0) ":" }
+                                  span { (item.1) }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  } @else {
+                    tr {
+                      @for (item_index, item) in row.iter().enumerate() {
+                        @if item_index == 0 {
+                          td class="px-5 py-7 border-r border-b border-solid w-[50%]" {
+                            div class="flex flex-col items-center gap-2" {
+                              img class="w-7 h-7" src=(item.2);
+                              div class="flex flex-wrap justify-center gap-1" {
+                                span class="text-[#868d9b]" { (item.0) ":" }
+                                span { (item.1) }
+                              }
+                            }
+                          }
+                        } @else {
+                          td class="px-5 py-7 border-b border-solid w-[50%]" {
+                            div class="flex flex-col items-center gap-2" {
+                              img class="w-7 h-7" src=(item.2);
+                              div class="flex flex-wrap justify-center gap-1" {
+                                span class="text-[#868d9b]" { (item.0) ":" }
+                                span { (item.1) }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        div class="flex flex-col gap-7 w-full" {
+          span class="font-bold text-lg" { "Features" }
+          div class="gap-x-15 gap-y-10 grid grid-cols-3 px-15" {
+            @for category in &property.property_features.category {
+              div class="flex gap-2" {
+                @match category.category_type.as_str() {
+                  "Setting" => {
+                    img class="w-6 h-6" src="/assets/images/icon/setting.svg" alt="setting";
+                  },
+                  "Orientation" => {
+                    img class="w-6 h-6" src="/assets/images/icon/orientation.svg" alt="orientation";
+                  },
+                  "Condition" => {
+                    img class="w-6 h-6" src="/assets/images/icon/condition.svg" alt="condition";
+                  },
+                  "Pool" => {
+                    img class="w-6 h-6" src="/assets/images/icon/pool.svg" alt="pool";
+                  },
+                  "Climate Control" => {
+                    img class="w-6 h-6" src="/assets/images/icon/climate.svg" alt="climate";
+                  },
+                  "Views" => {
+                    img class="w-6 h-6" src="/assets/images/icon/view.svg" alt="view";
+                  },
+                  "Features" => {
+                    img class="w-6 h-6" src="/assets/images/icon/feature.svg" alt="feature";
+                  },
+                  "Furniture" => {
+                    img class="w-6 h-6" src="/assets/images/icon/furniture.svg" alt="furniture";
+                  },
+                  "Kitchen" => {
+                    img class="w-6 h-6" src="/assets/images/icon/kitchen.svg" alt="kitchen";
+                  },
+                  "Garden" => {
+                    img class="w-6 h-6" src="/assets/images/icon/garden.svg" alt="garden";
+                  },
+                  "Security" => {
+                    img class="w-6 h-6" src="/assets/images/icon/security.svg" alt="security";
+                  },
+                  "Parking" => {
+                    img class="w-6 h-6" src="/assets/images/icon/parking.svg" alt="parking";
+                  },
+                  "Utilities" => {
+                    img class="w-6 h-6" src="/assets/images/icon/utilities.svg" alt="utilities";
+                  },
+                  "Category" => {
+                    img class="w-6 h-6" src="/assets/images/icon/category.svg" alt="category";
+                  },
+                  _ => ""
+                }
+                span class="font-bold text-[#868d9b] whitespace-nowrap" { (category.category_type) ":" }
+                div {
+                  @for (index, value) in category.category_value.iter().enumerate() {
+                    span class="inline-block whitespace-pre-line" { (value) }
+                    @if index < category.category_value.len() - 1 {
+                      span {", "}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
 }
