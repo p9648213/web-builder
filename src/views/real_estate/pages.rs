@@ -2,7 +2,9 @@ use maud::{html, Markup, PreEscaped, DOCTYPE};
 
 use crate::{
     controllers::real_estate::pages::{PropertyQuery, SearchQuery},
-    views::real_estate::{head::render_main_head, home, property_details, search_result, shared},
+    views::real_estate::{
+        contact, head::render_main_head, home, property_details, search_result, shared,
+    },
 };
 
 pub fn render_home_page(header_theme: i32, footer_theme: i32) -> Markup {
@@ -137,14 +139,59 @@ pub fn render_property_details_page(
                     _ => (shared::render_nav_bar_1())
                 }
                 main {
-                    @match property_theme {
-                        1 => (property_details::render_property_details_1(&property_query)),
-                        2 => (property_details::render_property_details_2(&property_query)),
-                        3 => (property_details::render_property_details_3(&property_query)),
-                        4 => (property_details::render_property_details_4(&property_query)),
-                        _ => (property_details::render_property_details_1(&property_query))
+                    div id="property-section" class="min-h-screen invisible" {
+                        @match property_theme {
+                            1 => (property_details::render_property_details_1(&property_query)),
+                            2 => (property_details::render_property_details_2(&property_query)),
+                            3 => (property_details::render_property_details_3(&property_query)),
+                            4 => (property_details::render_property_details_4(&property_query)),
+                            _ => (property_details::render_property_details_1(&property_query))
+                        }
                     }
                     (shared::render_contact())
+                }
+                @match footer_theme {
+                    1 => (shared::render_footer_1()),
+                    2 => (shared::render_footer_2()),
+                    3 => (shared::render_footer_3()),
+                    4 => (shared::render_footer_4()),
+                    _ => (shared::render_footer_1())
+                }
+                div id="toast" {}
+            }
+        }
+    }
+}
+
+pub fn render_contact_page(header_theme: i32, footer_theme: i32, contact_theme: i32) -> Markup {
+    html! {
+        (DOCTYPE)
+        html lang="en" {
+            (render_main_head())
+            body hx-boost="true" class="scroll-smooth" {
+                title {
+                    "Contact"
+                }
+                (PreEscaped(r#"
+                    <script>0</script>
+                "#))
+                @match header_theme {
+                    1 => (shared::render_nav_bar_1()),
+                    2 => (shared::render_nav_bar_2()),
+                    3 => (shared::render_nav_bar_3()),
+                    4 => (shared::render_nav_bar_4()),
+                    _ => (shared::render_nav_bar_1())
+                }
+                main {
+                    div id="contact-section" class="min-h-screen invisible" {
+                        @match contact_theme {
+                            1 => (contact::render_contact_1()),
+                            2 => (contact::render_contact_2()),
+                            3 => (contact::render_contact_3()),
+                            4 => (contact::render_contact_4()),
+                            _ => (contact::render_contact_1())
+                        }
+                    }
                 }
                 @match footer_theme {
                     1 => (shared::render_footer_1()),

@@ -24,7 +24,7 @@ use crate::{
 pub fn render_property_details_1(property_query: &PropertyQuery) -> Markup {
     if property_query.id.is_none() || property_query.listing_type.is_none() {
         return html! {
-          div class="mt-25 py-15 text-center" {
+          div class="py-15 text-center" {
             div {
               "Property not found"
             }
@@ -39,10 +39,12 @@ pub fn render_property_details_1(property_query: &PropertyQuery) -> Markup {
       (PreEscaped(r#"
         <script type="module">
             import {scrollToTop} from "/assets/js/main.js";
+            import {setupMarginNavbar} from "/assets/js/app/navbar.js";
             scrollToTop();
+            setupMarginNavbar("property");
         </script>
       "#))
-      div class="flex justify-center items-center mt-25 py-15" {
+      div class="flex justify-center items-center py-15" {
         div
           id="property-detail"
           hx-get=(format!("/rso/property?id={}&type={}&theme=1", property_id, listing_type))
@@ -349,7 +351,7 @@ pub fn render_grid_item_1(
 pub fn render_property_details_2(property_query: &PropertyQuery) -> Markup {
     if property_query.id.is_none() || property_query.listing_type.is_none() {
         return html! {
-          div class="mt-25 py-15 text-center" {
+          div class="py-15 text-center" {
             div {
               "Property not found"
             }
@@ -364,10 +366,12 @@ pub fn render_property_details_2(property_query: &PropertyQuery) -> Markup {
       (PreEscaped(r#"
         <script type="module">
             import {scrollToTop} from "/assets/js/main.js";
+            import {setupMarginNavbar} from "/assets/js/app/navbar.js";
             scrollToTop();
+            setupMarginNavbar("property");
         </script>
       "#))
-      div class="flex justify-center items-center mt-25 py-15" {
+      div class="flex justify-center items-center py-15" {
         div
           id="property-detail"
           hx-get=(format!("/rso/property?id={}&type={}&theme=2", property_id, listing_type))
@@ -639,7 +643,7 @@ pub fn render_pictures_slider_2(pictures: &Vec<PropertyPicture>) -> Markup {
 pub fn render_property_details_3(property_query: &PropertyQuery) -> Markup {
     if property_query.id.is_none() || property_query.listing_type.is_none() {
         return html! {
-          div class="mt-25 py-15 text-center" {
+          div class="py-15 text-center" {
             div {
               "Property not found"
             }
@@ -654,10 +658,12 @@ pub fn render_property_details_3(property_query: &PropertyQuery) -> Markup {
       (PreEscaped(r#"
         <script type="module">
             import {scrollToTop} from "/assets/js/main.js";
+            import {setupMarginNavbar} from "/assets/js/app/navbar.js";
             scrollToTop();
+            setupMarginNavbar("property");
         </script>
       "#))
-      div class="flex justify-center items-center mt-24 py-15" {
+      div class="flex justify-center items-center py-15" {
         div
           id="property-detail"
           hx-get=(format!("/rso/property?id={}&type={}&theme=3", property_id, listing_type))
@@ -984,7 +990,7 @@ pub fn render_detail_3(property: &Property) -> Markup {
 pub fn render_property_details_4(property_query: &PropertyQuery) -> Markup {
     if property_query.id.is_none() || property_query.listing_type.is_none() {
         return html! {
-          div class="mt-25 py-15 text-center" {
+          div class="py-15 text-center" {
             div {
               "Property not found"
             }
@@ -999,10 +1005,12 @@ pub fn render_property_details_4(property_query: &PropertyQuery) -> Markup {
       (PreEscaped(r#"
         <script type="module">
             import {scrollToTop} from "/assets/js/main.js";
+            import {setupMarginNavbar} from "/assets/js/app/navbar.js";
             scrollToTop();
+            setupMarginNavbar("property");
         </script>
       "#))
-      div class="flex justify-center items-center mt-25 py-15" {
+      div class="flex justify-center items-center py-15" {
         div
           id="property-detail"
           hx-get=(format!("/rso/property?id={}&type={}&theme=4", property_id, listing_type))

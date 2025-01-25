@@ -99,12 +99,19 @@ pub fn render_nav_bar_2() -> Markup {
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-30 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
-                a href="#" class="hover:opacity-80" {"Contact us"}
-                a href="#" class="hover:opacity-80" {"About us"}
-                a href="#" class="hover:opacity-80" {"Meet the team"}
+                span
+                  hx-get="/section/real-estate/contents/contact"
+                  hx-push-url="/contact"
+                  hx-target="main"
+                  class="hover:opacity-80 cursor-pointer"
+                {
+                  "Contact us"
+                }
+                span class="hover:opacity-80 cursor-pointer" {"About us"}
+                span class="hover:opacity-80 cursor-pointer" {"Meet the team"}
               }
             }
-            a class="hover:opacity-80" href="#" {"Sell your propery"}
+            span class="hover:opacity-80 cursor-pointer" {"Sell your propery"}
             div class="relative flex items-center h-full group" {
               div class="flex items-center gap-1 hover:opacity-80 cursor-pointer" {
                 span {"For sale"}
@@ -163,7 +170,14 @@ pub fn render_nav_bar_3() -> Markup {
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-30 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" style="background-color: rgba(128,128,128,0.5)" {
-                a href="#" class="hover:opacity-50" {"Contact us"}
+                span
+                  hx-get="/section/real-estate/contents/contact"
+                  hx-push-url="/contact"
+                  hx-target="main"
+                  class="hover:opacity-50 cursor-pointer"
+                {
+                  "Contact us"
+                }
                 a href="#" class="hover:opacity-50" {"About us"}
                 a href="#" class="hover:opacity-50" {"Meet the team"}
               }
@@ -222,7 +236,14 @@ pub fn render_nav_bar_4() -> Markup {
                 }
               }
               div class="group-hover:visible top-10 z-10 absolute flex flex-col gap-3 bg-blue-400 opacity-0 group-hover:opacity-100 px-3 py-2 rounded-md max-h-0 group-hover:max-h-30 whitespace-nowrap transition-all duration-500 invisible overflow-hidden" {
-                a href="#" class="hover:opacity-80" {"Contact us"}
+                span
+                  hx-get="/section/real-estate/contents/contact"
+                  hx-push-url="/contact"
+                  hx-target="main"
+                  class="hover:opacity-80 cursor-pointer"
+                {
+                  "Contact us"
+                }
                 a href="#" class="hover:opacity-80" {"About us"}
                 a href="#" class="hover:opacity-80" {"Meet the team"}
               }
@@ -380,7 +401,14 @@ pub fn render_footer_1() -> Markup {
               div class="flex gap-15" {
                 div class="flex flex-col gap-3" {
                   div class="cursor-pointer" { "Home" }
-                  div class="cursor-pointer" { "Contact us" }
+                  div
+                    hx-get="/section/real-estate/contents/contact"
+                    hx-push-url="/contact"
+                    hx-target="main"
+                    class="cursor-pointer"
+                  {
+                    "Contact us"
+                  }
                   div class="cursor-pointer" { "About us" }
                   div class="cursor-pointer" { "Meet the team" }
                   div class="cursor-pointer" { "Sell your property" }
@@ -563,10 +591,17 @@ pub fn render_footer_3() -> Markup {
                 div class="flex gap-3" {
                   div class="font-bold text-sm translate-y-0.5" { "Company" }
                   div class="flex flex-col gap-3" {
-                    span { "About us" }
-                    span { "Contact" }
-                    span { "Sell your property" }
-                    span { "Meet the team" }
+                    span class="cursor-pointer" { "About us" }
+                    span
+                      hx-get="/section/real-estate/contents/contact"
+                      hx-push-url="/contact"
+                      hx-target="main"
+                      class="cursor-pointer"
+                    {
+                      "Contact"
+                    }
+                    span class="cursor-pointer" { "Sell your property" }
+                    span class="cursor-pointer" { "Meet the team" }
                   }
                 }
                 div class="flex gap-3" {
@@ -663,7 +698,14 @@ pub fn render_footer_4() -> Markup {
               div class="flex gap-15" {
                 div class="flex flex-col gap-3" {
                   div class="cursor-pointer" { "About us" }
-                  div class="cursor-pointer" { "Contact us" }
+                  div
+                    hx-get="/section/real-estate/contents/contact"
+                    hx-push-url="/contact"
+                    hx-target="main"
+                    class="cursor-pointer"
+                  {
+                    "Contact us"
+                  }
                   div class="cursor-pointer" { "Sell your property" }
                   div class="cursor-pointer" { "Meet the team" }
                 }

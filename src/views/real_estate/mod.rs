@@ -1,3 +1,4 @@
+pub mod contact;
 pub mod head;
 pub mod home;
 pub mod pages;

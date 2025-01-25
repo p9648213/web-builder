@@ -9,7 +9,7 @@ use reqwest::StatusCode;
 
 use crate::{
     models::{error::AppError, website_setting_website::WebsiteJoinWebsiteSetting},
-    views::real_estate::{home, property_details, search_result, shared},
+    views::real_estate::{contact, home, property_details, search_result, shared},
 };
 
 use super::pages::PropertyQuery;
@@ -102,7 +102,6 @@ pub async fn get_section(
                     }
                     (shared::render_contact())
                 };
-
                 Ok(Html(html.into_string()))
             } else {
                 Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
@@ -146,14 +145,70 @@ pub async fn get_section(
                     title {
                         "Property Details"
                     }
-                    @match property_theme {
-                        1 => (property_details::render_property_details_1(&property_query.0)),
-                        2 => (property_details::render_property_details_2(&property_query.0)),
-                        3 => (property_details::render_property_details_3(&property_query.0)),
-                        4 => (property_details::render_property_details_4(&property_query.0)),
-                        _ => (property_details::render_property_details_1(&property_query.0))
+                    div id="property-section" class="min-h-screen invisible" {
+                        @match property_theme {
+                            1 => (property_details::render_property_details_1(&property_query.0)),
+                            2 => (property_details::render_property_details_2(&property_query.0)),
+                            3 => (property_details::render_property_details_3(&property_query.0)),
+                            4 => (property_details::render_property_details_4(&property_query.0)),
+                            _ => (property_details::render_property_details_1(&property_query.0))
+                        }
                     }
                     (shared::render_contact())
+                };
+
+                Ok(Html(html.into_string()))
+            } else {
+                Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
+            }
+        }
+        "contact" => {
+            let default_host = HeaderValue::from_static("");
+
+            let host = request
+                .headers()
+                .get("host")
+                .unwrap_or(&default_host)
+                .to_str()
+                .map_err(|error| {
+                    tracing::error!("Failed to convert host header to string: {}", error);
+                    AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+                })?;
+
+            let row = WebsiteJoinWebsiteSetting::get_website_setting_by_domain(
+                host,
+                &pg_pool,
+                None,
+                Some(vec!["contact_theme"]),
+                Some("w"),
+                Some("s"),
+            )
+            .await?;
+
+            if let Some(row) = row {
+                let website_setting_website = WebsiteJoinWebsiteSetting::try_from(&row, "w_", "s_");
+
+                let contact_theme = website_setting_website
+                    .website_setting
+                    .contact_theme
+                    .ok_or_else(|| {
+                        tracing::error!("No contact_theme column or value is null");
+                        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+                    })?;
+
+                let html = html! {
+                    title {
+                        "Contact"
+                    }
+                    div id="contact-section" class="min-h-screen invisible" {
+                        @match contact_theme {
+                            1 => (contact::render_contact_1()),
+                            2 => (contact::render_contact_2()),
+                            3 => (contact::render_contact_3()),
+                            4 => (contact::render_contact_4()),
+                            _ => (contact::render_contact_1())
+                        }
+                    }
                 };
 
                 Ok(Html(html.into_string()))

@@ -24,3 +24,33 @@ export function showHideTopBarWhenScroll() {
     }
   });
 }
+
+export function setupMarginNavbar(page) {
+  if (page === "search-results") {
+    const searchSectionEl = document.getElementById("search-section");
+    const navbarEl = document.getElementById("navbar");
+
+    if (searchSectionEl && navbarEl) {
+      searchSectionEl.style.marginTop = `${navbarEl.clientHeight}px`;
+      searchSectionEl.classList.remove("invisible", "min-h-screen");
+    }
+  }
+  if (page === "property") {
+    const propertySectionEl = document.getElementById("property-section");
+    const navbarEl = document.getElementById("navbar");
+
+    if (propertySectionEl && navbarEl) {
+      propertySectionEl.style.marginTop = `${navbarEl.clientHeight}px`;
+      propertySectionEl.classList.remove("invisible", "min-h-screen");
+    }
+  }
+  if (page === "contact") {
+    const contactSectionEl = document.getElementById("contact-section");
+    const navbarEl = document.getElementById("navbar");
+
+    if (contactSectionEl && navbarEl) {
+      contactSectionEl.style.marginTop = `${navbarEl.clientHeight}px`;
+      contactSectionEl.classList.remove("invisible", "min-h-screen");
+    }
+  }
+}

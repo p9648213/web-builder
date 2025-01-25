@@ -16,8 +16,8 @@ use crate::{
             self,
             data::{get_baths, get_beds, get_listing_type, get_price},
             pages::{
-                get_real_estate_home_page, get_real_estate_property_page,
-                get_real_estate_search_result_page,
+                get_real_estate_contact_page, get_real_estate_home_page,
+                get_real_estate_property_page, get_real_estate_search_result_page,
             },
             rso_data::{
                 get_hot_properties, get_locations, get_property, get_property_types,
@@ -126,7 +126,8 @@ pub async fn create_router(
     let main_view_routes = Router::new()
         .route("/", get(get_real_estate_home_page))
         .route("/search-results", get(get_real_estate_search_result_page))
-        .route("/property", get(get_real_estate_property_page));
+        .route("/property", get(get_real_estate_property_page))
+        .route("/contact", get(get_real_estate_contact_page));
 
     let real_estate_rso_routes = Router::new().nest(
         "/rso",

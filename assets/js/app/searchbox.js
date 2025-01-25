@@ -111,13 +111,3 @@ export function setupPriceInput() {
     princeInputMinEl.addEventListener("input", () => {});
   }
 }
-
-export function setupMarginNavbar() {
-  const searchSectionEl = document.getElementById("search-section");
-  const navbarEl = document.getElementById("navbar");
-
-  if (searchSectionEl && navbarEl) {
-    searchSectionEl.style.marginTop = `${navbarEl.clientHeight}px`;
-    searchSectionEl.classList.remove("invisible", "min-h-screen");
-  }
-}

@@ -2,7 +2,7 @@ use maud::{html, Markup, PreEscaped};
 
 use crate::{
     models::rso_data::{SearchProperty, TextOrNum},
-    views::real_estate::home
+    views::real_estate::home,
 };
 
 //..............................................................................
@@ -25,10 +25,10 @@ pub fn render_search_box_1() -> Markup {
       (PreEscaped(r#"
         <script type="module">
             import {scrollToTop} from "/assets/js/main.js";
-            import {setupMarginNavbar} from "/assets/js/app/searchbox.js";
+            import {setupMarginNavbar} from "/assets/js/app/navbar.js";
             import {setupDropdown} from "/assets/js/app/searchbox.js";
             scrollToTop();
-            setupMarginNavbar();
+            setupMarginNavbar("search-results");
             setupDropdown();
         </script>
       "#))
@@ -53,9 +53,9 @@ pub fn render_search_box_2() -> Markup {
       (PreEscaped(r#"
         <script type="module">
             import {scrollToTop} from "/assets/js/main.js";
-            import {setupMarginNavbar} from "/assets/js/app/searchbox.js";
+            import {setupMarginNavbar} from "/assets/js/app/navbar.js";
             scrollToTop();
-            setupMarginNavbar();
+            setupMarginNavbar("search-results");
         </script>
       "#))
       div class="w-80 text-sm shrink-0" {
@@ -115,9 +115,9 @@ pub fn render_search_box_3() -> Markup {
       (PreEscaped(r#"
         <script type="module">
             import {scrollToTop} from "/assets/js/main.js";
-            import {setupMarginNavbar} from "/assets/js/app/searchbox.js";
+            import {setupMarginNavbar} from "/assets/js/app/navbar.js";
             scrollToTop();
-            setupMarginNavbar();
+            setupMarginNavbar("search-results");
         </script>
       "#))
       div class="flex flex-col justify-center items-center gap-6 shadow-lg py-8 p-6 rounded-3xl w-full" {
@@ -175,24 +175,24 @@ pub fn render_search_box_3() -> Markup {
 
 pub fn render_search_box_4() -> Markup {
     let bed_icon_light = html! {
-        img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed-light.svg";
+        img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed-light.svg";
     };
 
     let bath_icon_light = html! {
-        img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath-light.svg";
+        img class="w-5 h-5" alt="bath" src="/assets/images/icon/bath-light.svg";
     };
 
     let location_icon = html! {
-        img class="h-5 w-5" alt="location" src="/assets/images/icon/location.svg";
+        img class="w-5 h-5" alt="location" src="/assets/images/icon/location.svg";
     };
 
     html! {
       (PreEscaped(r#"
         <script type="module">
             import {scrollToTop} from "/assets/js/main.js";
-            import {setupMarginNavbar} from "/assets/js/app/searchbox.js";
+            import {setupMarginNavbar} from "/assets/js/app/navbar.js";
             scrollToTop();
-            setupMarginNavbar();
+            setupMarginNavbar("search-results");
         </script>
       "#))
       div class="flex justify-center items-center w-full max-w-360" {
@@ -679,15 +679,15 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
             }
             div class="flex gap-4 text-sm" {
               div class="flex items-center gap-2" {
-                img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
+                img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed.svg";
                 (property.bedrooms)
               }
               div class="flex items-center gap-2" {
-                img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath.svg";
+                img class="w-5 h-5" alt="bath" src="/assets/images/icon/bath.svg";
                 (property.bathrooms)
               }
               div class="flex items-center gap-2" {
-                img class="h-5 w-5" alt="buit size" src="/assets/images/icon/built-size.svg";
+                img class="w-5 h-5" alt="buit size" src="/assets/images/icon/built-size.svg";
                 @match &property.built {
                     TextOrNum::Text(built) => (built),
                     TextOrNum::Num(built) => (built),
@@ -770,11 +770,11 @@ pub fn render_property_card_2(property: &SearchProperty, listing_type: &str) -> 
             div class="flex flex-col gap-2" {
               div class="flex gap-4 divide-x divide-black text-sm" {
                 div class="flex flex-1 items-center gap-2" {
-                  img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
+                  img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed.svg";
                   (property.bedrooms) " Beds"
                 }
                 div class="flex flex-1 items-center gap-2" {
-                  img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath.svg";
+                  img class="w-5 h-5" alt="bath" src="/assets/images/icon/bath.svg";
                   (property.bathrooms) " Baths"
                 }
               }
@@ -852,11 +852,11 @@ pub fn render_property_card_3(property: &SearchProperty, listing_type: &str) -> 
             div class="flex flex-col gap-2" {
               div class="flex gap-4 divide-x divide-black text-sm" {
                 div class="flex flex-1 items-center gap-2" {
-                  img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
+                  img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed.svg";
                   (property.bedrooms) " Beds"
                 }
                 div class="flex flex-1 items-center gap-2" {
-                  img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
+                  img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed.svg";
                   (property.bathrooms) " Baths"
                 }
               }
@@ -933,11 +933,11 @@ pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> 
             }
             div class="flex gap-4 divide-x divide-black text-sm" {
               div class="flex flex-1 items-center gap-2" {
-                img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
+                img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed.svg";
                 (property.bedrooms) " Beds"
               }
               div class="flex flex-1 items-center gap-2" {
-                img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath.svg";
+                img class="w-5 h-5" alt="bath" src="/assets/images/icon/bath.svg";
                 (property.bathrooms) " Baths"
               }
             }
