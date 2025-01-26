@@ -5,28 +5,26 @@ use crate::{
     models::rso_data::{
         LocationDynamic, PropertyType, ProvinceAreaDynamic, SearchProperty, TextOrNum,
     },
-    views::icons::{
-        next_icon, previous_icon
-    },
+    views::icons::{next_icon, previous_icon},
 };
 
-//..............................................................................
-//.BBBBBBBBB.......AAAA......NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRR....
-//.BBBBBBBBBBB.....AAAAA.....NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRRRR..
-//.BBBBBBBBBBB.....AAAAA.....NNNNN...NNN..NNNNN...NNN..EEEEEEEEEE..RRRRRRRRRRR..
-//.BBB.....BBB....AAAAAA.....NNNNN...NNN..NNNNN...NNN..EEE.........RRR.....RRR..
-//.BBB.....BBB....AAAAAAA....NNNNNN..NNN..NNNNNN..NNN..EEE.........RRR.....RRR..
-//.BBBBBBBBBB....AAAA.AAA....NNNNNNN.NNN..NNNNNNN.NNN..EEEEEEEEEE..RRRRRRRRRRR..
-//.BBBBBBBBBB....AAA..AAAA...NNN.NNN.NNN..NNN.NNN.NNN..EEEEEEEEEE..RRRRRRRRRR...
-//.BBBBBBBBBBB...AAAAAAAAA...NNN.NNNNNNN..NNN.NNNNNNN..EEEEEEEEEE..RRRRRRRR.....
-//.BBB.....BBBB.AAAAAAAAAA...NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR..RRRR....
-//.BBB.....BBBB.AAAAAAAAAAA..NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR...RRRR...
-//.BBBBBBBBBBB..AAA.....AAA..NNN...NNNNN..NNN...NNNNN..EEEEEEEEEEE.RRR....RRRR..
-//.BBBBBBBBBBB.BAAA.....AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR....RRRR..
-//.BBBBBBBBBB..BAA......AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR.....RRR..
-//..............................................................................
+//.......................................................................................
+//.BBBBBBBBB.......AAAA......NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRR.......1111..
+//.BBBBBBBBBBB.....AAAAA.....NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRRRR.....1111..
+//.BBBBBBBBBBB.....AAAAA.....NNNNN...NNN..NNNNN...NNN..EEEEEEEEEE..RRRRRRRRRRR...111111..
+//.BBB.....BBB....AAAAAA.....NNNNN...NNN..NNNNN...NNN..EEE.........RRR.....RRR..1111111..
+//.BBB.....BBB....AAAAAAA....NNNNNN..NNN..NNNNNN..NNN..EEE.........RRR.....RRR..1111111..
+//.BBBBBBBBBB....AAAA.AAA....NNNNNNN.NNN..NNNNNNN.NNN..EEEEEEEEEE..RRRRRRRRRRR..11.1111..
+//.BBBBBBBBBB....AAA..AAAA...NNN.NNN.NNN..NNN.NNN.NNN..EEEEEEEEEE..RRRRRRRRRR......1111..
+//.BBBBBBBBBBB...AAAAAAAAA...NNN.NNNNNNN..NNN.NNNNNNN..EEEEEEEEEE..RRRRRRRR........1111..
+//.BBB.....BBBB.AAAAAAAAAA...NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR..RRRR.......1111..
+//.BBB.....BBBB.AAAAAAAAAAA..NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR...RRRR......1111..
+//.BBBBBBBBBBB..AAA.....AAA..NNN...NNNNN..NNN...NNNNN..EEEEEEEEEEE.RRR....RRRR.....1111..
+//.BBBBBBBBBBB.BAAA.....AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR....RRRR.....1111..
+//.BBBBBBBBBB..BAA......AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR.....RRRR....1111..
+//.......................................................................................
 
-pub fn render_home_banner() -> Markup {
+pub fn render_home_banner_1() -> Markup {
     html! {
       div class="flex justify-center items-center w-full" {
         div class="relative bg-[url('https://d1qawt2l8egll1.cloudfront.net/prod/images/240825202440-copy-of-moving-to-spain-from-the-uk.png')] bg-cover w-full h-screen" {
@@ -41,10 +39,129 @@ pub fn render_home_banner() -> Markup {
           }
         }
       }
+      (render_home_search_box_1())
     }
 }
 
-pub fn render_selection_drop_down(choices: Vec<&str>, highlight: &str) -> Markup {
+//.........................................................................................
+//.BBBBBBBBB.......AAAA......NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRR.....222222....
+//.BBBBBBBBBBB.....AAAAA.....NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRRRR..22222222...
+//.BBBBBBBBBBB.....AAAAA.....NNNNN...NNN..NNNNN...NNN..EEEEEEEEEE..RRRRRRRRRRR..222..222...
+//.BBB.....BBB....AAAAAA.....NNNNN...NNN..NNNNN...NNN..EEE.........RRR.....RRR.R222..2222..
+//.BBB.....BBB....AAAAAAA....NNNNNN..NNN..NNNNNN..NNN..EEE.........RRR.....RRR.......2222..
+//.BBBBBBBBBB....AAAA.AAA....NNNNNNN.NNN..NNNNNNN.NNN..EEEEEEEEEE..RRRRRRRRRRR.......222...
+//.BBBBBBBBBB....AAA..AAAA...NNN.NNN.NNN..NNN.NNN.NNN..EEEEEEEEEE..RRRRRRRRRR.......2222...
+//.BBBBBBBBBBB...AAAAAAAAA...NNN.NNNNNNN..NNN.NNNNNNN..EEEEEEEEEE..RRRRRRRR........2222....
+//.BBB.....BBBB.AAAAAAAAAA...NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR..RRRR......2222.....
+//.BBB.....BBBB.AAAAAAAAAAA..NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR...RRRR....2222......
+//.BBBBBBBBBBB..AAA.....AAA..NNN...NNNNN..NNN...NNNNN..EEEEEEEEEEE.RRR....RRRR..2222.......
+//.BBBBBBBBBBB.BAAA.....AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR....RRRR.R222222222..
+//.BBBBBBBBBB..BAA......AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR.....RRRRR222222222..
+//.........................................................................................
+
+pub fn render_home_banner_2() -> Markup {
+    html! {
+      div class="flex justify-center items-center w-full" {
+        div class="relative bg-[url('https://d1qawt2l8egll1.cloudfront.net/prod/images/240825202440-copy-of-moving-to-spain-from-the-uk.png')] bg-cover w-full h-screen" {
+          div class="absolute inset-0 flex justify-center items-center m-auto max-w-360" {
+            div class="flex justify-center items-center gap-15 mt-10 w-full" {
+              div class="flex flex-col gap-5 bg-white opacity-80 p-8 rounded-lg max-w-md" {
+                span class="font-bold text-4xl" { "Find your new home" }
+                span class="text-lg" { "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!" }
+              }
+              (render_home_search_box_2())
+            }
+          }
+        }
+      }
+    }
+}
+
+//.........................................................................................
+//.BBBBBBBBB.......AAAA......NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRR.....33333.....
+//.BBBBBBBBBBB.....AAAAA.....NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRRRR..3333333....
+//.BBBBBBBBBBB.....AAAAA.....NNNNN...NNN..NNNNN...NNN..EEEEEEEEEE..RRRRRRRRRRR..333.3333...
+//.BBB.....BBB....AAAAAA.....NNNNN...NNN..NNNNN...NNN..EEE.........RRR.....RRR..333..333...
+//.BBB.....BBB....AAAAAAA....NNNNNN..NNN..NNNNNN..NNN..EEE.........RRR.....RRR......3333...
+//.BBBBBBBBBB....AAAA.AAA....NNNNNNN.NNN..NNNNNNN.NNN..EEEEEEEEEE..RRRRRRRRRRR.....3333....
+//.BBBBBBBBBB....AAA..AAAA...NNN.NNN.NNN..NNN.NNN.NNN..EEEEEEEEEE..RRRRRRRRRR......3333....
+//.BBBBBBBBBBB...AAAAAAAAA...NNN.NNNNNNN..NNN.NNNNNNN..EEEEEEEEEE..RRRRRRRR..........333...
+//.BBB.....BBBB.AAAAAAAAAA...NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR..RRRR.........3333..
+//.BBB.....BBBB.AAAAAAAAAAA..NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR...RRRR..R333..3333..
+//.BBBBBBBBBBB..AAA.....AAA..NNN...NNNNN..NNN...NNNNN..EEEEEEEEEEE.RRR....RRRR..333..333...
+//.BBBBBBBBBBB.BAAA.....AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR....RRRR..33333333...
+//.BBBBBBBBBB..BAA......AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR.....RRRR..33333.....
+//.........................................................................................
+
+pub fn render_home_banner_3() -> Markup {
+    html! {
+      div class="flex justify-center items-center w-full" {
+        div class="relative bg-[url('https://d1qawt2l8egll1.cloudfront.net/prod/images/240825202440-copy-of-moving-to-spain-from-the-uk.png')] bg-cover w-full h-screen" {
+          div class="absolute inset-0 flex justify-center items-center m-auto max-w-360" {
+            div class="flex flex-col justify-center items-center gap-15 w-full -translate-y-35" {
+              div class="flex flex-col gap-5 bg-white opacity-80 p-8 rounded-lg max-w-lg" {
+                span class="font-bold text-4xl" { "Find your new home" }
+                span class="text-lg" { "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!" }
+              }
+            }
+          }
+          (render_home_search_box_3())
+        }
+      }
+    }
+}
+
+//.........................................................................................
+//.BBBBBBBBB.......AAAA......NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRR........444....
+//.BBBBBBBBBBB.....AAAAA.....NNNN....NNN..NNNN....NNN..EEEEEEEEEE..RRRRRRRRRRR.....4444....
+//.BBBBBBBBBBB.....AAAAA.....NNNNN...NNN..NNNNN...NNN..EEEEEEEEEE..RRRRRRRRRRR.....4444....
+//.BBB.....BBB....AAAAAA.....NNNNN...NNN..NNNNN...NNN..EEE.........RRR.....RRR....44444....
+//.BBB.....BBB....AAAAAAA....NNNNNN..NNN..NNNNNN..NNN..EEE.........RRR.....RRR...444444....
+//.BBBBBBBBBB....AAAA.AAA....NNNNNNN.NNN..NNNNNNN.NNN..EEEEEEEEEE..RRRRRRRRRRR...444444....
+//.BBBBBBBBBB....AAA..AAAA...NNN.NNN.NNN..NNN.NNN.NNN..EEEEEEEEEE..RRRRRRRRRR...444.444....
+//.BBBBBBBBBBB...AAAAAAAAA...NNN.NNNNNNN..NNN.NNNNNNN..EEEEEEEEEE..RRRRRRRR....R44..444....
+//.BBB.....BBBB.AAAAAAAAAA...NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR..RRRR...R444444444..
+//.BBB.....BBBB.AAAAAAAAAAA..NNN..NNNNNN..NNN..NNNNNN..EEE.........RRR...RRRR..R444444444..
+//.BBBBBBBBBBB..AAA.....AAA..NNN...NNNNN..NNN...NNNNN..EEEEEEEEEEE.RRR....RRRR......444....
+//.BBBBBBBBBBB.BAAA.....AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR....RRRR......444....
+//.BBBBBBBBBB..BAA......AAAA.NNN....NNNN..NNN....NNNN..EEEEEEEEEEE.RRR.....RRRR.....444....
+//.........................................................................................
+
+pub fn render_home_banner_4() -> Markup {
+    html! {
+      div class="flex justify-center items-center w-full" {
+        div class="relative bg-[url('https://d1qawt2l8egll1.cloudfront.net/prod/images/240825202440-copy-of-moving-to-spain-from-the-uk.png')] bg-cover w-full h-screen" {
+          div class="absolute inset-0 flex justify-center items-center m-auto max-w-360" {
+            div class="flex flex-col justify-center items-center gap-15 w-full -translate-y-35" {
+              div class="flex flex-col gap-5 bg-white opacity-80 p-8 rounded-lg max-w-lg" {
+                span class="font-bold text-4xl" { "Find your new home" }
+                span class="text-lg" { "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!" }
+              }
+            }
+          }
+          (render_home_search_box_4())
+        }
+      }
+    }
+}
+
+//.......................................................................................
+//....SSSSSS....EEEEEEEEEE.....AAAA......RRRRRRRRR.......CCCCCC....HHH.....HHH.....1111..
+//..SSSSSSSSS...EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR...CCCCCCCCC...HHH.....HHH.....1111..
+//..SSSSSSSSSS..EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR..CCCCCCCCCCC..HHH.....HHH...111111..
+//..SSS...SSSS..EEE...........AAAAAA.....RRR.....RRR..CCCC...CCCC..HHH.....HHH..1111111..
+//..SSSS........EEE...........AAAAAAA....RRR.....RRR..CCC.....CC...HHH.....HHH..1111111..
+//..SSSSSSS.....EEEEEEEEEE...AAAA.AAA....RRRRRRRRRRR.CCCC..........HHHHHHHHHHH..11.1111..
+//...SSSSSSSS...EEEEEEEEEE...AAA..AAAA...RRRRRRRRRR..CCCC..........HHHHHHHHHHH.....1111..
+//.....SSSSSSS..EEEEEEEEEE...AAAAAAAAA...RRRRRRRR....CCCC..........HHHHHHHHHHH.....1111..
+//.........SSSS.EEE.........AAAAAAAAAA...RRR..RRRR....CCC.....CC...HHH.....HHH.....1111..
+//.SSSS....SSSS.EEE.........AAAAAAAAAAA..RRR...RRRR...CCCC...CCCC..HHH.....HHH.....1111..
+//..SSSSSSSSSS..EEEEEEEEEEE.AAA.....AAA..RRR....RRRR..CCCCCCCCCCC..HHH.....HHH.....1111..
+//..SSSSSSSSSS..EEEEEEEEEEEAAAA.....AAAA.RRR....RRRR...CCCCCCCCC...HHH.....HHH.....1111..
+//....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH.....1111..
+//.......................................................................................
+
+pub fn render_selection_drop_down_1(choices: Vec<&str>, highlight: &str) -> Markup {
     html! {
       @for choice in choices {
         @if choice == highlight {
@@ -60,7 +177,7 @@ pub fn render_selection_drop_down(choices: Vec<&str>, highlight: &str) -> Markup
     }
 }
 
-pub fn render_beds_baths_selection_drop_down(choices: Vec<&str>, highlight: &str) -> Markup {
+pub fn render_beds_baths_selection_drop_down_1(choices: Vec<&str>, highlight: &str) -> Markup {
     html! {
       div class="flex flex-col justify-center gap-4 px-2 h-full text-sm" {
         div class="flex border-slate-900 border rounded-md h-10" {
@@ -84,7 +201,7 @@ pub fn render_beds_baths_selection_drop_down(choices: Vec<&str>, highlight: &str
     }
 }
 
-pub fn render_location_selection_drop_down(
+pub fn render_location_selection_drop_down_1(
     provinces: ProvinceAreaDynamic,
     highlight: &str,
 ) -> Markup {
@@ -94,18 +211,18 @@ pub fn render_location_selection_drop_down(
           ProvinceAreaDynamic::Single(province_area) => {
             @if highlight == "All" {
               @let id = format!("{}-location", province_area.province_area_name);
-              (render_input_radio("All", "province", "all-location", Some(true)))
-              (render_input_radio(province_area.province_area_name.as_str(), "province", id.as_str(), None))
+              (render_input_radio_1("All", "province", "all-location", Some(true)))
+              (render_input_radio_1(province_area.province_area_name.as_str(), "province", id.as_str(), None))
 
               @match province_area.locations.location {
                 LocationDynamic::Single(location) => {
                   @let id = format!("{}-child", location);
-                  (render_check_box(location.as_str(), None, id.as_str(), None, None));
+                  (render_check_box_1(location.as_str(), None, id.as_str(), None, None));
                 },
                 LocationDynamic::Multiple(locations) => {
                   @for location in locations {
                     @let id = format!("{}-child", location);
-                    (render_check_box(location.as_str(), None, id.as_str(), None, None));
+                    (render_check_box_1(location.as_str(), None, id.as_str(), None, None));
                   }
                 },
               }
@@ -113,35 +230,35 @@ pub fn render_location_selection_drop_down(
             } @else {
               @let id = format!("{}-location", province_area.province_area_name);
 
-              (render_input_radio("All", "province", "all-location", None))
+              (render_input_radio_1("All", "province", "all-location", None))
 
               @if province_area.province_area_name == highlight {
-                (render_input_radio(province_area.province_area_name.as_str(), "province", id.as_str(), Some(true)))
+                (render_input_radio_1(province_area.province_area_name.as_str(), "province", id.as_str(), Some(true)))
               }@else {
-                (render_input_radio(province_area.province_area_name.as_str(), "province", id.as_str(), None))
+                (render_input_radio_1(province_area.province_area_name.as_str(), "province", id.as_str(), None))
               }
             }
           },
           ProvinceAreaDynamic::Multiple(province_areas) => {
             @if highlight == "All" {
-              (render_input_radio("All", "province", "all-location", Some(true)))
+              (render_input_radio_1("All", "province", "all-location", Some(true)))
             } @else {
-              (render_input_radio("All", "province", "all-location", None))
+              (render_input_radio_1("All", "province", "all-location", None))
             }
 
             @for province_area in province_areas {
               @let id = format!("{}-location", province_area.province_area_name);
-              (render_input_radio(province_area.province_area_name.as_str(), "province", id.as_str(), None))
+              (render_input_radio_1(province_area.province_area_name.as_str(), "province", id.as_str(), None))
 
               @match province_area.locations.location {
                 LocationDynamic::Single(location) => {
                   @let id = format!("{}-child", location);
-                  (render_check_box(location.as_str(), None, id.as_str(), None, None));
+                  (render_check_box_1(location.as_str(), None, id.as_str(), None, None));
                 },
                 LocationDynamic::Multiple(locations) => {
                   @for location in locations {
                     @let id = format!("{}-child", location);
-                    (render_check_box(location.as_str(), None, id.as_str(), None, None));
+                    (render_check_box_1(location.as_str(), None, id.as_str(), None, None));
                   }
                 },
               }
@@ -152,20 +269,20 @@ pub fn render_location_selection_drop_down(
     }
 }
 
-pub fn render_property_types_selection_drop_down(property_types: Vec<PropertyType>) -> Markup {
+pub fn render_property_types_selection_drop_down_1(property_types: Vec<PropertyType>) -> Markup {
     html! {
       div class="flex flex-col gap-3" {
         @for property_type in property_types {
-          (render_check_box(property_type.prop_type.as_str(), Some(property_type.option_value.as_str()) , property_type.option_value.as_str(), None, Some("ml-0")));
+          (render_check_box_1(property_type.prop_type.as_str(), Some(property_type.option_value.as_str()) , property_type.option_value.as_str(), None, Some("ml-0")));
           @for sub_type in property_type.sub_types {
-            (render_check_box(sub_type.prop_sub_type.as_str(), Some(property_type.option_value.as_str()), sub_type.sub_type_option_value.as_str(), None, None));
+            (render_check_box_1(sub_type.prop_sub_type.as_str(), Some(property_type.option_value.as_str()), sub_type.sub_type_option_value.as_str(), None, None));
           }
         }
       }
     }
 }
 
-pub fn render_input_radio(value: &str, name: &str, id: &str, checked: Option<bool>) -> Markup {
+pub fn render_input_radio_1(value: &str, name: &str, id: &str, checked: Option<bool>) -> Markup {
     html! {
       div class="flex items-center gap-2 text-sm" {
         input type="radio" checked=[checked] id=(id) name=(name) value=(value);
@@ -174,7 +291,7 @@ pub fn render_input_radio(value: &str, name: &str, id: &str, checked: Option<boo
     }
 }
 
-pub fn render_check_box(
+pub fn render_check_box_1(
     name: &str,
     value: Option<&str>,
     id: &str,
@@ -195,7 +312,7 @@ pub fn render_check_box(
     }
 }
 
-pub fn render_selection_label(label: &str, id: &str) -> Markup {
+pub fn render_selection_label_1(label: &str, id: &str) -> Markup {
     html! {
       div id=(id) hx-swap-oob="outerHTML" class="text-slate-500 text-sm" {
         (label)
@@ -203,7 +320,7 @@ pub fn render_selection_label(label: &str, id: &str) -> Markup {
     }
 }
 
-pub fn render_price_input(id: &str) -> Markup {
+pub fn render_price_input_1(id: &str) -> Markup {
     html! {
       (PreEscaped(r#"
         <script type="module">
@@ -225,7 +342,7 @@ pub fn render_price_input(id: &str) -> Markup {
     }
 }
 
-pub fn render_search_box_selection(
+pub fn render_search_box_selection_1(
     title: &str,
     hx_get: &str,
     dropdown_id: &str,
@@ -281,7 +398,7 @@ pub fn render_search_box_selection(
     }
 }
 
-pub fn render_home_search_box() -> Markup {
+pub fn render_home_search_box_1() -> Markup {
     html! {
       (PreEscaped(r#"
         <script type="module">
@@ -294,12 +411,12 @@ pub fn render_home_search_box() -> Markup {
           div class="flex justify-end items-center pr-3" {
             input class="border-slate-800 rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
-          (render_search_box_selection("Listing Type", "/data/real-estate/listing-type", "listing-type-dropdown", "listing-type-label"))
-          (render_search_box_selection("Location", "/rso/location", "location-dropdown", "location-label"))
-          (render_search_box_selection("Property Types", "/rso/property-types", "property-types-dropdown", "property-types-label"))
-          (render_search_box_selection("Price", "/data/real-estate/prices", "price-dropdown", "price-label"))
-          (render_search_box_selection("Bath", "/data/real-estate/baths", "bath-dropdown", "bath-label"))
-          (render_search_box_selection("Bed", "/data/real-estate/beds", "bed-dropdown", "bed-label"))
+          (render_search_box_selection_1("Listing Type", "/data/real-estate/listing-type", "listing-type-dropdown", "listing-type-label"))
+          (render_search_box_selection_1("Location", "/rso/location", "location-dropdown", "location-label"))
+          (render_search_box_selection_1("Property Types", "/rso/property-types", "property-types-dropdown", "property-types-label"))
+          (render_search_box_selection_1("Price", "/data/real-estate/prices", "price-dropdown", "price-label"))
+          (render_search_box_selection_1("Bath", "/data/real-estate/baths", "bath-dropdown", "bath-label"))
+          (render_search_box_selection_1("Bed", "/data/real-estate/beds", "bed-dropdown", "bed-label"))
         }
         div {
           button
@@ -315,21 +432,269 @@ pub fn render_home_search_box() -> Markup {
     }
 }
 
-//......................................................................................................
-//.HHH.....HHH.....OOOOOO.....TTTTTTTTTTTPPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP.....SSSSSS....
-//.HHH.....HHH...OOOOOOOOOO...TTTTTTTTTTTPPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..SSSSSSSSS...
-//.HHH.....HHH..OOOOOOOOOOOO..TTTTTTTTTTTPPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..SSSSSSSSSS..
-//.HHH.....HHH..OOOO....OOOO......TTT....PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPPP.SSS...SSSS..
-//.HHH.....HHH..OOO......OOO......TTT....PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPPP.SSSS........
-//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP..SSSSSSS.....
-//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP...SSSSSSSS...
-//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP......SSSSSSS..
-//.HHH.....HHH..OOO......OOO......TTT....PPP.........RRR..RRRR....OOO......OOO..PPP................SSS..
-//.HHH.....HHH..OOOO....OOOO......TTT....PPP.........RRR...RRRR...OOOO....OOOO..PPP........PSSS....SSS..
-//.HHH.....HHH..OOOOOOOOOOOO......TTT....PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.........SSSSSSSSSS..
-//.HHH.....HHH...OOOOOOOOOO.......TTT....PPP.........RRR....RRRR...OOOOOOOOOO...PPP.........SSSSSSSSSS..
-//.HHH.....HHH.....OOOOOO.........TTT....PPP.........RRR.....RRRR....OOOOOO.....PPP...........SSSSSS....
-//......................................................................................................
+//.........................................................................................
+//....SSSSSS....EEEEEEEEEE.....AAAA......RRRRRRRRR.......CCCCCC....HHH.....HHH...222222....
+//..SSSSSSSSS...EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR...CCCCCCCCC...HHH.....HHH..22222222...
+//..SSSSSSSSSS..EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR..CCCCCCCCCCC..HHH.....HHH..222..222...
+//..SSS...SSSS..EEE...........AAAAAA.....RRR.....RRR..CCCC...CCCC..HHH.....HHH.2222..2222..
+//..SSSS........EEE...........AAAAAAA....RRR.....RRR..CCC.....CC...HHH.....HHH.......2222..
+//..SSSSSSS.....EEEEEEEEEE...AAAA.AAA....RRRRRRRRRRR.CCCC..........HHHHHHHHHHH.......222...
+//...SSSSSSSS...EEEEEEEEEE...AAA..AAAA...RRRRRRRRRR..CCCC..........HHHHHHHHHHH......2222...
+//.....SSSSSSS..EEEEEEEEEE...AAAAAAAAA...RRRRRRRR....CCCC..........HHHHHHHHHHH.....2222....
+//.........SSSS.EEE.........AAAAAAAAAA...RRR..RRRR....CCC.....CC...HHH.....HHH....2222.....
+//.SSSS....SSSS.EEE.........AAAAAAAAAAA..RRR...RRRR...CCCC...CCCC..HHH.....HHH...2222......
+//..SSSSSSSSSS..EEEEEEEEEEE.AAA.....AAA..RRR....RRRR..CCCCCCCCCCC..HHH.....HHH..2222.......
+//..SSSSSSSSSS..EEEEEEEEEEEAAAA.....AAAA.RRR....RRRR...CCCCCCCCC...HHH.....HHH.2222222222..
+//....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH.2222222222..
+//.........................................................................................
+
+pub fn render_home_search_box_2() -> Markup {
+    html! {
+      div class="bg-white p-7 rounded-lg w-110" {
+        div class="flex flex-col gap-4" {
+          div class="flex gap-6" {
+            span class="pb-1 border-b-2 border-b-blue-500 font-bold" { "For Sales" }
+            span class="pb-1" { "For Rent" }
+          }
+          div class="flex gap-6" {
+            div class="flex items-center gap-2" {
+              input type="radio" name="listing-type" checked value="sale";
+              label { "ReSales" }
+            }
+            div class="flex items-center gap-2" {
+              input type="radio" name="listing-type" value="new-dev";
+              label { "New Dev" }
+            }
+          }
+          div {
+            input class="border-slate-800 rounded-md w-full h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
+          }
+          div class="flex flex-col gap-3" {
+            div class="flex flex-col gap-2" {
+              span class="font-bold" { "Location" }
+              div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                span { "All" }
+                img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+              }
+            }
+            div class="flex flex-col gap-2" {
+              span class="font-bold" { "Property Types" }
+              div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                span { "All" }
+                img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+              }
+            }
+            div class="flex gap-4" {
+              div class="flex flex-col flex-1 gap-2" {
+                span class="font-bold" { "Bed" }
+                div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                  div class="flex items-center gap-2" {
+                    img class="w-5 h-5" src="/assets/images/icon/bed.svg" alt="bed";
+                    span { "Any" }
+                  }
+                  div {
+                    img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+                  }
+                }
+              }
+              div class="flex flex-col flex-1 gap-2" {
+                span class="font-bold" { "Bath" }
+                div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                  div class="flex items-center gap-2" {
+                    img class="w-5 h-5" src="/assets/images/icon/bath.svg" alt="bath";
+                    span { "Any" }
+                  }
+                  div {
+                    img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+                  }
+                }
+              }
+            }
+            div class="flex flex-col gap-2" {
+              span class="font-bold" { "Price" }
+              div class="flex gap-4" {
+                div class="flex flex-col flex-1 gap-2" {
+                  div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                    span { "Min €" }
+                    div {
+                      img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+                    }
+                  }
+                }
+                div class="flex flex-col flex-1 gap-2" {
+                  div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                    span { "Max €" }
+                    div {
+                      img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+                    }
+                  }
+                }
+              }
+            }
+            button
+              hx-get="/section/real-estate/contents/search-results"
+              hx-push-url="/search-results"
+              hx-target="main"
+              class="bg-blue-500 hover:bg-blue-400 mt-4 px-14 py-3 rounded-md w-full font-semibold text-white cursor-pointer"
+            {
+              "Search"
+            }
+          }
+        }
+      }
+    }
+}
+
+//.........................................................................................
+//....SSSSSS....EEEEEEEEEE.....AAAA......RRRRRRRRR.......CCCCCC....HHH.....HHH...33333.....
+//..SSSSSSSSS...EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR...CCCCCCCCC...HHH.....HHH..3333333....
+//..SSSSSSSSSS..EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR..CCCCCCCCCCC..HHH.....HHH..333.3333...
+//..SSS...SSSS..EEE...........AAAAAA.....RRR.....RRR..CCCC...CCCC..HHH.....HHH..333..333...
+//..SSSS........EEE...........AAAAAAA....RRR.....RRR..CCC.....CC...HHH.....HHH......3333...
+//..SSSSSSS.....EEEEEEEEEE...AAAA.AAA....RRRRRRRRRRR.CCCC..........HHHHHHHHHHH.....3333....
+//...SSSSSSSS...EEEEEEEEEE...AAA..AAAA...RRRRRRRRRR..CCCC..........HHHHHHHHHHH.....3333....
+//.....SSSSSSS..EEEEEEEEEE...AAAAAAAAA...RRRRRRRR....CCCC..........HHHHHHHHHHH.......333...
+//.........SSSS.EEE.........AAAAAAAAAA...RRR..RRRR....CCC.....CC...HHH.....HHH.......3333..
+//.SSSS....SSSS.EEE.........AAAAAAAAAAA..RRR...RRRR...CCCC...CCCC..HHH.....HHH.3333..3333..
+//..SSSSSSSSSS..EEEEEEEEEEE.AAA.....AAA..RRR....RRRR..CCCCCCCCCCC..HHH.....HHH..333..333...
+//..SSSSSSSSSS..EEEEEEEEEEEAAAA.....AAAA.RRR....RRRR...CCCCCCCCC...HHH.....HHH..33333333...
+//....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH...33333.....
+//.........................................................................................
+
+pub fn render_home_search_box_3() -> Markup {
+    html! {
+      div class="right-0 bottom-10 left-0 absolute flex justify-center" {
+        div class="flex flex-col justify-center items-center gap-3 bg-white px-8 py-6 rounded-xl" {
+          div class="flex gap-6" {
+            div {
+              input class="border-slate-800 rounded-md w-full h-12 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
+            }
+            div class="flex items-center gap-4 px-4 py-2 border border-black rounded-full" {
+              "For Sale"
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+            }
+            div class="flex items-center gap-4 px-4 py-2 border border-black rounded-full" {
+              "All Locations"
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+            }
+            div class="flex items-center gap-4 px-4 py-2 border border-black rounded-full" {
+              "All Property Types"
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+            }
+            div class="flex items-center gap-4 px-4 py-2 border border-black rounded-full" {
+              "Price"
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+            }
+            div class="flex items-center gap-4 px-4 py-2 border border-black rounded-full" {
+              "Bed"
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+            }
+            div class="flex items-center gap-4 px-4 py-2 border border-black rounded-full" {
+              "Bath"
+              img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+            }
+          }
+          button
+            hx-get="/section/real-estate/contents/search-results"
+            hx-push-url="/search-results"
+            hx-target="main"
+            class="bg-blue-500 hover:bg-blue-400 mt-4 px-14 py-3 rounded-md w-fit font-semibold text-white cursor-pointer"
+          {
+            "Search"
+          }
+        }
+      }
+    }
+}
+
+//.........................................................................................
+//....SSSSSS....EEEEEEEEEE.....AAAA......RRRRRRRRR.......CCCCCC....HHH.....HHH......444....
+//..SSSSSSSSS...EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR...CCCCCCCCC...HHH.....HHH.....4444....
+//..SSSSSSSSSS..EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR..CCCCCCCCCCC..HHH.....HHH.....4444....
+//..SSS...SSSS..EEE...........AAAAAA.....RRR.....RRR..CCCC...CCCC..HHH.....HHH....44444....
+//..SSSS........EEE...........AAAAAAA....RRR.....RRR..CCC.....CC...HHH.....HHH...444444....
+//..SSSSSSS.....EEEEEEEEEE...AAAA.AAA....RRRRRRRRRRR.CCCC..........HHHHHHHHHHH...444444....
+//...SSSSSSSS...EEEEEEEEEE...AAA..AAAA...RRRRRRRRRR..CCCC..........HHHHHHHHHHH..444.444....
+//.....SSSSSSS..EEEEEEEEEE...AAAAAAAAA...RRRRRRRR....CCCC..........HHHHHHHHHHH.444..444....
+//.........SSSS.EEE.........AAAAAAAAAA...RRR..RRRR....CCC.....CC...HHH.....HHH.4444444444..
+//.SSSS....SSSS.EEE.........AAAAAAAAAAA..RRR...RRRR...CCCC...CCCC..HHH.....HHH.4444444444..
+//..SSSSSSSSSS..EEEEEEEEEEE.AAA.....AAA..RRR....RRRR..CCCCCCCCCCC..HHH.....HHH......444....
+//..SSSSSSSSSS..EEEEEEEEEEEAAAA.....AAAA.RRR....RRRR...CCCCCCCCC...HHH.....HHH......444....
+//....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH......444....
+//.........................................................................................
+
+pub fn render_home_search_box_4() -> Markup {
+    html! {
+      div class="right-0 bottom-10 left-0 absolute flex justify-center" {
+        div class="justify-center items-center gap-3 grid grid-cols-8 grid-rows-2 bg-white px-8 py-6 rounded-xl" {
+          div class="flex justify-between items-center gap-4 col-span-2 px-4 py-2 border border-black rounded-md" {
+            "For Sale"
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+          }
+          div class="flex justify-between items-center gap-4 col-span-2 px-4 py-2 border border-black rounded-md" {
+            div class="flex items-center gap-2" {
+              img class="w-6 h-6" src="/assets/images/icon/location.svg" alt="location";
+              "All Locations"
+            }
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+          }
+          div class="flex justify-between items-center gap-4 col-span-2 px-4 py-2 border border-black rounded-md" {
+            "All Property Types"
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+          }
+          div class="flex justify-between items-center gap-4 px-4 py-2 border border-black rounded-md" {
+            "Min €"
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+          }
+          div class="flex justify-between items-center gap-4 px-4 py-2 border border-black rounded-md" {
+            "Max €"
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+          }
+          div class="flex justify-between items-center gap-4 col-span-2 px-4 py-2 border border-black rounded-md" {
+            div class="flex items-center gap-2" {
+              img class="w-5 h-5" src="/assets/images/icon/bed.svg" alt="bed";
+              "Any"
+            }
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+          }
+          div class="flex justify-between items-center gap-4 col-span-2 px-4 py-2 border border-black rounded-md" {
+            div class="flex items-center gap-2" {
+              img class="w-5 h-5" src="/assets/images/icon/bath.svg" alt="bath";
+              "Any"
+            }
+            img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+          }
+          div class="col-span-2" {
+            input class="border-slate-800 rounded-md w-full h-10.5 placeholder:text-sm" type="search" placeholder="Search Ref ID";
+          }
+          button
+            hx-get="/section/real-estate/contents/search-results"
+            hx-push-url="/search-results"
+            hx-target="main"
+            class="col-span-2 bg-blue-500 hover:bg-blue-400 rounded-md w-full h-10.5 font-semibold text-white cursor-pointer"
+          {
+            "Search"
+          }
+        }
+      }
+    }
+}
+
+//................................................
+//.HHH.....HHH.....OOOOOO.....TTTTTTTTTTT...1111..
+//.HHH.....HHH...OOOOOOOOOO...TTTTTTTTTTT...1111..
+//.HHH.....HHH..OOOOOOOOOOOO..TTTTTTTTTTT.111111..
+//.HHH.....HHH..OOOO....OOOO......TTT....1111111..
+//.HHH.....HHH..OOO......OOO......TTT....1111111..
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT....11.1111..
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT.......1111..
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT.......1111..
+//.HHH.....HHH..OOO......OOO......TTT.......1111..
+//.HHH.....HHH..OOOO....OOOO......TTT.......1111..
+//.HHH.....HHH..OOOOOOOOOOOO......TTT.......1111..
+//.HHH.....HHH...OOOOOOOOOO.......TTT.......1111..
+//.HHH.....HHH.....OOOOOO.........TTT.......1111..
+//................................................
 
 pub fn render_hot_properties() -> Markup {
     html! {
@@ -488,15 +853,15 @@ pub fn render_hot_property_card(property: &SearchProperty, listing_type: &str) -
             }
             div class="flex gap-4 text-sm" {
               div class="flex items-center gap-2" {
-                img class="h-5 w-5" alt="bed" src="/assets/images/icon/bed.svg";
+                img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed.svg";
                 (property.bedrooms)
               }
               div class="flex items-center gap-2" {
-                img class="h-5 w-5" alt="bath" src="/assets/images/icon/bath.svg";
+                img class="w-5 h-5" alt="bath" src="/assets/images/icon/bath.svg";
                 (property.bathrooms)
               }
               div class="flex items-center gap-2" {
-                img class="h-5 w-5" alt="buit size" src="/assets/images/icon/built-size.svg";
+                img class="w-5 h-5" alt="buit size" src="/assets/images/icon/built-size.svg";
                 @match &property.built {
                     TextOrNum::Text(built) => (built),
                     TextOrNum::Num(built) => (built),
@@ -512,21 +877,21 @@ pub fn render_hot_property_card(property: &SearchProperty, listing_type: &str) -
     }
 }
 
-//.................................................................................
-//....SSSSSS....EEEEEEEEEE..RRRRRRRRR..RVVV.....VVVV.III.....CCCCC.....EEEEEEEEEE..
-//..SSSSSSSSS...EEEEEEEEEE..RRRRRRRRRRR.VVV.....VVVV.III...CCCCCCCCC...EEEEEEEEEE..
-//..SSSSSSSSSS..EEEEEEEEEE..RRRRRRRRRRR.VVVV....VVV..III..CCCCCCCCCCC..EEEEEEEEEE..
-//..SSS...SSSS..EEE.........RRR.....RRR.VVVV...VVVV..III..CCCC...CCCC..EEE.........
-//..SSSS........EEE.........RRR.....RRR..VVV...VVVV..III.CCCC.....CC...EEE.........
-//..SSSSSSS.....EEEEEEEEEE..RRRRRRRRRRR..VVVV..VVV...III.CCCC..........EEEEEEEEEE..
-//...SSSSSSSS...EEEEEEEEEE..RRRRRRRRRR...VVVV.VVVV...III.CCCC..........EEEEEEEEEE..
-//.....SSSSSSS..EEEEEEEEEE..RRRRRRRR......VVV.VVVV...III.CCCC..........EEEEEEEEEE..
-//.........SSSS.EEE.........RRR..RRRR.....VVVVVVV....III.CCCC.....CC...EEE.........
-//.SSSS....SSSS.EEE.........RRR...RRRR....VVVVVVV....III..CCCC...CCCC..EEE.........
-//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III..CCCCCCCCCCC..EEEEEEEEEE..
-//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III...CCCCCCCCC...EEEEEEEEEE..
-//....SSSSSS....EEEEEEEEEEE.RRR.....RRRR...VVVVV.....III.....CCCCCC....EEEEEEEEEE..
-//.................................................................................
+//.........................................................................................
+//....SSSSSS....EEEEEEEEEE..RRRRRRRRR..RVVV.....VVVV.III.....CCCCC.....EEEEEEEEEE.....111..
+//..SSSSSSSSS...EEEEEEEEEE..RRRRRRRRRRR.VVV.....VVVV.III...CCCCCCCCC...EEEEEEEEEE....1111..
+//..SSSSSSSSSS..EEEEEEEEEE..RRRRRRRRRRR.VVVV....VVV..III..CCCCCCCCCCC..EEEEEEEEEE...11111..
+//..SSS...SSSS..EEE.........RRR.....RRR.VVVV...VVVV..III..CCCC...CCCC..EEE.........111111..
+//..SSSS........EEE.........RRR.....RRR..VVV...VVVV..III.CCCC.....CC...EEE.........111111..
+//..SSSSSSS.....EEEEEEEEEE..RRRRRRRRRRR..VVVV..VVV...III.CCCC..........EEEEEEEEEE..11.111..
+//...SSSSSSSS...EEEEEEEEEE..RRRRRRRRRR...VVVV.VVVV...III.CCCC..........EEEEEEEEEE.....111..
+//.....SSSSSSS..EEEEEEEEEE..RRRRRRRR......VVV.VVVV...III.CCCC..........EEEEEEEEEE.....111..
+//.........SSSS.EEE.........RRR..RRRR.....VVVVVVV....III.CCCC.....CC...EEE............111..
+//.SSSS....SSSS.EEE.........RRR...RRRR....VVVVVVV....III..CCCC...CCCC..EEE............111..
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III..CCCCCCCCCCC..EEEEEEEEEE.....111..
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III...CCCCCCCCC...EEEEEEEEEE.....111..
+//....SSSSSS....EEEEEEEEEEE.RRR.....RRRR...VVVVV.....III.....CCCCCC....EEEEEEEEEE.....111..
+//.........................................................................................
 
 pub fn render_our_services() -> Markup {
     html! {
@@ -558,7 +923,7 @@ pub fn render_services_box(title: &str, description: &str) -> Markup {
             }
           }
           div {
-            img class="h-20 w-20" alt="check" src="/assets/images/icon/check.svg";
+            img class="w-20 h-20" alt="check" src="/assets/images/icon/check.svg";
           }
         }
       }
@@ -579,21 +944,21 @@ pub fn render_services_descriptions(title: &str, description: &str) -> Markup {
     }
 }
 
-//.....................................................
-//.TTTTTTTTTTT.EEEEEEEEEE...SSSSSSSS..STTTTTTTTTT.III..
-//.TTTTTTTTTTT.EEEEEEEEEE..SSSSSSSSSS.STTTTTTTTTT.III..
-//.TTTTTTTTTTT.EEEEEEEEEE..SSSS..SSSS.STTTTTTTTTT.III..
-//.....TTT.....EEE.........SSS....SSS.....TTT.....III..
-//.....TTT.....EEE.........SSSSS..........TTT.....III..
-//.....TTT.....EEEEEEEEEE..SSSSSSSSS......TTT.....III..
-//.....TTT.....EEEEEEEEEE...SSSSSSSSS.....TTT.....III..
-//.....TTT.....EEEEEEEEEE.....SSSSSSSS....TTT.....III..
-//.....TTT.....EEE................SSSS....TTT.....III..
-//.....TTT.....EEE........ESSS....SSSS....TTT.....III..
-//.....TTT.....EEEEEEEEEEEESSSSSSSSSSS....TTT.....III..
-//.....TTT.....EEEEEEEEEEE.SSSSSSSSSS.....TTT.....III..
-//.....TTT.....EEEEEEEEEEE..SSSSSSSS......TTT.....III..
-//.....................................................
+//.............................................................
+//.TTTTTTTTTTTEEEEEEEEEE....SSSSSS....TTTTTTTTTTTIII.....1111..
+//.TTTTTTTTTTTEEEEEEEEEE..SSSSSSSSS...TTTTTTTTTTTIII.....1111..
+//.TTTTTTTTTTTEEEEEEEEEE..SSSSSSSSSS..TTTTTTTTTTTIII...111111..
+//.....TTT....EEE.........SSS...SSSS......TTT....III..1111111..
+//.....TTT....EEE.........SSSS............TTT....III..1111111..
+//.....TTT....EEEEEEEEEE..SSSSSSS.........TTT....III..11.1111..
+//.....TTT....EEEEEEEEEE...SSSSSSSS.......TTT....III.....1111..
+//.....TTT....EEEEEEEEEE.....SSSSSSS......TTT....III.....1111..
+//.....TTT....EEE................SSSS.....TTT....III.....1111..
+//.....TTT....EEE........ESSS....SSSS.....TTT....III.....1111..
+//.....TTT....EEEEEEEEEEE.SSSSSSSSSS......TTT....III.....1111..
+//.....TTT....EEEEEEEEEEE.SSSSSSSSSS......TTT....III.....1111..
+//.....TTT....EEEEEEEEEEE...SSSSSS........TTT....III.....1111..
+//.............................................................
 
 pub fn render_testimonial() -> Markup {
     html! {
@@ -633,7 +998,7 @@ pub fn render_testimonial_card() -> Markup {
 
           div class="flex gap-2" {
             @for _ in 0..5 {
-              img class="h-6 w-6" alt="star" src="/assets/images/icon/star.svg";
+              img class="w-6 h-6" alt="star" src="/assets/images/icon/star.svg";
             }
           }
 

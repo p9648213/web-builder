@@ -7,7 +7,7 @@ use crate::{
     },
 };
 
-pub fn render_home_page(header_theme: i32, footer_theme: i32) -> Markup {
+pub fn render_home_page(home_theme: i32, header_theme: i32, footer_theme: i32) -> Markup {
     html! {
         (DOCTYPE)
         html lang="en" {
@@ -27,11 +27,38 @@ pub fn render_home_page(header_theme: i32, footer_theme: i32) -> Markup {
                     _ => (shared::render_nav_bar_1())
                 }
                 main {
-                    (home::render_home_banner())
-                    (home::render_home_search_box())
-                    (home::render_hot_properties())
-                    (home::render_our_services())
-                    (home::render_testimonial())
+                    @match home_theme {
+                        1 => {
+                            (home::render_home_banner_1())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        },
+                        2 => {
+                            (home::render_home_banner_2())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        },
+                        3 => {
+                            (home::render_home_banner_3())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        },
+                        4 => {
+                            (home::render_home_banner_4())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        },
+                        _ => {
+                            (home::render_home_banner_1())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        }
+                    }
                     (shared::render_contact())
                 }
                 @match footer_theme {

@@ -9,10 +9,7 @@ use crate::models::rso_data::{
     HotPropertyParams, LocationParams, PropertyParams, PropertyTypeParams, RsoData,
     SearchResultParams,
 };
-use crate::views::real_estate::home::{
-    render_hot_properties_slider, render_location_selection_drop_down,
-    render_property_types_selection_drop_down, render_selection_label,
-};
+use crate::views::real_estate::home;
 use crate::views::real_estate::property_details;
 use crate::views::real_estate::search_result;
 
@@ -58,8 +55,8 @@ pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, 
         let location = RsoData::get_rso_location(location_params).await?;
 
         let html = html! {
-            (render_location_selection_drop_down(location.location_data.province_area, "All"))
-            (render_selection_label("All", "location-label"))
+            (home::render_location_selection_drop_down_1(location.location_data.province_area, "All"))
+            (home::render_selection_label_1("All", "location-label"))
         }
         .into_string();
 
@@ -114,8 +111,8 @@ pub async fn get_property_types(State(pg_pool): State<Pool>) -> Result<Html<Stri
         let property_type = RsoData::get_rso_property_type(property_type_params).await?;
 
         let html = html! {
-            (render_property_types_selection_drop_down(property_type.property_types.property_type))
-            (render_selection_label("All", "property-types-label"))
+            (home::render_property_types_selection_drop_down_1(property_type.property_types.property_type))
+            (home::render_selection_label_1("All", "property-types-label"))
         }
         .into_string();
 
@@ -173,7 +170,7 @@ pub async fn get_hot_properties(State(pg_pool): State<Pool>) -> Result<Html<Stri
         let property_response = RsoData::get_rso_hot_properties(property_params).await?;
 
         let html = html! {
-            (render_hot_properties_slider(property_response.property))
+            (home::render_hot_properties_slider(property_response.property))
         }
         .into_string();
 

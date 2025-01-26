@@ -50,7 +50,7 @@ pub async fn get_real_estate_home_page(
         host,
         &pg_pool,
         None,
-        Some(vec!["header_theme", "footer_theme"]),
+        Some(vec!["home_theme", "header_theme", "footer_theme"]),
         Some("w"),
         Some("s"),
     )
@@ -75,8 +75,16 @@ pub async fn get_real_estate_home_page(
                 AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
             })?;
 
+        let home_theme = website_setting_website
+            .website_setting
+            .home_theme
+            .ok_or_else(|| {
+                tracing::error!("No home_theme column or value is null");
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+            })?;
+
         Ok(Html(
-            render_home_page(header_theme, footer_theme).into_string(),
+            render_home_page(home_theme, header_theme, footer_theme).into_string(),
         ))
     } else {
         Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))

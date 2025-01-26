@@ -22,19 +22,82 @@ pub async fn get_section(
 ) -> Result<Html<String>, AppError> {
     match section.as_str() {
         "home" => {
-            let html = html! {
-                title {
-                    "Home"
-                }
-                (home::render_home_banner())
-                (home::render_home_search_box())
-                (home::render_hot_properties())
-                (home::render_our_services())
-                (home::render_testimonial())
-                (shared::render_contact())
-            };
+            let default_host = HeaderValue::from_static("");
 
-            Ok(Html(html.into_string()))
+            let host = request
+                .headers()
+                .get("host")
+                .unwrap_or(&default_host)
+                .to_str()
+                .map_err(|error| {
+                    tracing::error!("Failed to convert host header to string: {}", error);
+                    AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+                })?;
+
+            let row = WebsiteJoinWebsiteSetting::get_website_setting_by_domain(
+                host,
+                &pg_pool,
+                None,
+                Some(vec!["home_theme"]),
+                Some("w"),
+                Some("s"),
+            )
+            .await?;
+
+            if let Some(row) = row {
+                let website_setting_website = WebsiteJoinWebsiteSetting::try_from(&row, "w_", "s_");
+
+                let home_theme = website_setting_website
+                    .website_setting
+                    .home_theme
+                    .ok_or_else(|| {
+                        tracing::error!("No home_theme column or value is null");
+                        AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+                    })?;
+
+                let html = html! {
+                    title {
+                        "Home"
+                    }
+                    @match home_theme {
+                        1 => {
+                            (home::render_home_banner_1())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        },
+                        2 => {
+                            (home::render_home_banner_2())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        },
+                        3 => {
+                            (home::render_home_banner_3())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        },
+                        4 => {
+                            (home::render_home_banner_4())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        },
+                        _ => {
+                            (home::render_home_banner_1())
+                            (home::render_hot_properties())
+                            (home::render_our_services())
+                            (home::render_testimonial())
+                        }
+                    }
+                    (shared::render_contact())
+                };
+
+                Ok(Html(html.into_string()))
+            } else {
+                Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))
+            }
         }
         "search-results" => {
             let default_host = HeaderValue::from_static("");
@@ -102,6 +165,7 @@ pub async fn get_section(
                     }
                     (shared::render_contact())
                 };
+
                 Ok(Html(html.into_string()))
             } else {
                 Err(AppError::new(StatusCode::NOT_FOUND, "Domain not found"))

@@ -37,12 +37,12 @@ pub fn render_search_box_1() -> Markup {
           div class="flex justify-center items-center" {
             input class="border-slate-800 rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
-          (home::render_search_box_selection("Listing Type", "/data/real-estate/listing-type", "listing-type-dropdown", "listing-type-label"))
-          (home::render_search_box_selection("Location", "/rso/location", "location-dropdown", "location-label"))
-          (home::render_search_box_selection("Property Types", "/rso/property-types", "property-types-dropdown", "property-types-label"))
-          (home::render_search_box_selection("Price", "/data/real-estate/prices", "price-dropdown", "price-label"))
-          (home::render_search_box_selection("Bath", "/data/real-estate/baths", "bath-dropdown", "bath-label"))
-          (home::render_search_box_selection("Bed", "/data/real-estate/beds", "bed-dropdown", "bed-label"))
+          (home::render_search_box_selection_1("Listing Type", "/data/real-estate/listing-type", "listing-type-dropdown", "listing-type-label"))
+          (home::render_search_box_selection_1("Location", "/rso/location", "location-dropdown", "location-label"))
+          (home::render_search_box_selection_1("Property Types", "/rso/property-types", "property-types-dropdown", "property-types-label"))
+          (home::render_search_box_selection_1("Price", "/data/real-estate/prices", "price-dropdown", "price-label"))
+          (home::render_search_box_selection_1("Bath", "/data/real-estate/baths", "bath-dropdown", "bath-label"))
+          (home::render_search_box_selection_1("Bed", "/data/real-estate/beds", "bed-dropdown", "bed-label"))
         }
       }
     }
