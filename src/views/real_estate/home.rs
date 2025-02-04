@@ -696,11 +696,11 @@ pub fn render_home_search_box_4() -> Markup {
 //.HHH.....HHH.....OOOOOO.........TTT.......1111..
 //................................................
 
-pub fn render_hot_properties() -> Markup {
+pub fn render_hot_properties_1() -> Markup {
     html! {
       div class="flex justify-center items-center" {
-        div class="flex justify-center px-15 py-20 w-full" {
-          div class="flex flex-col gap-12" {
+        div class="flex justify-center px-15 py-20 w-full max-w-360" {
+          div class="flex flex-col gap-12 w-full" {
             div class="flex flex-col gap-4" {
               h3 class="font-bold text-2xl" {
                 "View our featured listings"
@@ -711,9 +711,10 @@ pub fn render_hot_properties() -> Markup {
               div class="border-b-3 border-b-black border-b-solid w-8" {}
             }
             div
-              hx-get="/rso/hot-properties"
+              hx-get="/rso/hot-properties?theme=1"
               hx-trigger="load"
               hx-swap="innerHTML"
+              class="flex flex-col justify-center items-center"
             {
               "Loading..."
             }
@@ -723,7 +724,7 @@ pub fn render_hot_properties() -> Markup {
     }
 }
 
-pub fn render_hot_properties_slider(hot_properties: Vec<SearchProperty>) -> Markup {
+pub fn render_hot_properties_slider_1(hot_properties: Vec<SearchProperty>) -> Markup {
     let chunk_size = 6;
     let total_pages = (hot_properties.len() as f64 / chunk_size as f64).ceil();
 
@@ -771,7 +772,7 @@ pub fn render_hot_properties_slider(hot_properties: Vec<SearchProperty>) -> Mark
           @for property_chunk in &properties_chunks {
             div class="gap-10 grid grid-cols-[292px_292px_292px] pl-12" {
               @for property in property_chunk {
-                (render_hot_property_card(property, "sale"))
+                (render_hot_property_card_1(property, "sale"))
               }
             }
           }
@@ -789,7 +790,7 @@ pub fn render_hot_properties_slider(hot_properties: Vec<SearchProperty>) -> Mark
     }
 }
 
-pub fn render_hot_property_card(property: &SearchProperty, listing_type: &str) -> Markup {
+pub fn render_hot_property_card_1(property: &SearchProperty, listing_type: &str) -> Markup {
     let mut total_pictures = 0;
 
     let render_main_image = if let Some(main_image) = &property.main_image {
@@ -874,6 +875,156 @@ pub fn render_hot_property_card(property: &SearchProperty, listing_type: &str) -
           }
         }
       }
+    }
+}
+
+//..................................................
+//.HHH.....HHH.....OOOOOO.....TTTTTTTTTTT.222222....
+//.HHH.....HHH...OOOOOOOOOO...TTTTTTTTTTT22222222...
+//.HHH.....HHH..OOOOOOOOOOOO..TTTTTTTTTTT222..222...
+//.HHH.....HHH..OOOO....OOOO......TTT...T222..2222..
+//.HHH.....HHH..OOO......OOO......TTT.........2222..
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT.........222...
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT........2222...
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT.......2222....
+//.HHH.....HHH..OOO......OOO......TTT......2222.....
+//.HHH.....HHH..OOOO....OOOO......TTT.....2222......
+//.HHH.....HHH..OOOOOOOOOOOO......TTT....2222.......
+//.HHH.....HHH...OOOOOOOOOO.......TTT...T222222222..
+//.HHH.....HHH.....OOOOOO.........TTT...T222222222..
+//..................................................
+
+pub fn render_hot_properties_2() -> Markup {
+    html! {
+      div class="flex justify-center items-center" {
+        div class="flex justify-center px-15 py-20 w-full max-w-360" {
+          div class="flex flex-col gap-12 w-full" {
+            div class="flex flex-col gap-4" {
+              h3 class="font-bold text-2xl" {
+                "View our featured listings"
+              }
+              p class="max-w-190 text-[#868D9B] text-xl" {
+                "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"
+              }
+              div class="border-b-3 border-b-black border-b-solid w-8" {}
+            }
+            div
+              hx-get="/rso/hot-properties?theme=2"
+              hx-trigger="load"
+              hx-swap="innerHTML"
+              class="flex flex-col justify-center items-center"
+            {
+              "Loading..."
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Markup {
+    html! {
+      "Hot 2"
+    }
+}
+
+//..................................................
+//.HHH.....HHH.....OOOOOO.....TTTTTTTTTTT.33333.....
+//.HHH.....HHH...OOOOOOOOOO...TTTTTTTTTTT3333333....
+//.HHH.....HHH..OOOOOOOOOOOO..TTTTTTTTTTT333.3333...
+//.HHH.....HHH..OOOO....OOOO......TTT....333..333...
+//.HHH.....HHH..OOO......OOO......TTT........3333...
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT.......3333....
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT.......3333....
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT.........333...
+//.HHH.....HHH..OOO......OOO......TTT.........3333..
+//.HHH.....HHH..OOOO....OOOO......TTT...T333..3333..
+//.HHH.....HHH..OOOOOOOOOOOO......TTT....333..333...
+//.HHH.....HHH...OOOOOOOOOO.......TTT....33333333...
+//.HHH.....HHH.....OOOOOO.........TTT.....33333.....
+//..................................................
+
+pub fn render_hot_properties_3() -> Markup {
+    html! {
+      div class="flex justify-center items-center" {
+        div class="flex justify-center px-15 py-20 w-full max-w-360" {
+          div class="flex flex-col gap-12 w-full" {
+            div class="flex flex-col gap-4" {
+              h3 class="font-bold text-2xl" {
+                "View our featured listings"
+              }
+              p class="max-w-120 text-xl" {
+                "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"
+              }
+              div class="border-b-3 border-b-black border-b-solid w-8" {}
+            }
+            div
+              hx-get="/rso/hot-properties?theme=3"
+              hx-trigger="load"
+              hx-swap="innerHTML"
+              class="flex flex-col justify-center items-center"
+            {
+              "Loading..."
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_hot_properties_slider_3(hot_properties: Vec<SearchProperty>) -> Markup {
+    html! {
+      "Hot 3"
+    }
+}
+
+//..................................................
+//.HHH.....HHH.....OOOOOO.....TTTTTTTTTTT....444....
+//.HHH.....HHH...OOOOOOOOOO...TTTTTTTTTTT...4444....
+//.HHH.....HHH..OOOOOOOOOOOO..TTTTTTTTTTT...4444....
+//.HHH.....HHH..OOOO....OOOO......TTT......44444....
+//.HHH.....HHH..OOO......OOO......TTT.....444444....
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT.....444444....
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT....444.444....
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT...T44..444....
+//.HHH.....HHH..OOO......OOO......TTT...T444444444..
+//.HHH.....HHH..OOOO....OOOO......TTT...T444444444..
+//.HHH.....HHH..OOOOOOOOOOOO......TTT........444....
+//.HHH.....HHH...OOOOOOOOOO.......TTT........444....
+//.HHH.....HHH.....OOOOOO.........TTT........444....
+//..................................................
+
+pub fn render_hot_properties_4() -> Markup {
+    html! {
+      div class="flex justify-center items-center" {
+        div class="flex justify-center px-15 py-20 w-full max-w-360" {
+          div class="flex flex-col gap-12 w-full" {
+            div class="flex flex-col gap-4" {
+              h3 class="font-bold text-2xl" {
+                "View our featured listings"
+              }
+              p class="max-w-120 text-xl" {
+                "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"
+              }
+              div class="border-b-3 border-b-black border-b-solid w-8" {}
+            }
+            div
+              hx-get="/rso/hot-properties?theme=4"
+              hx-trigger="load"
+              hx-swap="innerHTML"
+              class="flex flex-col justify-center items-center"
+            {
+              "Loading..."
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_hot_properties_slider_4(hot_properties: Vec<SearchProperty>) -> Markup {
+    html! {
+      "Hot 4"
     }
 }
 

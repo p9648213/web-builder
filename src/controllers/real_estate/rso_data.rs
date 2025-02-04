@@ -3,6 +3,7 @@ use axum::http::StatusCode;
 use axum::response::Html;
 use deadpool_postgres::Pool;
 use maud::html;
+use serde::Deserialize;
 
 use crate::models::error::AppError;
 use crate::models::rso_data::{
@@ -14,6 +15,27 @@ use crate::views::real_estate::property_details;
 use crate::views::real_estate::search_result;
 
 use super::pages::{PropertyQuery, SearchQuery};
+
+#[derive(Deserialize, Debug)]
+pub struct HotPropertyQuery {
+    pub theme: Option<i32>,
+}
+
+//..............................................................................................
+//.LLL...........OOOOOO........CCCCCC.......AAAA.....ATTTTTTTTTTTII.....OOOOOO.....ONN....NNNN..
+//.LLL.........OOOOOOOOOO....CCCCCCCCC......AAAAA....ATTTTTTTTTTTII...OOOOOOOOO....ONNN...NNNN..
+//.LLL........OOOOOOOOOOOO..CCCCCCCCCCC.....AAAAA....ATTTTTTTTTTTII..IOOOOOOOOOO...ONNNN..NNNN..
+//.LLL........OOOO....OOOO..CCCC...CCCC....AAAAAA.......TTTT....TII..IOOO...OOOOO..ONNNN..NNNN..
+//.LLL........OOO......OOO..CCC.....CC.....AAAAAAA......TTTT....TII.IIOO......OOO..ONNNNN.NNNN..
+//.LLL.......LOOO......OOOOOCCC...........AAAA.AAA......TTTT....TII.IIOO......OOO..ONNNNN.NNNN..
+//.LLL.......LOOO......OOOOOCCC...........AAA..AAAA.....TTTT....TII.IIOO......OOO..ONNNNNNNNNN..
+//.LLL.......LOOO......OOOOOCCC...........AAAAAAAAA.....TTTT....TII.IIOO......OOO..ONN.NNNNNNN..
+//.LLL........OOO......OOO..CCC.....CC...AAAAAAAAAA.....TTTT....TII.IIOO.....OOOO..ONN..NNNNNN..
+//.LLL........OOOO....OOOO..CCCC...CCCC..AAAAAAAAAAA....TTTT....TII..IOOO...OOOOO..ONN..NNNNNN..
+//.LLLLLLLLLL.OOOOOOOOOOOO..CCCCCCCCCCC..AAA.....AAA....TTTT....TII..IOOOOOOOOOO...ONN...NNNNN..
+//.LLLLLLLLLL..OOOOOOOOOO....CCCCCCCCC..CAAA.....AAAA...TTTT....TII...OOOOOOOOO....ONN...NNNNN..
+//.LLLLLLLLLL....OOOOOO........CCCCCC...CAA......AAAA...TTTT....TII.....OOOOOO.....ONN....NNNN..
+//..............................................................................................
 
 pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, AppError> {
     let row = RsoData::get_rso_data_by_user_id(
@@ -69,6 +91,22 @@ pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, 
         ));
     }
 }
+
+//....................................................................................................
+//.PPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP...TTTTTTTTTTTYYY....YYYY.PPPPPPPPP...EEEEEEEEEE...
+//.PPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..TTTTTTTTTTTYYY....YYY..PPPPPPPPPP..EEEEEEEEEE...
+//.PPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..TTTTTTTTTTTYYYY..YYYY..PPPPPPPPPP..EEEEEEEEEE...
+//.PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPPP.....TTT.....YYYY.YYY...PPP....PPPP.EEE..........
+//.PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPPP.....TTT.....YYYYYYYY...PPP....PPPP.EEE..........
+//.PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP......TTT......YYYYYY....PPPPPPPPPP..EEEEEEEEEE...
+//.PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP......TTT.......YYYY.....PPPPPPPPPP..EEEEEEEEEE...
+//.PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP.......TTT.......YYYY.....PPPPPPPPP...EEEEEEEEEE...
+//.PPP.........RRR..RRRR....OOO......OOO..PPP.............TTT.......YYYY.....PPP.........EEE..........
+//.PPP.........RRR...RRRR...OOOO....OOOO..PPP.............TTT.......YYYY.....PPP.........EEE..........
+//.PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.............TTT.......YYYY.....PPP.........EEEEEEEEEEE..
+//.PPP.........RRR....RRRR...OOOOOOOOOO...PPP.............TTT.......YYYY.....PPP.........EEEEEEEEEEE..
+//.PPP.........RRR.....RRRR....OOOOOO.....PPP.............TTT.......YYYY.....PPP.........EEEEEEEEEEE..
+//....................................................................................................
 
 pub async fn get_property_types(State(pg_pool): State<Pool>) -> Result<Html<String>, AppError> {
     let row = RsoData::get_rso_data_by_user_id(
@@ -126,7 +164,28 @@ pub async fn get_property_types(State(pg_pool): State<Pool>) -> Result<Html<Stri
     }
 }
 
-pub async fn get_hot_properties(State(pg_pool): State<Pool>) -> Result<Html<String>, AppError> {
+//...........................................................................................
+//.HHH.....HHH.....OOOOOO.....TTTTTTTTTTTPPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP....
+//.HHH.....HHH...OOOOOOOOOO...TTTTTTTTTTTPPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP...
+//.HHH.....HHH..OOOOOOOOOOOO..TTTTTTTTTTTPPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP...
+//.HHH.....HHH..OOOO....OOOO......TTT....PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPPP..
+//.HHH.....HHH..OOO......OOO......TTT....PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPPP..
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP...
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP...
+//.HHHHHHHHHHH.HOOO......OOOO.....TTT....PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP....
+//.HHH.....HHH..OOO......OOO......TTT....PPP.........RRR..RRRR....OOO......OOO..PPP..........
+//.HHH.....HHH..OOOO....OOOO......TTT....PPP.........RRR...RRRR...OOOO....OOOO..PPP..........
+//.HHH.....HHH..OOOOOOOOOOOO......TTT....PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP..........
+//.HHH.....HHH...OOOOOOOOOO.......TTT....PPP.........RRR....RRRR...OOOOOOOOOO...PPP..........
+//.HHH.....HHH.....OOOOOO.........TTT....PPP.........RRR.....RRRR....OOOOOO.....PPP..........
+//...........................................................................................
+
+pub async fn get_hot_properties(
+    hot_property_query: Query<HotPropertyQuery>,
+    State(pg_pool): State<Pool>,
+) -> Result<Html<String>, AppError> {
+    let hot_property_theme = hot_property_query.theme.unwrap_or(1);
+
     let row = RsoData::get_rso_data_by_user_id(
         1,
         &pg_pool,
@@ -170,7 +229,14 @@ pub async fn get_hot_properties(State(pg_pool): State<Pool>) -> Result<Html<Stri
         let property_response = RsoData::get_rso_hot_properties(property_params).await?;
 
         let html = html! {
-            (home::render_hot_properties_slider(property_response.property))
+            @match hot_property_theme {
+                1 => (home::render_hot_properties_slider_1(property_response.property)),
+                2 => (home::render_hot_properties_slider_2(property_response.property)),
+                3 => (home::render_hot_properties_slider_3(property_response.property)),
+                4 => (home::render_hot_properties_slider_4(property_response.property)),
+                _ => (home::render_hot_properties_slider_1(property_response.property))
+            }
+
         }
         .into_string();
 
@@ -183,6 +249,22 @@ pub async fn get_hot_properties(State(pg_pool): State<Pool>) -> Result<Html<Stri
         ));
     }
 }
+
+//.....................................................................................................
+//.PPPPPPPPP...RRRRRRRRR.......OOOOOO.....PPPPPPPPP...EEEEEEEEEE..RRRRRRRRR....TTTTTTTTTTTYYY....YYYY..
+//.PPPPPPPPPP..RRRRRRRRRRR...OOOOOOOOOO...PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR..TTTTTTTTTTTYYY....YYY...
+//.PPPPPPPPPP..RRRRRRRRRRR..OOOOOOOOOOOO..PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR..TTTTTTTTTTTYYYY..YYYY...
+//.PPP....PPPP.RRR.....RRR..OOOO....OOOO..PPP....PPPP.EEE.........RRR.....RRR......TTT.....YYYY.YYY....
+//.PPP....PPPP.RRR.....RRR..OOO......OOO..PPP....PPPP.EEE.........RRR.....RRR......TTT.....YYYYYYYY....
+//.PPPPPPPPPP..RRRRRRRRRRR.ROOO......OOOO.PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRRR......TTT......YYYYYY.....
+//.PPPPPPPPPP..RRRRRRRRRR..ROOO......OOOO.PPPPPPPPPP..EEEEEEEEEE..RRRRRRRRRR.......TTT.......YYYY......
+//.PPPPPPPPP...RRRRRRRR....ROOO......OOOO.PPPPPPPPP...EEEEEEEEEE..RRRRRRRR.........TTT.......YYYY......
+//.PPP.........RRR..RRRR....OOO......OOO..PPP.........EEE.........RRR..RRRR........TTT.......YYYY......
+//.PPP.........RRR...RRRR...OOOO....OOOO..PPP.........EEE.........RRR...RRRR.......TTT.......YYYY......
+//.PPP.........RRR....RRRR..OOOOOOOOOOOO..PPP.........EEEEEEEEEEE.RRR....RRRR......TTT.......YYYY......
+//.PPP.........RRR....RRRR...OOOOOOOOOO...PPP.........EEEEEEEEEEE.RRR....RRRR......TTT.......YYYY......
+//.PPP.........RRR.....RRRR....OOOOOO.....PPP.........EEEEEEEEEEE.RRR.....RRRR.....TTT.......YYYY......
+//.....................................................................................................
 
 pub async fn get_property(
     State(pg_pool): State<Pool>,
@@ -283,6 +365,22 @@ pub async fn get_property(
         ));
     }
 }
+
+//..............................................................................
+//....SSSSSS....EEEEEEEEEE.....AAAA......RRRRRRRRR.......CCCCCC....HHH.....HHH..
+//..SSSSSSSSS...EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR...CCCCCCCCC...HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEE.....AAAAA.....RRRRRRRRRRR..CCCCCCCCCCC..HHH.....HHH..
+//..SSS...SSSS..EEE...........AAAAAA.....RRR.....RRR..CCCC...CCCC..HHH.....HHH..
+//..SSSS........EEE...........AAAAAAA....RRR.....RRR..CCC.....CC...HHH.....HHH..
+//..SSSSSSS.....EEEEEEEEEE...AAAA.AAA....RRRRRRRRRRR.CCCC..........HHHHHHHHHHH..
+//...SSSSSSSS...EEEEEEEEEE...AAA..AAAA...RRRRRRRRRR..CCCC..........HHHHHHHHHHH..
+//.....SSSSSSS..EEEEEEEEEE...AAAAAAAAA...RRRRRRRR....CCCC..........HHHHHHHHHHH..
+//.........SSSS.EEE.........AAAAAAAAAA...RRR..RRRR....CCC.....CC...HHH.....HHH..
+//.SSSS....SSSS.EEE.........AAAAAAAAAAA..RRR...RRRR...CCCC...CCCC..HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEEE.AAA.....AAA..RRR....RRRR..CCCCCCCCCCC..HHH.....HHH..
+//..SSSSSSSSSS..EEEEEEEEEEEAAAA.....AAAA.RRR....RRRR...CCCCCCCCC...HHH.....HHH..
+//....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH..
+//..............................................................................
 
 pub async fn get_search_result(
     State(pg_pool): State<Pool>,

@@ -30,31 +30,31 @@ pub fn render_home_page(home_theme: i32, header_theme: i32, footer_theme: i32) -
                     @match home_theme {
                         1 => {
                             (home::render_home_banner_1())
-                            (home::render_hot_properties())
+                            (home::render_hot_properties_1())
                             (home::render_our_services())
                             (home::render_testimonial())
                         },
                         2 => {
                             (home::render_home_banner_2())
-                            (home::render_hot_properties())
+                            (home::render_hot_properties_2())
                             (home::render_our_services())
                             (home::render_testimonial())
                         },
                         3 => {
                             (home::render_home_banner_3())
-                            (home::render_hot_properties())
+                            (home::render_hot_properties_3())
                             (home::render_our_services())
                             (home::render_testimonial())
                         },
                         4 => {
                             (home::render_home_banner_4())
-                            (home::render_hot_properties())
+                            (home::render_hot_properties_4())
                             (home::render_our_services())
                             (home::render_testimonial())
                         },
                         _ => {
                             (home::render_home_banner_1())
-                            (home::render_hot_properties())
+                            (home::render_hot_properties_1())
                             (home::render_our_services())
                             (home::render_testimonial())
                         }
