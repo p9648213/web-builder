@@ -924,7 +924,98 @@ pub fn render_hot_properties_2() -> Markup {
 
 pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Markup {
     html! {
-      "Hot 2"
+      div class="gap-3 grid grid-cols-3 grid-rows-2"  {
+        @for (index, property) in hot_properties.iter().enumerate() {
+          @if index < 5 {
+            @if property.main_image.is_some() && index == 0 {
+              div
+                hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
+                hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                hx-trigger="click"
+                hx-target="main"
+                class="relative row-span-full rounded-lg cursor-pointer overflow-hidden"
+              {
+                img class="w-full h-full" src=(property.main_image.as_ref().unwrap()) alt="main-image";
+                (render_infomation_box_2(&property, index))
+              }
+            } @else {
+              @if property.pictures.is_some() {
+                @if index == 0 {
+                  div
+                    hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
+                    hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                    hx-trigger="click"
+                    hx-target="main"
+                    class="relative row-span-full rounded-lg cursor-pointer overflow-hidden"
+                  {
+                    img class="w-full h-full" src=(property.pictures.as_ref().unwrap().picture[0].picture_url);
+                    (render_infomation_box_2(&property, index))
+                  }
+                } @else {
+                  div
+                    hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
+                    hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                    hx-trigger="click"
+                    hx-target="main"
+                    class="relative rounded-lg cursor-pointer overflow-hidden"
+                  {
+                    img class="w-full h-full" src=(property.pictures.as_ref().unwrap().picture[0].picture_url);
+                    (render_infomation_box_2(&property, index))
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_infomation_box_2(property: &SearchProperty, index: usize) -> Markup {
+    let built_size = match &property.built {
+        TextOrNum::Text(built) => built.to_string(),
+        TextOrNum::Num(built) => built.to_string(),
+    };
+
+    html! {
+      div
+        class="right-0 bottom-0 left-0 absolute flex flex-col gap-3 p-5 text-white"
+        style="background-color: rgba(0, 0, 0, 0.4);"
+      {
+        div class="font-bold" {
+          @if property.newdev_name == "" {
+            (property.property_type.name_type)
+          }@else {
+            (property.newdev_name)
+          }
+        }
+        @if index == 0 {
+          div class="flex items-center gap-2" {
+            img class="w-6 h-6" src="/assets/images/icon/location-white.svg" alt="location" ;
+            span { (property.location) }
+          }
+        }
+        div class="flex items-center gap-4" {
+          div class="flex items-center gap-2" {
+            img class="w-6 h-6" src="/assets/images/icon/bed-white.svg" alt="beds" ;
+            span { (property.bedrooms) }
+          }
+          div class="flex items-center gap-2" {
+            img class="w-6 h-6" src="/assets/images/icon/bath-white.svg" alt="baths" ;
+            span { (property.bathrooms) }
+          }
+          div class="flex items-center gap-2" {
+            img class="w-6 h-6" src="/assets/images/icon/built-size-white.svg" alt="built-size" ;
+            span { (built_size) "m²" }
+          }
+          @if index > 0 {
+            div class="flex items-center gap-2" {
+              img class="w-6 h-6" src="/assets/images/icon/location-white.svg" alt="location" ;
+              span { (property.location) }
+            }
+          }
+        }
+      }
     }
 }
 

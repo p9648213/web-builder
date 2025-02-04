@@ -610,6 +610,9 @@
   .z-6 {
     z-index: 6;
   }
+  .z-7 {
+    z-index: 7;
+  }
   .z-10 {
     z-index: 10;
   }
@@ -628,8 +631,8 @@
   .col-span-7 {
     grid-column: span 7 / span 7;
   }
-  .m-9 {
-    margin: calc(var(--spacing) * 9);
+  .row-span-full {
+    grid-row: 1 / -1;
   }
   .m-auto {
     margin: auto;
@@ -933,12 +936,6 @@
   }
   .max-w-130 {
     max-width: calc(var(--spacing) * 130);
-  }
-  .max-w-150 {
-    max-width: calc(var(--spacing) * 150);
-  }
-  .max-w-180 {
-    max-width: calc(var(--spacing) * 180);
   }
   .max-w-190 {
     max-width: calc(var(--spacing) * 190);
@@ -1820,9 +1817,6 @@
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
-  }
-  .\[u\:J\2 \;J\2 �\$�\10 \15 �Ů4�\16 �w\=G\|�C���\13 ��4\5 \11 \e \] {
-    u: J;J�$ �Ů4��w=G|�C�����4;
   }
   .outline-none {
     --tw-outline-style: none;
