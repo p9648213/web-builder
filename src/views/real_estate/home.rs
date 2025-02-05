@@ -5,7 +5,7 @@ use crate::{
     models::rso_data::{
         LocationDynamic, PropertyType, ProvinceAreaDynamic, SearchProperty, TextOrNum,
     },
-    views::icons::{next_icon, previous_icon},
+    views::icons::{next_icon, next_icon_large, previous_icon, previous_icon_large},
 };
 
 //.......................................................................................
@@ -1245,7 +1245,7 @@ pub fn render_hot_properties_4() -> Markup {
               hx-get="/rso/hot-properties?theme=4"
               hx-trigger="load"
               hx-swap="innerHTML"
-              class="flex flex-col justify-center items-center"
+              class="relative flex flex-col justify-center items-center"
             {
               "Loading..."
             }
@@ -1256,8 +1256,66 @@ pub fn render_hot_properties_4() -> Markup {
 }
 
 pub fn render_hot_properties_slider_4(hot_properties: Vec<SearchProperty>) -> Markup {
+    let chunk_size = 3;
+    let total_pages = (hot_properties.len() as f64 / chunk_size as f64).ceil();
+
+    let mut properties_chunks = vec![];
+
+    let mut i = 0;
+    let mut j;
+
+    while i < hot_properties.len() {
+        let mut chunk = vec![];
+        j = i;
+        while j < i + chunk_size && j < hot_properties.len() {
+            chunk.push(&hot_properties[j]);
+            j = j + 1;
+        }
+        properties_chunks.push(chunk);
+        i = i + chunk_size;
+    }
+
     html! {
-      "Hot 4"
+      (PreEscaped(r#"
+      <script type="module">
+          import {setupHotPropertySlider, setupPropertyPictureSlider} from "/assets/js/app/slider.js";
+          setupHotPropertySlider(102);
+          setupPropertyPictureSlider();
+      </script>
+    "#))
+      input id="hot-props-total-pages" type="hidden" value=(total_pages);
+      button
+        id="hot-props-previous-button"
+        class="top-[40%] left-0 absolute rounded-full cursor-pointer hover:stroke-slate-500 stroke-black"
+      {
+        (previous_icon_large())
+      }
+      button
+        id="hot-props-next-button"
+        class="top-[40%] right-0 absolute rounded-full cursor-pointer hover:stroke-slate-500 stroke-black"
+      {
+        (next_icon_large())
+      }
+      div class="relative py-3 max-w-5xl overflow-x-hidden" {
+        div id="hot-properties-slider" class="flex gap-10 transition-transform duration-500" {
+          @for property_chunk in &properties_chunks {
+            div class="gap-10 grid grid-cols-[292px_292px_292px] pl-12" {
+              @for property in property_chunk {
+                (render_hot_property_card_1(property, "sale"))
+              }
+            }
+          }
+        }
+      }
+      div class="flex justify-center gap-2 mt-4 w-full" id="hot-property-dots" {
+        @for i in 0..total_pages as u8 {
+          @if i == 0 {
+            div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+          } @else {
+            div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+          }
+        }
+      }
     }
 }
 

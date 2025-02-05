@@ -1,7 +1,7 @@
-/*! tailwindcss v4.0.0 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.0.3 | MIT License | https://tailwindcss.com */
 @layer theme, base, components, utilities;
 @layer theme {
-  :root {
+  :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
@@ -574,8 +574,20 @@
   .top-10 {
     top: calc(var(--spacing) * 10);
   }
+  .top-\[-50\%\] {
+    top: -50%;
+  }
   .top-\[2px\] {
     top: 2px;
+  }
+  .top-\[35\%\] {
+    top: 35%;
+  }
+  .top-\[40\%\] {
+    top: 40%;
+  }
+  .top-\[50\%\] {
+    top: 50%;
   }
   .right-0 {
     right: calc(var(--spacing) * 0);
@@ -609,9 +621,6 @@
   }
   .z-6 {
     z-index: 6;
-  }
-  .z-7 {
-    z-index: 7;
   }
   .z-10 {
     z-index: 10;
@@ -925,14 +934,14 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
-  .max-w-85 {
-    max-width: calc(var(--spacing) * 85);
-  }
   .max-w-100 {
     max-width: calc(var(--spacing) * 100);
   }
   .max-w-18 {
     max-width: calc(var(--spacing) * 18);
+  }
+  .max-w-85 {
+    max-width: calc(var(--spacing) * 85);
   }
   .max-w-120 {
     max-width: calc(var(--spacing) * 120);
@@ -1064,11 +1073,11 @@
   .grid-cols-10 {
     grid-template-columns: repeat(10, minmax(0, 1fr));
   }
+  .grid-cols-\[4fr_4fr_3fr_3fr\] {
+    grid-template-columns: 4fr 4fr 3fr 3fr;
+  }
   .grid-cols-\[11rem_1fr\] {
     grid-template-columns: 11rem 1fr;
-  }
-  .grid-cols-\[1fr_1fr\] {
-    grid-template-columns: 1fr 1fr;
   }
   .grid-cols-\[292px_292px_292px\] {
     grid-template-columns: 292px 292px 292px;
@@ -1076,32 +1085,11 @@
   .grid-cols-\[2fr_2fr_2fr_2fr_2fr_1fr_1fr\] {
     grid-template-columns: 2fr 2fr 2fr 2fr 2fr 1fr 1fr;
   }
-  .grid-cols-\[4fr_4fr_3fr_3fr\] {
-    grid-template-columns: 4fr 4fr 3fr 3fr;
-  }
-  .grid-cols-\[292px_292px\] {
-    grid-template-columns: 292px 292px;
-  }
   .grid-cols-\[300px_170px_170px_170px_200px_100px_100px\] {
     grid-template-columns: 300px 170px 170px 170px 200px 100px 100px;
   }
-  .grid-cols-\[400px_400px\] {
-    grid-template-columns: 400px 400px;
-  }
-  .grid-cols-\[500px_500px\] {
-    grid-template-columns: 500px 500px;
-  }
-  .grid-cols-\[520px_520px\] {
-    grid-template-columns: 520px 520px;
-  }
-  .grid-cols-\[530px_530px\] {
-    grid-template-columns: 530px 530px;
-  }
   .grid-cols-\[540px_540px\] {
     grid-template-columns: 540px 540px;
-  }
-  .grid-cols-\[600px_600px\] {
-    grid-template-columns: 600px 600px;
   }
   .grid-cols-\[auto_auto\] {
     grid-template-columns: auto auto;
@@ -1186,9 +1174,6 @@
   }
   .gap-15 {
     gap: calc(var(--spacing) * 15);
-  }
-  .gap-16 {
-    gap: calc(var(--spacing) * 16);
   }
   .gap-20 {
     gap: calc(var(--spacing) * 20);
@@ -1639,9 +1624,6 @@
   .pb-36 {
     padding-bottom: calc(var(--spacing) * 36);
   }
-  .pl-3 {
-    padding-left: calc(var(--spacing) * 3);
-  }
   .pl-12 {
     padding-left: calc(var(--spacing) * 12);
   }
@@ -1854,12 +1836,6 @@
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
   }
-  .\[u\:\11 ��h��B�\@\] {
-    u:  �h �B @;
-  }
-  .\[u\:\11 ��h��B��\] {
-    u:  �h �B �;
-  }
   .outline-none {
     --tw-outline-style: none;
     outline-style: none;
@@ -2004,6 +1980,13 @@
     &:hover {
       @media (hover: hover) {
         stroke: var(--color-gray-400);
+      }
+    }
+  }
+  .hover\:stroke-slate-500 {
+    &:hover {
+      @media (hover: hover) {
+        stroke: var(--color-slate-500);
       }
     }
   }
