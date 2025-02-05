@@ -748,7 +748,7 @@ pub fn render_hot_properties_slider_1(hot_properties: Vec<SearchProperty>) -> Ma
       (PreEscaped(r#"
         <script type="module">
             import {setupHotPropertySlider, setupPropertyPictureSlider} from "/assets/js/app/slider.js";
-            setupHotPropertySlider();
+            setupHotPropertySlider(102);
             setupPropertyPictureSlider();
         </script>
       "#))
@@ -1064,8 +1064,150 @@ pub fn render_hot_properties_3() -> Markup {
 }
 
 pub fn render_hot_properties_slider_3(hot_properties: Vec<SearchProperty>) -> Markup {
+    let chunk_size = 2;
+    let total_pages = (hot_properties.len() as f64 / chunk_size as f64).ceil();
+
+    let mut properties_chunks = vec![];
+
+    let mut i = 0;
+    let mut j;
+
+    while i < hot_properties.len() {
+        let mut chunk = vec![];
+        j = i;
+        while j < i + chunk_size && j < hot_properties.len() {
+            chunk.push(&hot_properties[j]);
+            j = j + 1;
+        }
+        properties_chunks.push(chunk);
+        i = i + chunk_size;
+    }
+
     html! {
-      "Hot 3"
+      (PreEscaped(r#"
+        <script type="module">
+            import {setupHotPropertySlider, setupPropertyPictureSlider} from "/assets/js/app/slider.js";
+            setupHotPropertySlider(103.5);
+            setupPropertyPictureSlider();
+        </script>
+      "#))
+      input id="hot-props-total-pages" type="hidden" value=(total_pages) ;
+      div class="flex justify-end gap-4 mb-6 w-full" {
+        button
+          id="hot-props-previous-button"
+          class="border-slate-600 hover:bg-blue-400 p-2 border border-solid rounded-full cursor-pointer hover:stroke-white stroke-black"
+        {
+          (previous_icon())
+        }
+        button
+          id="hot-props-next-button"
+          class="border-slate-600 hover:bg-blue-400 p-2 border border-solid rounded-full cursor-pointer hover:stroke-white stroke-black"
+        {
+          (next_icon())
+        }
+      }
+      div class="py-3 max-w-6xl overflow-x-hidden" {
+        div id="hot-properties-slider" class="flex gap-10 transition-transform duration-500" {
+          @for property_chunk in &properties_chunks {
+            div class="gap-12 grid grid-cols-[540px_540px] px-3 pb-3" {
+              @for property in property_chunk {
+                (render_hot_property_card_3(property))
+              }
+            }
+          }
+        }
+      }
+      div class="flex justify-center gap-2 mt-4 w-full" id="hot-property-dots" {
+        @for i in 0..total_pages as u8 {
+          @if i == 0 {
+            div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+          } @else {
+            div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+          }
+        }
+      }
+    }
+}
+
+pub fn render_hot_property_card_3(property: &SearchProperty) -> Markup {
+    let mut total_pictures = 0;
+
+    let render_main_image = if let Some(main_image) = &property.main_image {
+        total_pictures = 1;
+        html! {
+          img class="w-full h-full pointer-events-none shrink-0" src=(main_image);
+        }
+    } else {
+        html! {}
+    };
+
+    let render_images = if let Some(images) = &property.pictures {
+        total_pictures = total_pictures + images.count;
+        html! {
+          @for picture in &images.picture {
+            img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
+          }
+        }
+    } else {
+        html! {}
+    };
+
+    html! {
+      div class="relative flex rounded-lg overflow-hidden picture-container" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
+        div class="relative flex-1 overflow-hidden picture-slider-container" {
+          div class="flex h-60 transition-transform duration-500 picture-slider" {
+            input type="hidden" value=(total_pictures);
+            (render_main_image)
+            (render_images)
+          }
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+            @for i in 0..total_pictures as u8 {
+              @if i == 0 {
+                div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
+              } @else {
+                div class="bg-blue-200 p-1 rounded-full cursor-pointer" {}
+              }
+            }
+          }
+        }
+        div class="flex-1" {
+          div
+          hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
+          hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+          hx-trigger="click"
+          hx-target="main"
+          class="flex flex-col justify-between gap-2 px-3 py-2 h-full cursor-pointer"
+          {
+            div class="flex flex-col gap-2" {
+              div class="font-bold" {
+                @if property.newdev_name == "" {
+                  (property.property_type.name_type)
+                }@else {
+                  (property.newdev_name)
+                }
+              }
+              div class="font-bold text-blue-500 text-lg" {
+                (property.price) " €"
+              }
+              div class="text-sm" {
+                (property.location)
+              }
+            }
+            div class="flex flex-col gap-2" {
+              div class="flex gap-4 divide-x divide-black text-sm" {
+                div class="flex flex-1 items-center gap-2" {
+                  img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed.svg";
+                  (property.bedrooms) " Beds"
+                }
+                div class="flex flex-1 items-center gap-2" {
+                  img class="w-5 h-5" alt="bed" src="/assets/images/icon/bed.svg";
+                  (property.bathrooms) " Baths"
+                }
+              }
+            }
+          }
+        }
+      }
     }
 }
 

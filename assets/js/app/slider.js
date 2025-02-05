@@ -1,4 +1,4 @@
-export function setupHotPropertySlider() {
+export function setupHotPropertySlider(translatePercent) {
   let currentIndex = 0;
 
   let totalPages = parseInt(
@@ -15,7 +15,7 @@ export function setupHotPropertySlider() {
     dotChilds[i].addEventListener("click", (_) => {
       currentIndex = i;
       hotPropertySliderEl.style.transform = `translateX(-${
-        currentIndex * 102
+        currentIndex * translatePercent
       }%)`;
       updateDotsColor(dotChilds, currentIndex);
     });
@@ -28,7 +28,9 @@ export function setupHotPropertySlider() {
       currentIndex = 0;
     }
 
-    hotPropertySliderEl.style.transform = `translateX(-${currentIndex * 102}%)`;
+    hotPropertySliderEl.style.transform = `translateX(-${
+      currentIndex * translatePercent
+    }%)`;
     updateDotsColor(dotChilds, currentIndex);
   });
 
@@ -39,7 +41,9 @@ export function setupHotPropertySlider() {
       currentIndex = totalPages - 1;
     }
 
-    hotPropertySliderEl.style.transform = `translateX(-${currentIndex * 102}%)`;
+    hotPropertySliderEl.style.transform = `translateX(-${
+      currentIndex * translatePercent
+    }%)`;
     updateDotsColor(dotChilds, currentIndex);
   });
 }
