@@ -927,20 +927,20 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
       div class="gap-3 grid grid-cols-3 grid-rows-2"  {
         @for (index, property) in hot_properties.iter().enumerate() {
           @if index < 5 {
-            @if property.main_image.is_some() && index == 0 {
-              div
-                hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
-                hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
-                hx-trigger="click"
-                hx-target="main"
-                class="relative row-span-full rounded-lg cursor-pointer overflow-hidden"
-              {
-                img class="w-full h-full" src=(property.main_image.as_ref().unwrap()) alt="main-image";
-                (render_infomation_box_2(&property, index))
-              }
-            } @else {
-              @if property.pictures.is_some() {
-                @if index == 0 {
+            @if index == 0 {
+              @if property.main_image.is_some() {
+                div
+                  hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
+                  hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                  hx-trigger="click"
+                  hx-target="main"
+                  class="relative row-span-full rounded-lg cursor-pointer overflow-hidden"
+                {
+                  img class="w-full h-full" src=(property.main_image.as_ref().unwrap()) alt="main-image";
+                  (render_infomation_box_2(&property, index))
+                }
+              } @else {
+                @if property.pictures.is_some() {
                   div
                     hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
                     hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
@@ -948,10 +948,25 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
                     hx-target="main"
                     class="relative row-span-full rounded-lg cursor-pointer overflow-hidden"
                   {
-                    img class="w-full h-full" src=(property.pictures.as_ref().unwrap().picture[0].picture_url);
+                    img class="w-full h-full" src=(property.pictures.as_ref().unwrap().picture[0].picture_url) alt="sub-image";
                     (render_infomation_box_2(&property, index))
                   }
-                } @else {
+                }
+              }
+            } @else {
+              @if property.main_image.is_some() {
+                div
+                  hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
+                  hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                  hx-trigger="click"
+                  hx-target="main"
+                  class="relative rounded-lg cursor-pointer overflow-hidden"
+                {
+                  img class="w-full h-full" src=(property.main_image.as_ref().unwrap()) alt="main-image";
+                  (render_infomation_box_2(&property, index))
+                }
+              } @else {
+                @if property.pictures.is_some() {
                   div
                     hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
                     hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
@@ -959,7 +974,7 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
                     hx-target="main"
                     class="relative rounded-lg cursor-pointer overflow-hidden"
                   {
-                    img class="w-full h-full" src=(property.pictures.as_ref().unwrap().picture[0].picture_url);
+                    img class="w-full h-full" src=(property.pictures.as_ref().unwrap().picture[0].picture_url) alt="sub-image";
                     (render_infomation_box_2(&property, index))
                   }
                 }
