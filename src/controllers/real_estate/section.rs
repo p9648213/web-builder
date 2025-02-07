@@ -63,32 +63,32 @@ pub async fn get_section(
                         1 => {
                             (home::render_home_banner_1())
                             (home::render_hot_properties_1())
-                            (home::render_our_services())
-                            (home::render_testimonial())
+                            (home::render_our_services_1())
+                            (home::render_testimonial_1())
                         },
                         2 => {
                             (home::render_home_banner_2())
                             (home::render_hot_properties_2())
-                            (home::render_our_services())
-                            (home::render_testimonial())
+                            (home::render_our_services_2())
+                            (home::render_testimonial_2())
                         },
                         3 => {
                             (home::render_home_banner_3())
                             (home::render_hot_properties_3())
-                            (home::render_our_services())
-                            (home::render_testimonial())
+                            (home::render_our_services_3())
+                            (home::render_testimonial_3())
                         },
                         4 => {
                             (home::render_home_banner_4())
                             (home::render_hot_properties_4())
-                            (home::render_our_services())
-                            (home::render_testimonial())
+                            (home::render_our_services_4())
+                            (home::render_testimonial_4())
                         },
                         _ => {
                             (home::render_home_banner_1())
                             (home::render_hot_properties_1())
-                            (home::render_our_services())
-                            (home::render_testimonial())
+                            (home::render_our_services_1())
+                            (home::render_testimonial_1())
                         }
                     }
                     (shared::render_contact())

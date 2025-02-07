@@ -1350,24 +1350,24 @@ pub fn render_hot_properties_slider_4(hot_properties: Vec<SearchProperty>) -> Ma
 //....SSSSSS....EEEEEEEEEEE.RRR.....RRRR...VVVVV.....III.....CCCCCC....EEEEEEEEEE.....111..
 //.........................................................................................
 
-pub fn render_our_services() -> Markup {
+pub fn render_our_services_1() -> Markup {
     html! {
       div class="flex justify-center items-center bg-slate-950 text-white" {
         div class="flex justify-center items-center gap-20 px-15 py-20 max-w-7xl" {
           div class="flex flex-col flex-1 gap-5" {
-            (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
-            (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
-            (render_services_box("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_1("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_1("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_1("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
           }
           div class="flex-1" {
-            (render_services_descriptions("Short highlight of your services", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_descriptions_1("Short highlight of your services", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
           }
         }
       }
     }
 }
 
-pub fn render_services_box(title: &str, description: &str) -> Markup {
+pub fn render_services_box_1(title: &str, description: &str) -> Markup {
     html! {
       div class="bg-slate-500 px-5 p-3 rounded-lg" {
         div class="flex items-center gap-4" {
@@ -1387,7 +1387,7 @@ pub fn render_services_box(title: &str, description: &str) -> Markup {
     }
 }
 
-pub fn render_services_descriptions(title: &str, description: &str) -> Markup {
+pub fn render_services_descriptions_1(title: &str, description: &str) -> Markup {
     html! {
       div class="flex flex-col gap-4" {
         div class="flex flex-col gap-2 text-3xl"{
@@ -1395,6 +1395,164 @@ pub fn render_services_descriptions(title: &str, description: &str) -> Markup {
           div class="border-t-2 border-t-white w-7" {}
         }
         div class="text-lg"{
+          (description)
+        }
+      }
+    }
+}
+
+//...........................................................................................
+//....SSSSSS....EEEEEEEEEE..RRRRRRRRR..RVVV.....VVVV.III.....CCCCC.....EEEEEEEEEE...22222....
+//..SSSSSSSSS...EEEEEEEEEE..RRRRRRRRRRR.VVV.....VVVV.III...CCCCCCCCC...EEEEEEEEEE..22222222..
+//..SSSSSSSSSS..EEEEEEEEEE..RRRRRRRRRRR.VVVV....VVV..III..CCCCCCCCCCC..EEEEEEEEEE.2222..222..
+//..SSS...SSSS..EEE.........RRR.....RRR.VVVV...VVVV..III..CCCC...CCCC..EEE........222...222..
+//..SSSS........EEE.........RRR.....RRR..VVV...VVVV..III.CCCC.....CC...EEE..............222..
+//..SSSSSSS.....EEEEEEEEEE..RRRRRRRRRRR..VVVV..VVV...III.CCCC..........EEEEEEEEEE......2222..
+//...SSSSSSSS...EEEEEEEEEE..RRRRRRRRRR...VVVV.VVVV...III.CCCC..........EEEEEEEEEE.....2222...
+//.....SSSSSSS..EEEEEEEEEE..RRRRRRRR......VVV.VVVV...III.CCCC..........EEEEEEEEEE....22222...
+//.........SSSS.EEE.........RRR..RRRR.....VVVVVVV....III.CCCC.....CC...EEE..........22222....
+//.SSSS....SSSS.EEE.........RRR...RRRR....VVVVVVV....III..CCCC...CCCC..EEE.........22222.....
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III..CCCCCCCCCCC..EEEEEEEEEE..2222......
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III...CCCCCCCCC...EEEEEEEEEE.222222222..
+//....SSSSSS....EEEEEEEEEEE.RRR.....RRRR...VVVVV.....III.....CCCCCC....EEEEEEEEEE.222222222..
+//...........................................................................................
+
+pub fn render_our_services_2() -> Markup {
+    html! {
+      "Service 2"
+    }
+}
+
+//...........................................................................................
+//....SSSSSS....EEEEEEEEEE..RRRRRRRRR..RVVV.....VVVV.III.....CCCCC.....EEEEEEEEEE...33333....
+//..SSSSSSSSS...EEEEEEEEEE..RRRRRRRRRRR.VVV.....VVVV.III...CCCCCCCCC...EEEEEEEEEE..3333333...
+//..SSSSSSSSSS..EEEEEEEEEE..RRRRRRRRRRR.VVVV....VVV..III..CCCCCCCCCCC..EEEEEEEEEE..333.3333..
+//..SSS...SSSS..EEE.........RRR.....RRR.VVVV...VVVV..III..CCCC...CCCC..EEE........3333.3333..
+//..SSSS........EEE.........RRR.....RRR..VVV...VVVV..III.CCCC.....CC...EEE.............3333..
+//..SSSSSSS.....EEEEEEEEEE..RRRRRRRRRRR..VVVV..VVV...III.CCCC..........EEEEEEEEEE.....3333...
+//...SSSSSSSS...EEEEEEEEEE..RRRRRRRRRR...VVVV.VVVV...III.CCCC..........EEEEEEEEEE.....3333...
+//.....SSSSSSS..EEEEEEEEEE..RRRRRRRR......VVV.VVVV...III.CCCC..........EEEEEEEEEE.......333..
+//.........SSSS.EEE.........RRR..RRRR.....VVVVVVV....III.CCCC.....CC...EEE..............333..
+//.SSSS....SSSS.EEE.........RRR...RRRR....VVVVVVV....III..CCCC...CCCC..EEE........3333..333..
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III..CCCCCCCCCCC..EEEEEEEEEE.3333.3333..
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III...CCCCCCCCC...EEEEEEEEEE..3333333...
+//....SSSSSS....EEEEEEEEEEE.RRR.....RRRR...VVVVV.....III.....CCCCCC....EEEEEEEEEE...33333....
+//...........................................................................................
+
+pub fn render_our_services_3() -> Markup {
+    html! {
+      div class="flex justify-center items-center bg-slate-950 text-white" {
+        div class="flex justify-center items-center gap-20 px-15 py-20 max-w-7xl" {
+          div class="flex flex-col flex-1 gap-5" {
+            (render_services_box_3("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_3("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_3("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+          }
+          div class="flex-1" {
+            (render_services_descriptions_3("Short highlight of your services", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+          }
+        }
+      }
+    }
+}
+
+pub fn render_services_box_3(title: &str, description: &str) -> Markup {
+    html! {
+      div class="px-5 p-3" {
+        div class="flex items-center gap-7" {
+          div {
+            img class="w-25 h-25" alt="check" src="/assets/images/icon/check.svg";
+          }
+          div class="flex flex-col gap-2 text-lg" {
+            div class="text-white" {
+              (title)
+            }
+            div class="text-[#868D9B]" {
+              (description)
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_services_descriptions_3(title: &str, description: &str) -> Markup {
+    html! {
+      div class="flex flex-col gap-4" {
+        div class="flex flex-col gap-2 text-3xl"{
+          (title)
+          div class="border-t-2 border-t-white w-7" {}
+        }
+        div class="text-[#868D9B] text-lg"{
+          (description)
+        }
+      }
+    }
+}
+
+//...........................................................................................
+//....SSSSSS....EEEEEEEEEE..RRRRRRRRR..RVVV.....VVVV.III.....CCCCC.....EEEEEEEEEE......444...
+//..SSSSSSSSS...EEEEEEEEEE..RRRRRRRRRRR.VVV.....VVVV.III...CCCCCCCCC...EEEEEEEEEE.....4444...
+//..SSSSSSSSSS..EEEEEEEEEE..RRRRRRRRRRR.VVVV....VVV..III..CCCCCCCCCCC..EEEEEEEEEE....44444...
+//..SSS...SSSS..EEE.........RRR.....RRR.VVVV...VVVV..III..CCCC...CCCC..EEE...........44444...
+//..SSSS........EEE.........RRR.....RRR..VVV...VVVV..III.CCCC.....CC...EEE..........444444...
+//..SSSSSSS.....EEEEEEEEEE..RRRRRRRRRRR..VVVV..VVV...III.CCCC..........EEEEEEEEEE..4444444...
+//...SSSSSSSS...EEEEEEEEEE..RRRRRRRRRR...VVVV.VVVV...III.CCCC..........EEEEEEEEEE..444.444...
+//.....SSSSSSS..EEEEEEEEEE..RRRRRRRR......VVV.VVVV...III.CCCC..........EEEEEEEEEE.444..444...
+//.........SSSS.EEE.........RRR..RRRR.....VVVVVVV....III.CCCC.....CC...EEE........444444444..
+//.SSSS....SSSS.EEE.........RRR...RRRR....VVVVVVV....III..CCCC...CCCC..EEE........444444444..
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III..CCCCCCCCCCC..EEEEEEEEEE......444...
+//..SSSSSSSSSS..EEEEEEEEEEE.RRR....RRRR....VVVVV.....III...CCCCCCCCC...EEEEEEEEEE......444...
+//....SSSSSS....EEEEEEEEEEE.RRR.....RRRR...VVVVV.....III.....CCCCCC....EEEEEEEEEE......444...
+//...........................................................................................
+
+pub fn render_our_services_4() -> Markup {
+    html! {
+      div class="flex justify-center items-center bg-slate-950 text-white" {
+        div class="flex flex-col justify-center items-center gap-20 px-15 py-20 max-w-7xl" {
+          div {
+            (render_services_descriptions_4("Short highlight of your services", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+          }
+          div class="flex flex-wrap justify-center items-center gap-10" {
+            (render_services_box_4("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_4("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_4("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_4("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_4("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+          }
+        }
+      }
+    }
+}
+
+pub fn render_services_box_4(title: &str, description: &str) -> Markup {
+    html! {
+      div class="px-5 p-3" {
+        div class="flex flex-col items-center gap-5 max-w-xs text-center" {
+          div {
+            img class="w-13 h-13" alt="check" src="/assets/images/icon/check.svg";
+          }
+          div class="flex flex-col gap-2 text-xl" {
+            div class="text-white" {
+              (title)
+            }
+            div class="text-[#868D9B]" {
+              (description)
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_services_descriptions_4(title: &str, description: &str) -> Markup {
+    html! {
+      div class="flex flex-col gap-7 max-w-3xl text-center" {
+        div class="font-bold text-[#868D9B] text-xl" { "Our Value" }
+        div class="flex flex-col gap-2 text-3xl"{
+          (title)
+        }
+        div class="text-[#868D9B] text-xl"{
           (description)
         }
       }
@@ -1417,7 +1575,7 @@ pub fn render_services_descriptions(title: &str, description: &str) -> Markup {
 //.....TTT....EEEEEEEEEEE...SSSSSS........TTT....III.....1111..
 //.............................................................
 
-pub fn render_testimonial() -> Markup {
+pub fn render_testimonial_1() -> Markup {
     html! {
       div class="flex justify-center items-center" {
         div class="flex flex-col justify-center items-center gap-20 px-15 py-20 max-w-360" {
@@ -1432,7 +1590,7 @@ pub fn render_testimonial() -> Markup {
           div class="p-3 max-w-6xl overflow-hidden" {
             div class="flex gap-12" {
               @for _ in 0..6 {
-                ((render_testimonial_card()))
+                ((render_testimonial_card_1()))
               }
             }
           }
@@ -1441,7 +1599,7 @@ pub fn render_testimonial() -> Markup {
     }
 }
 
-pub fn render_testimonial_card() -> Markup {
+pub fn render_testimonial_card_1() -> Markup {
     html! {
       div class="flex flex-col gap-10 p-7 rounded-lg w-84 shrink-0" style="box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;" {
         div class="flex flex-col justify-center items-center gap-4" {
@@ -1468,5 +1626,71 @@ pub fn render_testimonial_card() -> Markup {
           "- I got an amazing new home -"
         }
       }
+    }
+}
+
+//...............................................................
+//.TTTTTTTTTTTEEEEEEEEEE....SSSSSS....TTTTTTTTTTTIII...222222....
+//.TTTTTTTTTTTEEEEEEEEEE..SSSSSSSSS...TTTTTTTTTTTIII..22222222...
+//.TTTTTTTTTTTEEEEEEEEEE..SSSSSSSSSS..TTTTTTTTTTTIII..222..222...
+//.....TTT....EEE.........SSS...SSSS......TTT....III.I222..2222..
+//.....TTT....EEE.........SSSS............TTT....III.......2222..
+//.....TTT....EEEEEEEEEE..SSSSSSS.........TTT....III.......222...
+//.....TTT....EEEEEEEEEE...SSSSSSSS.......TTT....III......2222...
+//.....TTT....EEEEEEEEEE.....SSSSSSS......TTT....III.....2222....
+//.....TTT....EEE................SSSS.....TTT....III....2222.....
+//.....TTT....EEE........ESSS....SSSS.....TTT....III...2222......
+//.....TTT....EEEEEEEEEEE.SSSSSSSSSS......TTT....III..2222.......
+//.....TTT....EEEEEEEEEEE.SSSSSSSSSS......TTT....III.I222222222..
+//.....TTT....EEEEEEEEEEE...SSSSSS........TTT....III.I222222222..
+//...............................................................
+
+pub fn render_testimonial_2() -> Markup {
+    html! {
+      "Testi 2"
+    }
+}
+
+//...............................................................
+//.TTTTTTTTTTTEEEEEEEEEE....SSSSSS....TTTTTTTTTTTIII...33333.....
+//.TTTTTTTTTTTEEEEEEEEEE..SSSSSSSSS...TTTTTTTTTTTIII..3333333....
+//.TTTTTTTTTTTEEEEEEEEEE..SSSSSSSSSS..TTTTTTTTTTTIII..333.3333...
+//.....TTT....EEE.........SSS...SSSS......TTT....III..333..333...
+//.....TTT....EEE.........SSSS............TTT....III......3333...
+//.....TTT....EEEEEEEEEE..SSSSSSS.........TTT....III.....3333....
+//.....TTT....EEEEEEEEEE...SSSSSSSS.......TTT....III.....3333....
+//.....TTT....EEEEEEEEEE.....SSSSSSS......TTT....III.......333...
+//.....TTT....EEE................SSSS.....TTT....III.......3333..
+//.....TTT....EEE........ESSS....SSSS.....TTT....III.I333..3333..
+//.....TTT....EEEEEEEEEEE.SSSSSSSSSS......TTT....III..333..333...
+//.....TTT....EEEEEEEEEEE.SSSSSSSSSS......TTT....III..33333333...
+//.....TTT....EEEEEEEEEEE...SSSSSS........TTT....III...33333.....
+//...............................................................
+
+pub fn render_testimonial_3() -> Markup {
+    html! {
+      "Testi 3"
+    }
+}
+
+//...............................................................
+//.TTTTTTTTTTTEEEEEEEEEE....SSSSSS....TTTTTTTTTTTIII......444....
+//.TTTTTTTTTTTEEEEEEEEEE..SSSSSSSSS...TTTTTTTTTTTIII.....4444....
+//.TTTTTTTTTTTEEEEEEEEEE..SSSSSSSSSS..TTTTTTTTTTTIII.....4444....
+//.....TTT....EEE.........SSS...SSSS......TTT....III....44444....
+//.....TTT....EEE.........SSSS............TTT....III...444444....
+//.....TTT....EEEEEEEEEE..SSSSSSS.........TTT....III...444444....
+//.....TTT....EEEEEEEEEE...SSSSSSSS.......TTT....III..444.444....
+//.....TTT....EEEEEEEEEE.....SSSSSSS......TTT....III.I44..444....
+//.....TTT....EEE................SSSS.....TTT....III.I444444444..
+//.....TTT....EEE........ESSS....SSSS.....TTT....III.I444444444..
+//.....TTT....EEEEEEEEEEE.SSSSSSSSSS......TTT....III......444....
+//.....TTT....EEEEEEEEEEE.SSSSSSSSSS......TTT....III......444....
+//.....TTT....EEEEEEEEEEE...SSSSSS........TTT....III......444....
+//...............................................................
+
+pub fn render_testimonial_4() -> Markup {
+    html! {
+      "Testi 4"
     }
 }
