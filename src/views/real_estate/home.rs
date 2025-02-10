@@ -28,7 +28,7 @@ pub fn render_home_banner_1() -> Markup {
     html! {
       div class="flex justify-center items-center w-full" {
         div class="relative bg-[url('https://d1qawt2l8egll1.cloudfront.net/prod/images/240825202440-copy-of-moving-to-spain-from-the-uk.png')] bg-cover w-full h-screen" {
-          div class="top-1/4 left-1/2 absolute flex flex-col gap-4 bg-white p-6 rounded-xl max-w-120 transform -translate-x-1/2" {
+          div class="top-1/4 left-1/2 absolute flex flex-col gap-4 bg-white p-6 rounded-xl max-w-120 -translate-x-1/2 transform" {
             h2 class="font-semibold text-4xl" {
               "Find your new home"
             }
@@ -165,11 +165,11 @@ pub fn render_selection_drop_down_1(choices: Vec<&str>, highlight: &str) -> Mark
     html! {
       @for choice in choices {
         @if choice == highlight {
-          div class="bg-blue-400 px-2 py-0.5 rounded-sm text-sm text-white" {
+          div class="bg-blue-400 px-2 py-0.5 rounded-sm text-white text-sm" {
             (choice)
           }
         } @else {
-          div class="hover:bg-blue-300 px-2 py-0.5 rounded-sm text-sm hover:text-white cursor-pointer" {
+          div class="hover:bg-blue-300 px-2 py-0.5 rounded-sm hover:text-white text-sm cursor-pointer" {
             (choice)
           }
         }
@@ -180,14 +180,14 @@ pub fn render_selection_drop_down_1(choices: Vec<&str>, highlight: &str) -> Mark
 pub fn render_beds_baths_selection_drop_down_1(choices: Vec<&str>, highlight: &str) -> Markup {
     html! {
       div class="flex flex-col justify-center gap-4 px-2 h-full text-sm" {
-        div class="flex border-slate-900 border rounded-md h-10" {
+        div class="flex border border-slate-900 rounded-md h-10" {
           @for choice in choices {
             @if choice == highlight {
-              div class="flex justify-center items-center border-slate-900 bg-blue-400 border-r last:border-none first:rounded-tl-md last:rounded-tr-md first:rounded-bl-md last:rounded-br-md w-10.5 text-white cursor-pointer" {
+              div class="flex justify-center items-center bg-blue-400 border-slate-900 border-r last:border-none first:rounded-tl-md last:rounded-tr-md first:rounded-bl-md last:rounded-br-md w-10.5 text-white cursor-pointer" {
                 (choice)
               }
             }@else {
-              div class="flex justify-center items-center border-slate-900 hover:bg-blue-300 border-r last:border-none first:rounded-tl-md last:rounded-tr-md first:rounded-bl-md last:rounded-br-md w-10.5 hover:text-white cursor-pointer" {
+              div class="flex justify-center items-center hover:bg-blue-300 border-slate-900 border-r last:border-none first:rounded-tl-md last:rounded-tr-md first:rounded-bl-md last:rounded-br-md w-10.5 hover:text-white cursor-pointer" {
                 (choice)
               }
             }
@@ -331,11 +331,11 @@ pub fn render_price_input_1(id: &str) -> Markup {
       div id=(id) hx-swap-oob="outerHTML" {
         label class="relative" {
           span class="top-[2px] right-0 absolute pr-2 text-slate-500 text-sm" {"€"}
-          input id=(format!("{}-min", id)) placeholder="From" class="bg-transparent pr-4.5 border-t-0 border-r border-r-slate-700 border-b-0 border-l-0 focus:ring-0 w-[50%] h-5 text-sm placeholder:text-slate-500 placeholder:text-sm outline-none";
+          input id=(format!("{}-min", id)) placeholder="From" class="bg-transparent pr-4.5 border-t-0 border-r border-r-slate-700 border-b-0 border-l-0 outline-none focus:ring-0 w-[50%] h-5 placeholder:text-slate-500 text-sm placeholder:text-sm";
         }
         label class="relative" {
           span class="top-[2px] right-0 absolute pr-2 text-slate-500 text-sm" {"€"}
-          input id=(format!("{}-max", id)) placeholder="To" class="bg-transparent pr-4.5 border-none focus:ring-0 w-[50%] h-5 text-sm placeholder:text-slate-500 placeholder:text-sm outline-none";
+          input id=(format!("{}-max", id)) placeholder="To" class="bg-transparent pr-4.5 border-none outline-none focus:ring-0 w-[50%] h-5 placeholder:text-slate-500 text-sm placeholder:text-sm";
         }
 
       }
@@ -472,14 +472,14 @@ pub fn render_home_search_box_2() -> Markup {
           div class="flex flex-col gap-3" {
             div class="flex flex-col gap-2" {
               span class="font-bold" { "Location" }
-              div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+              div class="flex justify-between items-center px-3 py-2 border border-slate-800 rounded-md w-full" {
                 span { "All" }
                 img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
               }
             }
             div class="flex flex-col gap-2" {
               span class="font-bold" { "Property Types" }
-              div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+              div class="flex justify-between items-center px-3 py-2 border border-slate-800 rounded-md w-full" {
                 span { "All" }
                 img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
               }
@@ -487,7 +487,7 @@ pub fn render_home_search_box_2() -> Markup {
             div class="flex gap-4" {
               div class="flex flex-col flex-1 gap-2" {
                 span class="font-bold" { "Bed" }
-                div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                div class="flex justify-between items-center px-3 py-2 border border-slate-800 rounded-md w-full" {
                   div class="flex items-center gap-2" {
                     img class="w-5 h-5" src="/assets/images/icon/bed.svg" alt="bed";
                     span { "Any" }
@@ -499,7 +499,7 @@ pub fn render_home_search_box_2() -> Markup {
               }
               div class="flex flex-col flex-1 gap-2" {
                 span class="font-bold" { "Bath" }
-                div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                div class="flex justify-between items-center px-3 py-2 border border-slate-800 rounded-md w-full" {
                   div class="flex items-center gap-2" {
                     img class="w-5 h-5" src="/assets/images/icon/bath.svg" alt="bath";
                     span { "Any" }
@@ -514,7 +514,7 @@ pub fn render_home_search_box_2() -> Markup {
               span class="font-bold" { "Price" }
               div class="flex gap-4" {
                 div class="flex flex-col flex-1 gap-2" {
-                  div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                  div class="flex justify-between items-center px-3 py-2 border border-slate-800 rounded-md w-full" {
                     span { "Min €" }
                     div {
                       img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
@@ -522,7 +522,7 @@ pub fn render_home_search_box_2() -> Markup {
                   }
                 }
                 div class="flex flex-col flex-1 gap-2" {
-                  div class="flex justify-between items-center border-slate-800 px-3 py-2 border rounded-md w-full" {
+                  div class="flex justify-between items-center px-3 py-2 border border-slate-800 rounded-md w-full" {
                     span { "Max €" }
                     div {
                       img class="w-4 h-4" src="/assets/images/icon/dropdown.svg" alt="dropdown";
@@ -756,13 +756,13 @@ pub fn render_hot_properties_slider_1(hot_properties: Vec<SearchProperty>) -> Ma
       div class="flex justify-end gap-4 mb-4 w-full" {
         button
           id="hot-props-previous-button"
-          class="border-slate-600 hover:bg-blue-400 p-2 border border-solid rounded-full cursor-pointer hover:stroke-white stroke-black"
+          class="hover:bg-blue-400 stroke-black hover:stroke-white p-2 border border-slate-600 border-solid rounded-full cursor-pointer"
         {
           (previous_icon())
         }
         button
           id="hot-props-next-button"
-          class="border-slate-600 hover:bg-blue-400 p-2 border border-solid rounded-full cursor-pointer hover:stroke-white stroke-black"
+          class="hover:bg-blue-400 stroke-black hover:stroke-white p-2 border border-slate-600 border-solid rounded-full cursor-pointer"
         {
           (next_icon())
         }
@@ -821,7 +821,7 @@ pub fn render_hot_property_card_1(property: &SearchProperty, listing_type: &str)
             (render_main_image)
             (render_images)
           }
-          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 overflow-hidden -translate-x-[50%] pictures-dots" {
             @for i in 0..total_pictures as u8 {
               @if i == 0 {
                 div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
@@ -924,7 +924,7 @@ pub fn render_hot_properties_2() -> Markup {
 
 pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Markup {
     html! {
-      div class="gap-3 grid grid-cols-3 grid-rows-2"  {
+      div class="gap-3 grid grid-cols-3 grid-rows-[315px_315px]"  {
         @for (index, property) in hot_properties.iter().enumerate() {
           @if index < 5 {
             @if index == 0 {
@@ -934,7 +934,7 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
                   hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
                   hx-trigger="click"
                   hx-target="main"
-                  class="relative row-span-full rounded-lg cursor-pointer overflow-hidden"
+                  class="relative row-span-full rounded-lg overflow-hidden cursor-pointer"
                 {
                   img class="w-full h-full" src=(property.main_image.as_ref().unwrap()) alt="main-image";
                   (render_infomation_box_2(&property, index))
@@ -946,7 +946,7 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
                     hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
                     hx-trigger="click"
                     hx-target="main"
-                    class="relative row-span-full rounded-lg cursor-pointer overflow-hidden"
+                    class="relative row-span-full rounded-lg overflow-hidden cursor-pointer"
                   {
                     img class="w-full h-full" src=(property.pictures.as_ref().unwrap().picture[0].picture_url) alt="sub-image";
                     (render_infomation_box_2(&property, index))
@@ -960,7 +960,7 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
                   hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
                   hx-trigger="click"
                   hx-target="main"
-                  class="relative rounded-lg cursor-pointer overflow-hidden"
+                  class="relative rounded-lg overflow-hidden cursor-pointer"
                 {
                   img class="w-full h-full" src=(property.main_image.as_ref().unwrap()) alt="main-image";
                   (render_infomation_box_2(&property, index))
@@ -972,7 +972,7 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
                     hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
                     hx-trigger="click"
                     hx-target="main"
-                    class="relative rounded-lg cursor-pointer overflow-hidden"
+                    class="relative rounded-lg overflow-hidden cursor-pointer"
                   {
                     img class="w-full h-full" src=(property.pictures.as_ref().unwrap().picture[0].picture_url) alt="sub-image";
                     (render_infomation_box_2(&property, index))
@@ -1110,13 +1110,13 @@ pub fn render_hot_properties_slider_3(hot_properties: Vec<SearchProperty>) -> Ma
       div class="flex justify-end gap-4 mb-6 w-full" {
         button
           id="hot-props-previous-button"
-          class="border-slate-600 hover:bg-blue-400 p-2 border border-solid rounded-full cursor-pointer hover:stroke-white stroke-black"
+          class="hover:bg-blue-400 stroke-black hover:stroke-white p-2 border border-slate-600 border-solid rounded-full cursor-pointer"
         {
           (previous_icon())
         }
         button
           id="hot-props-next-button"
-          class="border-slate-600 hover:bg-blue-400 p-2 border border-solid rounded-full cursor-pointer hover:stroke-white stroke-black"
+          class="hover:bg-blue-400 stroke-black hover:stroke-white p-2 border border-slate-600 border-solid rounded-full cursor-pointer"
         {
           (next_icon())
         }
@@ -1175,7 +1175,7 @@ pub fn render_hot_property_card_3(property: &SearchProperty) -> Markup {
             (render_main_image)
             (render_images)
           }
-          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 overflow-hidden -translate-x-[50%] pictures-dots" {
             @for i in 0..total_pictures as u8 {
               @if i == 0 {
                 div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
@@ -1301,13 +1301,13 @@ pub fn render_hot_properties_slider_4(hot_properties: Vec<SearchProperty>) -> Ma
       input id="hot-props-total-pages" type="hidden" value=(total_pages);
       button
         id="hot-props-previous-button"
-        class="top-[40%] left-0 absolute rounded-full cursor-pointer hover:stroke-slate-500 stroke-black"
+        class="top-[40%] left-0 absolute stroke-black hover:stroke-slate-500 rounded-full cursor-pointer"
       {
         (previous_icon_large())
       }
       button
         id="hot-props-next-button"
-        class="top-[40%] right-0 absolute rounded-full cursor-pointer hover:stroke-slate-500 stroke-black"
+        class="top-[40%] right-0 absolute stroke-black hover:stroke-slate-500 rounded-full cursor-pointer"
       {
         (next_icon_large())
       }
@@ -1369,7 +1369,7 @@ pub fn render_our_services_1() -> Markup {
 
 pub fn render_services_box_1(title: &str, description: &str) -> Markup {
     html! {
-      div class="bg-slate-500 px-5 p-3 rounded-lg" {
+      div class="bg-slate-500 p-3 px-5 rounded-lg" {
         div class="flex items-center gap-4" {
           div class="flex flex-col gap-2 text-lg" {
             div class="text-slate-950" {
@@ -1419,7 +1419,50 @@ pub fn render_services_descriptions_1(title: &str, description: &str) -> Markup 
 
 pub fn render_our_services_2() -> Markup {
     html! {
-      "Service 2"
+      div class="flex justify-center items-center py-20" {
+        div class="flex flex-col justify-center items-center gap-15 px-15 w-full max-w-360" {
+          div class="w-full" {
+            (render_services_descriptions_2("Short highlight of your services", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+          }
+          div class="flex gap-10" {
+            (render_services_box_2("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_2("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+            (render_services_box_2("Find your property", "I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"))
+          }
+        }
+      }
+    }
+}
+
+pub fn render_services_box_2(title: &str, description: &str) -> Markup {
+    html! {
+      div class="px-5 py-5 rounded-lg" style="box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;" {
+        div class="flex gap-4" {
+          img class="w-9 h-9" alt="check" src="/assets/images/icon/check.svg";
+          div class="flex flex-col gap-3" {
+            div class="font-bold text-blue-500 text-lg" {
+              (title)
+            }
+            div {
+              (description)
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_services_descriptions_2(title: &str, description: &str) -> Markup {
+    html! {
+      div class="flex flex-col gap-4" {
+        div class="flex items-center gap-2 font-bold text-2xl"{
+          div class="border-t-2 border-t-slate-900 w-7 translate-y-0.5" {}
+          (title)
+        }
+        div class="max-w-2xl text-[#868D9B] text-xl"{
+          (description)
+        }
+      }
     }
 }
 
@@ -1458,7 +1501,7 @@ pub fn render_our_services_3() -> Markup {
 
 pub fn render_services_box_3(title: &str, description: &str) -> Markup {
     html! {
-      div class="px-5 p-3" {
+      div class="p-3 px-5" {
         div class="flex items-center gap-7" {
           div {
             img class="w-25 h-25" alt="check" src="/assets/images/icon/check.svg";
@@ -1527,7 +1570,7 @@ pub fn render_our_services_4() -> Markup {
 
 pub fn render_services_box_4(title: &str, description: &str) -> Markup {
     html! {
-      div class="px-5 p-3" {
+      div class="p-3 px-5" {
         div class="flex flex-col items-center gap-5 max-w-xs text-center" {
           div {
             img class="w-13 h-13" alt="check" src="/assets/images/icon/check.svg";
@@ -1617,12 +1660,12 @@ pub fn render_testimonial_card_1() -> Markup {
             }
           }
 
-          div class="text-center text-neutral-500" {
+          div class="text-neutral-500 text-center" {
             "Moving to Spain was a big decision to me, especially finding a house. Then I found DEMO AGENCY and my journey from that moment was much easier than before. Thanks for their wise knowledge and professional skills."
           }
         }
 
-        div class="text-right text-sm" {
+        div class="text-sm text-right" {
           "- I got an amazing new home -"
         }
       }
@@ -1647,7 +1690,33 @@ pub fn render_testimonial_card_1() -> Markup {
 
 pub fn render_testimonial_2() -> Markup {
     html! {
-      "Testi 2"
+      div class="flex justify-center items-center py-20" {
+        div class="flex flex-col gap-20 px-15 w-full max-w-360" {
+          div class="font-bold text-2xl" { "What do our customers think about us?" }
+          div class="flex justify-between items-center gap-7" {
+            div class="w-10 h-10" {
+              img class="w-full h-full" src="/assets/images/icon/back.svg";
+            }
+            div class="flex justify-center items-center gap-10" {
+              div class="rounded-full w-45 h-45 overflow-hidden" style="box-shadow: 0px 4px 12px 4px rgba(127, 86, 217, 0.30)" {
+                img class="w-full h-full" src="https://d1qawt2l8egll1.cloudfront.net/prod/images/231117083301-51-22.jpg" alt="testimonial";
+              }
+              div class="flex flex-col gap-2 max-w-2xl" {
+                div class="flex flex-col" {
+                  span class="font-bold text-4xl translate-y-4" {r#"""#}
+                  span class="text-xl" {"I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"}
+                  span class="font-bold text-4xl" {r#"""#}
+                }
+                span class="font-bold" { "John Doe" }
+                span { "- CEO -" }
+              }
+            }
+            div class="w-10 h-10" {
+              img class="w-full h-full" src="/assets/images/icon/next.svg";
+            }
+          }
+        }
+      }
     }
 }
 
@@ -1669,7 +1738,68 @@ pub fn render_testimonial_2() -> Markup {
 
 pub fn render_testimonial_3() -> Markup {
     html! {
-      "Testi 3"
+      div class="flex justify-center items-center py-20" {
+        div class="flex flex-col items-center gap-20 px-15 w-full max-w-360" {
+          div class="w-full font-bold text-2xl" { "What do our customers think about us?" }
+          div class="flex justify-between items-center gap-7" {
+            div class="flex justify-center items-center gap-10" {
+              div class="rounded-full w-45 h-45 overflow-hidden" style="box-shadow: 0px 4px 12px 4px rgba(127, 86, 217, 0.30)" {
+                img class="w-full h-full" src="https://d1qawt2l8egll1.cloudfront.net/prod/images/231117083301-51-22.jpg" alt="testimonial";
+              }
+              div class="flex flex-col gap-2 max-w-2xl" {
+                div class="flex flex-col" {
+                  span class="font-bold text-4xl translate-y-4" {r#"""#}
+                  span class="text-xl" {"I'm a versatile paragraph. Add your own text and effortlessly customize me to make it your own. Feel free to edit and personalize your unique content!"}
+                  span class="font-bold text-4xl" {r#"""#}
+                }
+                span class="font-bold" { "John Doe" }
+                span { "- CEO -" }
+              }
+            }
+          }
+          div class="flex justify-between items-center gap-7 w-full max-w-3xl" {
+            div class="p-2 border border-slate-400 rounded-full" {
+              div class="w-7 h-7" {
+                img class="w-full h-full" src="/assets/images/icon/back.svg";
+              }
+            }
+            div class="flex gap-12" {
+              div class="flex justify-center items-center gap-4" {
+                div class="rounded-full w-15 h-15 overflow-hidden" style="box-shadow: 0px 4px 12px 4px rgba(127, 86, 217, 0.30)" {
+                  img class="w-full h-full" src="https://d1qawt2l8egll1.cloudfront.net/prod/images/231117083301-51-22.jpg" alt="testimonial";
+                }
+                div class="flex flex-col gap-2" {
+                  span class="font-bold" { "John Doe" }
+                  span { "- CEO -" }
+                }
+              }
+              div class="flex justify-center items-center gap-4" {
+                div class="rounded-full w-15 h-15 overflow-hidden" style="box-shadow: 0px 4px 12px 4px rgba(127, 86, 217, 0.30)" {
+                  img class="w-full h-full" src="https://d1qawt2l8egll1.cloudfront.net/prod/images/231117083301-51-22.jpg" alt="testimonial";
+                }
+                div class="flex flex-col gap-2" {
+                  span class="font-bold" { "John Doe" }
+                  span { "- CEO -" }
+                }
+              }
+              div class="flex justify-center items-center gap-4" {
+                div class="rounded-full w-15 h-15 overflow-hidden" style="box-shadow: 0px 4px 12px 4px rgba(127, 86, 217, 0.30)" {
+                  img class="w-full h-full" src="https://d1qawt2l8egll1.cloudfront.net/prod/images/231117083301-51-22.jpg" alt="testimonial";
+                }
+                div class="flex flex-col gap-2" {
+                  span class="font-bold" { "John Doe" }
+                  span { "- CEO -" }
+                }
+              }
+            }
+            div class="p-2 border border-slate-400 rounded-full" {
+              div class="w-7 h-7" {
+                img class="w-full h-full" src="/assets/images/icon/next.svg";
+              }
+            }
+          }
+        }
+      }
     }
 }
 
@@ -1691,6 +1821,54 @@ pub fn render_testimonial_3() -> Markup {
 
 pub fn render_testimonial_4() -> Markup {
     html! {
-      "Testi 4"
+      div class="flex justify-center items-center" {
+        div class="flex flex-col justify-center items-center gap-20 px-15 py-20 max-w-360" {
+          div class="flex flex-col justify-center gap-10 w-full font-bold text-center" {
+            div class="text-lg" {
+              "Testimonials"
+            }
+            div class="text-blue-500 text-xl" {
+              "What do our customers think about us?"
+            }
+          }
+          div class="p-3 max-w-6xl" {
+            div class="flex gap-12 px-2 py-12 overflow-hidden" {
+              @for _ in 0..6 {
+                ((render_testimonial_card_4()))
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+pub fn render_testimonial_card_4() -> Markup {
+    html! {
+      div class="relative flex flex-col gap-10 p-7 pt-15 rounded-lg w-84 shrink-0" style="box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;" {
+        div class="flex flex-col justify-center items-center gap-4" {
+          div class="-top-10 absolute shadow-md rounded-full w-20 h-20 overflow-hidden" style="box-shadow: 0px 4px 12px 4px rgba(127, 86, 217, 0.30)" {
+            img class="w-full" src="https://d1qawt2l8egll1.cloudfront.net/prod/images/231117083301-51-22.jpg" ;
+          }
+
+          div class="text-sm" {
+            "Linda"
+          }
+
+          div class="flex gap-2" {
+            @for _ in 0..5 {
+              img class="w-6 h-6" alt="star" src="/assets/images/icon/star.svg";
+            }
+          }
+
+          div class="text-neutral-500 text-center" {
+            "Moving to Spain was a big decision to me, especially finding a house. Then I found DEMO AGENCY and my journey from that moment was much easier than before. Thanks for their wise knowledge and professional skills."
+          }
+        }
+
+        div class="text-sm text-right" {
+          "- CEO -"
+        }
+      }
     }
 }
