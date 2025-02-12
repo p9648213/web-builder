@@ -2,6 +2,7 @@ use maud::{html, Markup, PreEscaped, DOCTYPE};
 
 use crate::{
     controllers::real_estate::pages::{PropertyQuery, SearchQuery},
+    models::error::AppError,
     views::real_estate::{
         contact, head::render_main_head, home, property_details, search_result, shared,
     },
@@ -79,8 +80,8 @@ pub fn render_search_result_page(
     header_theme: i32,
     footer_theme: i32,
     search_theme: i32,
-) -> Markup {
-    html! {
+) -> Result<Markup, AppError> {
+    Ok(html! {
         (DOCTYPE)
         html lang="en" {
             (render_main_head())
@@ -99,11 +100,11 @@ pub fn render_search_result_page(
                     _ => (shared::render_nav_bar_1())
                 }
                 main {
-                    div id="search-section" class="flex flex-col items-center min-h-screen invisible" {
+                    div id="search-section" class="invisible flex flex-col items-center min-h-screen" {
                         @match search_theme {
                             1 => {
-                                (search_result::render_search_box_1())
-                                (search_result::render_search_result_1(search_query.page))
+                                (search_result::render_search_box_1(&search_query))
+                                (search_result::render_search_result_1(&search_query)?)
                             }
                             2 => {
                                 div class="relative flex justify-between gap-10 mt-15 px-5 pb-30 w-full max-w-360" {
@@ -121,8 +122,8 @@ pub fn render_search_result_page(
                                 (search_result::render_search_result_4(search_query.page))
                             }
                             _ => {
-                                (search_result::render_search_box_1())
-                                (search_result::render_search_result_1(search_query.page))
+                                (search_result::render_search_box_1(&search_query))
+                                (search_result::render_search_result_1(&search_query)?)
                             }
                         }
                     }
@@ -138,7 +139,7 @@ pub fn render_search_result_page(
                 div id="toast" {}
             }
         }
-    }
+    })
 }
 
 pub fn render_property_details_page(
@@ -166,7 +167,7 @@ pub fn render_property_details_page(
                     _ => (shared::render_nav_bar_1())
                 }
                 main {
-                    div id="property-section" class="min-h-screen invisible" {
+                    div id="property-section" class="invisible min-h-screen" {
                         @match property_theme {
                             1 => (property_details::render_property_details_1(&property_query)),
                             2 => (property_details::render_property_details_2(&property_query)),
@@ -210,7 +211,7 @@ pub fn render_contact_page(header_theme: i32, footer_theme: i32, contact_theme: 
                     _ => (shared::render_nav_bar_1())
                 }
                 main {
-                    div id="contact-section" class="min-h-screen invisible" {
+                    div id="contact-section" class="invisible min-h-screen" {
                         @match contact_theme {
                             1 => (contact::render_contact_1()),
                             2 => (contact::render_contact_2()),

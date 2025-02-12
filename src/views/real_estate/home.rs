@@ -161,18 +161,47 @@ pub fn render_home_banner_4() -> Markup {
 //....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH.....1111..
 //.......................................................................................
 
-pub fn render_selection_drop_down_1(choices: Vec<&str>, highlight: &str) -> Markup {
+pub fn render_listing_type_selection_drop_down_1(
+    choices: Vec<&str>,
+    highlight: &str,
+    select_id: &str,
+) -> Markup {
+    let value: Vec<&str> = highlight.split(" ").collect();
+
     html! {
-      @for choice in choices {
-        @if choice == highlight {
-          div class="bg-blue-400 px-2 py-0.5 rounded-sm text-white text-sm" {
-            (choice)
-          }
-        } @else {
-          div class="hover:bg-blue-300 px-2 py-0.5 rounded-sm hover:text-white text-sm cursor-pointer" {
-            (choice)
+      (PreEscaped(r#"
+        <script type="module">
+            import {setupChangeListingType} from "/assets/js/app/searchbox.js";
+            setupChangeListingType();
+        </script>
+      "#))
+      div class="flex flex-col gap-1" id="listing-type-select-list" {
+        @for choice in choices {
+          @if choice == highlight {
+            div class="bg-blue-400 px-2 py-1 rounded-sm text-white text-sm cursor-pointer current-selected" {
+              (choice)
+            }
+          } @else {
+            div class="hover:bg-blue-300 px-2 py-1 rounded-sm hover:text-white text-sm cursor-pointer" {
+              (choice)
+            }
           }
         }
+      }
+      input type="hidden" id=(select_id) value=(value.join("-").to_lowercase());
+    }
+}
+
+pub fn render_selection_label_1(label: &str, id: &str) -> Markup {
+    let classes = if id == "listing-type-label" {
+        "min-w-30 text-slate-500 text-sm"
+    } else {
+        "text-slate-500 text-sm"
+    };
+
+    html! {
+      div id=(id) hx-swap-oob="outerHTML" class=(classes) {
+        (label)
       }
     }
 }
@@ -312,14 +341,6 @@ pub fn render_check_box_1(
     }
 }
 
-pub fn render_selection_label_1(label: &str, id: &str) -> Markup {
-    html! {
-      div id=(id) hx-swap-oob="outerHTML" class="text-slate-500 text-sm" {
-        (label)
-      }
-    }
-}
-
 pub fn render_price_input_1(id: &str) -> Markup {
     html! {
       (PreEscaped(r#"
@@ -356,16 +377,16 @@ pub fn render_search_box_selection_1(
 
     let dropdown_items_class = if title != "Listing Type" {
         if title == "Bed" || title == "Bath" {
-            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-auto z-1 right-0"
+            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-300 invisible pointer-events-none dropdown overflow-auto z-1 right-0"
         } else {
-            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-auto z-1"
+            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-300 invisible pointer-events-none dropdown overflow-auto z-1"
         }
     } else {
-        "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-500 invisible pointer-events-none dropdown overflow-hidden z-1"
+        "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-300 invisible pointer-events-none dropdown overflow-hidden z-1"
     };
 
     let title_container_class = if title != "Price" {
-        "flex gap-1 cursor-pointer justify-center items-center w-full"
+        "flex gap-1 cursor-pointer items-center w-full"
     } else {
         "flex gap-1 justify-center items-center w-full"
     };
@@ -379,7 +400,7 @@ pub fn render_search_box_selection_1(
         class=(container_class)
       {
         div class="flex flex-col gap-4" {
-          div class="flex" {
+          div class="flex w-full" {
             div id=(dropdown_id) class=(title_container_class) {
               span class="font-semibold" {(title)}
               @if title != "Price" {
@@ -423,6 +444,9 @@ pub fn render_home_search_box_1() -> Markup {
             hx-get="/section/real-estate/contents/search-results"
             hx-push-url="/search-results"
             hx-target="main"
+            hx-vals=r#"
+              js:{listing_type: getListingTypeSelectValue()}
+            "#
             class="bg-blue-500 hover:bg-blue-400 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"
           {
             "Search"
@@ -813,6 +837,12 @@ pub fn render_hot_property_card_1(property: &SearchProperty, listing_type: &str)
         html! {}
     };
 
+    let price = property
+        .price
+        .as_ref()
+        .unwrap_or(&"".to_string())
+        .to_owned();
+
     html! {
       div class="relative flex flex-col gap-2 shadow-md rounded-lg overflow-hidden picture-container" {
         div class="relative picture-slider-container" {
@@ -847,7 +877,7 @@ pub fn render_hot_property_card_1(property: &SearchProperty, listing_type: &str)
           }
           div class="flex flex-col gap-2" {
             div class="font-bold text-blue-500 text-lg" {
-              (property.price) " €"
+              (price) " €"
             }
             div class="text-sm" {
               (property.location)
@@ -1167,6 +1197,12 @@ pub fn render_hot_property_card_3(property: &SearchProperty) -> Markup {
         html! {}
     };
 
+    let price = property
+        .price
+        .as_ref()
+        .unwrap_or(&"".to_string())
+        .to_owned();
+
     html! {
       div class="relative flex rounded-lg overflow-hidden picture-container" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
         div class="relative flex-1 overflow-hidden picture-slider-container" {
@@ -1202,7 +1238,7 @@ pub fn render_hot_property_card_3(property: &SearchProperty) -> Markup {
                 }
               }
               div class="font-bold text-blue-500 text-lg" {
-                (property.price) " €"
+                (price) " €"
               }
               div class="text-sm" {
                 (property.location)

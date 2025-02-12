@@ -306,7 +306,7 @@ pub async fn get_property(
         let listing_type = property_query.0.listing_type.unwrap();
 
         let p_agency_filterid = match listing_type.as_str() {
-            "sale" | "new-dev" => rso_data.filter_id_sale.ok_or_else(|| {
+            "resales" | "new-development" => rso_data.filter_id_sale.ok_or_else(|| {
                 tracing::error!("No filter_id_sale column or value is null");
                 AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
             })?,
@@ -347,11 +347,11 @@ pub async fn get_property(
 
         let html = html! {
             @match theme {
-                1 => (property_details::render_detail_1(&property_response.property)),
-                2 => (property_details::render_detail_2(&property_response.property)),
-                3 => (property_details::render_detail_3(&property_response.property)),
-                4 => (property_details::render_detail_4(&property_response.property)),
-                _ => (property_details::render_detail_1(&property_response.property))
+                1 => (property_details::render_detail_1(&property_response.property, listing_type.as_str())),
+                2 => (property_details::render_detail_2(&property_response.property, listing_type.as_str())),
+                3 => (property_details::render_detail_3(&property_response.property, listing_type.as_str())),
+                4 => (property_details::render_detail_4(&property_response.property, listing_type.as_str())),
+                _ => (property_details::render_detail_1(&property_response.property, listing_type.as_str()))
             }
         }
         .into_string();
@@ -414,10 +414,10 @@ pub async fn get_search_result(
 
         let page_no = search_query.0.page.unwrap_or(1);
 
-        let listing_type = search_query.0.listing_type.unwrap_or("sale".to_string());
+        let listing_type = search_query.0.listing_type.unwrap_or("resales".to_string());
 
         let p_agency_filterid = match listing_type.as_str() {
-            "sale" | "new-dev" => rso_data.filter_id_sale.ok_or_else(|| {
+            "resales" | "new-development" => rso_data.filter_id_sale.ok_or_else(|| {
                 tracing::error!("No filter_id_sale column or value is null");
                 AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
             })?,

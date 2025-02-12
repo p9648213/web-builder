@@ -35,7 +35,7 @@ function hideShowDropdown(dropDownEl, type) {
       ? dropDownEl.childNodes
       : dropDownEl.childNodes[0].childNodes;
 
-  let height = 1.93 * childNode.length;
+  let height = 1.75 * childNode.length;
 
   if (type !== "listingType") {
     height = 2.1 * childNode.length;
@@ -111,3 +111,51 @@ export function setupPriceInput() {
     princeInputMinEl.addEventListener("input", () => {});
   }
 }
+
+export function getListingTypeSelectValue() {
+  const listingType = document.getElementById("listing-type-selection")?.value;
+
+  return listingType;
+}
+
+export function setupChangeListingType() {
+  const listingTypeSelectList = document.getElementById(
+    "listing-type-select-list"
+  );
+  const listingTypeValue = document.getElementById("listing-type-selection");
+  const listingTypeLabel = document.getElementById("listing-type-label");
+
+  listingTypeSelectList.addEventListener("click", (event) => {
+    if (event.target.id && event.target.id == "listing-type-select-list") {
+      return;
+    }
+
+    if (!event.target.classList.contains("current-selected")) {
+      const currentSelect =
+        listingTypeSelectList.querySelector(".current-selected");
+      const selectElement = event.target;
+
+      currentSelect.classList.remove(
+        "bg-blue-400",
+        "text-white",
+        "current-selected"
+      );
+      currentSelect.classList.add("hover:bg-blue-300", "hover:text-white");
+
+      selectElement.classList.remove("hover:bg-blue-300", "hover:text-white");
+      selectElement.classList.add(
+        "bg-blue-400",
+        "text-white",
+        "current-selected"
+      );
+
+      listingTypeValue.value = selectElement.innerHTML
+        .toLowerCase()
+        .split(" ")
+        .join("-");
+      listingTypeLabel.textContent = selectElement.innerHTML;
+    }
+  });
+}
+
+window.getListingTypeSelectValue = getListingTypeSelectValue;

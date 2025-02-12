@@ -13,10 +13,10 @@ use crate::{
 };
 
 use super::pages::PropertyQuery;
+use super::pages::SearchQuery;
 
 pub async fn get_section(
     Path(section): Path<String>,
-    property_query: Query<PropertyQuery>,
     State(pg_pool): State<Pool>,
     request: Request,
 ) -> Result<Html<String>, AppError> {
@@ -102,6 +102,13 @@ pub async fn get_section(
         "search-results" => {
             let default_host = HeaderValue::from_static("");
 
+            let uri = request.uri();
+
+            let search_query: Query<SearchQuery> = Query::try_from_uri(&uri).map_err(|error| {
+                tracing::error!("Failed to extract search query: {}", error);
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+            })?;
+
             let host = request
                 .headers()
                 .get("host")
@@ -137,11 +144,11 @@ pub async fn get_section(
                     title {
                         "Search Result"
                     }
-                    div id="search-section" class="flex flex-col items-center min-h-screen invisible" {
+                    div id="search-section" class="invisible flex flex-col items-center min-h-screen" {
                         @match search_theme {
                             1 => {
-                                (search_result::render_search_box_1())
-                                (search_result::render_search_result_1(None))
+                                (search_result::render_search_box_1(&search_query.0))
+                                (search_result::render_search_result_1(&search_query.0)?)
                             }
                             2 => {
                                 div class="relative flex justify-between gap-10 mt-15 px-5 pb-30 w-full max-w-360" {
@@ -158,8 +165,8 @@ pub async fn get_section(
                                 (search_result::render_search_result_4(None))
                             }
                             _ => {
-                                (search_result::render_search_box_1())
-                                (search_result::render_search_result_1(None))
+                                (search_result::render_search_box_1(&search_query.0))
+                                (search_result::render_search_result_1(&search_query.0)?)
                             }
                         }
                     }
@@ -173,6 +180,14 @@ pub async fn get_section(
         }
         "property" => {
             let default_host = HeaderValue::from_static("");
+
+            let uri = request.uri();
+
+            let property_query: Query<PropertyQuery> =
+                Query::try_from_uri(&uri).map_err(|error| {
+                    tracing::error!("Failed to extract property query: {}", error);
+                    AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
+                })?;
 
             let host = request
                 .headers()
@@ -209,7 +224,7 @@ pub async fn get_section(
                     title {
                         "Property Details"
                     }
-                    div id="property-section" class="min-h-screen invisible" {
+                    div id="property-section" class="invisible min-h-screen" {
                         @match property_theme {
                             1 => (property_details::render_property_details_1(&property_query.0)),
                             2 => (property_details::render_property_details_2(&property_query.0)),
@@ -264,7 +279,7 @@ pub async fn get_section(
                     title {
                         "Contact"
                     }
-                    div id="contact-section" class="min-h-screen invisible" {
+                    div id="contact-section" class="invisible min-h-screen" {
                         @match contact_theme {
                             1 => (contact::render_contact_1()),
                             2 => (contact::render_contact_2()),

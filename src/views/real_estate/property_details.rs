@@ -58,16 +58,39 @@ pub fn render_property_details_1(property_query: &PropertyQuery) -> Markup {
     }
 }
 
-pub fn render_detail_1(property: &Property) -> Markup {
+pub fn render_detail_1(property: &Property, listing_type: &str) -> Markup {
     let name = if property.newdev_name == "" {
         &property.property_type.name_type
     } else {
         &property.newdev_name
     };
 
-    let price = match &property.price {
-        TextOrNum::Text(price) => price,
-        TextOrNum::Num(price) => &price.to_string(),
+    let price = if listing_type == "resales" || listing_type == "new-development" {
+        let price = match &property.price {
+            TextOrNum::Text(price) => price,
+            TextOrNum::Num(price) => &price.to_string(),
+        };
+        format!("{} €", price).to_owned()
+    } else if listing_type == "short-rental" {
+        let rental_price_1 = property.rental_price_1_short_term;
+        let rental_price_2 = property.rental_price_2_short_term;
+        let period = &property.rental_period_short_term;
+
+        if rental_price_1 == rental_price_2 {
+            rental_price_1.to_string()
+        } else {
+            format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
+        }
+    } else {
+        let rental_price_1 = property.rental_price_1_long_term;
+        let rental_price_2 = property.rental_price_2_long_term;
+        let period = &property.rental_period_long_term;
+
+        if rental_price_1 == rental_price_2 {
+            format!("{} € / {}", rental_price_1.to_string(), period)
+        } else {
+            format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
+        }
     };
 
     let built_size = match &property.built {
@@ -134,7 +157,7 @@ pub fn render_detail_1(property: &Property) -> Markup {
           div { (property.location) }
           div { (property.reference) }
         }
-        div class="flex justify-between gap-15 border-slate-200 shadow-xs px-10 py-8 border rounded-lg" {
+        div class="flex justify-between gap-15 shadow-xs px-10 py-8 border border-slate-200 rounded-lg" {
           div class="flex flex-col gap-4 max-w-130" {
             div class="font-bold text-lg" { "Description" }
             div class="text-[#868d9b] text-justify whitespace-pre-line" {
@@ -143,7 +166,7 @@ pub fn render_detail_1(property: &Property) -> Markup {
           }
           div class="flex flex-col gap-8" {
             div class="flex justify-between items-center" {
-              div class="font-bold text-2xl text-blue-500" { (price) " €" }
+              div class="font-bold text-blue-500 text-2xl" { (price) }
               button class="bg-blue-500 hover:bg-blue-400 px-4 py-3 rounded-md font-bold text-white cursor-pointer" {
                 "GET IN TOUCH"
               }
@@ -200,7 +223,7 @@ pub fn render_detail_1(property: &Property) -> Markup {
             }
           }
         }
-        div class="flex flex-col gap-10 border-slate-200 shadow-xs px-10 py-8 border rounded-lg" {
+        div class="flex flex-col gap-10 shadow-xs px-10 py-8 border border-slate-200 rounded-lg" {
           div class="font-bold text-lg" { "Features" }
           div class="flex flex-col gap-8" {
             @for category in &property.property_features.category {
@@ -285,10 +308,10 @@ pub fn render_pictures_slider_1(pictures: &Vec<PropertyPicture>) -> Markup {
           div class="flex w-full h-full transition-transform duration-500 picture-slider" {
             input type="hidden" value=(pictures.len());
             @for picture in pictures {
-              img class="w-full h-full pointer-events-none object-contain shrink-0" src=(picture.picture_url);
+              img class="w-full h-full object-contain pointer-events-none shrink-0" src=(picture.picture_url);
             }
           }
-          div class="bottom-2 left-[50%] absolute flex gap-2 -translate-x-[50%] overflow-hidden pictures-dots" {
+          div class="bottom-2 left-[50%] absolute flex gap-2 overflow-hidden -translate-x-[50%] pictures-dots" {
             @for i in 0..pictures.len() as u8 {
               @if i == 0 {
                 div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
@@ -385,16 +408,39 @@ pub fn render_property_details_2(property_query: &PropertyQuery) -> Markup {
     }
 }
 
-pub fn render_detail_2(property: &Property) -> Markup {
+pub fn render_detail_2(property: &Property, listing_type: &str) -> Markup {
     let name = if property.newdev_name == "" {
         &property.property_type.name_type
     } else {
         &property.newdev_name
     };
 
-    let price = match &property.price {
-        TextOrNum::Text(price) => price,
-        TextOrNum::Num(price) => &price.to_string(),
+    let price = if listing_type == "resales" || listing_type == "new-development" {
+        let price = match &property.price {
+            TextOrNum::Text(price) => price,
+            TextOrNum::Num(price) => &price.to_string(),
+        };
+        format!("{} €", price).to_owned()
+    } else if listing_type == "short-rental" {
+        let rental_price_1 = property.rental_price_1_short_term;
+        let rental_price_2 = property.rental_price_2_short_term;
+        let period = &property.rental_period_short_term;
+
+        if rental_price_1 == rental_price_2 {
+            rental_price_1.to_string()
+        } else {
+            format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
+        }
+    } else {
+        let rental_price_1 = property.rental_price_1_long_term;
+        let rental_price_2 = property.rental_price_2_long_term;
+        let period = &property.rental_period_long_term;
+
+        if rental_price_1 == rental_price_2 {
+            format!("{} € / {}", rental_price_1.to_string(), period)
+        } else {
+            format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
+        }
     };
 
     let built_size = match &property.built {
@@ -489,7 +535,7 @@ pub fn render_detail_2(property: &Property) -> Markup {
             div class="flex flex-col gap-2.5" {
               span class="font-bold text-lg" { (property.location) }
               span { (name) }
-              span class="font-bold text-3xl text-blue-500" { (price) " €" }
+              span class="font-bold text-blue-500 text-3xl" { (price) }
             }
             div class="flex flex-col gap-3" {
               span class="font-bold text-lg" { "Basic characteristics" }
@@ -616,7 +662,7 @@ pub fn render_pictures_slider_2(pictures: &Vec<PropertyPicture>) -> Markup {
           div class="flex w-full h-full transition-transform duration-500 picture-slider" {
             input type="hidden" value=(pictures.len());
             @for picture in pictures {
-              img class="w-full h-full pointer-events-none object-contain shrink-0" src=(picture.picture_url);
+              img class="w-full h-full object-contain pointer-events-none shrink-0" src=(picture.picture_url);
             }
           }
         }
@@ -691,7 +737,7 @@ pub fn render_pictures_slider_3(pictures: &Vec<PropertyPicture>) -> Markup {
             div class="flex items-center w-250 h-122 transition-transform duration-500 picture-slider" {
               input type="hidden" value=(pictures.len());
               @for picture in pictures {
-                img class="w-full h-full pointer-events-none object-contain shrink-0" src=(picture.picture_url);
+                img class="w-full h-full object-contain pointer-events-none shrink-0" src=(picture.picture_url);
               }
             }
           }
@@ -699,7 +745,7 @@ pub fn render_pictures_slider_3(pictures: &Vec<PropertyPicture>) -> Markup {
         div class="flex flex-col gap-2 w-full -translate-y-42" {
           @for picture in pictures {
             div class="w-75 h-40 shrink-0" {
-              img class="w-full h-full pointer-events-none object-cover shrink-0" src=(picture.picture_url);
+              img class="w-full h-full object-cover pointer-events-none shrink-0" src=(picture.picture_url);
             }
           }
         }
@@ -707,16 +753,39 @@ pub fn render_pictures_slider_3(pictures: &Vec<PropertyPicture>) -> Markup {
     }
 }
 
-pub fn render_detail_3(property: &Property) -> Markup {
+pub fn render_detail_3(property: &Property, listing_type: &str) -> Markup {
     let name = if property.newdev_name == "" {
         &property.property_type.name_type
     } else {
         &property.newdev_name
     };
 
-    let price = match &property.price {
-        TextOrNum::Text(price) => price,
-        TextOrNum::Num(price) => &price.to_string(),
+    let price = if listing_type == "resales" || listing_type == "new-development" {
+        let price = match &property.price {
+            TextOrNum::Text(price) => price,
+            TextOrNum::Num(price) => &price.to_string(),
+        };
+        format!("{} €", price).to_owned()
+    } else if listing_type == "short-rental" {
+        let rental_price_1 = property.rental_price_1_short_term;
+        let rental_price_2 = property.rental_price_2_short_term;
+        let period = &property.rental_period_short_term;
+
+        if rental_price_1 == rental_price_2 {
+            rental_price_1.to_string()
+        } else {
+            format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
+        }
+    } else {
+        let rental_price_1 = property.rental_price_1_long_term;
+        let rental_price_2 = property.rental_price_2_long_term;
+        let period = &property.rental_period_long_term;
+
+        if rental_price_1 == rental_price_2 {
+            format!("{} € / {}", rental_price_1.to_string(), period)
+        } else {
+            format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
+        }
     };
 
     let built_size = match &property.built {
@@ -814,13 +883,13 @@ pub fn render_detail_3(property: &Property) -> Markup {
             (PreEscaped(html_escape::decode_html_entities(&property.description).replace("[IW]", "")))
           }
           div class="flex flex-1 justify-end border border-solid rounded-2xl h-fit overflow-hidden" style="box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;" {
-            table class="border-collapse shadow-md w-full text-sm" {
+            table class="shadow-md w-full text-sm border-collapse" {
               tbody {
                 tr {
                   td colspan="2" class="p-5 border-b border-solid" {
                     div class="flex flex-col gap-4" {
                       span class="text-[#868d9b]" { "Price" }
-                      span class="font-bold text-2xl text-blue-500" { (price) " €" }
+                      span class="font-bold text-blue-500 text-2xl" { (price) }
                     }
                   }
                 }
@@ -1037,7 +1106,7 @@ pub fn render_pictures_slider_4(pictures: &Vec<PropertyPicture>) -> Markup {
           div class="flex w-full h-full transition-transform duration-500 picture-slider" {
             input type="hidden" value=(pictures.len());
             @for picture in pictures {
-              img class="w-full h-full pointer-events-none object-contain shrink-0" src=(picture.picture_url);
+              img class="w-full h-full object-contain pointer-events-none shrink-0" src=(picture.picture_url);
             }
           }
         }
@@ -1045,16 +1114,39 @@ pub fn render_pictures_slider_4(pictures: &Vec<PropertyPicture>) -> Markup {
     }
 }
 
-pub fn render_detail_4(property: &Property) -> Markup {
+pub fn render_detail_4(property: &Property, listing_type: &str) -> Markup {
     let name = if property.newdev_name == "" {
         &property.property_type.name_type
     } else {
         &property.newdev_name
     };
 
-    let price = match &property.price {
-        TextOrNum::Text(price) => price,
-        TextOrNum::Num(price) => &price.to_string(),
+    let price = if listing_type == "resales" || listing_type == "new-development" {
+        let price = match &property.price {
+            TextOrNum::Text(price) => price,
+            TextOrNum::Num(price) => &price.to_string(),
+        };
+        format!("{} €", price).to_owned()
+    } else if listing_type == "short-rental" {
+        let rental_price_1 = property.rental_price_1_short_term;
+        let rental_price_2 = property.rental_price_2_short_term;
+        let period = &property.rental_period_short_term;
+
+        if rental_price_1 == rental_price_2 {
+            rental_price_1.to_string()
+        } else {
+            format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
+        }
+    } else {
+        let rental_price_1 = property.rental_price_1_long_term;
+        let rental_price_2 = property.rental_price_2_long_term;
+        let period = &property.rental_period_long_term;
+
+        if rental_price_1 == rental_price_2 {
+            format!("{} € / {}", rental_price_1.to_string(), period)
+        } else {
+            format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
+        }
     };
 
     let built_size = match &property.built {
@@ -1174,7 +1266,7 @@ pub fn render_detail_4(property: &Property) -> Markup {
           }
           div class="flex items-center gap-7" {
             div class="flex flex-col gap-3" {
-              div class="font-bold text-2xl text-blue-500" { (price) " €" }
+              div class="font-bold text-blue-500 text-2xl" { (price) }
               div class="flex gap-2" {
                 span class="text-[#868d9b]" { "Reference: " }
                 span class="font-bold" { (property.reference) }
@@ -1216,7 +1308,7 @@ pub fn render_detail_4(property: &Property) -> Markup {
             }
           }
           div class="flex justify-end border border-solid rounded-2xl min-w-115 h-fit overflow-hidden" style="box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;" {
-            table class="border-collapse shadow-md w-full text-sm" {
+            table class="shadow-md w-full text-sm border-collapse" {
               tbody {
                 @for (row_index, row) in row_item.iter().enumerate() {
                   @if row_index == row_item.len() - 1 {

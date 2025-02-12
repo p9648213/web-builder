@@ -720,9 +720,13 @@ pub struct SearchProperty {
     #[serde(rename = "Currency")]
     pub currency: String,
     #[serde(rename = "Price")]
-    pub price: String,
+    pub price: Option<String>,
+    #[serde(rename = "RentalPrice1")]
+    pub rental_price_1: Option<u32>,
+    #[serde(rename = "RentalPrice2")]
+    pub rental_price_2: Option<u32>,
     #[serde(rename = "OriginalPrice")]
-    pub original_price: u32,
+    pub original_price: Option<u32>,
     #[serde(rename = "Dimensions")]
     pub dimensions: String,
     #[serde(rename = "Built")]

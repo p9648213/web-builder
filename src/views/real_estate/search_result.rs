@@ -1,7 +1,12 @@
 use maud::{html, Markup, PreEscaped};
+use reqwest::StatusCode;
 
 use crate::{
-    models::rso_data::{SearchProperty, TextOrNum},
+    controllers::real_estate::pages::SearchQuery,
+    models::{
+        error::AppError,
+        rso_data::{SearchProperty, TextOrNum},
+    },
     views::real_estate::home,
 };
 
@@ -20,7 +25,13 @@ use crate::{
 //..SSSSSSSSSS..EEEEEEEEEEEAAAA.....AAAA.RRR....RRRR...CCCCCCCCC...HHH.....HHH..
 //....SSSSSS....EEEEEEEEEEEAAA......AAAA.RRR.....RRRR....CCCCCC....HHH.....HHH..
 //..............................................................................
-pub fn render_search_box_1() -> Markup {
+pub fn render_search_box_1(search_query: &SearchQuery) -> Markup {
+    let listing_type_url = if let Some(listing_type) = &search_query.listing_type {
+        format!("/data/real-estate/listing-type?type={}", listing_type).to_owned()
+    } else {
+        "/data/real-estate/listing-type".to_owned()
+    };
+
     html! {
       (PreEscaped(r#"
         <script type="module">
@@ -32,12 +43,12 @@ pub fn render_search_box_1() -> Markup {
             setupDropdown();
         </script>
       "#))
-      div class="flex flex-col justify-center items-center gap-6 shadow-lg py-8 p-6 rounded-3xl" {
+      div class="flex flex-col justify-center items-center gap-6 shadow-lg p-6 py-8 rounded-3xl" {
         div class="justify-center grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr_1fr] w-full" {
           div class="flex justify-center items-center" {
             input class="border-slate-800 rounded-md w-3/4 h-10 placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
-          (home::render_search_box_selection_1("Listing Type", "/data/real-estate/listing-type", "listing-type-dropdown", "listing-type-label"))
+          (home::render_search_box_selection_1("Listing Type", listing_type_url.as_str(), "listing-type-dropdown", "listing-type-label"))
           (home::render_search_box_selection_1("Location", "/rso/location", "location-dropdown", "location-label"))
           (home::render_search_box_selection_1("Property Types", "/rso/property-types", "property-types-dropdown", "property-types-label"))
           (home::render_search_box_selection_1("Price", "/data/real-estate/prices", "price-dropdown", "price-label"))
@@ -61,7 +72,7 @@ pub fn render_search_box_2() -> Markup {
       div class="w-80 text-sm shrink-0" {
         div class="flex flex-col gap-3" {
           div class="flex justify-center items-center" {
-            input class="border-slate-800 py-2 rounded-md w-full placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
+            input class="py-2 border-slate-800 rounded-md w-full placeholder:text-sm" type="search" placeholder="Search Ref ID" ;
           }
           div class="flex justify-between items-center px-3 py-2.5 border border-black rounded-md" {
             span { "For Sales" }
@@ -120,7 +131,7 @@ pub fn render_search_box_3() -> Markup {
             setupMarginNavbar("search-results");
         </script>
       "#))
-      div class="flex flex-col justify-center items-center gap-6 shadow-lg py-8 p-6 rounded-3xl w-full" {
+      div class="flex flex-col justify-center items-center gap-6 shadow-lg p-6 py-8 rounded-3xl w-full" {
         div class="flex justify-center gap-7 w-full max-w-360" {
           div class="flex justify-center items-center gap-2 px-5 border border-black rounded-3xl" {
             "Listing Type"
@@ -216,7 +227,7 @@ pub fn render_search_box_4() -> Markup {
 
 pub fn render_selection_box_4(label: &str, icon: Option<Markup>) -> Markup {
     html! {
-      div class="flex justify-between items-center border-slate-800 px-3 py-2 border border-solid rounded-md" {
+      div class="flex justify-between items-center px-3 py-2 border border-slate-800 border-solid rounded-md" {
         div class="flex items-center gap-2" {
           @if let Some(icon) = icon {
             (icon)
@@ -246,25 +257,49 @@ pub fn render_selection_box_4(label: &str, icon: Option<Markup>) -> Markup {
 //.RRR.....RRRR.EEEEEEEEEEE...SSSSSS......UUUUUUU....LLLLLLLLLL...TTTT....
 //........................................................................
 
-pub fn render_search_result_1(page: Option<u32>) -> Markup {
-    let hx_get = if let Some(page) = page {
-        format!("/rso/search-results?page={}&theme=1", page)
-    } else {
-        "/rso/search-results?theme=1".to_string()
-    };
+pub fn render_search_result_1(search_query: &SearchQuery) -> Result<Markup, AppError> {
+    let mut params = vec![];
 
-    html! {
+    if let Some(listing_type) = &search_query.listing_type {
+        params.push(("listing_type", listing_type.to_owned()));
+    } else {
+        params.push(("listing_type", "resales".to_owned()));
+    }
+
+    if let Some(page) = &search_query.page {
+        params.push(("page", page.to_string()));
+    }
+
+    let replace_url =
+        reqwest::Url::parse_with_params("https://example.com/search-results", &params).map_err(
+            |error| {
+                tracing::error!("Failed to parse search result params: {}", error);
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+            },
+        )?;
+
+    params.push(("theme", "1".to_owned()));
+
+    let hx_get_url =
+        reqwest::Url::parse_with_params("https://example.com/rso/search-results", &params)
+            .map_err(|error| {
+                tracing::error!("Failed to parse search result params: {}", error);
+                AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server Error")
+            })?;
+
+    Ok(html! {
       div
-        hx-get=(hx_get)
+        hx-get=(hx_get_url.as_str().replace("https://example.com", ""))
         hx-target="#search-results"
         hx-trigger="load"
+        hx-replace-url=(replace_url.as_str().replace("https://example.com", ""))
         class="flex justify-center items-center my-15"
       {
         div id="search-results" class="flex flex-col justify-center items-center gap-10 px-15 pb-15 w-full max-w-360" {
           "Loading..."
         }
       }
-    }
+    })
 }
 
 pub fn render_search_result_2(page: Option<u32>) -> Markup {
@@ -374,7 +409,7 @@ pub fn render_property_grids_1(
         }
       }
       div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-        (render_pagination(page_size as u32, page_no, 1))
+        (render_pagination(page_size as u32, page_no, 1, listing_type))
       }
     }
 }
@@ -407,7 +442,7 @@ pub fn render_property_grids_2(
         }
       }
       div class="right-0 bottom-7 left-0 absolute flex justify-center bg-white m-auto p-2 rounded-full w-fit" {
-        (render_pagination(page_size as u32, page_no, 2))
+        (render_pagination(page_size as u32, page_no, 2, listing_type))
       }
     }
 }
@@ -440,7 +475,7 @@ pub fn render_property_grids_3(
         }
       }
       div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-        (render_pagination(page_size as u32, page_no, 3))
+        (render_pagination(page_size as u32, page_no, 3, listing_type))
       }
     }
 }
@@ -473,7 +508,7 @@ pub fn render_property_grids_4(
         }
       }
       div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-        (render_pagination(page_size as u32, page_no, 4))
+        (render_pagination(page_size as u32, page_no, 4, listing_type))
       }
     }
 }
@@ -494,7 +529,7 @@ pub fn render_property_grids_4(
 //.PPP.......PPA......AAAA....GGGGGG.....GII..
 //............................................
 
-pub fn render_pagination(total_pages: u32, page: u32, theme: u32) -> Markup {
+pub fn render_pagination(total_pages: u32, page: u32, theme: u32, listing_type: &str) -> Markup {
     let mut before_page = page - 1;
     let mut after_page = page + 1;
 
@@ -520,11 +555,11 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32) -> Markup {
       ul class="flex" {
         @if page > 1 {
           li
-            hx-get=(format!("/rso/search-results?page={}&theme={}", page - 1, theme))
-            hx-push-url=(format!("/search-results?page={}", page - 1))
+            hx-get=(format!("/rso/search-results?page={}&theme={}&listing_type={}", page - 1, theme, listing_type))
+            hx-push-url=(format!("/search-results?page={}&listing_type={}", page - 1, listing_type))
             hx-target="#search-results"
             hx-trigger="click"
-            class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+            class="hover:bg-blue-500 px-5 rounded-md font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
           {
             span { (PreEscaped("&#x276E;")) }
           }
@@ -532,16 +567,16 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32) -> Markup {
 
         @if page > 2 {
           li
-            hx-get=(format!("/rso/search-results?page=1&theme={}", theme))
-            hx-push-url="/search-results?page=1"
+            hx-get=(format!("/rso/search-results?page=1&theme={}&listing_type={}", theme, listing_type))
+            hx-push-url=(format!("/search-results?page=1&listing_type={}", listing_type))
             hx-target="#search-results"
             hx-trigger="click"
-            class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+            class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
           {
             span { "1" }
           }
           @if page > 3 {
-            li class="text-center text-xl leading-[45px] cursor-default list-none" { span { "..." } }
+            li class="text-xl text-center leading-[45px] cursor-default list-none" { span { "..." } }
           }
         }
 
@@ -549,17 +584,17 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32) -> Markup {
           @if page_length <= total_pages && page_length != 0 {
             @if page == page_length {
               li
-                class="bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg text-white leading-[45px] cursor-pointer list-none"
+                class="bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-white text-lg text-center leading-[45px] cursor-pointer list-none"
               {
                 span { (page_length) }
               }
             } @else {
               li
-                hx-get=(format!("/rso/search-results?page={}&theme={}", page_length, theme))
-                hx-push-url=(format!("/search-results?page={}", page_length))
+                hx-get=(format!("/rso/search-results?page={}&theme={}&listing_type={}", page_length, theme, listing_type))
+                hx-push-url=(format!("/search-results?page={}&listing_type={}", page_length, listing_type))
                 hx-target="#search-results"
                 hx-trigger="click"
-                class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+                class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
               {
                 span { (page_length) }
               }
@@ -569,14 +604,14 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32) -> Markup {
 
         @if page < total_pages - 1 {
           @if page < total_pages - 2 {
-            li class="text-center text-xl leading-[45px] cursor-default list-none" { span { "..." } }
+            li class="text-xl text-center leading-[45px] cursor-default list-none" { span { "..." } }
           }
           li
-            hx-get=(format!("/rso/search-results?page={}&theme={}", total_pages, theme))
-            hx-push-url=(format!("/search-results?page={}", total_pages))
+            hx-get=(format!("/rso/search-results?page={}&theme={}&listing_type={}", total_pages, theme, listing_type))
+            hx-push-url=(format!("/search-results?page={}&listing_type={}", total_pages, listing_type))
             hx-target="#search-results"
             hx-trigger="click"
-            class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+            class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
           {
             span { (total_pages) }
           }
@@ -584,11 +619,11 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32) -> Markup {
 
         @if page < total_pages {
           li
-            hx-get=(format!("/rso/search-results?page={}&theme={}", page + 1, theme))
-            hx-push-url=(format!("/search-results?page={}", page + 1))
+            hx-get=(format!("/rso/search-results?page={}&theme={}&listing_type={}", page + 1, theme, listing_type))
+            hx-push-url=(format!("/search-results?page={}&listing_type={}", page + 1, listing_type))
             hx-target="#search-results"
             hx-trigger="click"
-            class="hover:bg-blue-500 px-5 rounded-md font-medium text-center text-lg hover:text-white leading-[45px] transition-all duration-300 cursor-pointer list-none ease-in-out"
+            class="hover:bg-blue-500 px-5 rounded-md font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
           {
             span { (PreEscaped("&#x276F;")) }
           }
@@ -636,6 +671,23 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
         html! {}
     };
 
+    let price = if listing_type == "resales" || listing_type == "new-development" {
+        property
+            .price
+            .as_ref()
+            .unwrap_or(&"".to_string())
+            .to_owned()
+    } else {
+        let rental_price_1 = property.rental_price_1.unwrap_or(0);
+        let rental_price_2 = property.rental_price_2.unwrap_or(0);
+
+        if rental_price_1 == rental_price_2 {
+            rental_price_1.to_string()
+        } else {
+            format!("{} - {}", rental_price_1, rental_price_2)
+        }
+    };
+
     html! {
       div class="relative flex flex-col flex-1 gap-2 shadow-md rounded-lg overflow-hidden picture-container" {
         div class="relative picture-slider-container" {
@@ -644,7 +696,7 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
             (render_main_image)
             (render_images)
           }
-          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 overflow-hidden -translate-x-[50%] pictures-dots" {
             @for i in 0..total_pictures as u8 {
               @if i == 0 {
                 div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
@@ -663,7 +715,7 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
         {
           div {
             div class="font-bold text-blue-500 text-lg" {
-              (property.price) " €"
+              (price) " €"
             }
             div class="font-bold" {
               @if property.newdev_name == "" {
@@ -726,6 +778,23 @@ pub fn render_property_card_2(property: &SearchProperty, listing_type: &str) -> 
         html! {}
     };
 
+    let price = if listing_type == "resales" || listing_type == "new-development" {
+        property
+            .price
+            .as_ref()
+            .unwrap_or(&"".to_string())
+            .to_owned()
+    } else {
+        let rental_price_1 = property.rental_price_1.unwrap_or(0);
+        let rental_price_2 = property.rental_price_2.unwrap_or(0);
+
+        if rental_price_1 == rental_price_2 {
+            rental_price_1.to_string()
+        } else {
+            format!("{} - {}", rental_price_1, rental_price_2)
+        }
+    };
+
     html! {
       div class="relative flex rounded-lg overflow-hidden picture-container" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
         div class="relative flex-1 overflow-hidden picture-slider-container" {
@@ -734,7 +803,7 @@ pub fn render_property_card_2(property: &SearchProperty, listing_type: &str) -> 
             (render_main_image)
             (render_images)
           }
-          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 overflow-hidden -translate-x-[50%] pictures-dots" {
             @for i in 0..total_pictures as u8 {
               @if i == 0 {
                 div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
@@ -761,7 +830,7 @@ pub fn render_property_card_2(property: &SearchProperty, listing_type: &str) -> 
                 }
               }
               div class="font-bold text-blue-500 text-lg" {
-                (property.price) " €"
+                (price) " €"
               }
               div class="text-sm" {
                 (property.location)
@@ -808,6 +877,23 @@ pub fn render_property_card_3(property: &SearchProperty, listing_type: &str) -> 
         html! {}
     };
 
+    let price = if listing_type == "resales" || listing_type == "new-development" {
+        property
+            .price
+            .as_ref()
+            .unwrap_or(&"".to_string())
+            .to_owned()
+    } else {
+        let rental_price_1 = property.rental_price_1.unwrap_or(0);
+        let rental_price_2 = property.rental_price_2.unwrap_or(0);
+
+        if rental_price_1 == rental_price_2 {
+            rental_price_1.to_string()
+        } else {
+            format!("{} - {}", rental_price_1, rental_price_2)
+        }
+    };
+
     html! {
       div class="relative flex rounded-lg overflow-hidden picture-container" style="box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;" {
         div class="relative flex-1 overflow-hidden picture-slider-container" {
@@ -816,7 +902,7 @@ pub fn render_property_card_3(property: &SearchProperty, listing_type: &str) -> 
             (render_main_image)
             (render_images)
           }
-          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 overflow-hidden -translate-x-[50%] pictures-dots" {
             @for i in 0..total_pictures as u8 {
               @if i == 0 {
                 div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
@@ -843,7 +929,7 @@ pub fn render_property_card_3(property: &SearchProperty, listing_type: &str) -> 
                 }
               }
               div class="font-bold text-blue-500 text-lg" {
-                (property.price) " €"
+                (price) " €"
               }
               div class="text-sm" {
                 (property.location)
@@ -890,6 +976,23 @@ pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> 
         html! {}
     };
 
+    let price = if listing_type == "resales" || listing_type == "new-development" {
+        property
+            .price
+            .as_ref()
+            .unwrap_or(&"".to_string())
+            .to_owned()
+    } else {
+        let rental_price_1 = property.rental_price_1.unwrap_or(0);
+        let rental_price_2 = property.rental_price_2.unwrap_or(0);
+
+        if rental_price_1 == rental_price_2 {
+            rental_price_1.to_string()
+        } else {
+            format!("{} - {}", rental_price_1, rental_price_2)
+        }
+    };
+
     html! {
       div class="relative flex flex-col gap-2 shadow-md rounded-lg overflow-hidden picture-container" {
         div class="relative picture-slider-container" {
@@ -898,7 +1001,7 @@ pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> 
             (render_main_image)
             (render_images)
           }
-          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 -translate-x-[50%] overflow-hidden pictures-dots" {
+          div class="bottom-2 left-[50%] absolute flex gap-2 max-w-18 overflow-hidden -translate-x-[50%] pictures-dots" {
             @for i in 0..total_pictures as u8 {
               @if i == 0 {
                 div class="bg-blue-500 p-1 rounded-full cursor-pointer" {}
@@ -917,7 +1020,7 @@ pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> 
         {
           div {
             div class="font-bold text-blue-500 text-lg" {
-              (property.price) " €"
+              (price) " €"
             }
             div class="font-bold" {
               @if property.newdev_name == "" {

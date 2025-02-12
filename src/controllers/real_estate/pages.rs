@@ -178,7 +178,7 @@ pub async fn get_real_estate_search_result_page(
             })?;
 
         Ok(Html(
-            render_search_result_page(search_query.0, header_theme, footer_theme, search_theme)
+            render_search_result_page(search_query.0, header_theme, footer_theme, search_theme)?
                 .into_string(),
         ))
     } else {

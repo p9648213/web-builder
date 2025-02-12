@@ -66,7 +66,7 @@ pub fn render_create_website(
                     input type="text" name="name" {}
                     label { "Domain: " }
                     input type="text" name="domain" {}
-                    button class="border-gray-500 mt-3 border cursor-pointer" {
+                    button class="mt-3 border border-gray-500 cursor-pointer" {
                         "Create"
                     }
                 }
@@ -94,7 +94,11 @@ pub fn render_user_website(website: &Website, builder_link: String) -> Result<Ma
 
     let builder_link = format!("{}/builder/edit/{}/style/header", builder_link, website_id);
 
-    let website_domain = format!("http://{}:17001", website_domain);
+    let website_domain = if website_domain.contains("localhost") {
+        format!("http://{}:17001", website_domain)
+    } else {
+        format!("https://{}", website_domain)
+    };
 
     Ok(maud::html! {
         section id="create-website" {
@@ -107,7 +111,7 @@ pub fn render_user_website(website: &Website, builder_link: String) -> Result<Ma
                 }
                 h2 class="flex gap-2" {
                     "Domain: "
-                    a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href=(website_domain) {
+                    a target="_blank" class="group flex items-center gap-1 text-indigo-500" href=(website_domain) {
                         div class="group" {
                             (website_domain)
                         }
@@ -115,7 +119,7 @@ pub fn render_user_website(website: &Website, builder_link: String) -> Result<Ma
                 }
                 h2 class="flex gap-2" {
                     "Builder Link: "
-                    a target="_blank" class="flex items-center gap-1 text-indigo-500 group" href=(builder_link) {
+                    a target="_blank" class="group flex items-center gap-1 text-indigo-500" href=(builder_link) {
                         div class="group" {
                             (builder_link)
                         }
