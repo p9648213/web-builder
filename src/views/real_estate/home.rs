@@ -482,7 +482,7 @@ pub fn render_home_search_box_2() -> Markup {
           }
           div class="flex gap-6" {
             div class="flex items-center gap-2" {
-              input type="radio" name="listing-type" checked value="sale";
+              input type="radio" name="listing-type" checked value="resales";
               label { "ReSales" }
             }
             div class="flex items-center gap-2" {
@@ -796,7 +796,7 @@ pub fn render_hot_properties_slider_1(hot_properties: Vec<SearchProperty>) -> Ma
           @for property_chunk in &properties_chunks {
             div class="gap-10 grid grid-cols-[292px_292px_292px] pl-12" {
               @for property in property_chunk {
-                (render_hot_property_card_1(property, "sale"))
+                (render_hot_property_card_1(property, "resales"))
               }
             }
           }
@@ -960,8 +960,8 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
             @if index == 0 {
               @if property.main_image.is_some() {
                 div
-                  hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
-                  hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                  hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "resales"))
+                  hx-push-url=(format!("/property?id={}&type={}", property.reference, "resales"))
                   hx-trigger="click"
                   hx-target="main"
                   class="relative row-span-full rounded-lg overflow-hidden cursor-pointer"
@@ -972,8 +972,8 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
               } @else {
                 @if property.pictures.is_some() {
                   div
-                    hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
-                    hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                    hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "resales"))
+                    hx-push-url=(format!("/property?id={}&type={}", property.reference, "resales"))
                     hx-trigger="click"
                     hx-target="main"
                     class="relative row-span-full rounded-lg overflow-hidden cursor-pointer"
@@ -986,8 +986,8 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
             } @else {
               @if property.main_image.is_some() {
                 div
-                  hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
-                  hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                  hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "resales"))
+                  hx-push-url=(format!("/property?id={}&type={}", property.reference, "resales"))
                   hx-trigger="click"
                   hx-target="main"
                   class="relative rounded-lg overflow-hidden cursor-pointer"
@@ -998,8 +998,8 @@ pub fn render_hot_properties_slider_2(hot_properties: Vec<SearchProperty>) -> Ma
               } @else {
                 @if property.pictures.is_some() {
                   div
-                    hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
-                    hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+                    hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "resales"))
+                    hx-push-url=(format!("/property?id={}&type={}", property.reference, "resales"))
                     hx-trigger="click"
                     hx-target="main"
                     class="relative rounded-lg overflow-hidden cursor-pointer"
@@ -1223,8 +1223,8 @@ pub fn render_hot_property_card_3(property: &SearchProperty) -> Markup {
         }
         div class="flex-1" {
           div
-          hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "sale"))
-          hx-push-url=(format!("/property?id={}&type={}", property.reference, "sale"))
+          hx-get=(format!("/section/real-estate/contents/property?id={}&type={}", property.reference, "resales"))
+          hx-push-url=(format!("/property?id={}&type={}", property.reference, "resales"))
           hx-trigger="click"
           hx-target="main"
           class="flex flex-col justify-between gap-2 px-3 py-2 h-full cursor-pointer"
@@ -1352,7 +1352,7 @@ pub fn render_hot_properties_slider_4(hot_properties: Vec<SearchProperty>) -> Ma
           @for property_chunk in &properties_chunks {
             div class="gap-10 grid grid-cols-[292px_292px_292px] pl-12" {
               @for property in property_chunk {
-                (render_hot_property_card_1(property, "sale"))
+                (render_hot_property_card_1(property, "resales"))
               }
             }
           }

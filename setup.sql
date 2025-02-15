@@ -103,6 +103,24 @@ BEGIN
    END IF;
 END $$;
 
+DO $$
+BEGIN
+   IF NOT EXISTS (SELECT 1 FROM websites) THEN
+      INSERT INTO websites (template_id, user_id, name, domain)
+      VALUES 
+        (1, 1, 'realestate', 'localhost');
+   END IF;
+END $$;
+
+DO $$
+BEGIN
+   IF NOT EXISTS (SELECT 1 FROM websites_settings) THEN
+      INSERT INTO websites (website_id, header_theme, footer_theme, home_theme, search_theme, property_theme, contact_theme, user_id)
+      VALUES 
+        (1, 1, 1, 1, 1, 1, 1, 1);
+   END IF;
+END $$;
+
 -- FUNCTION
 CREATE OR REPLACE FUNCTION update_timestamp()
 RETURNS TRIGGER AS $$
