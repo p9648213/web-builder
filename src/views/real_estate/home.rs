@@ -235,27 +235,40 @@ pub fn render_location_selection_drop_down_1(
     highlight: &str,
 ) -> Markup {
     html! {
-      div class="flex flex-col gap-3" {
+      div class="flex flex-col gap-3 min-w-50" {
+        (PreEscaped(r#"
+          <script type="module">
+              import {setupChangeLocation} from "/assets/js/app/searchbox.js";
+              setupChangeLocation();
+          </script>
+        "#))
         @match provinces {
           ProvinceAreaDynamic::Single(province_area) => {
             @if highlight == "All" {
               @let id = format!("{}-location", province_area.province_area_name);
+
               (render_input_radio_1("All", "province", "all-location", Some(true)))
-              (render_input_radio_1(province_area.province_area_name.as_str(), "province", id.as_str(), None))
 
-              @match province_area.locations.location {
-                LocationDynamic::Single(location) => {
-                  @let id = format!("{}-child", location);
-                  (render_check_box_1(location.as_str(), None, id.as_str(), None, None));
-                },
-                LocationDynamic::Multiple(locations) => {
-                  @for location in locations {
-                    @let id = format!("{}-child", location);
-                    (render_check_box_1(location.as_str(), None, id.as_str(), None, None));
+              div class="flex flex-col gap-3" {
+                (render_input_radio_1(province_area.province_area_name.as_str(), "province", id.as_str(), None))
+
+                @let province_class= format!("{}-child", province_area.province_area_name);
+
+                div id=(format!("{}-dropdown", province_area.province_area_name)) class="hidden flex-col gap-3" {
+                  @match province_area.locations.location {
+                    LocationDynamic::Single(location) => {
+                      @let id = format!("{}-child", location);
+                      (render_check_box_1(location.as_str(), "location", Some(location.as_str()), id.as_str(), None, Some(province_class.as_str())));
+                    },
+                    LocationDynamic::Multiple(locations) => {
+                      @for location in locations {
+                        @let id = format!("{}-child", location);
+                        (render_check_box_1(location.as_str() , "location", Some(location.as_str()), id.as_str(), None, Some(province_class.as_str())));
+                      }
+                    },
                   }
-                },
+                }
               }
-
             } @else {
               @let id = format!("{}-location", province_area.province_area_name);
 
@@ -277,23 +290,30 @@ pub fn render_location_selection_drop_down_1(
 
             @for province_area in province_areas {
               @let id = format!("{}-location", province_area.province_area_name);
-              (render_input_radio_1(province_area.province_area_name.as_str(), "province", id.as_str(), None))
+              @let province_class= format!("{}-child", province_area.province_area_name);
 
-              @match province_area.locations.location {
-                LocationDynamic::Single(location) => {
-                  @let id = format!("{}-child", location);
-                  (render_check_box_1(location.as_str(), None, id.as_str(), None, None));
-                },
-                LocationDynamic::Multiple(locations) => {
-                  @for location in locations {
-                    @let id = format!("{}-child", location);
-                    (render_check_box_1(location.as_str(), None, id.as_str(), None, None));
+              div class="flex flex-col gap-3" {
+                (render_input_radio_1(province_area.province_area_name.as_str(), "province", id.as_str(), None))
+                div id=(format!("{}-dropdown", province_area.province_area_name)) class="hidden flex-col gap-3" {
+                  @match province_area.locations.location {
+                    LocationDynamic::Single(location) => {
+                      @let id = format!("{}-child", location);
+                      (render_check_box_1(location.as_str(), "location", Some(location.as_str()), id.as_str(), None, Some(province_class.as_str())));
+                    },
+                    LocationDynamic::Multiple(locations) => {
+                      @for location in locations {
+                        @let id = format!("{}-child", location);
+                        (render_check_box_1(location.as_str() , "location", Some(location.as_str()), id.as_str(), None, Some(province_class.as_str())));
+                      }
+                    },
                   }
-                },
+                }
               }
             }
           },
         }
+        input type="hidden" id="province-vals" value="All";
+        input type="hidden" id="location-vals" value="All";
       }
     }
 }
@@ -302,9 +322,9 @@ pub fn render_property_types_selection_drop_down_1(property_types: Vec<PropertyT
     html! {
       div class="flex flex-col gap-3" {
         @for property_type in property_types {
-          (render_check_box_1(property_type.prop_type.as_str(), Some(property_type.option_value.as_str()) , property_type.option_value.as_str(), None, Some("ml-0")));
+          (render_check_box_1(property_type.prop_type.as_str(), "property-type", Some(property_type.option_value.as_str()) , property_type.option_value.as_str(), None, Some("ml-0")));
           @for sub_type in property_type.sub_types {
-            (render_check_box_1(sub_type.prop_sub_type.as_str(), Some(property_type.option_value.as_str()), sub_type.sub_type_option_value.as_str(), None, None));
+            (render_check_box_1(sub_type.prop_sub_type.as_str(), "sub-property-type", Some(sub_type.sub_type_option_value.as_str()), sub_type.sub_type_option_value.as_str(), None, None));
           }
         }
       }
@@ -313,14 +333,18 @@ pub fn render_property_types_selection_drop_down_1(property_types: Vec<PropertyT
 
 pub fn render_input_radio_1(value: &str, name: &str, id: &str, checked: Option<bool>) -> Markup {
     html! {
-      div class="flex items-center gap-2 text-sm" {
-        input type="radio" checked=[checked] id=(id) name=(name) value=(value);
-        label for=(id) {(value)}
+      div class="relative flex items-center gap-2 text-sm" {
+        input class="cursor-pointer" type="radio" checked=[checked] id=(id) name=(name) value=(value);
+        label class="z-1 w-full cursor-pointer" for=(id) {(value)}
+        div class="right-2 absolute w-4 h-4" {
+          img class="w-full h-full" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+        }
       }
     }
 }
 
 pub fn render_check_box_1(
+    label: &str,
     name: &str,
     value: Option<&str>,
     id: &str,
@@ -328,15 +352,18 @@ pub fn render_check_box_1(
     tw_class: Option<&str>,
 ) -> Markup {
     let class = if let Some(tw_class) = tw_class {
-        tw_merge!("flex items-center gap-2 ml-5 text-sm", tw_class)
+        tw_merge!(
+            "flex items-center gap-2 ml-5 text-sm cursor-pointer",
+            tw_class
+        )
     } else {
-        "flex items-center gap-2 ml-5 text-sm".to_string()
+        "flex items-center gap-2 ml-5 text-sm cursor-pointer".to_string()
     };
 
     html! {
       div class=(class) {
         input class="rounded-sm" type="checkbox" name=(name) value=[value] id=(id) checked=[checked];
-        label for=(id) {(name)}
+        label for=(id) {(label)}
       }
     }
 }
@@ -377,9 +404,9 @@ pub fn render_search_box_selection_1(
 
     let dropdown_items_class = if title != "Listing Type" {
         if title == "Bed" || title == "Bath" {
-            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-300 invisible pointer-events-none dropdown overflow-auto z-1 right-0"
+            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-0 invisible pointer-events-none dropdown overflow-auto z-1 right-0"
         } else {
-            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-300 invisible pointer-events-none dropdown overflow-auto z-1"
+            "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 max-h-0 whitespace-pre transition-all duration-0 invisible pointer-events-none dropdown overflow-auto z-1"
         }
     } else {
         "top-7 absolute flex flex-col gap-1 bg-white opacity-0 shadow p-2 rounded-md h-0 whitespace-pre transition-all duration-300 invisible pointer-events-none dropdown overflow-hidden z-1"

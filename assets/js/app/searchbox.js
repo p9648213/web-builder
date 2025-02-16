@@ -38,7 +38,11 @@ function hideShowDropdown(dropDownEl, type) {
   let height = 1.75 * childNode.length;
 
   if (type !== "listingType") {
-    height = 2.1 * childNode.length;
+    if (type === "location") {
+      height = 2.1 * (childNode.length - 5);
+    } else {
+      height = 2.1 * childNode.length;
+    }
   }
 
   if (type === "bed" || type === "bath") {
@@ -46,6 +50,11 @@ function hideShowDropdown(dropDownEl, type) {
   }
 
   if (childNode.length < 6 && type !== "listingType") {
+    dropDownEl.classList.remove("overflow-auto");
+    dropDownEl.classList.add("overflow-hidden");
+  }
+
+  if (childNode.length - 5 < 6 && type === "location") {
     dropDownEl.classList.remove("overflow-auto");
     dropDownEl.classList.add("overflow-hidden");
   }
@@ -60,19 +69,21 @@ function hideShowDropdown(dropDownEl, type) {
       "invisible",
       "pointer-events-none",
       "opacity-0",
-      "max-h-0"
+      "max-h-0",
+      "duration-0"
     );
 
-    dropDownEl.classList.add("opacity-100", "max-h-50");
+    dropDownEl.classList.add("opacity-100", "max-h-50", "duration-300");
     dropDownEl.style.height = `${height}rem`;
   } else {
     dropDownEl.style.height = 0;
-    dropDownEl.classList.remove("opacity-100", "max-h-50");
+    dropDownEl.classList.remove("opacity-100", "max-h-50", "duration-0");
     dropDownEl.classList.add(
       "invisible",
       "pointer-events-none",
       "opacity-0",
-      "max-h-0"
+      "max-h-0",
+      "duration-300"
     );
   }
 }
@@ -91,13 +102,29 @@ function handleClickOutsideDropdown(dropDownContainerEl, type) {
     }
 
     if (!dropDownContainerEl.contains(event.target)) {
+      if (type === "location") {
+        const provinceVals = document.getElementById("province-vals");
+
+        let currentProvinceDropdown = document.getElementById(
+          `${provinceVals.value}-dropdown`
+        );
+
+        if (currentProvinceDropdown) {
+          if (currentProvinceDropdown.classList.contains("flex")) {
+            currentProvinceDropdown.classList.remove("flex");
+            currentProvinceDropdown.classList.add("hidden");
+          }
+        }
+      }
+
       dropDownEl.style.height = 0;
-      dropDownEl.classList.remove("opacity-100", "max-h-50");
+      dropDownEl.classList.remove("opacity-100", "max-h-50", "duration-0");
       dropDownEl.classList.add(
         "invisible",
         "pointer-events-none",
         "opacity-0",
-        "max-h-0"
+        "max-h-0",
+        "duration-300"
       );
     }
   });
@@ -154,6 +181,125 @@ export function setupChangeListingType() {
         .split(" ")
         .join("-");
       listingTypeLabel.textContent = selectElement.innerHTML;
+    }
+  });
+}
+
+export function setupChangeLocation() {
+  const provinceVals = document.getElementById("province-vals");
+  const locationVals = document.getElementById("location-vals");
+  const dropDownLocationEl = document.getElementById("location-dropdown");
+  const dropDownEl =
+    dropDownLocationEl.parentElement.querySelector(".dropdown");
+
+  let childNode = dropDownEl.childNodes[0].childNodes;
+  const locationDropdown = document.getElementById("location-dropdown-items");
+
+  locationDropdown.addEventListener("click", (event) => {
+    if (event.target.id && event.target.id == "location-dropdown-items") {
+      return;
+    }
+
+    if (event.target.name === "province") {
+      if (event.target.value !== provinceVals.value) {
+        let currentProvinceDropdown = document.getElementById(
+          `${provinceVals.value}-dropdown`
+        );
+
+        if (currentProvinceDropdown) {
+          if (currentProvinceDropdown.classList.contains("flex")) {
+            currentProvinceDropdown.classList.remove("flex");
+            currentProvinceDropdown.classList.add("hidden");
+          }
+        }
+      }
+
+      let provinceDropdown = document.getElementById(
+        `${event.target.value}-dropdown`
+      );
+
+      let provinceLocations = locationDropdown.querySelectorAll(
+        `.${event.target.value}-child`
+      );
+
+      if (provinceDropdown) {
+        if (provinceDropdown.classList.contains("hidden")) {
+          if (childNode.length - 5 + provinceLocations.length < 6) {
+            dropDownEl.classList.remove("overflow-auto");
+            dropDownEl.classList.add("overflow-hidden");
+          } else {
+            dropDownEl.classList.remove("overflow-hidden");
+            dropDownEl.classList.add("overflow-auto");
+          }
+
+          dropDownEl.classList.remove("duration-300");
+          dropDownEl.classList.add("duration-0");
+          dropDownEl.style.height = `${
+            2.1 * (childNode.length + provinceLocations.length - 5)
+          }rem`;
+
+          provinceDropdown.classList.remove("hidden");
+          provinceDropdown.classList.add("flex");
+        } else {
+          if (childNode.length - 5 < 6) {
+            dropDownEl.classList.remove("overflow-auto");
+            dropDownEl.classList.add("overflow-hidden");
+          } else {
+            dropDownEl.classList.remove("overflow-hidden");
+            dropDownEl.classList.add("overflow-auto");
+          }
+
+          dropDownEl.classList.remove("duration-300");
+          dropDownEl.classList.add("duration-0");
+          dropDownEl.style.height = `${2.1 * (childNode.length - 5)}rem`;
+
+          provinceDropdown.classList.remove("flex");
+          provinceDropdown.classList.add("hidden");
+        }
+      }
+
+      if (provinceVals.value === event.target.value) {
+        return;
+      }
+
+      if (event.target.value === "All") {
+        if (childNode.length - 5 + provinceLocations.length < 6) {
+          dropDownEl.classList.remove("overflow-auto");
+          dropDownEl.classList.add("overflow-hidden");
+        } else {
+          dropDownEl.classList.remove("overflow-hidden");
+          dropDownEl.classList.add("overflow-auto");
+        }
+
+        dropDownEl.classList.remove("duration-300");
+        dropDownEl.classList.add("duration-0");
+        dropDownEl.style.height = `${
+          2.1 * (childNode.length + provinceLocations.length - 5)
+        }rem`;
+      }
+
+      let currentProvinceLocation = locationDropdown.querySelectorAll(
+        `.${provinceVals.value}-child`
+      );
+
+      currentProvinceLocation.forEach((item) => {
+        let locationInput = item.querySelector("input");
+        locationInput.checked = false;
+      });
+
+      provinceVals.value = event.target.value;
+      locationVals.value = "All";
+
+      provinceLocations.forEach((item) => {
+        let locationInput = item.querySelector("input");
+        locationInput.checked = true;
+
+        if (locationVals.value == "" || locationVals.value == "All") {
+          locationVals.value = locationInput.value;
+        } else {
+          locationVals.value = locationVals.value + "," + locationInput.value;
+        }
+      });
     }
   });
 }
