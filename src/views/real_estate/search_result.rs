@@ -266,6 +266,10 @@ pub fn render_search_result_1(search_query: &SearchQuery) -> Result<Markup, AppE
         params.push(("listing_type", "resales".to_owned()));
     }
 
+    if let Some(province) = &search_query.province {
+        params.push(("province", province.to_owned()));
+    }
+
     if let Some(page) = &search_query.page {
         params.push(("page", page.to_string()));
     }
@@ -408,8 +412,10 @@ pub fn render_property_grids_1(
           (render_property_card_1(property, listing_type))
         }
       }
-      div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-        (render_pagination(page_size as u32, page_no, 1, listing_type))
+      @if property_count > properties_per_page {
+        div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
+          (render_pagination(page_size as u32, page_no, 1, listing_type))
+        }
       }
     }
 }
@@ -441,8 +447,10 @@ pub fn render_property_grids_2(
           (render_property_card_2(property, listing_type))
         }
       }
-      div class="right-0 bottom-7 left-0 absolute flex justify-center bg-white m-auto p-2 rounded-full w-fit" {
-        (render_pagination(page_size as u32, page_no, 2, listing_type))
+      @if property_count > properties_per_page {
+        div class="right-0 bottom-7 left-0 absolute flex justify-center bg-white m-auto p-2 rounded-full w-fit" {
+          (render_pagination(page_size as u32, page_no, 2, listing_type))
+        }
       }
     }
 }
@@ -474,8 +482,10 @@ pub fn render_property_grids_3(
           (render_property_card_3(property, listing_type))
         }
       }
-      div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-        (render_pagination(page_size as u32, page_no, 3, listing_type))
+      @if property_count > properties_per_page {
+        div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
+          (render_pagination(page_size as u32, page_no, 4, listing_type))
+        }
       }
     }
 }
@@ -507,8 +517,10 @@ pub fn render_property_grids_4(
           (render_property_card_4(property, listing_type))
         }
       }
-      div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-        (render_pagination(page_size as u32, page_no, 4, listing_type))
+      @if property_count > properties_per_page {
+        div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
+          (render_pagination(page_size as u32, page_no, 4, listing_type))
+        }
       }
     }
 }

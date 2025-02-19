@@ -472,7 +472,10 @@ pub fn render_home_search_box_1() -> Markup {
             hx-push-url="/search-results"
             hx-target="main"
             hx-vals=r#"
-              js:{listing_type: getListingTypeSelectValue()}
+              js:{
+                listing_type: getListingTypeSelectValue(),
+                province: getProvinceValue()
+              }
             "#
             class="bg-blue-500 hover:bg-blue-400 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"
           {

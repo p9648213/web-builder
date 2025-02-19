@@ -20,6 +20,7 @@ pub struct SearchQuery {
     pub page: Option<u32>,
     pub listing_type: Option<String>,
     pub theme: Option<i32>,
+    pub province: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]

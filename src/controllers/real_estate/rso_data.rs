@@ -416,6 +416,12 @@ pub async fn get_search_result(
 
         let listing_type = search_query.0.listing_type.unwrap_or("resales".to_string());
 
+        let mut province = search_query.0.province.unwrap_or("".to_string());
+
+        if province == "All" {
+            province = "".to_string();
+        }
+
         let p_agency_filterid = match listing_type.as_str() {
             "resales" | "new-development" => rso_data.filter_id_sale.ok_or_else(|| {
                 tracing::error!("No filter_id_sale column or value is null");
@@ -457,6 +463,7 @@ pub async fn get_search_result(
             p_page_no: page_no.to_string(),
             p_page_size: "24".to_string(),
             p_virtual_tours: "2".to_string(),
+            p_province: province,
         };
 
         let search_response = RsoData::get_rso_search_result(search_result_params).await?;

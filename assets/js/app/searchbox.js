@@ -89,7 +89,7 @@ function hideShowDropdown(dropDownEl, type) {
 }
 
 function handleClickOutsideDropdown(dropDownContainerEl, type) {
-  document.addEventListener("click", (event) => {
+  function clickHandler(event) {
     if (event.target === dropDownContainerEl) {
       return;
     }
@@ -126,8 +126,13 @@ function handleClickOutsideDropdown(dropDownContainerEl, type) {
         "max-h-0",
         "duration-300"
       );
+
+      document.removeEventListener("click", clickHandler);
     }
-  });
+  }
+
+  document.removeEventListener("click", clickHandler);
+  document.addEventListener("click", clickHandler);
 }
 
 export function setupPriceInput() {
@@ -137,12 +142,6 @@ export function setupPriceInput() {
   if (princeInputMinEl && princeInputMaxEl) {
     princeInputMinEl.addEventListener("input", () => {});
   }
-}
-
-export function getListingTypeSelectValue() {
-  const listingType = document.getElementById("listing-type-selection")?.value;
-
-  return listingType;
 }
 
 export function setupChangeListingType() {
@@ -186,13 +185,15 @@ export function setupChangeListingType() {
 }
 
 export function setupChangeLocation() {
+  console.log("setup");
+
   const provinceVals = document.getElementById("province-vals");
-  const locationVals = document.getElementById("location-vals");
   const dropDownLocationEl = document.getElementById("location-dropdown");
   const dropDownEl =
     dropDownLocationEl.parentElement.querySelector(".dropdown");
 
   let childNode = dropDownEl.childNodes[0].childNodes;
+
   const locationDropdown = document.getElementById("location-dropdown-items");
 
   locationDropdown.addEventListener("click", (event) => {
@@ -288,20 +289,24 @@ export function setupChangeLocation() {
       });
 
       provinceVals.value = event.target.value;
-      locationVals.value = "All";
 
       provinceLocations.forEach((item) => {
         let locationInput = item.querySelector("input");
         locationInput.checked = true;
-
-        if (locationVals.value == "" || locationVals.value == "All") {
-          locationVals.value = locationInput.value;
-        } else {
-          locationVals.value = locationVals.value + "," + locationInput.value;
-        }
       });
     }
   });
 }
 
+export function getListingTypeSelectValue() {
+  const listingType = document.getElementById("listing-type-selection")?.value;
+  return listingType;
+}
+
+export function getProvinceValue() {
+  const provinceVals = document.getElementById("province-vals")?.value;
+  return provinceVals || "";
+}
+
 window.getListingTypeSelectValue = getListingTypeSelectValue;
+window.getProvinceValue = getProvinceValue;
