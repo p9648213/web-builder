@@ -88,6 +88,8 @@ function hideShowDropdown(dropDownEl, type) {
   }
 }
 
+const dropdownHandlers = new Map();
+
 function handleClickOutsideDropdown(dropDownContainerEl, type) {
   function clickHandler(event) {
     if (event.target === dropDownContainerEl) {
@@ -126,12 +128,18 @@ function handleClickOutsideDropdown(dropDownContainerEl, type) {
         "max-h-0",
         "duration-300"
       );
-
-      document.removeEventListener("click", clickHandler);
     }
   }
 
-  document.removeEventListener("click", clickHandler);
+  if (dropdownHandlers.has(`click_event_${type}`)) {
+    console.log(dropdownHandlers.get(`click_event_${type}`));
+
+    document.removeEventListener(
+      "click",
+      dropdownHandlers.get(`click_event_${type}`)
+    );
+  }
+  dropdownHandlers.set(`click_event_${type}`, clickHandler);
   document.addEventListener("click", clickHandler);
 }
 
@@ -185,8 +193,6 @@ export function setupChangeListingType() {
 }
 
 export function setupChangeLocation() {
-  console.log("setup");
-
   const provinceVals = document.getElementById("province-vals");
   const dropDownLocationEl = document.getElementById("location-dropdown");
   const dropDownEl =
