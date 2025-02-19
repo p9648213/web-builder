@@ -197,6 +197,7 @@ export function setupChangeLocation() {
   const dropDownLocationEl = document.getElementById("location-dropdown");
   const dropDownEl =
     dropDownLocationEl.parentElement.querySelector(".dropdown");
+  const locationLabel = document.getElementById("location-label");
 
   let childNode = dropDownEl.childNodes[0].childNodes;
 
@@ -296,10 +297,19 @@ export function setupChangeLocation() {
 
       provinceVals.value = event.target.value;
 
+      let countLocation = 0;
+
       provinceLocations.forEach((item) => {
+        countLocation++;
         let locationInput = item.querySelector("input");
         locationInput.checked = true;
       });
+
+      if (event.target.value === "All") {
+        locationLabel.innerHTML = "All";
+      } else {
+        locationLabel.innerHTML = `${event.target.value}(${countLocation})`;
+      }
     }
   });
 }
