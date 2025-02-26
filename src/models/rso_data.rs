@@ -326,7 +326,7 @@ impl RsoData {
             ("P_MustHaveFeatures", params.p_must_have_features),
             ("P_PageNo", params.p_page_no),
             ("P_PageSize", params.p_page_size),
-            ("P_Province", params.p_province),
+            ("P_Province", params.p_province.to_string()),
         ];
 
         let url = reqwest::Url::parse_with_params(

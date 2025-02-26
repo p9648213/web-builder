@@ -391,6 +391,7 @@ pub fn render_property_grids_1(
     properties_per_page: u32,
     page_no: u32,
     listing_type: &str,
+    province: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -414,7 +415,7 @@ pub fn render_property_grids_1(
       }
       @if property_count > properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 1, listing_type))
+          (render_pagination(page_size as u32, page_no, 1, listing_type, &province))
         }
       }
     }
@@ -426,6 +427,7 @@ pub fn render_property_grids_2(
     properties_per_page: u32,
     page_no: u32,
     listing_type: &str,
+    province: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -449,7 +451,7 @@ pub fn render_property_grids_2(
       }
       @if property_count > properties_per_page {
         div class="right-0 bottom-7 left-0 absolute flex justify-center bg-white m-auto p-2 rounded-full w-fit" {
-          (render_pagination(page_size as u32, page_no, 2, listing_type))
+          (render_pagination(page_size as u32, page_no, 2, listing_type, &province))
         }
       }
     }
@@ -461,6 +463,7 @@ pub fn render_property_grids_3(
     properties_per_page: u32,
     page_no: u32,
     listing_type: &str,
+    province: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -484,7 +487,7 @@ pub fn render_property_grids_3(
       }
       @if property_count > properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 4, listing_type))
+          (render_pagination(page_size as u32, page_no, 4, listing_type, &province))
         }
       }
     }
@@ -496,6 +499,7 @@ pub fn render_property_grids_4(
     properties_per_page: u32,
     page_no: u32,
     listing_type: &str,
+    province: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -519,29 +523,35 @@ pub fn render_property_grids_4(
       }
       @if property_count > properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 4, listing_type))
+          (render_pagination(page_size as u32, page_no, 4, listing_type, &province))
         }
       }
     }
 }
 
-//............................................
-//.PPPPPPPPP.....AAAA.........GGGGGG.....GII..
-//.PPPPPPPPPP....AAAA.......GGGGGGGGGG...GII..
-//.PPPPPPPPPP...AAAAAA.....AGGGGGGGGGG...GII..
-//.PPP....PPPP..AAAAAA.....AGGG...GGGGG..GII..
-//.PPP....PPPP..AAAAAAA...AAGG.....GGG...GII..
-//.PPPPPPPPPP..AAAAAAAA...AAGG...........GII..
-//.PPPPPPPPPP..AAA..AAA...AAGG...GGGGGG..GII..
-//.PPPPPPPPP..PAAAAAAAAA..AAGG...GGGGGG..GII..
-//.PPP........PAAAAAAAAA..AAGG...GGGGGG..GII..
-//.PPP........PAAAAAAAAAA..AGGG.....GGG..GII..
-//.PPP.......PPAA....AAAA..AGGGGGGGGGGG..GII..
-//.PPP.......PPA......AAA...GGGGGGGGGG...GII..
-//.PPP.......PPA......AAAA....GGGGGG.....GII..
-//............................................
+//............................................................................................
+//.PPPPPPPPP.....AAAA.........GGGGGG.....GII..INN....NNNN.....AAAA....AAATTTTTTTTTTTEEEEEEEE..
+//.PPPPPPPPPP....AAAA.......GGGGGGGGGG...GII..INNN...NNNN.....AAAA....AAATTTTTTTTTTTEEEEEEEE..
+//.PPPPPPPPPP...AAAAAA.....AGGGGGGGGGG...GII..INNNN..NNNN....AAAAAA...AAATTTTTTTTTTTEEEEEEEE..
+//.PPP....PPPP..AAAAAA.....AGGG...GGGGG..GII..INNNN..NNNN....AAAAAA.......TTT....TTTE.........
+//.PPP....PPPP..AAAAAAA...AAGG.....GGG...GII..INNNNN.NNNN....AAAAAAA......TTT....TTTE.........
+//.PPPPPPPPPP..AAAAAAAA...AAGG...........GII..INNNNN.NNNN...AAAAAAAA......TTT....TTTEEEEEEE...
+//.PPPPPPPPPP..AAA..AAA...AAGG...GGGGGG..GII..INNNNNNNNNN...AAA..AAA......TTT....TTTEEEEEEE...
+//.PPPPPPPPP..PAAAAAAAAA..AAGG...GGGGGG..GII..INN.NNNNNNN..NAAAAAAAAA.....TTT....TTTEEEEEEE...
+//.PPP........PAAAAAAAAA..AAGG...GGGGGG..GII..INN..NNNNNN..NAAAAAAAAA.....TTT....TTTE.........
+//.PPP........PAAAAAAAAAA..AGGG.....GGG..GII..INN..NNNNNN..NAAAAAAAAAA....TTT....TTTE.........
+//.PPP.......PPAA....AAAA..AGGGGGGGGGGG..GII..INN...NNNNN.NNAA....AAAA....TTT....TTTEEEEEEEE..
+//.PPP.......PPA......AAA...GGGGGGGGGG...GII..INN...NNNNN.NNA......AAA....TTT....TTTEEEEEEEE..
+//.PPP.......PPA......AAAA....GGGGGG.....GII..INN....NNNN.NNA......AAAA...TTT....TTTEEEEEEEE..
+//............................................................................................
 
-pub fn render_pagination(total_pages: u32, page: u32, theme: u32, listing_type: &str) -> Markup {
+pub fn render_pagination(
+    total_pages: u32,
+    page: u32,
+    theme: u32,
+    listing_type: &str,
+    province: &str,
+) -> Markup {
     let mut before_page = page - 1;
     let mut after_page = page + 1;
 
@@ -563,12 +573,14 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32, listing_type: 
         after_page = after_page + 1;
     }
 
+    let default_path = format!("&listing_type={}&province={}", listing_type, province);
+
     html! {
       ul class="flex" {
         @if page > 1 {
           li
-            hx-get=(format!("/rso/search-results?page={}&theme={}&listing_type={}", page - 1, theme, listing_type))
-            hx-push-url=(format!("/search-results?page={}&listing_type={}", page - 1, listing_type))
+            hx-get=(format!("/rso/search-results?page={}&theme={}{}", page - 1, theme, default_path))
+            hx-push-url=(format!("/search-results?page={}{}", page - 1, default_path))
             hx-target="#search-results"
             hx-trigger="click"
             class="hover:bg-blue-500 px-5 rounded-md font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
@@ -579,8 +591,8 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32, listing_type: 
 
         @if page > 2 {
           li
-            hx-get=(format!("/rso/search-results?page=1&theme={}&listing_type={}", theme, listing_type))
-            hx-push-url=(format!("/search-results?page=1&listing_type={}", listing_type))
+            hx-get=(format!("/rso/search-results?page=1&theme={}{}", theme, default_path))
+            hx-push-url=(format!("/search-results?page=1{}", default_path))
             hx-target="#search-results"
             hx-trigger="click"
             class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
@@ -602,8 +614,8 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32, listing_type: 
               }
             } @else {
               li
-                hx-get=(format!("/rso/search-results?page={}&theme={}&listing_type={}", page_length, theme, listing_type))
-                hx-push-url=(format!("/search-results?page={}&listing_type={}", page_length, listing_type))
+                hx-get=(format!("/rso/search-results?page={}&theme={}{}", page_length, theme, default_path))
+                hx-push-url=(format!("/search-results?page={}{}", page_length, default_path))
                 hx-target="#search-results"
                 hx-trigger="click"
                 class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
@@ -619,8 +631,8 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32, listing_type: 
             li class="text-xl text-center leading-[45px] cursor-default list-none" { span { "..." } }
           }
           li
-            hx-get=(format!("/rso/search-results?page={}&theme={}&listing_type={}", total_pages, theme, listing_type))
-            hx-push-url=(format!("/search-results?page={}&listing_type={}", total_pages, listing_type))
+            hx-get=(format!("/rso/search-results?page={}&theme={}{}", total_pages, theme, default_path))
+            hx-push-url=(format!("/search-results?page={}{}", total_pages, default_path))
             hx-target="#search-results"
             hx-trigger="click"
             class="hover:bg-blue-500 mx-1 rounded-md w-[45px] h-[45px] font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
@@ -631,8 +643,8 @@ pub fn render_pagination(total_pages: u32, page: u32, theme: u32, listing_type: 
 
         @if page < total_pages {
           li
-            hx-get=(format!("/rso/search-results?page={}&theme={}&listing_type={}", page + 1, theme, listing_type))
-            hx-push-url=(format!("/search-results?page={}&listing_type={}", page + 1, listing_type))
+            hx-get=(format!("/rso/search-results?page={}&theme={}{}", page + 1, theme, default_path))
+            hx-push-url=(format!("/search-results?page={}{}", page + 1, default_path))
             hx-target="#search-results"
             hx-trigger="click"
             class="hover:bg-blue-500 px-5 rounded-md font-medium hover:text-white text-lg text-center leading-[45px] transition-all duration-300 ease-in-out cursor-pointer list-none"
