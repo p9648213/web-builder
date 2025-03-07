@@ -313,7 +313,6 @@ pub fn render_location_selection_drop_down_1(
           },
         }
         input type="hidden" id="province-vals" value="All";
-        input type="hidden" id="location-vals" value="All";
       }
     }
 }
@@ -352,18 +351,15 @@ pub fn render_check_box_1(
     tw_class: Option<&str>,
 ) -> Markup {
     let class = if let Some(tw_class) = tw_class {
-        tw_merge!(
-            "flex items-center gap-2 ml-5 text-sm cursor-pointer",
-            tw_class
-        )
+        tw_merge!("flex items-center gap-2 ml-5 text-sm", tw_class)
     } else {
-        "flex items-center gap-2 ml-5 text-sm cursor-pointer".to_string()
+        "flex items-center gap-2 ml-5 text-sm".to_string()
     };
 
     html! {
       div class=(class) {
-        input class="rounded-sm" type="checkbox" name=(name) value=[value] id=(id) checked=[checked];
-        label for=(id) {(label)}
+        input class="rounded-sm cursor-pointer" type="checkbox" name=(name) value=[value] id=(id) checked=[checked];
+        label class="z-1 w-full cursor-pointer" for=(id) {(label)}
       }
     }
 }
@@ -474,7 +470,8 @@ pub fn render_home_search_box_1() -> Markup {
             hx-vals=r#"
               js:{
                 listing_type: getListingTypeSelectValue(),
-                province: getProvinceValue()
+                province: getProvinceValue(),
+                location: getLocationValue()
               }
             "#
             class="bg-blue-500 hover:bg-blue-400 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"

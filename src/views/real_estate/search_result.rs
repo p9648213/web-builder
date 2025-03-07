@@ -270,6 +270,10 @@ pub fn render_search_result_1(search_query: &SearchQuery) -> Result<Markup, AppE
         params.push(("province", province.to_owned()));
     }
 
+    if let Some(location) = &search_query.location {
+        params.push(("location", location.to_owned()));
+    }
+
     if let Some(page) = &search_query.page {
         params.push(("page", page.to_string()));
     }
@@ -392,6 +396,7 @@ pub fn render_property_grids_1(
     page_no: u32,
     listing_type: &str,
     province: &str,
+    location: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -415,7 +420,7 @@ pub fn render_property_grids_1(
       }
       @if property_count > properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 1, listing_type, &province))
+          (render_pagination(page_size as u32, page_no, 1, listing_type, &province, &location))
         }
       }
     }
@@ -428,6 +433,7 @@ pub fn render_property_grids_2(
     page_no: u32,
     listing_type: &str,
     province: &str,
+    location: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -451,7 +457,7 @@ pub fn render_property_grids_2(
       }
       @if property_count > properties_per_page {
         div class="right-0 bottom-7 left-0 absolute flex justify-center bg-white m-auto p-2 rounded-full w-fit" {
-          (render_pagination(page_size as u32, page_no, 2, listing_type, &province))
+          (render_pagination(page_size as u32, page_no, 2, listing_type, &province, &location))
         }
       }
     }
@@ -464,6 +470,7 @@ pub fn render_property_grids_3(
     page_no: u32,
     listing_type: &str,
     province: &str,
+    location: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -487,7 +494,7 @@ pub fn render_property_grids_3(
       }
       @if property_count > properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 4, listing_type, &province))
+          (render_pagination(page_size as u32, page_no, 4, listing_type, &province, &location))
         }
       }
     }
@@ -500,6 +507,7 @@ pub fn render_property_grids_4(
     page_no: u32,
     listing_type: &str,
     province: &str,
+    location: &str,
 ) -> Markup {
     let page_size = (property_count as f64 / properties_per_page as f64).ceil();
 
@@ -523,7 +531,7 @@ pub fn render_property_grids_4(
       }
       @if property_count > properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 4, listing_type, &province))
+          (render_pagination(page_size as u32, page_no, 4, listing_type, &province, &location))
         }
       }
     }
@@ -551,6 +559,7 @@ pub fn render_pagination(
     theme: u32,
     listing_type: &str,
     province: &str,
+    location: &str,
 ) -> Markup {
     let mut before_page = page - 1;
     let mut after_page = page + 1;
@@ -573,7 +582,10 @@ pub fn render_pagination(
         after_page = after_page + 1;
     }
 
-    let default_path = format!("&listing_type={}&province={}", listing_type, province);
+    let default_path = format!(
+        "&listing_type={}&province={}&location={}",
+        listing_type, province, location
+    );
 
     html! {
       ul class="flex" {

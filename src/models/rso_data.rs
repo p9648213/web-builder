@@ -326,7 +326,8 @@ impl RsoData {
             ("P_MustHaveFeatures", params.p_must_have_features),
             ("P_PageNo", params.p_page_no),
             ("P_PageSize", params.p_page_size),
-            ("P_Province", params.p_province.to_string()),
+            ("P_Province", params.p_province),
+            ("P_Location", params.p_location),
         ];
 
         let url = reqwest::Url::parse_with_params(
@@ -481,6 +482,7 @@ pub struct SearchResultParams {
     pub p_page_no: String,
     pub p_page_size: String,
     pub p_province: String,
+    pub p_location: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

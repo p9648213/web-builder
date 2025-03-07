@@ -418,6 +418,8 @@ pub async fn get_search_result(
 
         let mut province = search_query.0.province.unwrap_or("".to_string());
 
+        let location = search_query.0.location.unwrap_or("".to_string());
+
         if province == "All" {
             province = "".to_string();
         }
@@ -464,6 +466,7 @@ pub async fn get_search_result(
             p_page_size: "24".to_string(),
             p_virtual_tours: "2".to_string(),
             p_province: province.to_owned(),
+            p_location: location.to_owned(),
         };
 
         let search_response = RsoData::get_rso_search_result(search_result_params).await?;
@@ -473,16 +476,16 @@ pub async fn get_search_result(
         let html = html! {
             @match search_theme {
                 1 => {
-                    (search_result::render_property_grids_1(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province))
+                    (search_result::render_property_grids_1(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province, &location))
                 }
                 2 => {
-                    (search_result::render_property_grids_2(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province))
+                    (search_result::render_property_grids_2(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province, &location))
                 }
                 3 => {
-                    (search_result::render_property_grids_3(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province))
+                    (search_result::render_property_grids_3(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province, &location))
                 }
                 4 => {
-                    (search_result::render_property_grids_4(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province))
+                    (search_result::render_property_grids_4(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province, &location))
                 }
                 _ => {}
             }
