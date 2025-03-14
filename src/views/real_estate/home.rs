@@ -195,6 +195,8 @@ pub fn render_listing_type_selection_drop_down_1(
 pub fn render_selection_label_1(label: &str, id: &str) -> Markup {
     let classes = if id == "listing-type-label" {
         "min-w-30 text-slate-500 text-sm"
+    } else if id == "property-types-label" {
+        "text-slate-500 text-sm overflow-hidden text-ellipsis whitespace-nowrap w-35"
     } else {
         "text-slate-500 text-sm"
     };
@@ -319,11 +321,18 @@ pub fn render_location_selection_drop_down_1(
 
 pub fn render_property_types_selection_drop_down_1(property_types: Vec<PropertyType>) -> Markup {
     html! {
-      div class="flex flex-col gap-3" {
+      div class="flex flex-col gap-3 min-w-50" {
+        (PreEscaped(r#"
+          <script type="module">
+              import {setupChangePropertyType} from "/assets/js/app/searchbox.js";
+              setupChangePropertyType();
+          </script>
+        "#))
+        (render_check_box_1("All", "property-type", Some("All"), "all-property-type", Some(true), Some("ml-0")));
         @for property_type in property_types {
           (render_check_box_1(property_type.prop_type.as_str(), "property-type", Some(property_type.option_value.as_str()) , property_type.option_value.as_str(), None, Some("ml-0")));
           @for sub_type in property_type.sub_types {
-            (render_check_box_1(sub_type.prop_sub_type.as_str(), "sub-property-type", Some(sub_type.sub_type_option_value.as_str()), sub_type.sub_type_option_value.as_str(), None, None));
+            (render_check_box_1(sub_type.prop_sub_type.as_str(), "sub-property-type", Some(sub_type.sub_type_option_value.as_str()), sub_type.sub_type_option_value.as_str(), None, Some(format!("child-{}", property_type.option_value).as_str())));
           }
         }
       }

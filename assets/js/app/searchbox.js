@@ -318,8 +318,111 @@ export function setupChangeLocation() {
       if (event.target.checked) {
         locationLabel.innerHTML = `${provinceVals.value}(${countLocation + 1})`;
       } else {
-        locationLabel.innerHTML = `${provinceVals.value}(${countLocation - 1})`;
+        locationLabel.innerHTML =
+          countLocation - 1 === 0
+            ? provinceVals.value
+            : `${provinceVals.value}(${countLocation - 1})`;
       }
+    }
+  });
+}
+
+export function setupChangePropertyType() {
+  let propertyType = ["All"];
+
+  const allPropertyTypeInput = document.getElementById("all-property-type");
+  const propertyTypeLabel = document.getElementById("property-types-label");
+  let propertyTypeDropdown = document.getElementById(
+    "property-types-dropdown-items"
+  );
+
+  propertyTypeDropdown.addEventListener("click", (event) => {
+    if (event.target.id && event.target.id == "property-types-dropdown-items") {
+      return;
+    }
+
+    if (event.target.name === "property-type") {
+      if (event.target.id !== "all-property-type") {
+        allPropertyTypeInput.checked = false;
+
+        const subProperty = propertyTypeDropdown.querySelectorAll(
+          `.child-${event.target.value}`
+        );
+
+        subProperty.forEach((element) => {
+          const input = element.querySelector("input");
+          if (event.target.checked) {
+            input.checked = true;
+          } else {
+            input.checked = false;
+          }
+        });
+
+        if (propertyType.includes("All")) {
+          propertyType = propertyType.filter((v) => v !== "All");
+          allPropertyTypeInput.checked = false;
+        }
+
+        propertyType.push(event.target.value);
+
+        propertyTypeLabel.innerHTML =
+          propertyTypeLabel.innerHTML === "All"
+            ? `${event.target.parentNode.querySelector("label").innerHTML}(${
+                subProperty.length
+              })`
+            : propertyTypeLabel.innerHTML +
+              `, ${event.target.parentNode.querySelector("label").innerHTML}(${
+                subProperty.length
+              })`;
+      } else {
+        propertyType.forEach((value) => {
+          if (value !== "All") {
+            const propertyTypeEl = document.getElementById(value);
+            propertyTypeEl.checked = false;
+            const subPropertyTypeEls = document.querySelectorAll(
+              `.child-${value}`
+            );
+
+            subPropertyTypeEls.forEach((subEl) => {
+              const input = subEl.querySelector("input");
+              input.checked = false;
+            });
+          }
+        });
+        propertyType = ["All"];
+        propertyTypeLabel.innerHTML = "All";
+      }
+    } else if (event.target.name === "sub-property-type") {
+      const subPropertyParentLabel = document
+        .getElementById(event.target.id.split("-")[0] + "-1")
+        .parentNode.querySelector("label").innerHTML;
+
+      let matchPropertyLabel = propertyTypeLabel.innerHTML.match(
+        new RegExp(`\\b${subPropertyParentLabel}\\(\\d+\\)`, "g")
+      );
+
+      let matchPropertyCount = matchPropertyLabel[0].match(/\((\d+)\)/);
+
+      let countPropertyType = matchPropertyCount
+        ? parseInt(matchPropertyCount[1], 10)
+        : null;
+
+      let propertyTypeNewLabel = subPropertyParentLabel;
+
+      if (event.target.checked) {
+        propertyTypeNewLabel = `${propertyTypeNewLabel}(${
+          countPropertyType + 1
+        })`;
+      } else {
+        propertyTypeNewLabel = `${propertyTypeNewLabel}(${
+          countPropertyType - 1
+        })`;
+      }
+
+      propertyTypeLabel.innerHTML = propertyTypeLabel.innerHTML.replaceAll(
+        matchPropertyLabel,
+        propertyTypeNewLabel
+      );
     }
   });
 }

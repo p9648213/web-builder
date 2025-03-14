@@ -724,9 +724,6 @@
   .h-0 {
     height: calc(var(--spacing) * 0);
   }
-  .h-1 {
-    height: calc(var(--spacing) * 1);
-  }
   .h-3 {
     height: calc(var(--spacing) * 3);
   }
@@ -897,6 +894,9 @@
   }
   .w-25 {
     width: calc(var(--spacing) * 25);
+  }
+  .w-35 {
+    width: calc(var(--spacing) * 35);
   }
   .w-45 {
     width: calc(var(--spacing) * 45);
@@ -1745,6 +1745,9 @@
   .text-wrap {
     text-wrap: wrap;
   }
+  .text-ellipsis {
+    text-overflow: ellipsis;
+  }
   .whitespace-nowrap {
     white-space: nowrap;
   }
@@ -1889,6 +1892,12 @@
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
+  }
+  .\!\[https\:\/\/crates\.io\/crates\/axum_session\] {
+    https: //crates.io/crates/axum session !important;
+  }
+  .\!\[https\:\/\/crates\.io\/crates\/axum_session_redispool\] {
+    https: //crates.io/crates/axum session redispool !important;
   }
   .outline-none {
     --tw-outline-style: none;
