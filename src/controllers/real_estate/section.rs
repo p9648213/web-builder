@@ -104,7 +104,7 @@ pub async fn get_section(
 
             let uri = request.uri();
 
-            let search_query: Query<SearchQuery> = Query::try_from_uri(&uri).map_err(|error| {
+            let search_query: Query<SearchQuery> = Query::try_from_uri(uri).map_err(|error| {
                 tracing::error!("Failed to extract search query: {}", error);
                 AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
             })?;
@@ -184,7 +184,7 @@ pub async fn get_section(
             let uri = request.uri();
 
             let property_query: Query<PropertyQuery> =
-                Query::try_from_uri(&uri).map_err(|error| {
+                Query::try_from_uri(uri).map_err(|error| {
                     tracing::error!("Failed to extract property query: {}", error);
                     AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
                 })?;

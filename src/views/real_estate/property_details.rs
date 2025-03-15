@@ -59,7 +59,7 @@ pub fn render_property_details_1(property_query: &PropertyQuery) -> Markup {
 }
 
 pub fn render_detail_1(property: &Property, listing_type: &str) -> Markup {
-    let name = if property.newdev_name == "" {
+    let name = if property.newdev_name.is_empty() {
         &property.property_type.name_type
     } else {
         &property.newdev_name
@@ -87,7 +87,7 @@ pub fn render_detail_1(property: &Property, listing_type: &str) -> Markup {
         let period = &property.rental_period_long_term;
 
         if rental_price_1 == rental_price_2 {
-            format!("{} € / {}", rental_price_1.to_string(), period)
+            format!("{} € / {}", rental_price_1, period)
         } else {
             format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
         }
@@ -213,7 +213,7 @@ pub fn render_detail_1(property: &Property, listing_type: &str) -> Markup {
             div class="flex flex-col gap-4" {
               div class="font-bold text-lg" { "Energy Certificate" }
               div class="gap-6 grid grid-cols-2" {
-                @if property.energy_rating.co2_value == "" && property.energy_rating.energy_value == ""  {
+                @if property.energy_rating.co2_value.is_empty() && property.energy_rating.energy_value.is_empty() {
                   div class="text-[#868d9b]" { "Under valuation" }
                 } @else {
                   (render_grid_item_1("Consumption", property.energy_rating.energy_value.as_str(), Some(" kg CO₂/m² per year"), None))
@@ -409,7 +409,7 @@ pub fn render_property_details_2(property_query: &PropertyQuery) -> Markup {
 }
 
 pub fn render_detail_2(property: &Property, listing_type: &str) -> Markup {
-    let name = if property.newdev_name == "" {
+    let name = if property.newdev_name.is_empty() {
         &property.property_type.name_type
     } else {
         &property.newdev_name
@@ -437,7 +437,7 @@ pub fn render_detail_2(property: &Property, listing_type: &str) -> Markup {
         let period = &property.rental_period_long_term;
 
         if rental_price_1 == rental_price_2 {
-            format!("{} € / {}", rental_price_1.to_string(), period)
+            format!("{} € / {}", rental_price_1, period)
         } else {
             format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
         }
@@ -605,7 +605,7 @@ pub fn render_detail_2(property: &Property, listing_type: &str) -> Markup {
             }
             div class="flex flex-col gap-3" {
               span class="font-bold text-lg" { "Energy Certificate" }
-              @if property.energy_rating.co2_value == "" && property.energy_rating.energy_value == ""  {
+              @if property.energy_rating.co2_value.is_empty() && property.energy_rating.energy_value.is_empty() {
                 div class="text-[#868d9b]" { "Under valuation" }
               } @else {
                 div {
@@ -754,7 +754,7 @@ pub fn render_pictures_slider_3(pictures: &Vec<PropertyPicture>) -> Markup {
 }
 
 pub fn render_detail_3(property: &Property, listing_type: &str) -> Markup {
-    let name = if property.newdev_name == "" {
+    let name = if property.newdev_name.is_empty() {
         &property.property_type.name_type
     } else {
         &property.newdev_name
@@ -782,7 +782,7 @@ pub fn render_detail_3(property: &Property, listing_type: &str) -> Markup {
         let period = &property.rental_period_long_term;
 
         if rental_price_1 == rental_price_2 {
-            format!("{} € / {}", rental_price_1.to_string(), period)
+            format!("{} € / {}", rental_price_1, period)
         } else {
             format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
         }
@@ -952,7 +952,7 @@ pub fn render_detail_3(property: &Property, listing_type: &str) -> Markup {
             }
           }
         }
-        @if property.energy_rating.co2_value == "" && property.energy_rating.energy_value == ""  {
+        @if property.energy_rating.co2_value.is_empty() && property.energy_rating.energy_value.is_empty() {
           div class="flex flex-col gap-3" {
             span class="font-bold text-lg" { "Energy Certificate" }
             div class="text-[#868d9b] text-justify whitespace-pre-line" {
@@ -1115,7 +1115,7 @@ pub fn render_pictures_slider_4(pictures: &Vec<PropertyPicture>) -> Markup {
 }
 
 pub fn render_detail_4(property: &Property, listing_type: &str) -> Markup {
-    let name = if property.newdev_name == "" {
+    let name = if property.newdev_name.is_empty() {
         &property.property_type.name_type
     } else {
         &property.newdev_name
@@ -1143,7 +1143,7 @@ pub fn render_detail_4(property: &Property, listing_type: &str) -> Markup {
         let period = &property.rental_period_long_term;
 
         if rental_price_1 == rental_price_2 {
-            format!("{} € / {}", rental_price_1.to_string(), period)
+            format!("{} € / {}", rental_price_1, period)
         } else {
             format!("{} - {} € / {}", rental_price_1, rental_price_2, period)
         }
@@ -1286,7 +1286,7 @@ pub fn render_detail_4(property: &Property, listing_type: &str) -> Markup {
                 (PreEscaped(html_escape::decode_html_entities(&property.description).replace("[IW]", "")))
               }
             }
-            @if property.energy_rating.co2_value == "" && property.energy_rating.energy_value == ""  {
+            @if property.energy_rating.co2_value.is_empty() && property.energy_rating.energy_value.is_empty() {
               div class="flex flex-col gap-3" {
                 span class="font-bold" { "Energy Certificate" }
                 div class="text-[#868d9b] text-justify whitespace-pre-line" {

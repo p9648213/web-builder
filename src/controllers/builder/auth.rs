@@ -65,7 +65,7 @@ pub async fn login(
         })?;
 
         if compare_password(&login_form.password, &user_password)? {
-            session.set("id", &user_id);
+            session.set("id", user_id);
 
             let response = Response::builder()
                 .status(StatusCode::OK)
@@ -75,16 +75,16 @@ pub async fn login(
 
             Ok(response)
         } else {
-            return Err(AppError::new(
+            Err(AppError::new(
                 StatusCode::UNAUTHORIZED,
                 "Invalid username or password",
-            ));
+            ))
         }
     } else {
-        return Err(AppError::new(
+        Err(AppError::new(
             StatusCode::UNAUTHORIZED,
             "Invalid username or password",
-        ));
+        ))
     }
 }
 
@@ -129,7 +129,7 @@ pub async fn register(
 
     let row = User::get_user_by_email(&register_form.email, &pg_pool, vec!["id"]).await?;
 
-    if let Some(_) = row {
+    if row.is_some() {
         return Err(AppError::new(
             StatusCode::UNAUTHORIZED,
             "Email already exists",

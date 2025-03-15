@@ -17,42 +17,36 @@ pub struct WebsiteSetting {
 }
 
 impl WebsiteSetting {
-    pub fn new(
-        id: Option<i32>,
-        website_id: Option<i32>,
-        user_id: Option<i32>,
-        header_theme: Option<i32>,
-        footer_theme: Option<i32>,
-        home_theme: Option<i32>,
-        search_theme: Option<i32>,
-        property_theme: Option<i32>,
-        contact_theme: Option<i32>,
-    ) -> Self {
-        Self {
-            id,
-            website_id,
-            user_id,
-            header_theme,
-            footer_theme,
-            home_theme,
-            search_theme,
-            property_theme,
-            contact_theme,
-        }
-    }
-
     pub fn try_from(row: &Row, prefix: Option<&str>) -> Self {
         let prefix = prefix.unwrap_or("");
 
-        let id: Option<i32> = row.try_get(format!("{}id", prefix).as_str()).unwrap_or(None);
-        let website_id: Option<i32> = row.try_get(format!("{}webiste_id", prefix).as_str()).unwrap_or(None);
-        let user_id: Option<i32> = row.try_get(format!("{}user_id", prefix).as_str()).unwrap_or(None);
-        let header_theme: Option<i32> = row.try_get(format!("{}header_theme", prefix).as_str()).unwrap_or(None);
-        let footer_theme: Option<i32> = row.try_get(format!("{}footer_theme", prefix).as_str()).unwrap_or(None);
-        let home_theme: Option<i32> = row.try_get(format!("{}home_theme", prefix).as_str()).unwrap_or(None);
-        let search_theme: Option<i32> = row.try_get(format!("{}search_theme", prefix).as_str()).unwrap_or(None);
-        let property_theme: Option<i32> = row.try_get(format!("{}property_theme", prefix).as_str()).unwrap_or(None);
-        let contact_theme: Option<i32> = row.try_get(format!("{}contact_theme", prefix).as_str()).unwrap_or(None);
+        let id: Option<i32> = row
+            .try_get(format!("{}id", prefix).as_str())
+            .unwrap_or(None);
+        let website_id: Option<i32> = row
+            .try_get(format!("{}webiste_id", prefix).as_str())
+            .unwrap_or(None);
+        let user_id: Option<i32> = row
+            .try_get(format!("{}user_id", prefix).as_str())
+            .unwrap_or(None);
+        let header_theme: Option<i32> = row
+            .try_get(format!("{}header_theme", prefix).as_str())
+            .unwrap_or(None);
+        let footer_theme: Option<i32> = row
+            .try_get(format!("{}footer_theme", prefix).as_str())
+            .unwrap_or(None);
+        let home_theme: Option<i32> = row
+            .try_get(format!("{}home_theme", prefix).as_str())
+            .unwrap_or(None);
+        let search_theme: Option<i32> = row
+            .try_get(format!("{}search_theme", prefix).as_str())
+            .unwrap_or(None);
+        let property_theme: Option<i32> = row
+            .try_get(format!("{}property_theme", prefix).as_str())
+            .unwrap_or(None);
+        let contact_theme: Option<i32> = row
+            .try_get(format!("{}contact_theme", prefix).as_str())
+            .unwrap_or(None);
 
         Self {
             id,

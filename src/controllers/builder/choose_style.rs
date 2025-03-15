@@ -168,8 +168,6 @@ pub async fn update_style(
 
             Ok(Html(html.into_string()))
         }
-        _ => {
-            return Err(AppError::new(StatusCode::NOT_FOUND, "Not Found"));
-        }
+        _ => Err(AppError::new(StatusCode::NOT_FOUND, "Not Found")),
     }
 }

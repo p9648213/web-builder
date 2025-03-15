@@ -49,8 +49,16 @@ pub fn render_setup_data(authenticity_token: String, rso_data: Option<RsoData>) 
 
     let checkbox_value = if checked.is_some() { "true" } else { "false" };
 
-    let rso_data =
-        rso_data.unwrap_or_else(|| RsoData::new(None, None, None, None, None, None, None, None));
+    let rso_data = rso_data.unwrap_or(RsoData {
+        id: None,
+        user_id: None,
+        identifier_id: None,
+        api_key: None,
+        filter_id_sale: None,
+        filter_id_long: None,
+        filter_id_short: None,
+        filter_id_featured: None,
+    });
 
     maud::html! {
       (PreEscaped(r#"

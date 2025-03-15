@@ -13,8 +13,8 @@ pub struct WebsiteJoinTemplate {
 impl WebsiteJoinTemplate {
     pub fn try_from(row: &Row, website_prefix: &str, template_prefix: &str) -> Self {
         Self {
-            website: Website::try_from(&row, Some(website_prefix)),
-            template: Template::try_from(&row, Some(template_prefix)),
+            website: Website::try_from(row, Some(website_prefix)),
+            template: Template::try_from(row, Some(template_prefix)),
         }
     }
 

@@ -18,7 +18,7 @@ pub async fn get_listing_type(request: Request) -> Result<Html<String>, AppError
     let uri = request.uri();
 
     let listing_type_query: Query<ListingTypeQuery> =
-        Query::try_from_uri(&uri).map_err(|error| {
+        Query::try_from_uri(uri).map_err(|error| {
             tracing::error!("Failed to extract search query: {}", error);
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;

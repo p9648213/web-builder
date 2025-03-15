@@ -565,21 +565,21 @@ pub fn render_pagination(
     let mut after_page = page + 1;
 
     if page == total_pages {
-        before_page = before_page - 2;
+        before_page -= 2;
     } else if page == total_pages - 1 {
-        before_page = before_page - 1;
+        before_page -= 1;
     }
 
     if page == 1 {
-        after_page = after_page + 2;
+        after_page += 2;
     } else if page == total_pages - 1 {
-        before_page = before_page + 1;
+        before_page += 1;
     }
 
     if page == 1 {
-        after_page = after_page + 2;
+        after_page += 2;
     } else if page == 2 {
-        after_page = after_page + 1;
+        after_page += 1;
     }
 
     let default_path = format!(
@@ -697,7 +697,7 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
     };
 
     let render_images = if let Some(images) = &property.pictures {
-        total_pictures = total_pictures + images.count;
+        total_pictures += images.count;
         html! {
           @for picture in &images.picture {
             img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
@@ -754,7 +754,7 @@ pub fn render_property_card_1(property: &SearchProperty, listing_type: &str) -> 
               (price) " €"
             }
             div class="font-bold" {
-              @if property.newdev_name == "" {
+              @if property.newdev_name.is_empty() {
                 (property.property_type.name_type)
               }@else {
                 (property.newdev_name)
@@ -804,7 +804,7 @@ pub fn render_property_card_2(property: &SearchProperty, listing_type: &str) -> 
     };
 
     let render_images = if let Some(images) = &property.pictures {
-        total_pictures = total_pictures + images.count;
+        total_pictures += images.count;
         html! {
           @for picture in &images.picture {
             img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
@@ -859,7 +859,7 @@ pub fn render_property_card_2(property: &SearchProperty, listing_type: &str) -> 
           {
             div class="flex flex-col gap-2" {
               div class="font-bold" {
-                @if property.newdev_name == "" {
+                @if property.newdev_name.is_empty() {
                   (property.property_type.name_type)
                 }@else {
                   (property.newdev_name)
@@ -903,7 +903,7 @@ pub fn render_property_card_3(property: &SearchProperty, listing_type: &str) -> 
     };
 
     let render_images = if let Some(images) = &property.pictures {
-        total_pictures = total_pictures + images.count;
+        total_pictures += images.count;
         html! {
           @for picture in &images.picture {
             img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
@@ -958,7 +958,7 @@ pub fn render_property_card_3(property: &SearchProperty, listing_type: &str) -> 
           {
             div class="flex flex-col gap-2" {
               div class="font-bold" {
-                @if property.newdev_name == "" {
+                @if property.newdev_name.is_empty() {
                   (property.property_type.name_type)
                 }@else {
                   (property.newdev_name)
@@ -1002,7 +1002,7 @@ pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> 
     };
 
     let render_images = if let Some(images) = &property.pictures {
-        total_pictures = total_pictures + images.count;
+        total_pictures += images.count;
         html! {
           @for picture in &images.picture {
             img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
@@ -1059,7 +1059,7 @@ pub fn render_property_card_4(property: &SearchProperty, listing_type: &str) -> 
               (price) " €"
             }
             div class="font-bold" {
-              @if property.newdev_name == "" {
+              @if property.newdev_name.is_empty() {
                 (property.property_type.name_type)
               }@else {
                 (property.newdev_name)

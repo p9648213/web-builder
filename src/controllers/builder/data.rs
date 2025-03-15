@@ -30,17 +30,17 @@ pub async fn create_data_source(
 ) -> Result<impl IntoResponse, AppError> {
     let row = RsoData::get_rso_data_by_user_id(user_id.0, &pg_pool, vec!["id"]).await?;
 
-    if let Some(_) = row {
-        let updated_rso_data = RsoData::new(
-            None,
-            None,
-            Some(form.identifier_id),
-            Some(form.api_key),
-            Some(form.filter_id_sale),
-            Some(form.filter_id_long),
-            Some(form.filter_id_short),
-            Some(form.filter_id_featured),
-        );
+    if row.is_some() {
+        let updated_rso_data = RsoData {
+            id: None,
+            user_id: None,
+            identifier_id: Some(form.identifier_id),
+            api_key: Some(form.api_key),
+            filter_id_sale: Some(form.filter_id_sale),
+            filter_id_long: Some(form.filter_id_long),
+            filter_id_short: Some(form.filter_id_short),
+            filter_id_featured: Some(form.filter_id_featured),
+        };
 
         let result =
             RsoData::update_rso_data_by_user_id(user_id.0, &updated_rso_data, &pg_pool).await?;
@@ -55,16 +55,16 @@ pub async fn create_data_source(
 
         Ok(())
     } else {
-        let rso_data = RsoData::new(
-            None,
-            Some(user_id.0),
-            Some(form.identifier_id),
-            Some(form.api_key),
-            Some(form.filter_id_sale),
-            Some(form.filter_id_long),
-            Some(form.filter_id_short),
-            Some(form.filter_id_featured),
-        );
+        let rso_data = RsoData {
+            id: None,
+            user_id: Some(user_id.0),
+            identifier_id: Some(form.identifier_id),
+            api_key: Some(form.api_key),
+            filter_id_sale: Some(form.filter_id_sale),
+            filter_id_long: Some(form.filter_id_long),
+            filter_id_short: Some(form.filter_id_short),
+            filter_id_featured: Some(form.filter_id_featured),
+        };
 
         let result = RsoData::create_rso_data_by_user_id(user_id.0, &rso_data, &pg_pool).await?;
 
@@ -87,12 +87,8 @@ pub async fn update_rso_status(
 ) -> Result<impl IntoResponse, AppError> {
     let row = RsoData::get_rso_data_by_user_id(user_id.0, &pg_pool, vec!["id"]).await?;
 
-    if let Some(_) = row {
-        let status = if let Some(_) = form.rso_data_status {
-            true
-        } else {
-            false
-        };
+    if row.is_some() {
+        let status = form.rso_data_status.is_some();
 
         let result =
             RsoData::update_status_rso_data_by_user_id(user_id.0, status, &pg_pool).await?;

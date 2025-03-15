@@ -40,28 +40,6 @@ pub struct RsoData {
 }
 
 impl RsoData {
-    pub fn new(
-        id: Option<i32>,
-        user_id: Option<i32>,
-        identifier_id: Option<i32>,
-        api_key: Option<String>,
-        filter_id_sale: Option<i32>,
-        filter_id_long: Option<i32>,
-        filter_id_short: Option<i32>,
-        filter_id_featured: Option<i32>,
-    ) -> Self {
-        Self {
-            id,
-            user_id,
-            identifier_id,
-            api_key,
-            filter_id_sale,
-            filter_id_long,
-            filter_id_short,
-            filter_id_featured,
-        }
-    }
-
     pub fn try_from(row: &Row, prefix: Option<&str>) -> Self {
         let prefix = prefix.unwrap_or("");
 

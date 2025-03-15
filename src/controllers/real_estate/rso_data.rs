@@ -85,10 +85,10 @@ pub async fn get_locations(State(pg_pool): State<Pool>) -> Result<Html<String>, 
         Ok(Html(html))
     } else {
         tracing::error!("No rso data found for user id 1");
-        return Err(AppError::new(
+        Err(AppError::new(
             StatusCode::INTERNAL_SERVER_ERROR,
             "Server Error",
-        ));
+        ))
     }
 }
 
@@ -157,10 +157,10 @@ pub async fn get_property_types(State(pg_pool): State<Pool>) -> Result<Html<Stri
         Ok(Html(html))
     } else {
         tracing::error!("No rso data found for user id 1");
-        return Err(AppError::new(
+        Err(AppError::new(
             StatusCode::INTERNAL_SERVER_ERROR,
             "Server Error",
-        ));
+        ))
     }
 }
 
@@ -243,10 +243,10 @@ pub async fn get_hot_properties(
         Ok(Html(html))
     } else {
         tracing::error!("No rso data found for user id 1");
-        return Err(AppError::new(
+        Err(AppError::new(
             StatusCode::INTERNAL_SERVER_ERROR,
             "Server Error",
-        ));
+        ))
     }
 }
 
@@ -359,10 +359,10 @@ pub async fn get_property(
         Ok(Html(html))
     } else {
         tracing::error!("No rso data found for user id 1");
-        return Err(AppError::new(
+        Err(AppError::new(
             StatusCode::INTERNAL_SERVER_ERROR,
             "Server Error",
-        ));
+        ))
     }
 }
 
@@ -495,9 +495,9 @@ pub async fn get_search_result(
         Ok(Html(html))
     } else {
         tracing::error!("No rso data found for user id 1");
-        return Err(AppError::new(
+        Err(AppError::new(
             StatusCode::INTERNAL_SERVER_ERROR,
             "Server Error",
-        ));
+        ))
     }
 }

@@ -54,7 +54,7 @@ pub async fn create_website(
     }
 
     let row = Website::get_website_by_domain_name(
-        &new_website.domain.as_ref().unwrap(),
+        new_website.domain.as_ref().unwrap(),
         &pg_pool,
         vec!["id", "name", "domain"],
     )
@@ -68,17 +68,17 @@ pub async fn create_website(
             AppError::new(StatusCode::INTERNAL_SERVER_ERROR, "Server error")
         })?;
 
-        let new_website_setting = WebsiteSetting::new(
-            None,
-            Some(website_id),
-            Some(user_id),
-            Some(1),
-            Some(1),
-            Some(1),
-            Some(1),
-            Some(1),
-            Some(1),
-        );
+        let new_website_setting = WebsiteSetting {
+            id: None,
+            website_id: Some(website_id),
+            user_id: Some(user_id),
+            header_theme: Some(1),
+            footer_theme: Some(1),
+            home_theme: Some(1),
+            search_theme: Some(1),
+            property_theme: Some(1),
+            contact_theme: Some(1),
+        };
 
         let result =
             WebsiteSetting::insert_website_setting(website_id, &new_website_setting, &pg_pool)

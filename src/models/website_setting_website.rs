@@ -13,8 +13,8 @@ pub struct WebsiteJoinWebsiteSetting {
 impl WebsiteJoinWebsiteSetting {
     pub fn try_from(row: &Row, website_prefix: &str, website_settings_prefix: &str) -> Self {
         Self {
-            website: Website::try_from(&row, Some(website_prefix)),
-            website_setting: WebsiteSetting::try_from(&row, Some(website_settings_prefix)),
+            website: Website::try_from(row, Some(website_prefix)),
+            website_setting: WebsiteSetting::try_from(row, Some(website_settings_prefix)),
         }
     }
 

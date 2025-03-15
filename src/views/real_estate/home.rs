@@ -798,10 +798,10 @@ pub fn render_hot_properties_slider_1(hot_properties: Vec<SearchProperty>) -> Ma
         j = i;
         while j < i + chunk_size && j < hot_properties.len() {
             chunk.push(&hot_properties[j]);
-            j = j + 1;
+            j += 1;
         }
         properties_chunks.push(chunk);
-        i = i + chunk_size;
+        i += chunk_size;
     }
 
     html! {
@@ -863,7 +863,7 @@ pub fn render_hot_property_card_1(property: &SearchProperty, listing_type: &str)
     };
 
     let render_images = if let Some(images) = &property.pictures {
-        total_pictures = total_pictures + images.count;
+        total_pictures += images.count;
         html! {
           @for picture in &images.picture {
             img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
@@ -905,7 +905,7 @@ pub fn render_hot_property_card_1(property: &SearchProperty, listing_type: &str)
           class="flex flex-col justify-between gap-2 px-3 py-2 h-full cursor-pointer"
         {
           div class="font-bold" {
-            @if property.newdev_name == "" {
+            @if property.newdev_name.is_empty() {
               (property.property_type.name_type)
             }@else {
               (property.newdev_name)
@@ -1064,7 +1064,7 @@ pub fn render_infomation_box_2(property: &SearchProperty, index: usize) -> Marku
         style="background-color: rgba(0, 0, 0, 0.4);"
       {
         div class="font-bold" {
-          @if property.newdev_name == "" {
+          @if property.newdev_name.is_empty() {
             (property.property_type.name_type)
           }@else {
             (property.newdev_name)
@@ -1158,10 +1158,10 @@ pub fn render_hot_properties_slider_3(hot_properties: Vec<SearchProperty>) -> Ma
         j = i;
         while j < i + chunk_size && j < hot_properties.len() {
             chunk.push(&hot_properties[j]);
-            j = j + 1;
+            j += 1;
         }
         properties_chunks.push(chunk);
-        i = i + chunk_size;
+        i += chunk_size;
     }
 
     html! {
@@ -1223,7 +1223,7 @@ pub fn render_hot_property_card_3(property: &SearchProperty) -> Markup {
     };
 
     let render_images = if let Some(images) = &property.pictures {
-        total_pictures = total_pictures + images.count;
+        total_pictures += images.count;
         html! {
           @for picture in &images.picture {
             img class="w-full h-full pointer-events-none shrink-0" src=(picture.picture_url);
@@ -1267,7 +1267,7 @@ pub fn render_hot_property_card_3(property: &SearchProperty) -> Markup {
           {
             div class="flex flex-col gap-2" {
               div class="font-bold" {
-                @if property.newdev_name == "" {
+                @if property.newdev_name.is_empty() {
                   (property.property_type.name_type)
                 }@else {
                   (property.newdev_name)
@@ -1356,10 +1356,10 @@ pub fn render_hot_properties_slider_4(hot_properties: Vec<SearchProperty>) -> Ma
         j = i;
         while j < i + chunk_size && j < hot_properties.len() {
             chunk.push(&hot_properties[j]);
-            j = j + 1;
+            j += 1;
         }
         properties_chunks.push(chunk);
-        i = i + chunk_size;
+        i += chunk_size;
     }
 
     html! {

@@ -39,11 +39,7 @@ pub async fn get_section(
             )
             .await?;
 
-            let website: Option<Website> = if let Some(row) = row {
-                Some(Website::try_from(&row, None))
-            } else {
-                None
-            };
+            let website: Option<Website> = row.map(|row| Website::try_from(&row, None));
 
             if let Some(website) = website {
                 if let Some(template_id) = website.template_id {
@@ -112,11 +108,7 @@ pub async fn get_section(
             )
             .await?;
 
-            let rso_data = if let Some(row) = row {
-                Some(RsoData::try_from(&row, None))
-            } else {
-                None
-            };
+            let rso_data = row.map(|row| RsoData::try_from(&row, None));
 
             Ok((
                 token,
@@ -129,11 +121,7 @@ pub async fn get_section(
                 Website::get_website_by_user_id(user_id.0, &pg_pool, vec!["id", "name", "domain"])
                     .await?;
 
-            let website: Option<Website> = if let Some(row) = row {
-                Some(Website::try_from(&row, None))
-            } else {
-                None
-            };
+            let website: Option<Website> = row.map(|row| Website::try_from(&row, None));
             Ok(Html(
                 render_create_website(authenticity_token, website, config.allow_origin)?
                     .into_string(),
