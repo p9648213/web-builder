@@ -132,8 +132,6 @@ function handleClickOutsideDropdown(dropDownContainerEl, type) {
   }
 
   if (dropdownHandlers.has(`click_event_${type}`)) {
-    console.log(dropdownHandlers.get(`click_event_${type}`));
-
     document.removeEventListener(
       "click",
       dropdownHandlers.get(`click_event_${type}`)
@@ -326,7 +324,8 @@ export function setupChangeLocation() {
 }
 
 export function setupChangePropertyType() {
-  let propertyType = ["All"];
+  let propertyTypeVals = document.getElementById("property-type-vals");
+  let propertyType = propertyTypeVals.value.split(",");
 
   const allPropertyTypeInput = document.getElementById("all-property-type");
   const propertyTypeLabel = document.getElementById("property-types-label");
@@ -418,6 +417,24 @@ export function setupChangePropertyType() {
       const subPropertyParentEl = document.getElementById(subPropertyParentId);
       const subPropertyParentLabel = subPropertyParentEl.parentNode.querySelector("label").innerHTML;
 
+      if (event.target.checked && subPropertyParentEl.checked === false) {
+        subPropertyParentEl.checked = true;
+
+        if (propertyType.includes("All")) {
+          propertyType = propertyType.filter((v) => v !== "All");
+          allPropertyTypeInput.checked = false;
+        }
+
+        propertyType.push(subPropertyParentEl.value);
+
+        propertyTypeLabel.innerHTML =
+          propertyTypeLabel.innerHTML === "All"
+            ? `${subPropertyParentEl.parentNode.querySelector("label").innerHTML}(0)`
+            : propertyTypeLabel.innerHTML +
+            `, ${subPropertyParentEl.parentNode.querySelector("label").innerHTML}(0)`;
+
+      }
+
       let matchPropertyLabel = propertyTypeLabel.innerHTML.match(
         new RegExp(`\\b${subPropertyParentLabel}\\(\\d+\\)`, "g")
       );
@@ -465,6 +482,8 @@ export function setupChangePropertyType() {
         allPropertyTypeInput.checked = true;
         propertyTypeLabel.innerHTML = "All";
       }
+
+      propertyTypeVals.value = propertyType.join(",");
     }
   });
 }

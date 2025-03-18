@@ -335,6 +335,7 @@ pub fn render_property_types_selection_drop_down_1(property_types: Vec<PropertyT
             (render_check_box_1(sub_type.prop_sub_type.as_str(), "sub-property-type", Some(sub_type.sub_type_option_value.as_str()), sub_type.sub_type_option_value.as_str(), None, Some(format!("child-{}", property_type.option_value).as_str())));
           }
         }
+        input type="hidden" id="property-type-vals" value="All";
       }
     }
 }

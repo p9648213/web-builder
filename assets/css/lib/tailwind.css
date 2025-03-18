@@ -970,14 +970,14 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
-  .max-w-85 {
-    max-width: calc(var(--spacing) * 85);
-  }
   .max-w-100 {
     max-width: calc(var(--spacing) * 100);
   }
   .max-w-18 {
     max-width: calc(var(--spacing) * 18);
+  }
+  .max-w-85 {
+    max-width: calc(var(--spacing) * 85);
   }
   .max-w-120 {
     max-width: calc(var(--spacing) * 120);
@@ -1025,6 +1025,9 @@
     flex: none;
   }
   .flex-shrink {
+    flex-shrink: 1;
+  }
+  .shrink {
     flex-shrink: 1;
   }
   .shrink-0 {
