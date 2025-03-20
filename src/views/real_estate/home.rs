@@ -481,7 +481,8 @@ pub fn render_home_search_box_1() -> Markup {
               js:{
                 listing_type: getListingTypeSelectValue(),
                 province: getProvinceValue(),
-                location: getLocationValue()
+                location: getLocationValue(),
+                property_type: getPropertyTypeValue(),
               }
             "#
             class="bg-blue-500 hover:bg-blue-400 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"

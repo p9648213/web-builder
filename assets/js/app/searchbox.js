@@ -146,7 +146,7 @@ export function setupPriceInput() {
   const princeInputMaxEl = document.getElementById("price-label-max");
 
   if (princeInputMinEl && princeInputMaxEl) {
-    princeInputMinEl.addEventListener("input", () => { });
+    princeInputMinEl.addEventListener("input", () => {});
   }
 }
 
@@ -240,8 +240,9 @@ export function setupChangeLocation() {
 
           dropDownEl.classList.remove("duration-300");
           dropDownEl.classList.add("duration-0");
-          dropDownEl.style.height = `${2.1 * (childNode.length + provinceLocations.length - 4)
-            }rem`;
+          dropDownEl.style.height = `${
+            2.1 * (childNode.length + provinceLocations.length - 4)
+          }rem`;
 
           provinceDropdown.classList.remove("hidden");
           provinceDropdown.classList.add("flex");
@@ -278,8 +279,9 @@ export function setupChangeLocation() {
 
         dropDownEl.classList.remove("duration-300");
         dropDownEl.classList.add("duration-0");
-        dropDownEl.style.height = `${2.1 * (childNode.length + provinceLocations.length - 4)
-          }rem`;
+        dropDownEl.style.height = `${
+          2.1 * (childNode.length + provinceLocations.length - 4)
+        }rem`;
       }
 
       let currentProvinceLocation = locationDropdown.querySelectorAll(
@@ -365,23 +367,31 @@ export function setupChangePropertyType() {
 
           propertyTypeLabel.innerHTML =
             propertyTypeLabel.innerHTML === "All"
-              ? `${event.target.parentNode.querySelector("label").innerHTML}(${subProperty.length
-              })`
+              ? `${event.target.parentNode.querySelector("label").innerHTML}(${
+                  subProperty.length
+                })`
               : propertyTypeLabel.innerHTML +
-              `, ${event.target.parentNode.querySelector("label").innerHTML}(${subProperty.length
-              })`;
-
+                `, ${
+                  event.target.parentNode.querySelector("label").innerHTML
+                }(${subProperty.length})`;
         } else {
-          propertyType = propertyType.filter(v => v !== event.target.value)
+          propertyType = propertyType.filter((v) => v !== event.target.value);
           if (propertyType.length === 0) {
             propertyType.push("All");
             allPropertyTypeInput.checked = true;
             propertyTypeLabel.innerHTML = "All";
           } else {
             let matchPropertyLabel = propertyTypeLabel.innerHTML.match(
-              new RegExp(`\\b${event.target.parentNode.querySelector("label").innerHTML}\\(\\d+\\)`, "g")
+              new RegExp(
+                `\\b${
+                  event.target.parentNode.querySelector("label").innerHTML
+                }\\(\\d+\\)`,
+                "g"
+              )
             );
-            let label = propertyTypeLabel.innerHTML.replace(matchPropertyLabel[0], "").trim();
+            let label = propertyTypeLabel.innerHTML
+              .replace(matchPropertyLabel[0], "")
+              .trim();
             if (label[label.length - 1] === ",") {
               propertyTypeLabel.innerHTML = label.slice(0, -1);
             } else if (label[0] === ",") {
@@ -393,7 +403,6 @@ export function setupChangePropertyType() {
             }
           }
         }
-
       } else {
         propertyType.forEach((value) => {
           if (value !== "All") {
@@ -415,7 +424,8 @@ export function setupChangePropertyType() {
     } else if (event.target.name === "sub-property-type") {
       const subPropertyParentId = event.target.id.split("-")[0] + "-1";
       const subPropertyParentEl = document.getElementById(subPropertyParentId);
-      const subPropertyParentLabel = subPropertyParentEl.parentNode.querySelector("label").innerHTML;
+      const subPropertyParentLabel =
+        subPropertyParentEl.parentNode.querySelector("label").innerHTML;
 
       if (event.target.checked && subPropertyParentEl.checked === false) {
         subPropertyParentEl.checked = true;
@@ -429,10 +439,13 @@ export function setupChangePropertyType() {
 
         propertyTypeLabel.innerHTML =
           propertyTypeLabel.innerHTML === "All"
-            ? `${subPropertyParentEl.parentNode.querySelector("label").innerHTML}(0)`
+            ? `${
+                subPropertyParentEl.parentNode.querySelector("label").innerHTML
+              }(0)`
             : propertyTypeLabel.innerHTML +
-            `, ${subPropertyParentEl.parentNode.querySelector("label").innerHTML}(0)`;
-
+              `, ${
+                subPropertyParentEl.parentNode.querySelector("label").innerHTML
+              }(0)`;
       }
 
       let matchPropertyLabel = propertyTypeLabel.innerHTML.match(
@@ -448,24 +461,24 @@ export function setupChangePropertyType() {
       let propertyTypeNewLabel = subPropertyParentLabel;
 
       if (event.target.checked) {
-        propertyTypeNewLabel = `${propertyTypeNewLabel}(${countPropertyType + 1
-          })`;
+        propertyTypeNewLabel = `${propertyTypeNewLabel}(${
+          countPropertyType + 1
+        })`;
       } else {
         if (countPropertyType - 1 === 0) {
           propertyTypeNewLabel = "";
-          propertyType = propertyType.filter(v => v !== subPropertyParentId);
+          propertyType = propertyType.filter((v) => v !== subPropertyParentId);
           subPropertyParentEl.checked = false;
         } else {
-          propertyTypeNewLabel = `${propertyTypeNewLabel}(${countPropertyType - 1
-            })`;
+          propertyTypeNewLabel = `${propertyTypeNewLabel}(${
+            countPropertyType - 1
+          })`;
         }
       }
 
-      let label = propertyTypeLabel.innerHTML.replace(
-        matchPropertyLabel,
-        propertyTypeNewLabel
-      ).trim();
-
+      let label = propertyTypeLabel.innerHTML
+        .replace(matchPropertyLabel, propertyTypeNewLabel)
+        .trim();
 
       if (label[label.length - 1] === ",") {
         propertyTypeLabel.innerHTML = label.slice(0, -1);
@@ -482,9 +495,9 @@ export function setupChangePropertyType() {
         allPropertyTypeInput.checked = true;
         propertyTypeLabel.innerHTML = "All";
       }
-
-      propertyTypeVals.value = propertyType.join(",");
     }
+
+    propertyTypeVals.value = propertyType.join(",");
   });
 }
 
@@ -520,6 +533,37 @@ export function getLocationValue() {
   return locations.join(",");
 }
 
+export function getPropertyTypeValue() {
+  const propertyVals = document.getElementById("property-type-vals")?.value;
+
+  if (!propertyVals || propertyVals === "All") {
+    return "";
+  }
+
+  let propertyTypes = propertyVals.split(",");
+  let propertyTypeHasChild = new Set();
+
+  for (const propertyType of propertyTypes) {
+    const subProperties = document.querySelectorAll(`.child-${propertyType}`);
+    for (const subProperty of subProperties) {
+      const input = subProperty.querySelector("input");
+      if (input.checked) {
+        if (!propertyTypeHasChild.has(propertyType)) {
+          propertyTypeHasChild.add(propertyType);
+        }
+        propertyTypes.push(input.value);
+      }
+    }
+  }
+
+  propertyTypeHasChild.forEach((value) => {
+    propertyTypes = propertyTypes.filter((p) => p != value);
+  });
+
+  return propertyTypes.join(",");
+}
+
 window.getListingTypeSelectValue = getListingTypeSelectValue;
 window.getProvinceValue = getProvinceValue;
 window.getLocationValue = getLocationValue;
+window.getPropertyTypeValue = getPropertyTypeValue;

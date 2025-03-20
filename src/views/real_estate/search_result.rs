@@ -5,6 +5,7 @@ use crate::{
     controllers::real_estate::pages::SearchQuery,
     models::{
         error::AppError,
+        function_params::RenderPropertyGrid,
         rso_data::{SearchProperty, TextOrNum},
     },
     views::real_estate::home,
@@ -274,6 +275,10 @@ pub fn render_search_result_1(search_query: &SearchQuery) -> Result<Markup, AppE
         params.push(("location", location.to_owned()));
     }
 
+    if let Some(property_type) = &search_query.property_type {
+        params.push(("property_type", property_type.to_owned()));
+    }
+
     if let Some(page) = &search_query.page {
         params.push(("page", page.to_string()));
     }
@@ -389,16 +394,8 @@ pub fn render_search_result_4(page: Option<u32>) -> Markup {
 //.....GGGGGG.....RRR.....RRRR.III..DDDDDDDDD.....
 //................................................
 
-pub fn render_property_grids_1(
-    properties: &Vec<SearchProperty>,
-    property_count: u32,
-    properties_per_page: u32,
-    page_no: u32,
-    listing_type: &str,
-    province: &str,
-    location: &str,
-) -> Markup {
-    let page_size = (property_count as f64 / properties_per_page as f64).ceil();
+pub fn render_property_grids_1(params: RenderPropertyGrid) -> Markup {
+    let page_size = (params.property_count as f64 / params.properties_per_page as f64).ceil();
 
     html! {
       (PreEscaped(r#"
@@ -410,32 +407,24 @@ pub fn render_property_grids_1(
         </script>
       "#))
       div class="flex justify-end w-full" {
-        div class="text-xl" { (property_count) " properties" }
+        div class="text-xl" { (params.property_count) " properties" }
       }
 
       div class="gap-9 grid grid-cols-4" {
-        @for property in properties {
-          (render_property_card_1(property, listing_type))
+        @for property in params.properties {
+          (render_property_card_1(property, params.listing_type))
         }
       }
-      @if property_count > properties_per_page {
+      @if params.property_count > params.properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 1, listing_type, &province, &location))
+          (render_pagination(page_size as u32, params.page_no, 1, params.listing_type, &params.province, &params.location, &params.property_type))
         }
       }
     }
 }
 
-pub fn render_property_grids_2(
-    properties: &Vec<SearchProperty>,
-    property_count: u32,
-    properties_per_page: u32,
-    page_no: u32,
-    listing_type: &str,
-    province: &str,
-    location: &str,
-) -> Markup {
-    let page_size = (property_count as f64 / properties_per_page as f64).ceil();
+pub fn render_property_grids_2(params: RenderPropertyGrid) -> Markup {
+    let page_size = (params.property_count as f64 / params.properties_per_page as f64).ceil();
 
     html! {
       (PreEscaped(r#"
@@ -447,32 +436,24 @@ pub fn render_property_grids_2(
         </script>
       "#))
       div class="flex justify-end w-full" {
-        div class="text-xl" { (property_count) " properties" }
+        div class="text-xl" { (params.property_count) " properties" }
       }
 
       div class="gap-9 grid grid-cols-2" {
-        @for property in properties {
-          (render_property_card_2(property, listing_type))
+        @for property in params.properties {
+          (render_property_card_2(property, params.listing_type))
         }
       }
-      @if property_count > properties_per_page {
+      @if params.property_count > params.properties_per_page {
         div class="right-0 bottom-7 left-0 absolute flex justify-center bg-white m-auto p-2 rounded-full w-fit" {
-          (render_pagination(page_size as u32, page_no, 2, listing_type, &province, &location))
+          (render_pagination(page_size as u32, params.page_no, 2, params.listing_type, &params.province, &params.location, &params.property_type))
         }
       }
     }
 }
 
-pub fn render_property_grids_3(
-    properties: &Vec<SearchProperty>,
-    property_count: u32,
-    properties_per_page: u32,
-    page_no: u32,
-    listing_type: &str,
-    province: &str,
-    location: &str,
-) -> Markup {
-    let page_size = (property_count as f64 / properties_per_page as f64).ceil();
+pub fn render_property_grids_3(params: RenderPropertyGrid) -> Markup {
+    let page_size = (params.property_count as f64 / params.properties_per_page as f64).ceil();
 
     html! {
       (PreEscaped(r#"
@@ -484,32 +465,24 @@ pub fn render_property_grids_3(
       </script>
     "#))
       div class="flex justify-end w-full" {
-        div class="text-xl" { (property_count) " properties" }
+        div class="text-xl" { (params.property_count) " properties" }
       }
 
       div class="gap-15 grid grid-cols-2" {
-        @for property in properties {
-          (render_property_card_3(property, listing_type))
+        @for property in params.properties {
+          (render_property_card_3(property, params.listing_type))
         }
       }
-      @if property_count > properties_per_page {
+      @if params.property_count > params.properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 4, listing_type, &province, &location))
+          (render_pagination(page_size as u32, params.page_no, 4, params.listing_type, &params.province, &params.location, &params.property_type))
         }
       }
     }
 }
 
-pub fn render_property_grids_4(
-    properties: &Vec<SearchProperty>,
-    property_count: u32,
-    properties_per_page: u32,
-    page_no: u32,
-    listing_type: &str,
-    province: &str,
-    location: &str,
-) -> Markup {
-    let page_size = (property_count as f64 / properties_per_page as f64).ceil();
+pub fn render_property_grids_4(params: RenderPropertyGrid) -> Markup {
+    let page_size = (params.property_count as f64 / params.properties_per_page as f64).ceil();
 
     html! {
       (PreEscaped(r#"
@@ -521,17 +494,17 @@ pub fn render_property_grids_4(
         </script>
       "#))
       div class="flex justify-end w-full" {
-        div class="text-xl" { (property_count) " properties" }
+        div class="text-xl" { (params.property_count) " properties" }
       }
 
       div class="gap-9 grid grid-cols-4" {
-        @for property in properties {
-          (render_property_card_4(property, listing_type))
+        @for property in params.properties {
+          (render_property_card_4(property, params.listing_type))
         }
       }
-      @if property_count > properties_per_page {
+      @if params.property_count > params.properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, page_no, 4, listing_type, &province, &location))
+          (render_pagination(page_size as u32, params.page_no, 4, params.listing_type, &params.province, &params.location, &params.property_type))
         }
       }
     }
@@ -560,6 +533,7 @@ pub fn render_pagination(
     listing_type: &str,
     province: &str,
     location: &str,
+    property_type: &str,
 ) -> Markup {
     let mut before_page = page - 1;
     let mut after_page = page + 1;
@@ -583,8 +557,8 @@ pub fn render_pagination(
     }
 
     let default_path = format!(
-        "&listing_type={}&province={}&location={}",
-        listing_type, province, location
+        "&listing_type={}&province={}&location={}&property_type={}",
+        listing_type, province, location, property_type
     );
 
     html! {

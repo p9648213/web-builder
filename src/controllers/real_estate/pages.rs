@@ -22,6 +22,7 @@ pub struct SearchQuery {
     pub theme: Option<i32>,
     pub province: Option<String>,
     pub location: Option<String>,
+    pub property_type: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]

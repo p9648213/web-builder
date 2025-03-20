@@ -6,6 +6,7 @@ use maud::html;
 use serde::Deserialize;
 
 use crate::models::error::AppError;
+use crate::models::function_params::RenderPropertyGrid;
 use crate::models::rso_data::{
     HotPropertyParams, LocationParams, PropertyParams, PropertyTypeParams, RsoData,
     SearchResultParams,
@@ -424,6 +425,8 @@ pub async fn get_search_result(
             province = "".to_string();
         }
 
+        let property_types = search_query.0.property_type.unwrap_or("".to_string());
+
         let p_agency_filterid = match listing_type.as_str() {
             "resales" | "new-development" => rso_data.filter_id_sale.ok_or_else(|| {
                 tracing::error!("No filter_id_sale column or value is null");
@@ -467,25 +470,37 @@ pub async fn get_search_result(
             p_virtual_tours: "2".to_string(),
             p_province: province.to_owned(),
             p_location: location.to_owned(),
+            p_property_types: property_types.to_owned(),
         };
 
         let search_response = RsoData::get_rso_search_result(search_result_params).await?;
 
         let search_theme = search_query.0.theme.unwrap_or(1);
 
+        let property_grid_params = RenderPropertyGrid {
+            properties: &search_response.property,
+            property_count: search_response.query_info.property_count,
+            properties_per_page: search_response.query_info.properties_per_page,
+            page_no: search_response.query_info.current_page,
+            listing_type: &listing_type,
+            province: &province,
+            location: &location,
+            property_type: &property_types,
+        };
+
         let html = html! {
             @match search_theme {
                 1 => {
-                    (search_result::render_property_grids_1(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province, &location))
+                    (search_result::render_property_grids_1(property_grid_params))
                 }
                 2 => {
-                    (search_result::render_property_grids_2(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province, &location))
+                    (search_result::render_property_grids_2(property_grid_params))
                 }
                 3 => {
-                    (search_result::render_property_grids_3(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province, &location))
+                    (search_result::render_property_grids_3(property_grid_params))
                 }
                 4 => {
-                    (search_result::render_property_grids_4(&search_response.property, search_response.query_info.property_count, search_response.query_info.properties_per_page, search_response.query_info.current_page, &listing_type, &province, &location))
+                    (search_result::render_property_grids_4(property_grid_params))
                 }
                 _ => {}
             }
