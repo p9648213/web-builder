@@ -485,6 +485,8 @@ pub fn render_home_search_box_1() -> Markup {
                 province: getProvinceValue(),
                 location: getLocationValue(),
                 property_type: getPropertyTypeValue(),
+                min_price: getMinPriceValue(),
+                max_price: getMaxPriceValue()
               }
             "#
             class="bg-blue-500 hover:bg-blue-400 px-14 py-3 rounded-md font-semibold text-white cursor-pointer"

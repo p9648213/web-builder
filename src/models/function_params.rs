@@ -9,4 +9,6 @@ pub struct RenderPropertyGrid<'a> {
     pub province: &'a str,
     pub location: &'a str,
     pub property_type: &'a str,
+    pub min_price: &'a str,
+    pub max_price: &'a str,
 }

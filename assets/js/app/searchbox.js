@@ -141,12 +141,31 @@ function handleClickOutsideDropdown(dropDownContainerEl, type) {
   document.addEventListener("click", clickHandler);
 }
 
+function checkPrice(priceEl, value) {
+  if (value === "") {
+    return;
+  }
+
+  if (!Number(value[value.length - 1])) {
+    priceEl.value = value.slice(0, value.length - 1);
+    return;
+  }
+
+  priceEl.value = Number(value.replace(/,/gi, "")).toLocaleString();
+}
+
 export function setupPriceInput() {
   const princeInputMinEl = document.getElementById("price-label-min");
   const princeInputMaxEl = document.getElementById("price-label-max");
 
   if (princeInputMinEl && princeInputMaxEl) {
-    princeInputMinEl.addEventListener("input", () => {});
+    princeInputMinEl.addEventListener("input", (event) => {
+      checkPrice(princeInputMinEl, event.target.value);
+    });
+
+    princeInputMaxEl.addEventListener("input", (event) => {
+      checkPrice(princeInputMaxEl, event.target.value);
+    });
   }
 }
 
@@ -493,17 +512,17 @@ export function setupChangePropertyType() {
   });
 }
 
-export function getListingTypeSelectValue() {
+function getListingTypeSelectValue() {
   const listingType = document.getElementById("listing-type-selection")?.value;
   return listingType;
 }
 
-export function getProvinceValue() {
+function getProvinceValue() {
   const provinceVals = document.getElementById("province-vals")?.value;
   return provinceVals || "";
 }
 
-export function getLocationValue() {
+function getLocationValue() {
   const locations = [];
   const provinceVals = document.getElementById("province-vals")?.value;
 
@@ -525,7 +544,7 @@ export function getLocationValue() {
   return locations.join(",");
 }
 
-export function getPropertyTypeValue() {
+function getPropertyTypeValue() {
   const propertyVals = document.getElementById("property-type-vals")?.value;
 
   if (!propertyVals || propertyVals === "All") {
@@ -555,7 +574,19 @@ export function getPropertyTypeValue() {
   return propertyTypes.join(",");
 }
 
+function getMinPriceValue() {
+  const princeInputMinEl = document.getElementById("price-label-min");
+  return Number(princeInputMinEl.value.replace(/,/gi, ""));
+}
+
+function getMaxPriceValue() {
+  const princeInputMaxEl = document.getElementById("price-label-max");
+  return Number(princeInputMaxEl.value.replace(/,/gi, ""));
+}
+
 window.getListingTypeSelectValue = getListingTypeSelectValue;
 window.getProvinceValue = getProvinceValue;
 window.getLocationValue = getLocationValue;
 window.getPropertyTypeValue = getPropertyTypeValue;
+window.getMinPriceValue = getMinPriceValue;
+window.getMaxPriceValue = getMaxPriceValue;

@@ -427,6 +427,18 @@ pub async fn get_search_result(
 
         let property_types = search_query.0.property_type.unwrap_or("".to_string());
 
+        let mut min_price = search_query.0.min_price.unwrap_or(0).to_string();
+
+        if min_price == "0" {
+            min_price = "".to_string();
+        }
+
+        let mut max_price = search_query.0.max_price.unwrap_or(0).to_string();
+
+        if max_price == "0" {
+            max_price = "".to_string();
+        }
+
         let p_agency_filterid = match listing_type.as_str() {
             "resales" | "new-development" => rso_data.filter_id_sale.ok_or_else(|| {
                 tracing::error!("No filter_id_sale column or value is null");
@@ -471,6 +483,8 @@ pub async fn get_search_result(
             p_province: province.to_owned(),
             p_location: location.to_owned(),
             p_property_types: property_types.to_owned(),
+            p_min: min_price.to_owned(),
+            p_max: max_price.to_owned(),
         };
 
         let search_response = RsoData::get_rso_search_result(search_result_params).await?;
@@ -486,6 +500,8 @@ pub async fn get_search_result(
             province: &province,
             location: &location,
             property_type: &property_types,
+            min_price: &min_price,
+            max_price: &max_price,
         };
 
         let html = html! {

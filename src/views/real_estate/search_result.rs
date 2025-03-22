@@ -283,6 +283,14 @@ pub fn render_search_result_1(search_query: &SearchQuery) -> Result<Markup, AppE
         params.push(("page", page.to_string()));
     }
 
+    if let Some(min_price) = &search_query.min_price {
+        params.push(("min_price", min_price.to_string()));
+    }
+
+    if let Some(max_price) = &search_query.max_price {
+        params.push(("max_price", max_price.to_string()));
+    }
+
     let replace_url =
         reqwest::Url::parse_with_params("https://example.com/search-results", &params).map_err(
             |error| {
@@ -395,8 +403,6 @@ pub fn render_search_result_4(page: Option<u32>) -> Markup {
 //................................................
 
 pub fn render_property_grids_1(params: RenderPropertyGrid) -> Markup {
-    let page_size = (params.property_count as f64 / params.properties_per_page as f64).ceil();
-
     html! {
       (PreEscaped(r#"
         <script type="module">
@@ -417,15 +423,13 @@ pub fn render_property_grids_1(params: RenderPropertyGrid) -> Markup {
       }
       @if params.property_count > params.properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, params.page_no, 1, params.listing_type, &params.province, &params.location, &params.property_type))
+          (render_pagination(params, 1))
         }
       }
     }
 }
 
 pub fn render_property_grids_2(params: RenderPropertyGrid) -> Markup {
-    let page_size = (params.property_count as f64 / params.properties_per_page as f64).ceil();
-
     html! {
       (PreEscaped(r#"
         <script type="module">
@@ -446,15 +450,13 @@ pub fn render_property_grids_2(params: RenderPropertyGrid) -> Markup {
       }
       @if params.property_count > params.properties_per_page {
         div class="right-0 bottom-7 left-0 absolute flex justify-center bg-white m-auto p-2 rounded-full w-fit" {
-          (render_pagination(page_size as u32, params.page_no, 2, params.listing_type, &params.province, &params.location, &params.property_type))
+          (render_pagination(params, 2))
         }
       }
     }
 }
 
 pub fn render_property_grids_3(params: RenderPropertyGrid) -> Markup {
-    let page_size = (params.property_count as f64 / params.properties_per_page as f64).ceil();
-
     html! {
       (PreEscaped(r#"
       <script type="module">
@@ -475,15 +477,13 @@ pub fn render_property_grids_3(params: RenderPropertyGrid) -> Markup {
       }
       @if params.property_count > params.properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, params.page_no, 4, params.listing_type, &params.province, &params.location, &params.property_type))
+          (render_pagination(params, 3))
         }
       }
     }
 }
 
 pub fn render_property_grids_4(params: RenderPropertyGrid) -> Markup {
-    let page_size = (params.property_count as f64 / params.properties_per_page as f64).ceil();
-
     html! {
       (PreEscaped(r#"
         <script type="module">
@@ -504,7 +504,7 @@ pub fn render_property_grids_4(params: RenderPropertyGrid) -> Markup {
       }
       @if params.property_count > params.properties_per_page {
         div class="flex justify-center bg-white mt-6 p-2 rounded-full" {
-          (render_pagination(page_size as u32, params.page_no, 4, params.listing_type, &params.province, &params.location, &params.property_type))
+          (render_pagination(params, 4))
         }
       }
     }
@@ -526,15 +526,11 @@ pub fn render_property_grids_4(params: RenderPropertyGrid) -> Markup {
 //.PPP.......PPA......AAAA....GGGGGG.....GII..INN....NNNN.NNA......AAAA...TTT....TTTEEEEEEEE..
 //............................................................................................
 
-pub fn render_pagination(
-    total_pages: u32,
-    page: u32,
-    theme: u32,
-    listing_type: &str,
-    province: &str,
-    location: &str,
-    property_type: &str,
-) -> Markup {
+pub fn render_pagination(params: RenderPropertyGrid, theme: u32) -> Markup {
+    let total_pages =
+        (params.property_count as f64 / params.properties_per_page as f64).ceil() as u32;
+    let page = params.page_no;
+
     let mut before_page = page - 1;
     let mut after_page = page + 1;
 
@@ -557,8 +553,13 @@ pub fn render_pagination(
     }
 
     let default_path = format!(
-        "&listing_type={}&province={}&location={}&property_type={}",
-        listing_type, province, location, property_type
+        "&listing_type={}&province={}&location={}&property_type={}&min_price={}&max_price={}",
+        params.listing_type,
+        params.province,
+        params.location,
+        params.property_type,
+        params.min_price,
+        params.max_price
     );
 
     html! {

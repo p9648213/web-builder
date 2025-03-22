@@ -23,6 +23,8 @@ pub struct SearchQuery {
     pub province: Option<String>,
     pub location: Option<String>,
     pub property_type: Option<String>,
+    pub min_price: Option<u32>,
+    pub max_price: Option<u32>,
 }
 
 #[derive(Deserialize, Debug)]
