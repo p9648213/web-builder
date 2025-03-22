@@ -345,8 +345,10 @@ pub fn render_input_radio_1(value: &str, name: &str, id: &str, checked: Option<b
       div class="relative flex items-center gap-2 text-sm" {
         input class="cursor-pointer" type="radio" checked=[checked] id=(id) name=(name) value=(value);
         label class="z-1 w-full cursor-pointer" for=(id) {(value)}
-        div class="right-2 absolute w-4 h-4" {
-          img class="w-full h-full" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+        @if value != "All" {
+          div class="right-2 absolute w-4 h-4" {
+            img class="w-full h-full" src="/assets/images/icon/dropdown.svg" alt="dropdown";
+          }
         }
       }
     }

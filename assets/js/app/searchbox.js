@@ -295,18 +295,10 @@ export function setupChangeLocation() {
 
       provinceVals.value = event.target.value;
 
-      let countLocation = 0;
-
-      provinceLocations.forEach((item) => {
-        countLocation++;
-        let locationInput = item.querySelector("input");
-        locationInput.checked = true;
-      });
-
       if (event.target.value === "All") {
         locationLabel.innerHTML = "All";
       } else {
-        locationLabel.innerHTML = `${event.target.value}(${countLocation})`;
+        locationLabel.innerHTML = `${event.target.value}`;
       }
     } else if (event.target.name === "location") {
       const locationLabelText = locationLabel.textContent;
