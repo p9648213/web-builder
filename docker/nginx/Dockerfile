@@ -13,14 +13,14 @@ RUN apt-get update && apt-get install -y \
 
 # Download and extract nginx source
 WORKDIR /src
-RUN wget https://nginx.org/download/nginx-1.27.3.tar.gz && \
-    tar -xzf nginx-1.27.3.tar.gz
+RUN wget https://nginx.org/download/nginx-1.27.4.tar.gz && \
+    tar -xzf nginx-1.27.4.tar.gz
 
 # Clone zstd-nginx-module
 RUN git clone https://github.com/tokers/zstd-nginx-module.git
 
 # Compile nginx with zstd module
-WORKDIR /src/nginx-1.27.3
+WORKDIR /src/nginx-1.27.4
 RUN ./configure \
     --add-module=../zstd-nginx-module \
     --prefix=/etc/nginx \
