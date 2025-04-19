@@ -1,5 +1,6 @@
 use super::rso_data::SearchProperty;
 
+#[derive(Debug)]
 pub struct RenderPropertyGrid<'a> {
     pub properties: &'a Vec<SearchProperty>,
     pub property_count: u32,

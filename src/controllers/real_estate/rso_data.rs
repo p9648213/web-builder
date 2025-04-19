@@ -427,13 +427,13 @@ pub async fn get_search_result(
 
         let property_types = search_query.0.property_type.unwrap_or("".to_string());
 
-        let mut min_price = search_query.0.min_price.unwrap_or(0).to_string();
+        let mut min_price = search_query.0.min_price.unwrap_or("0".to_string());
 
         if min_price == "0" {
             min_price = "".to_string();
         }
 
-        let mut max_price = search_query.0.max_price.unwrap_or(0).to_string();
+        let mut max_price = search_query.0.max_price.unwrap_or("0".to_string());
 
         if max_price == "0" {
             max_price = "".to_string();
@@ -489,7 +489,7 @@ pub async fn get_search_result(
 
         let search_response = RsoData::get_rso_search_result(search_result_params).await?;
 
-        let search_theme = search_query.0.theme.unwrap_or(1);
+        let search_theme = search_query.0.theme.unwrap_or(1); 
 
         let property_grid_params = RenderPropertyGrid {
             properties: &search_response.property,

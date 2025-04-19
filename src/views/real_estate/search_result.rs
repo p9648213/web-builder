@@ -542,12 +542,6 @@ pub fn render_pagination(params: RenderPropertyGrid, theme: u32) -> Markup {
 
     if page == 1 {
         after_page += 2;
-    } else if page == total_pages - 1 {
-        before_page += 1;
-    }
-
-    if page == 1 {
-        after_page += 2;
     } else if page == 2 {
         after_page += 1;
     }

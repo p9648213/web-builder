@@ -576,12 +576,12 @@ function getPropertyTypeValue() {
 
 function getMinPriceValue() {
   const princeInputMinEl = document.getElementById("price-label-min");
-  return Number(princeInputMinEl.value.replace(/,/gi, ""));
+  return princeInputMinEl.value.replace(/,/gi, "") || "";
 }
 
 function getMaxPriceValue() {
   const princeInputMaxEl = document.getElementById("price-label-max");
-  return Number(princeInputMaxEl.value.replace(/,/gi, ""));
+  return princeInputMaxEl.value.replace(/,/gi, "") || "";
 }
 
 window.getListingTypeSelectValue = getListingTypeSelectValue;
